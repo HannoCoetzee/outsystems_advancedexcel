@@ -4,6 +4,14 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_Hide_Show(System.Object,System.Int32,System.Boolean)">
+            <summary>
+            Hides / Shows Column passed by index
+            </summary>
+            <param name="ssWorksheet">The worksheet you want to work with.</param>
+            <param name="ssColumn">The index of the column within the worksheet that you want to hide/show.</param>
+            <param name="ssHidden">A Boolean value, set to True to hide the column, and to False to show the column.</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssContainInRAnge(System.Object,System.String,System.String,System.String,System.Boolean@,System.Int32@,System.Int32@)">
             <summary>
             
@@ -161,14 +169,6 @@
             <param name="ssDataSet">Data to write</param>
             <param name="ssCellFormat">CellFormat for the target cell</param>
             <param name="ssExportHeaders">True if headers should be included in export</param>
-        </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_Hide(System.Object,System.Int32,System.Boolean)">
-            <summary>
-            Hides / Shows Column passed by index
-            </summary>
-            <param name="ssWorksheet"></param>
-            <param name="ssColumn"></param>
-            <param name="ssHidden"></param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Protect(System.Object,System.String)">
             <summary>
@@ -342,13 +342,13 @@
             </summary>
             <param name="ssWorkbook"></param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssColumn_Hide(System.Object,System.Int32,System.Boolean)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssColumn_Hide_Show(System.Object,System.Int32,System.Boolean)">
             <summary>
             Hides / Shows Column passed by index
             </summary>
-            <param name="ssWorksheet"></param>
-            <param name="ssColumn"></param>
-            <param name="ssHidden"></param>
+            <param name="ssWorksheet">The worksheet you want to work with.</param>
+            <param name="ssColumn">The index of the column within the worksheet that you want to hide/show.</param>
+            <param name="ssHidden">A Boolean value, set to True to hide the column, and to False to show the column.</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_Read(System.Object,System.String,System.Int32,System.Int32,System.String@,System.Boolean)">
             <summary>

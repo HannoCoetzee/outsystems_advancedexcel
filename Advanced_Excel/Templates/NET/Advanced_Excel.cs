@@ -71,12 +71,12 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <summary>
 		/// Hides / Shows Column passed by index
 		/// </summary>
-		/// <param name="ssWorksheet"></param>
-		/// <param name="ssColumn"></param>
-		/// <param name="ssHidden"></param>
-		public void MssColumn_Hide(object ssWorksheet, int ssColumn, bool ssHidden) {
+		/// <param name="ssWorksheet">The worksheet you want to work with.</param>
+		/// <param name="ssColumn">The index of the column within the worksheet that you want to hide/show.</param>
+		/// <param name="ssHidden">A Boolean value, set to True to hide the column, and to False to show the column.</param>
+		public void MssColumn_Hide_Show(object ssWorksheet, int ssColumn, bool ssHidden) {
 			// TODO: Write implementation for action
-		} // MssColumn_Hide
+		} // MssColumn_Hide_Show
 
 		/// <summary>
 		/// Reads the value of a cell.
