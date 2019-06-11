@@ -4,15 +4,16 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_Hide_Show(System.Object,System.Int32,System.Boolean)">
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Hide_Show(System.Object,System.Int32)">
             <summary>
-            Hides / Shows Column passed by index
+            Hide / Show a worksheet
             </summary>
-            <param name="ssWorksheet">The worksheet you want to work with.</param>
-            <param name="ssColumn">The index of the column within the worksheet that you want to hide/show.</param>
-            <param name="ssHidden">A Boolean value, set to True to hide the column, and to False to show the column.</param>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssHidden">Visible = 0 - The worksheet is visible
+            Hidden = 1 - The worksheet is hidden but can be shown by the user via the user interface
+            VeryHidden = 2 - The worksheet is hidden and cannot be shown by the user via the user interface</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssContainInRAnge(System.Object,System.String,System.String,System.String,System.Boolean@,System.Int32@,System.Int32@)">
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssContainInRange(System.Object,System.String,System.String,System.String,System.Boolean@,System.Int32@,System.Int32@)">
             <summary>
             
             </summary>
@@ -23,6 +24,34 @@
             <param name="ssFound"></param>
             <param name="ssRowIndex"></param>
             <param name="ssColumnIndex"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssRow_Hide_Show(System.Object,System.Int32,System.Boolean)">
+            <summary>
+            Hides / Shows Row passed by index
+            </summary>
+            <param name="ssWorksheet">Worksheet to work with</param>
+            <param name="ssRowIndex">Index of the Row to show/hide</param>
+            <param name="ssHidden">True = Hide, False = Show</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_Calculate(System.Object)">
+            <summary>
+            Calculate all formulae for the entire workbook provided.
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Calculate(System.Object)">
+            <summary>
+            Calculate all formulae on the provided worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_Hide_Show(System.Object,System.Int32,System.Boolean)">
+            <summary>
+            Hides / Shows Column passed by index
+            </summary>
+            <param name="ssWorksheet">The worksheet you want to work with.</param>
+            <param name="ssColumn">The index of the column within the worksheet that you want to hide/show.</param>
+            <param name="ssHidden">A Boolean value, set to True to hide the column, and to False to show the column.</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_Read(System.Object,System.String,System.Int32,System.Int32,System.String@,System.Boolean)">
             <summary>
@@ -344,7 +373,7 @@
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssColumn_Hide_Show(System.Object,System.Int32,System.Boolean)">
             <summary>
-            Hides / Shows Column passed by index
+            Hides / Shows a Column passed by index
             </summary>
             <param name="ssWorksheet">The worksheet you want to work with.</param>
             <param name="ssColumn">The index of the column within the worksheet that you want to hide/show.</param>
@@ -555,7 +584,7 @@
             <param name="ssValueToFind">The value to search for</param>
             <param name="ssListOfCells">List of cells (ranges) where the value has been found</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssContainInRAnge(System.Object,System.String,System.String,System.String,System.Boolean@,System.Int32@,System.Int32@)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssContainInRange(System.Object,System.String,System.String,System.String,System.Boolean@,System.Int32@,System.Int32@)">
             <summary>
             
             </summary>
@@ -567,10 +596,40 @@
             <param name="ssRowIndex"></param>
             <param name="ssColumnIndex"></param>
         </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Calculate(System.Object)">
+            <summary>
+            Calculate all formulae for the entire workbook provided.
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Calculate(System.Object)">
+            <summary>
+            Calculate all formulae on the provided worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssRow_Hide_Show(System.Object,System.Int32,System.Boolean)">
+            <summary>
+            Hides / Shows Row passed by index
+            </summary>
+            <param name="ssWorksheet">Worksheet to work with</param>
+            <param name="ssRowIndex">Index of the Row to show/hide</param>
+            <param name="ssHidden">A Boolean value, set to True to hide the row and to False to show the row</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Hide_Show(System.Object,System.Int32)">
+            <summary>
+            Hide / Show a worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssHidden">Visible = 0 - The worksheet is visible
+            Hidden = 1 - The worksheet is hidden but can be shown by the user via the user interface
+            VeryHidden = 2 - The worksheet is hidden and cannot be shown by the user via the user interface</param>
+        </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
             Structure <code>STCellFormatStructure</code> that represents the Service Studio structure
-             <code>CellFormat</code> <p> Description: </p>
+             <code>CellFormat</code> <p> Description: Structure to define all the formatting attributes that ca
+            n apply to a cell.</p>
             </summary>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STCellFormatStructure.Read(System.Data.IDataReader,System.Int32@)">
@@ -595,7 +654,7 @@
         <member name="T:OutSystems.NssAdvanced_Excel.STWorkbookStructure">
             <summary>
             Structure <code>STWorkbookStructure</code> that represents the Service Studio structure
-             <code>Workbook</code> <p> Description: </p>
+             <code>Workbook</code> <p> Description: The Excel File</p>
             </summary>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STWorkbookStructure.Read(System.Data.IDataReader,System.Int32@)">
@@ -620,7 +679,8 @@
         <member name="T:OutSystems.NssAdvanced_Excel.STWorksheetStructure">
             <summary>
             Structure <code>STWorksheetStructure</code> that represents the Service Studio structure
-             <code>Worksheet</code> <p> Description: </p>
+             <code>Worksheet</code> <p> Description: Structure defining attributes pertaining to
+            a worksheet</p>
             </summary>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STWorksheetStructure.Read(System.Data.IDataReader,System.Int32@)">
@@ -645,7 +705,7 @@
         <member name="T:OutSystems.NssAdvanced_Excel.STColorStructure">
             <summary>
             Structure <code>STColorStructure</code> that represents the Service Studio structure
-             <code>Color</code> <p> Description: </p>
+             <code>Color</code> <p> Description: Represents an ARGB (alpha, red, green, blue) color.</p>
             </summary>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STColorStructure.Read(System.Data.IDataReader,System.Int32@)">

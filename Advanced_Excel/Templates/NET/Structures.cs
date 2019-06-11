@@ -13,7 +13,8 @@ namespace OutSystems.NssAdvanced_Excel {
 
 	/// <summary>
 	/// Structure <code>STCellFormatStructure</code> that represents the Service Studio structure
-	///  <code>CellFormat</code> <p> Description: </p>
+	///  <code>CellFormat</code> <p> Description: Structure to define all the formatting attributes that ca
+	/// n apply to a cell.</p>
 	/// </summary>
 	[Serializable()]
 	public partial struct STCellFormatStructure: ISerializable, ITypedRecord<STCellFormatStructure>, ISimpleRecord {
@@ -358,7 +359,7 @@ namespace OutSystems.NssAdvanced_Excel {
 
 	/// <summary>
 	/// Structure <code>STWorkbookStructure</code> that represents the Service Studio structure
-	///  <code>Workbook</code> <p> Description: </p>
+	///  <code>Workbook</code> <p> Description: The Excel File</p>
 	/// </summary>
 	[Serializable()]
 	public partial struct STWorkbookStructure: ISerializable, ITypedRecord<STWorkbookStructure>, ISimpleRecord {
@@ -538,7 +539,8 @@ namespace OutSystems.NssAdvanced_Excel {
 
 	/// <summary>
 	/// Structure <code>STWorksheetStructure</code> that represents the Service Studio structure
-	///  <code>Worksheet</code> <p> Description: </p>
+	///  <code>Worksheet</code> <p> Description: Structure defining attributes pertaining to
+	/// a worksheet</p>
 	/// </summary>
 	[Serializable()]
 	public partial struct STWorksheetStructure: ISerializable, ITypedRecord<STWorksheetStructure>, ISimpleRecord {
@@ -797,7 +799,7 @@ namespace OutSystems.NssAdvanced_Excel {
 
 	/// <summary>
 	/// Structure <code>STColorStructure</code> that represents the Service Studio structure
-	///  <code>Color</code> <p> Description: </p>
+	///  <code>Color</code> <p> Description: Represents an ARGB (alpha, red, green, blue) color.</p>
 	/// </summary>
 	[Serializable()]
 	public partial struct STColorStructure: ISerializable, ITypedRecord<STColorStructure>, ISimpleRecord {

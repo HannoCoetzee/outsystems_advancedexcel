@@ -69,7 +69,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		} // MssWorkbook_Close
 
 		/// <summary>
-		/// Hides / Shows Column passed by index
+		/// Hides / Shows a Column passed by index
 		/// </summary>
 		/// <param name="ssWorksheet">The worksheet you want to work with.</param>
 		/// <param name="ssColumn">The index of the column within the worksheet that you want to hide/show.</param>
@@ -326,12 +326,49 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssFound"></param>
 		/// <param name="ssRowIndex"></param>
 		/// <param name="ssColumnIndex"></param>
-		public void MssContainInRAnge(object ssWorksheet, string ssRange, string ssValue, string ssParameter1, out bool ssFound, out int ssRowIndex, out int ssColumnIndex) {
+		public void MssContainInRange(object ssWorksheet, string ssRange, string ssValue, string ssParameter1, out bool ssFound, out int ssRowIndex, out int ssColumnIndex) {
 			ssFound = false;
 			ssRowIndex = 0;
 			ssColumnIndex = 0;
 			// TODO: Write implementation for action
-		} // MssContainInRAnge
+		} // MssContainInRange
+
+		/// <summary>
+		/// Calculate all formulae for the entire workbook provided.
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook to work with</param>
+		public void MssWorkbook_Calculate(object ssWorkbook) {
+			// TODO: Write implementation for action
+		} // MssWorkbook_Calculate
+
+		/// <summary>
+		/// Calculate all formulae on the provided worksheet.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		public void MssWorksheet_Calculate(object ssWorksheet) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_Calculate
+
+		/// <summary>
+		/// Hides / Shows Row passed by index
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet to work with</param>
+		/// <param name="ssRowIndex">Index of the Row to show/hide</param>
+		/// <param name="ssHidden">A Boolean value, set to True to hide the row and to False to show the row</param>
+		public void MssRow_Hide_Show(object ssWorksheet, int ssRowIndex, bool ssHidden) {
+			// TODO: Write implementation for action
+		} // MssRow_Hide_Show
+
+		/// <summary>
+		/// Hide / Show a worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssHidden">Visible = 0 - The worksheet is visible
+		/// Hidden = 1 - The worksheet is hidden but can be shown by the user via the user interface
+		/// VeryHidden = 2 - The worksheet is hidden and cannot be shown by the user via the user interface</param>
+		public void MssWorksheet_Hide_Show(object ssWorksheet, int ssHidden) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_Hide_Show
 
 	} // CssAdvanced_Excel
 

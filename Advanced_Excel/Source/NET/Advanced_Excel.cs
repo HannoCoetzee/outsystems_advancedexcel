@@ -21,18 +21,18 @@ namespace OutSystems.NssAdvanced_Excel
     public class CssAdvanced_Excel : IssAdvanced_Excel
     {
 
-		/// <summary>
-		/// Hides / Shows Column passed by index
-		/// </summary>
-		/// <param name="ssWorksheet">The worksheet you want to work with.</param>
-		/// <param name="ssColumn">The index of the column within the worksheet that you want to hide/show.</param>
-		/// <param name="ssHidden">A Boolean value, set to True to hide the column, and to False to show the column.</param>
-		public void MssColumn_Hide_Show(object ssWorksheet, int ssColumn, bool ssHidden) {
-            ExcelWorksheet ws;
-            ws = (ExcelWorksheet)ssWorksheet;
-
-            ws.Column(ssColumn).Hidden = ssHidden;
-        } // MssColumn_Hide_Show
+        /// <summary>
+        /// Hide / Show a worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssHidden">Visible = 0 - The worksheet is visible
+        /// Hidden = 1 - The worksheet is hidden but can be shown by the user via the user interface
+        /// VeryHidden = 2 - The worksheet is hidden and cannot be shown by the user via the user interface</param>
+        public void MssWorksheet_Hide_Show(object ssWorksheet, int ssHidden)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.Hidden = (eWorkSheetHidden)ssHidden;
+        } // MssWorksheet_Hide_Show
 
         /// <summary>
         /// 
@@ -44,7 +44,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssFound"></param>
         /// <param name="ssRowIndex"></param>
         /// <param name="ssColumnIndex"></param>
-        public void MssContainInRAnge(object ssWorksheet, string ssRange, string ssValue, string ssParameter1, out bool ssFound, out int ssRowIndex, out int ssColumnIndex)
+        public void MssContainInRange(object ssWorksheet, string ssRange, string ssValue, string ssParameter1, out bool ssFound, out int ssRowIndex, out int ssColumnIndex)
         {
             ssFound = false;
             ssRowIndex = 0;
@@ -62,9 +62,53 @@ namespace OutSystems.NssAdvanced_Excel
                 }
             }
 
+        } // MssContainInRange
 
-        } // MssContainInRAnge
+        /// <summary>
+        /// Hides / Shows Row passed by index
+        /// </summary>
+        /// <param name="ssWorksheet">Worksheet to work with</param>
+        /// <param name="ssRowIndex">Index of the Row to show/hide</param>
+        /// <param name="ssHidden">True = Hide, False = Show</param>
+        public void MssRow_Hide_Show(object ssWorksheet, int ssRowIndex, bool ssHidden)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.Row(ssRowIndex).Hidden = ssHidden;
+        } // MssRow_Hide_Show
 
+        /// <summary>
+        /// Calculate all formulae for the entire workbook provided.
+        /// </summary>
+        /// <param name="ssWorkbook">The workbook to work with</param>
+        public void MssWorkbook_Calculate(object ssWorkbook)
+        {
+            ExcelWorkbook wb = ssWorkbook as ExcelWorkbook;
+            wb.Calculate();
+        } // MssWorkbook_Calculate
+
+        /// <summary>
+        /// Calculate all formulae on the provided worksheet.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        public void MssWorksheet_Calculate(object ssWorksheet)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.Calculate();
+        } // MssWorksheet_Calculate
+
+        /// <summary>
+        /// Hides / Shows Column passed by index
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet you want to work with.</param>
+        /// <param name="ssColumn">The index of the column within the worksheet that you want to hide/show.</param>
+        /// <param name="ssHidden">A Boolean value, set to True to hide the column, and to False to show the column.</param>
+        public void MssColumn_Hide_Show(object ssWorksheet, int ssColumn, bool ssHidden)
+        {
+            ExcelWorksheet ws;
+            ws = (ExcelWorksheet)ssWorksheet;
+
+            ws.Column(ssColumn).Hidden = ssHidden;
+        } // MssColumn_Hide_Show
         /// <summary>
         /// Reads the value of a cell.
         /// </summary>
