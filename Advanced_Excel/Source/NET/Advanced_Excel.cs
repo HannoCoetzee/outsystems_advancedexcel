@@ -108,6 +108,11 @@ namespace OutSystems.NssAdvanced_Excel
             ws = (ExcelWorksheet)ssWorksheet;
 
             ws.Column(ssColumn).Hidden = ssHidden;
+
+            if(!ssHidden)
+            {
+                ws.Column(ssColumn).Width = ws.DefaultColWidth;
+            }
         } // MssColumn_Hide_Show
         /// <summary>
         /// Reads the value of a cell.
