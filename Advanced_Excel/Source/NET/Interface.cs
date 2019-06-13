@@ -305,6 +305,31 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// VeryHidden = 2 - The worksheet is hidden and cannot be shown by the user via the user interface</param>
 		void MssWorksheet_Hide_Show(object ssWorksheet, int ssHidden);
 
+		/// <summary>
+		/// Create a named range in an Excel Worksheet
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook to work with</param>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssName">Name of the Named Range</param>
+		/// <param name="ssRange">The range to work with</param>
+		void MssNamedRange_Add(object ssWorkbook, object ssWorksheet, string ssName, string ssRange);
+
+		/// <summary>
+		/// Modify a named range in a Worksheet
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook to work with</param>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssName">Name of the Named Range</param>
+		/// <param name="ssRange">Address range</param>
+		void MssNamedRange_Update(object ssWorkbook, object ssWorksheet, string ssName, string ssRange);
+
+		/// <summary>
+		/// Delete a named range from a workbook.
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook to work with</param>
+		/// <param name="ssName">Name of the named range to remove</param>
+		void MssNamedRange_Delete(object ssWorkbook, string ssName);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

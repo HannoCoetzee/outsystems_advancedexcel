@@ -22,6 +22,48 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
         /// <summary>
+        /// Create a named range in an Excel Worksheet
+        /// </summary>
+        /// <param name="ssWorkbook"></param>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssName">Name of the Named Range</param>
+        /// <param name="ssRange">Address range of the Named Range</param>
+        public void MssNamedRange_Add(object ssWorkbook, object ssWorksheet, string ssName, string ssRange)
+        {
+            ExcelPackage wb = ssWorkbook as ExcelPackage;
+            LogMessage("Named Ranges (add): " + JsonConvert.SerializeObject(wb.Workbook.Names.ToList()));
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelRange range = ws.Cells[ssRange];
+            wb.Workbook.Names.Add(ssName, range);
+
+        } // MssNamedRange_Add
+
+        /// <summary>
+        /// Update a named range in a Worksheet
+        /// </summary>
+        /// <param name="ssWorkbook"></param>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssName">Name of the Named Range</param>
+        /// <param name="ssRange">Address range</param>
+        public void MssNamedRange_Update(object ssWorkbook, object ssWorksheet, string ssName, string ssRange)
+        {
+            ExcelPackage wb = ssWorkbook as ExcelPackage;
+            LogMessage("Named Ranges (del): " + JsonConvert.SerializeObject(wb.Workbook.Names.ToList()));
+
+            MssNamedRange_Delete(ssWorkbook, ssName);
+            MssNamedRange_Add(ssWorkbook, ssWorksheet, ssName, ssRange);
+        } // MssNamedRange_Update
+
+        /// <summary>
+        /// Delete a named range from a workbook.
+        /// </summary>
+        public void MssNamedRange_Delete(object ssWorkbook, string ssName)
+        {
+            ExcelPackage ep = ssWorkbook as ExcelPackage;
+            ep.Workbook.Names.Remove(ssName);
+        } // MssNamedRange_Delete
+
+        /// <summary>
         /// Hide / Show a worksheet
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with</param>
@@ -109,7 +151,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             ws.Column(ssColumn).Hidden = ssHidden;
 
-            if(!ssHidden)
+            if (!ssHidden)
             {
                 ws.Column(ssColumn).Width = ws.DefaultColWidth;
             }

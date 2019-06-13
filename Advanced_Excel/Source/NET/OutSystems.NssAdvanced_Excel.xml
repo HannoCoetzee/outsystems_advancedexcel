@@ -4,6 +4,29 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssNamedRange_Add(System.Object,System.Object,System.String,System.String)">
+            <summary>
+            Create a named range in an Excel Worksheet
+            </summary>
+            <param name="ssWorkbook"></param>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssName">Name of the Named Range</param>
+            <param name="ssRange">Address range of the Named Range</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssNamedRange_Update(System.Object,System.Object,System.String,System.String)">
+            <summary>
+            Update a named range in a Worksheet
+            </summary>
+            <param name="ssWorkbook"></param>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssName">Name of the Named Range</param>
+            <param name="ssRange">Address range</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssNamedRange_Delete(System.Object,System.String)">
+            <summary>
+            Delete a named range from a workbook.
+            </summary>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Hide_Show(System.Object,System.Int32)">
             <summary>
             Hide / Show a worksheet
@@ -624,6 +647,31 @@
             <param name="ssHidden">Visible = 0 - The worksheet is visible
             Hidden = 1 - The worksheet is hidden but can be shown by the user via the user interface
             VeryHidden = 2 - The worksheet is hidden and cannot be shown by the user via the user interface</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssNamedRange_Add(System.Object,System.Object,System.String,System.String)">
+            <summary>
+            Create a named range in an Excel Worksheet
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssName">Name of the Named Range</param>
+            <param name="ssRange">The range to work with</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssNamedRange_Update(System.Object,System.Object,System.String,System.String)">
+            <summary>
+            Modify a named range in a Worksheet
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssName">Name of the Named Range</param>
+            <param name="ssRange">Address range</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssNamedRange_Delete(System.Object,System.String)">
+            <summary>
+            Delete a named range from a workbook.
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+            <param name="ssName">Name of the named range to remove</param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
