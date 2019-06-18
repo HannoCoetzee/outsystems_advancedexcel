@@ -4,6 +4,54 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssComment_Add">
+            <summary>
+            Add a new comment.
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssComment_Delete">
+            <summary>
+            Delete a specific comment.
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssComment_GetAll">
+            <summary>
+            Get a list of all the comments in a worksheet.
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssRow_Insert(System.Object,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Inserts a new row into the spreadsheet.  Existing rows below the position are shifted down.  All formula are updated to take account of the new row.
+            </summary>
+            <param name="ssWorksheet">The worksheet to insert the row(s) into</param>
+            <param name="ssInsertAt">The position of the new row
+            </param>
+            <param name="ssNrRows">Number of rows to insert</param>
+            <param name="ssCopyStyleFromRow">Copy Styles from this row. Applied to all inserted rows. 0 will not copy any styles</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssFindCellsByValue(System.Object,System.String,OutSystems.NssAdvanced_Excel.RLRangeRecordList@)">
+            <summary>
+            Find all cells that contain the specified value in the given worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet in which to search</param>
+            <param name="ssValueToFind">The value to search for</param>
+            <param name="ssListOfCells">List of cells (ranges) where the value has been found</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_Insert">
+            <summary>
+            Insert a column in a worksheet
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssRow_Delete">
+            <summary>
+            Delete a row from a worksheet
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_Delete">
+            <summary>
+            Delete a column from a worksheet
+            </summary>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssNamedRange_Add(System.Object,System.Object,System.String,System.String)">
             <summary>
             Create a named range in an Excel Worksheet
@@ -573,7 +621,7 @@
             <param name="ssRowPos">Row position to place the upper left corner graph</param>
             <param name="ssColPos">Column position to place the upper left corner graph</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_InsertRow(System.Object,System.Int32,System.Int32,System.Int32)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssRow_Insert(System.Object,System.Int32,System.Int32,System.Int32)">
             <summary>
             Inserts a new row into the spreadsheet.  Existing rows below the position are shifted down.  All formula are updated to take account of the new row.
             </summary>
@@ -599,7 +647,7 @@
             <param name="ssCellFormat">CellFormat to apply</param>
             <param name="ssRange">Range that CellFormat is to be applied to</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_FindCellsByValue(System.Object,System.String,OutSystems.NssAdvanced_Excel.RLRangeRecordList@)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssFindCellsByValue(System.Object,System.String,OutSystems.NssAdvanced_Excel.RLRangeRecordList@)">
             <summary>
             Find all cells that contain the specified value in the given worksheet
             </summary>
@@ -672,6 +720,36 @@
             </summary>
             <param name="ssWorkbook">The workbook to work with</param>
             <param name="ssName">Name of the named range to remove</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssColumn_Insert">
+            <summary>
+            Insert a column in a worksheet
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssRow_Delete">
+            <summary>
+            Delete a row from a worksheet
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssColumn_Delete">
+            <summary>
+            Delete a column from a worksheet
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssComment_Add">
+            <summary>
+            Add a new comment.
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssComment_Delete">
+            <summary>
+            Delete a specific comment.
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssComment_GetAll">
+            <summary>
+            Get a list of all the comments in a worksheet.
+            </summary>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>

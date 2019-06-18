@@ -238,7 +238,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// </param>
 		/// <param name="ssNrRows">Number of rows to insert</param>
 		/// <param name="ssCopyStyleFromRow">Copy Styles from this row. Applied to all inserted rows. 0 will not copy any styles</param>
-		void MssWorksheet_InsertRow(object ssWorksheet, int ssInsertAt, int ssNrRows, int ssCopyStyleFromRow);
+		void MssRow_Insert(object ssWorksheet, int ssInsertAt, int ssNrRows, int ssCopyStyleFromRow);
 
 		/// <summary>
 		/// Change the index of a worksheet in the document
@@ -262,7 +262,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssWorksheet">The worksheet in which to search</param>
 		/// <param name="ssValueToFind">The value to search for</param>
 		/// <param name="ssListOfCells">List of cells (ranges) where the value has been found</param>
-		void MssWorksheet_FindCellsByValue(object ssWorksheet, string ssValueToFind, out RLRangeRecordList ssListOfCells);
+		void MssFindCellsByValue(object ssWorksheet, string ssValueToFind, out RLRangeRecordList ssListOfCells);
 
 		/// <summary>
 		/// 
@@ -329,6 +329,36 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssWorkbook">The workbook to work with</param>
 		/// <param name="ssName">Name of the named range to remove</param>
 		void MssNamedRange_Delete(object ssWorkbook, string ssName);
+
+		/// <summary>
+		/// Insert a column in a worksheet
+		/// </summary>
+		void MssColumn_Insert();
+
+		/// <summary>
+		/// Delete a row from a worksheet
+		/// </summary>
+		void MssRow_Delete();
+
+		/// <summary>
+		/// Delete a column from a worksheet
+		/// </summary>
+		void MssColumn_Delete();
+
+		/// <summary>
+		/// Add a new comment.
+		/// </summary>
+		void MssComment_Add();
+
+		/// <summary>
+		/// Delete a specific comment.
+		/// </summary>
+		void MssComment_Delete();
+
+		/// <summary>
+		/// Get a list of all the comments in a worksheet.
+		/// </summary>
+		void MssComment_GetAll();
 
 	} // IssAdvanced_Excel
 

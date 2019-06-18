@@ -21,6 +21,71 @@ namespace OutSystems.NssAdvanced_Excel
     public class CssAdvanced_Excel : IssAdvanced_Excel
     {
 
+		/// <summary>
+		/// Add a new comment.
+		/// </summary>
+		public void MssComment_Add() {
+			// TODO: Write implementation for action
+		} // MssComment_Add
+
+		/// <summary>
+		/// Delete a specific comment.
+		/// </summary>
+		public void MssComment_Delete() {
+			// TODO: Write implementation for action
+		} // MssComment_Delete
+
+		/// <summary>
+		/// Get a list of all the comments in a worksheet.
+		/// </summary>
+		public void MssComment_GetAll() {
+			// TODO: Write implementation for action
+		} // MssComment_GetAll
+
+		/// <summary>
+		/// Inserts a new row into the spreadsheet.  Existing rows below the position are shifted down.  All formula are updated to take account of the new row.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to insert the row(s) into</param>
+		/// <param name="ssInsertAt">The position of the new row
+		/// </param>
+		/// <param name="ssNrRows">Number of rows to insert</param>
+		/// <param name="ssCopyStyleFromRow">Copy Styles from this row. Applied to all inserted rows. 0 will not copy any styles</param>
+		public void MssRow_Insert(object ssWorksheet, int ssInsertAt, int ssNrRows, int ssCopyStyleFromRow) {
+			// TODO: Write implementation for action
+		} // MssRow_Insert
+
+		/// <summary>
+		/// Find all cells that contain the specified value in the given worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet in which to search</param>
+		/// <param name="ssValueToFind">The value to search for</param>
+		/// <param name="ssListOfCells">List of cells (ranges) where the value has been found</param>
+		public void MssFindCellsByValue(object ssWorksheet, string ssValueToFind, out RLRangeRecordList ssListOfCells) {
+			ssListOfCells = new RLRangeRecordList();
+			// TODO: Write implementation for action
+		} // MssFindCellsByValue
+
+		/// <summary>
+		/// Insert a column in a worksheet
+		/// </summary>
+		public void MssColumn_Insert() {
+			// TODO: Write implementation for action
+		} // MssColumn_Insert
+
+		/// <summary>
+		/// Delete a row from a worksheet
+		/// </summary>
+		public void MssRow_Delete() {
+			// TODO: Write implementation for action
+		} // MssRow_Delete
+
+		/// <summary>
+		/// Delete a column from a worksheet
+		/// </summary>
+		public void MssColumn_Delete() {
+			// TODO: Write implementation for action
+		} // MssColumn_Delete
+
         /// <summary>
         /// Create a named range in an Excel Worksheet
         /// </summary>
