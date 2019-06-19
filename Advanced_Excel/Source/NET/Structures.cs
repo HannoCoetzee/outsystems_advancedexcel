@@ -2160,4 +2160,1363 @@ namespace OutSystems.NssAdvanced_Excel {
 		}
 	} // STDataSeriesStructure
 
+	/// <summary>
+	/// Structure <code>STConditionalFormatItemStructure</code> that represents the Service Studio
+	///  structure <code>ConditionalFormatItem</code> <p> Description: Represents a conditional formattin
+	/// g item.</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STConditionalFormatItemStructure: ISerializable, ITypedRecord<STConditionalFormatItemStructure>, ISimpleRecord {
+		private static readonly GlobalObjectKey IdAddress = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*er0XKBV+rUy_HSlFEWHXVg");
+		private static readonly GlobalObjectKey IdPriority = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*dpVqWd5lfUe4aQl1iitKlw");
+		private static readonly GlobalObjectKey IdStopIfTrue = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*jnYyE0NIwU6dcKgTHhzV1g");
+		private static readonly GlobalObjectKey IdFormula = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*r5aWkXTyZ0GCk0gXLUwo4A");
+		private static readonly GlobalObjectKey IdRuleType = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*MrQiku8nRkWxyc2bFzTGgw");
+		private static readonly GlobalObjectKey IdStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*kqWX46SonE2n7nYDl9MHhw");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Address")]
+		public RCAddressRecord ssAddress;
+
+		[System.Xml.Serialization.XmlElement("Priority")]
+		public int ssPriority;
+
+		[System.Xml.Serialization.XmlElement("StopIfTrue")]
+		public bool ssStopIfTrue;
+
+		[System.Xml.Serialization.XmlElement("Formula")]
+		public string ssFormula;
+
+		[System.Xml.Serialization.XmlElement("RuleType")]
+		public int ssRuleType;
+
+		[System.Xml.Serialization.XmlElement("Style")]
+		public RCConditionalFormatStyleRecord ssStyle;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STConditionalFormatItemStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssAddress = new RCAddressRecord(null);
+			ssPriority = 101;
+			ssStopIfTrue = false;
+			ssFormula = "";
+			ssRuleType = 0;
+			ssStyle = new RCConditionalFormatStyleRecord(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[2];
+			all[0] = null;
+			all[1] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssAddress.OptimizedAttributes = value[0];
+					ssStyle.OptimizedAttributes = value[1];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[2];
+				all[0] = null;
+				all[1] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssPriority = r.ReadInteger(index++, "ConditionalFormatItem.Priority", 0);
+			ssStopIfTrue = r.ReadBoolean(index++, "ConditionalFormatItem.StopIfTrue", false);
+			ssFormula = r.ReadText(index++, "ConditionalFormatItem.Formula", "");
+			ssRuleType = r.ReadInteger(index++, "ConditionalFormatItem.RuleType", 0);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STConditionalFormatItemStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STConditionalFormatItemStructure a, STConditionalFormatItemStructure b) {
+			if (a.ssAddress != b.ssAddress) return false;
+			if (a.ssPriority != b.ssPriority) return false;
+			if (a.ssStopIfTrue != b.ssStopIfTrue) return false;
+			if (a.ssFormula != b.ssFormula) return false;
+			if (a.ssRuleType != b.ssRuleType) return false;
+			if (a.ssStyle != b.ssStyle) return false;
+			return true;
+		}
+
+		public static bool operator != (STConditionalFormatItemStructure a, STConditionalFormatItemStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STConditionalFormatItemStructure)) return false;
+			return (this == (STConditionalFormatItemStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssAddress.GetHashCode()
+				^ ssPriority.GetHashCode()
+				^ ssStopIfTrue.GetHashCode()
+				^ ssFormula.GetHashCode()
+				^ ssRuleType.GetHashCode()
+				^ ssStyle.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STConditionalFormatItemStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssAddress = new RCAddressRecord(null);
+			ssPriority = 101;
+			ssStopIfTrue = false;
+			ssFormula = "";
+			ssRuleType = 0;
+			ssStyle = new RCConditionalFormatStyleRecord(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssAddress", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAddress' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAddress = (RCAddressRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssPriority", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssPriority' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssPriority = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssStopIfTrue", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssStopIfTrue' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssStopIfTrue = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssFormula", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssFormula' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssFormula = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssRuleType", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssRuleType' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssRuleType = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssStyle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssStyle' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssStyle = (RCConditionalFormatStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssAddress.RecursiveReset();
+			ssStyle.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssAddress.InternalRecursiveSave();
+			ssStyle.InternalRecursiveSave();
+		}
+
+
+		public STConditionalFormatItemStructure Duplicate() {
+			STConditionalFormatItemStructure t;
+			t.ssAddress = (RCAddressRecord) this.ssAddress.Duplicate();
+			t.ssPriority = this.ssPriority;
+			t.ssStopIfTrue = this.ssStopIfTrue;
+			t.ssFormula = this.ssFormula;
+			t.ssRuleType = this.ssRuleType;
+			t.ssStyle = (RCConditionalFormatStyleRecord) this.ssStyle.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				ssAddress.ToXml(this, recordElem, "Address", detailLevel - 1);
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Priority")) VarValue.AppendAttribute(recordElem, "Priority", ssPriority, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "Priority");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".StopIfTrue")) VarValue.AppendAttribute(recordElem, "StopIfTrue", ssStopIfTrue, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "StopIfTrue");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Formula")) VarValue.AppendAttribute(recordElem, "Formula", ssFormula, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Formula");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".RuleType")) VarValue.AppendAttribute(recordElem, "RuleType", ssRuleType, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "RuleType");
+				ssStyle.ToXml(this, recordElem, "Style", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "address") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Address")) variable.Value = ssAddress; else variable.Optimized = true;
+				variable.SetFieldName("address");
+			} else if (head == "priority") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Priority")) variable.Value = ssPriority; else variable.Optimized = true;
+			} else if (head == "stopiftrue") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".StopIfTrue")) variable.Value = ssStopIfTrue; else variable.Optimized = true;
+			} else if (head == "formula") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Formula")) variable.Value = ssFormula; else variable.Optimized = true;
+			} else if (head == "ruletype") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".RuleType")) variable.Value = ssRuleType; else variable.Optimized = true;
+			} else if (head == "style") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Style")) variable.Value = ssStyle; else variable.Optimized = true;
+				variable.SetFieldName("style");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdAddress) {
+				return ssAddress;
+			} else if (key == IdPriority) {
+				return ssPriority;
+			} else if (key == IdStopIfTrue) {
+				return ssStopIfTrue;
+			} else if (key == IdFormula) {
+				return ssFormula;
+			} else if (key == IdRuleType) {
+				return ssRuleType;
+			} else if (key == IdStyle) {
+				return ssStyle;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssAddress.FillFromOther((IRecord) other.AttributeGet(IdAddress));
+			ssPriority = (int) other.AttributeGet(IdPriority);
+			ssStopIfTrue = (bool) other.AttributeGet(IdStopIfTrue);
+			ssFormula = (string) other.AttributeGet(IdFormula);
+			ssRuleType = (int) other.AttributeGet(IdRuleType);
+			ssStyle.FillFromOther((IRecord) other.AttributeGet(IdStyle));
+		}
+		public bool IsDefault() {
+			STConditionalFormatItemStructure defaultStruct = new STConditionalFormatItemStructure(null);
+			if (this.ssAddress != defaultStruct.ssAddress) return false;
+			if (this.ssPriority != defaultStruct.ssPriority) return false;
+			if (this.ssStopIfTrue != defaultStruct.ssStopIfTrue) return false;
+			if (this.ssFormula != defaultStruct.ssFormula) return false;
+			if (this.ssRuleType != defaultStruct.ssRuleType) return false;
+			if (this.ssStyle != defaultStruct.ssStyle) return false;
+			return true;
+		}
+	} // STConditionalFormatItemStructure
+
+	/// <summary>
+	/// Structure <code>STConditionalFormatStyleStructure</code> that represents the Service Studio
+	///  structure <code>ConditionalFormatStyle</code> <p> Description: Style (format) options fo
+	/// r Conditional Formatting.</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STConditionalFormatStyleStructure: ISerializable, ITypedRecord<STConditionalFormatStyleStructure>, ISimpleRecord {
+		private static readonly GlobalObjectKey IdFill = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*1SvuEuoBAkqPTcNFGkYQjA");
+		private static readonly GlobalObjectKey IdNumberFormat = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*SNTz3Rd1IESVyCG7Qfg3ug");
+		private static readonly GlobalObjectKey IdBorderTop = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*fblZ7S2fRUyDS0Nk0m+CWA");
+		private static readonly GlobalObjectKey IdBorderBottom = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*pjdeJP8uAk267aLuKq9xIA");
+		private static readonly GlobalObjectKey IdBorderLeft = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Nlly6o1NHkmSChZFuOI8CA");
+		private static readonly GlobalObjectKey IdBorderRight = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*dEO4+buICkiY5n9HH2BhlQ");
+		private static readonly GlobalObjectKey IdFont = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*4ECt5m1N4E2tSmRgx9KhoA");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Fill")]
+		public RCFillStyleRecord ssFill;
+
+		[System.Xml.Serialization.XmlElement("NumberFormat")]
+		public string ssNumberFormat;
+
+		[System.Xml.Serialization.XmlElement("BorderTop")]
+		public RCBorderStyleRecord ssBorderTop;
+
+		[System.Xml.Serialization.XmlElement("BorderBottom")]
+		public RCBorderStyleRecord ssBorderBottom;
+
+		[System.Xml.Serialization.XmlElement("BorderLeft")]
+		public RCBorderStyleRecord ssBorderLeft;
+
+		[System.Xml.Serialization.XmlElement("BorderRight")]
+		public RCBorderStyleRecord ssBorderRight;
+
+		[System.Xml.Serialization.XmlElement("Font")]
+		public RCFontStyleRecord ssFont;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STConditionalFormatStyleStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssFill = new RCFillStyleRecord(null);
+			ssNumberFormat = "";
+			ssBorderTop = new RCBorderStyleRecord(null);
+			ssBorderBottom = new RCBorderStyleRecord(null);
+			ssBorderLeft = new RCBorderStyleRecord(null);
+			ssBorderRight = new RCBorderStyleRecord(null);
+			ssFont = new RCFontStyleRecord(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[6];
+			all[0] = null;
+			all[1] = null;
+			all[2] = null;
+			all[3] = null;
+			all[4] = null;
+			all[5] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssFill.OptimizedAttributes = value[0];
+					ssBorderTop.OptimizedAttributes = value[1];
+					ssBorderBottom.OptimizedAttributes = value[2];
+					ssBorderLeft.OptimizedAttributes = value[3];
+					ssBorderRight.OptimizedAttributes = value[4];
+					ssFont.OptimizedAttributes = value[5];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[6];
+				all[0] = null;
+				all[1] = null;
+				all[2] = null;
+				all[3] = null;
+				all[4] = null;
+				all[5] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssNumberFormat = r.ReadText(index++, "ConditionalFormatStyle.NumberFormat", "");
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STConditionalFormatStyleStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STConditionalFormatStyleStructure a, STConditionalFormatStyleStructure b) {
+			if (a.ssFill != b.ssFill) return false;
+			if (a.ssNumberFormat != b.ssNumberFormat) return false;
+			if (a.ssBorderTop != b.ssBorderTop) return false;
+			if (a.ssBorderBottom != b.ssBorderBottom) return false;
+			if (a.ssBorderLeft != b.ssBorderLeft) return false;
+			if (a.ssBorderRight != b.ssBorderRight) return false;
+			if (a.ssFont != b.ssFont) return false;
+			return true;
+		}
+
+		public static bool operator != (STConditionalFormatStyleStructure a, STConditionalFormatStyleStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STConditionalFormatStyleStructure)) return false;
+			return (this == (STConditionalFormatStyleStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssFill.GetHashCode()
+				^ ssNumberFormat.GetHashCode()
+				^ ssBorderTop.GetHashCode()
+				^ ssBorderBottom.GetHashCode()
+				^ ssBorderLeft.GetHashCode()
+				^ ssBorderRight.GetHashCode()
+				^ ssFont.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STConditionalFormatStyleStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssFill = new RCFillStyleRecord(null);
+			ssNumberFormat = "";
+			ssBorderTop = new RCBorderStyleRecord(null);
+			ssBorderBottom = new RCBorderStyleRecord(null);
+			ssBorderLeft = new RCBorderStyleRecord(null);
+			ssBorderRight = new RCBorderStyleRecord(null);
+			ssFont = new RCFontStyleRecord(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssFill", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssFill' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssFill = (RCFillStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssNumberFormat", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssNumberFormat' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssNumberFormat = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssBorderTop", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssBorderTop' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssBorderTop = (RCBorderStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssBorderBottom", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssBorderBottom' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssBorderBottom = (RCBorderStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssBorderLeft", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssBorderLeft' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssBorderLeft = (RCBorderStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssBorderRight", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssBorderRight' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssBorderRight = (RCBorderStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssFont", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssFont' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssFont = (RCFontStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssFill.RecursiveReset();
+			ssBorderTop.RecursiveReset();
+			ssBorderBottom.RecursiveReset();
+			ssBorderLeft.RecursiveReset();
+			ssBorderRight.RecursiveReset();
+			ssFont.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssFill.InternalRecursiveSave();
+			ssBorderTop.InternalRecursiveSave();
+			ssBorderBottom.InternalRecursiveSave();
+			ssBorderLeft.InternalRecursiveSave();
+			ssBorderRight.InternalRecursiveSave();
+			ssFont.InternalRecursiveSave();
+		}
+
+
+		public STConditionalFormatStyleStructure Duplicate() {
+			STConditionalFormatStyleStructure t;
+			t.ssFill = (RCFillStyleRecord) this.ssFill.Duplicate();
+			t.ssNumberFormat = this.ssNumberFormat;
+			t.ssBorderTop = (RCBorderStyleRecord) this.ssBorderTop.Duplicate();
+			t.ssBorderBottom = (RCBorderStyleRecord) this.ssBorderBottom.Duplicate();
+			t.ssBorderLeft = (RCBorderStyleRecord) this.ssBorderLeft.Duplicate();
+			t.ssBorderRight = (RCBorderStyleRecord) this.ssBorderRight.Duplicate();
+			t.ssFont = (RCFontStyleRecord) this.ssFont.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				ssFill.ToXml(this, recordElem, "Fill", detailLevel - 1);
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".NumberFormat")) VarValue.AppendAttribute(recordElem, "NumberFormat", ssNumberFormat, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "NumberFormat");
+				ssBorderTop.ToXml(this, recordElem, "BorderTop", detailLevel - 1);
+				ssBorderBottom.ToXml(this, recordElem, "BorderBottom", detailLevel - 1);
+				ssBorderLeft.ToXml(this, recordElem, "BorderLeft", detailLevel - 1);
+				ssBorderRight.ToXml(this, recordElem, "BorderRight", detailLevel - 1);
+				ssFont.ToXml(this, recordElem, "Font", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "fill") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Fill")) variable.Value = ssFill; else variable.Optimized = true;
+				variable.SetFieldName("fill");
+			} else if (head == "numberformat") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".NumberFormat")) variable.Value = ssNumberFormat; else variable.Optimized = true;
+			} else if (head == "bordertop") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".BorderTop")) variable.Value = ssBorderTop; else variable.Optimized = true;
+				variable.SetFieldName("bordertop");
+			} else if (head == "borderbottom") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".BorderBottom")) variable.Value = ssBorderBottom; else variable.Optimized = true;
+				variable.SetFieldName("borderbottom");
+			} else if (head == "borderleft") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".BorderLeft")) variable.Value = ssBorderLeft; else variable.Optimized = true;
+				variable.SetFieldName("borderleft");
+			} else if (head == "borderright") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".BorderRight")) variable.Value = ssBorderRight; else variable.Optimized = true;
+				variable.SetFieldName("borderright");
+			} else if (head == "font") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Font")) variable.Value = ssFont; else variable.Optimized = true;
+				variable.SetFieldName("font");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdFill) {
+				return ssFill;
+			} else if (key == IdNumberFormat) {
+				return ssNumberFormat;
+			} else if (key == IdBorderTop) {
+				return ssBorderTop;
+			} else if (key == IdBorderBottom) {
+				return ssBorderBottom;
+			} else if (key == IdBorderLeft) {
+				return ssBorderLeft;
+			} else if (key == IdBorderRight) {
+				return ssBorderRight;
+			} else if (key == IdFont) {
+				return ssFont;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssFill.FillFromOther((IRecord) other.AttributeGet(IdFill));
+			ssNumberFormat = (string) other.AttributeGet(IdNumberFormat);
+			ssBorderTop.FillFromOther((IRecord) other.AttributeGet(IdBorderTop));
+			ssBorderBottom.FillFromOther((IRecord) other.AttributeGet(IdBorderBottom));
+			ssBorderLeft.FillFromOther((IRecord) other.AttributeGet(IdBorderLeft));
+			ssBorderRight.FillFromOther((IRecord) other.AttributeGet(IdBorderRight));
+			ssFont.FillFromOther((IRecord) other.AttributeGet(IdFont));
+		}
+		public bool IsDefault() {
+			STConditionalFormatStyleStructure defaultStruct = new STConditionalFormatStyleStructure(null);
+			if (this.ssFill != defaultStruct.ssFill) return false;
+			if (this.ssNumberFormat != defaultStruct.ssNumberFormat) return false;
+			if (this.ssBorderTop != defaultStruct.ssBorderTop) return false;
+			if (this.ssBorderBottom != defaultStruct.ssBorderBottom) return false;
+			if (this.ssBorderLeft != defaultStruct.ssBorderLeft) return false;
+			if (this.ssBorderRight != defaultStruct.ssBorderRight) return false;
+			if (this.ssFont != defaultStruct.ssFont) return false;
+			return true;
+		}
+	} // STConditionalFormatStyleStructure
+
+	/// <summary>
+	/// Structure <code>STBorderStyleStructure</code> that represents the Service Studio structure
+	///  <code>BorderStyle</code> <p> Description: Style and color of border</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STBorderStyleStructure: ISerializable, ITypedRecord<STBorderStyleStructure>, ISimpleRecord {
+		private static readonly GlobalObjectKey IdStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*7+st9rTGXEO_cfJYyvu_Jg");
+		private static readonly GlobalObjectKey IdColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*vQ04YKRKJkK4FP8C5krQlA");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Style")]
+		public int ssStyle;
+
+		[System.Xml.Serialization.XmlElement("Color")]
+		public string ssColor;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STBorderStyleStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssStyle = 0;
+			ssColor = "";
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssStyle = r.ReadInteger(index++, "BorderStyle.Style", 0);
+			ssColor = r.ReadText(index++, "BorderStyle.Color", "");
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STBorderStyleStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STBorderStyleStructure a, STBorderStyleStructure b) {
+			if (a.ssStyle != b.ssStyle) return false;
+			if (a.ssColor != b.ssColor) return false;
+			return true;
+		}
+
+		public static bool operator != (STBorderStyleStructure a, STBorderStyleStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STBorderStyleStructure)) return false;
+			return (this == (STBorderStyleStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssStyle.GetHashCode()
+				^ ssColor.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STBorderStyleStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssStyle = 0;
+			ssColor = "";
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssStyle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssStyle' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssStyle = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssColor", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssColor' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssColor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STBorderStyleStructure Duplicate() {
+			STBorderStyleStructure t;
+			t.ssStyle = this.ssStyle;
+			t.ssColor = this.ssColor;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Style")) VarValue.AppendAttribute(recordElem, "Style", ssStyle, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "Style");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Color")) VarValue.AppendAttribute(recordElem, "Color", ssColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Color");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "style") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Style")) variable.Value = ssStyle; else variable.Optimized = true;
+			} else if (head == "color") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Color")) variable.Value = ssColor; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdStyle) {
+				return ssStyle;
+			} else if (key == IdColor) {
+				return ssColor;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssStyle = (int) other.AttributeGet(IdStyle);
+			ssColor = (string) other.AttributeGet(IdColor);
+		}
+		public bool IsDefault() {
+			STBorderStyleStructure defaultStruct = new STBorderStyleStructure(null);
+			if (this.ssStyle != defaultStruct.ssStyle) return false;
+			if (this.ssColor != defaultStruct.ssColor) return false;
+			return true;
+		}
+	} // STBorderStyleStructure
+
+	/// <summary>
+	/// Structure <code>STFontStyleStructure</code> that represents the Service Studio structure
+	///  <code>FontStyle</code> <p> Description: Font styling for Conditional Formatting rules</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STFontStyleStructure: ISerializable, ITypedRecord<STFontStyleStructure>, ISimpleRecord {
+		private static readonly GlobalObjectKey IdBold = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*cqYqiPR6y0uFbVeYYee7WA");
+		private static readonly GlobalObjectKey IdItalic = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Mt98nSNIBkaXRC4suDdWUw");
+		private static readonly GlobalObjectKey IdStrike = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*uZGW8tTclUiCMtJUy27YVA");
+		private static readonly GlobalObjectKey IdColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*3Zf7wJwXzE2MU7IWAOuJZA");
+		private static readonly GlobalObjectKey IdUnderline = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*DhBCk15muESkbeHPZQ5Dgg");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Bold")]
+		public bool ssBold;
+
+		[System.Xml.Serialization.XmlElement("Italic")]
+		public bool ssItalic;
+
+		[System.Xml.Serialization.XmlElement("Strike")]
+		public bool ssStrike;
+
+		[System.Xml.Serialization.XmlElement("Color")]
+		public string ssColor;
+
+		[System.Xml.Serialization.XmlElement("Underline")]
+		public int ssUnderline;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STFontStyleStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssBold = false;
+			ssItalic = false;
+			ssStrike = false;
+			ssColor = "#FFFFFF";
+			ssUnderline = 0;
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssBold = r.ReadBoolean(index++, "FontStyle.Bold", false);
+			ssItalic = r.ReadBoolean(index++, "FontStyle.Italic", false);
+			ssStrike = r.ReadBoolean(index++, "FontStyle.Strike", false);
+			ssColor = r.ReadText(index++, "FontStyle.Color", "");
+			ssUnderline = r.ReadInteger(index++, "FontStyle.Underline", 0);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STFontStyleStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STFontStyleStructure a, STFontStyleStructure b) {
+			if (a.ssBold != b.ssBold) return false;
+			if (a.ssItalic != b.ssItalic) return false;
+			if (a.ssStrike != b.ssStrike) return false;
+			if (a.ssColor != b.ssColor) return false;
+			if (a.ssUnderline != b.ssUnderline) return false;
+			return true;
+		}
+
+		public static bool operator != (STFontStyleStructure a, STFontStyleStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STFontStyleStructure)) return false;
+			return (this == (STFontStyleStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssBold.GetHashCode()
+				^ ssItalic.GetHashCode()
+				^ ssStrike.GetHashCode()
+				^ ssColor.GetHashCode()
+				^ ssUnderline.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STFontStyleStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssBold = false;
+			ssItalic = false;
+			ssStrike = false;
+			ssColor = "#FFFFFF";
+			ssUnderline = 0;
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssBold", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssBold' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssBold = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssItalic", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssItalic' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssItalic = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssStrike", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssStrike' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssStrike = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssColor", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssColor' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssColor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssUnderline", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssUnderline' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssUnderline = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STFontStyleStructure Duplicate() {
+			STFontStyleStructure t;
+			t.ssBold = this.ssBold;
+			t.ssItalic = this.ssItalic;
+			t.ssStrike = this.ssStrike;
+			t.ssColor = this.ssColor;
+			t.ssUnderline = this.ssUnderline;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Bold")) VarValue.AppendAttribute(recordElem, "Bold", ssBold, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Bold");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Italic")) VarValue.AppendAttribute(recordElem, "Italic", ssItalic, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Italic");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Strike")) VarValue.AppendAttribute(recordElem, "Strike", ssStrike, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Strike");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Color")) VarValue.AppendAttribute(recordElem, "Color", ssColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Color");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Underline")) VarValue.AppendAttribute(recordElem, "Underline", ssUnderline, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "Underline");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "bold") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Bold")) variable.Value = ssBold; else variable.Optimized = true;
+			} else if (head == "italic") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Italic")) variable.Value = ssItalic; else variable.Optimized = true;
+			} else if (head == "strike") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Strike")) variable.Value = ssStrike; else variable.Optimized = true;
+			} else if (head == "color") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Color")) variable.Value = ssColor; else variable.Optimized = true;
+			} else if (head == "underline") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Underline")) variable.Value = ssUnderline; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdBold) {
+				return ssBold;
+			} else if (key == IdItalic) {
+				return ssItalic;
+			} else if (key == IdStrike) {
+				return ssStrike;
+			} else if (key == IdColor) {
+				return ssColor;
+			} else if (key == IdUnderline) {
+				return ssUnderline;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssBold = (bool) other.AttributeGet(IdBold);
+			ssItalic = (bool) other.AttributeGet(IdItalic);
+			ssStrike = (bool) other.AttributeGet(IdStrike);
+			ssColor = (string) other.AttributeGet(IdColor);
+			ssUnderline = (int) other.AttributeGet(IdUnderline);
+		}
+		public bool IsDefault() {
+			STFontStyleStructure defaultStruct = new STFontStyleStructure(null);
+			if (this.ssBold != defaultStruct.ssBold) return false;
+			if (this.ssItalic != defaultStruct.ssItalic) return false;
+			if (this.ssStrike != defaultStruct.ssStrike) return false;
+			if (this.ssColor != defaultStruct.ssColor) return false;
+			if (this.ssUnderline != defaultStruct.ssUnderline) return false;
+			return true;
+		}
+	} // STFontStyleStructure
+
+	/// <summary>
+	/// Structure <code>STFillStyleStructure</code> that represents the Service Studio structure
+	///  <code>FillStyle</code> <p> Description: Fill styling for Conditional Formatting</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STFillStyleStructure: ISerializable, ITypedRecord<STFillStyleStructure>, ISimpleRecord {
+		private static readonly GlobalObjectKey IdBackgroundColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*tXZRFMAbwUyUG6eWqodppQ");
+		private static readonly GlobalObjectKey IdPatternColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*8auhj3AsCEWNplzw2R96dA");
+		private static readonly GlobalObjectKey IdPatternType = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*vPIptiZsc0enj_HUm4fGsA");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("BackgroundColor")]
+		public string ssBackgroundColor;
+
+		[System.Xml.Serialization.XmlElement("PatternColor")]
+		public string ssPatternColor;
+
+		[System.Xml.Serialization.XmlElement("PatternType")]
+		public int ssPatternType;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STFillStyleStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssBackgroundColor = "";
+			ssPatternColor = "";
+			ssPatternType = 0;
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssBackgroundColor = r.ReadText(index++, "FillStyle.BackgroundColor", "");
+			ssPatternColor = r.ReadText(index++, "FillStyle.PatternColor", "");
+			ssPatternType = r.ReadInteger(index++, "FillStyle.PatternType", 0);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STFillStyleStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STFillStyleStructure a, STFillStyleStructure b) {
+			if (a.ssBackgroundColor != b.ssBackgroundColor) return false;
+			if (a.ssPatternColor != b.ssPatternColor) return false;
+			if (a.ssPatternType != b.ssPatternType) return false;
+			return true;
+		}
+
+		public static bool operator != (STFillStyleStructure a, STFillStyleStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STFillStyleStructure)) return false;
+			return (this == (STFillStyleStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssBackgroundColor.GetHashCode()
+				^ ssPatternColor.GetHashCode()
+				^ ssPatternType.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STFillStyleStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssBackgroundColor = "";
+			ssPatternColor = "";
+			ssPatternType = 0;
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssBackgroundColor", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssBackgroundColor' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssBackgroundColor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssPatternColor", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssPatternColor' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssPatternColor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssPatternType", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssPatternType' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssPatternType = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STFillStyleStructure Duplicate() {
+			STFillStyleStructure t;
+			t.ssBackgroundColor = this.ssBackgroundColor;
+			t.ssPatternColor = this.ssPatternColor;
+			t.ssPatternType = this.ssPatternType;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".BackgroundColor")) VarValue.AppendAttribute(recordElem, "BackgroundColor", ssBackgroundColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "BackgroundColor");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".PatternColor")) VarValue.AppendAttribute(recordElem, "PatternColor", ssPatternColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "PatternColor");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".PatternType")) VarValue.AppendAttribute(recordElem, "PatternType", ssPatternType, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "PatternType");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "backgroundcolor") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".BackgroundColor")) variable.Value = ssBackgroundColor; else variable.Optimized = true;
+			} else if (head == "patterncolor") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".PatternColor")) variable.Value = ssPatternColor; else variable.Optimized = true;
+			} else if (head == "patterntype") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".PatternType")) variable.Value = ssPatternType; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdBackgroundColor) {
+				return ssBackgroundColor;
+			} else if (key == IdPatternColor) {
+				return ssPatternColor;
+			} else if (key == IdPatternType) {
+				return ssPatternType;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssBackgroundColor = (string) other.AttributeGet(IdBackgroundColor);
+			ssPatternColor = (string) other.AttributeGet(IdPatternColor);
+			ssPatternType = (int) other.AttributeGet(IdPatternType);
+		}
+		public bool IsDefault() {
+			STFillStyleStructure defaultStruct = new STFillStyleStructure(null);
+			if (this.ssBackgroundColor != defaultStruct.ssBackgroundColor) return false;
+			if (this.ssPatternColor != defaultStruct.ssPatternColor) return false;
+			if (this.ssPatternType != defaultStruct.ssPatternType) return false;
+			return true;
+		}
+	} // STFillStyleStructure
+
 } // OutSystems.NssAdvanced_Excel

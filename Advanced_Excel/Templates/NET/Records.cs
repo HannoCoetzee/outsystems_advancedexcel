@@ -1539,4 +1539,959 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // RCDataSeriesRecord
+
+	/// <summary>
+	/// Structure <code>RCConditionalFormatItemRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCConditionalFormatItemRecord: ISerializable, ITypedRecord<RCConditionalFormatItemRecord> {
+		private static readonly GlobalObjectKey IdConditionalFormatItem = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*LTp0H_TIJk7jy5ubvkeDMg");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("ConditionalFormatItem")]
+		public STConditionalFormatItemStructure ssSTConditionalFormatItem;
+
+
+		public static implicit operator STConditionalFormatItemStructure(RCConditionalFormatItemRecord r) {
+			return r.ssSTConditionalFormatItem;
+		}
+
+		public static implicit operator RCConditionalFormatItemRecord(STConditionalFormatItemStructure r) {
+			RCConditionalFormatItemRecord res = new RCConditionalFormatItemRecord(null);
+			res.ssSTConditionalFormatItem = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCConditionalFormatItemRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTConditionalFormatItem = new STConditionalFormatItemStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTConditionalFormatItem.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTConditionalFormatItem.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCConditionalFormatItemRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCConditionalFormatItemRecord a, RCConditionalFormatItemRecord b) {
+			if (a.ssSTConditionalFormatItem != b.ssSTConditionalFormatItem) return false;
+			return true;
+		}
+
+		public static bool operator != (RCConditionalFormatItemRecord a, RCConditionalFormatItemRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCConditionalFormatItemRecord)) return false;
+			return (this == (RCConditionalFormatItemRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTConditionalFormatItem.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCConditionalFormatItemRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTConditionalFormatItem = new STConditionalFormatItemStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTConditionalFormatItem", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTConditionalFormatItem' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTConditionalFormatItem = (STConditionalFormatItemStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTConditionalFormatItem.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTConditionalFormatItem.InternalRecursiveSave();
+		}
+
+
+		public RCConditionalFormatItemRecord Duplicate() {
+			RCConditionalFormatItemRecord t;
+			t.ssSTConditionalFormatItem = (STConditionalFormatItemStructure) this.ssSTConditionalFormatItem.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTConditionalFormatItem.ToXml(this, recordElem, "ConditionalFormatItem", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "conditionalformatitem") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".ConditionalFormatItem")) variable.Value = ssSTConditionalFormatItem; else variable.Optimized = true;
+				variable.SetFieldName("conditionalformatitem");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdConditionalFormatItem) {
+				return ssSTConditionalFormatItem;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTConditionalFormatItem.FillFromOther((IRecord) other.AttributeGet(IdConditionalFormatItem));
+		}
+		public bool IsDefault() {
+			RCConditionalFormatItemRecord defaultStruct = new RCConditionalFormatItemRecord(null);
+			if (this.ssSTConditionalFormatItem != defaultStruct.ssSTConditionalFormatItem) return false;
+			return true;
+		}
+	} // RCConditionalFormatItemRecord
+
+	/// <summary>
+	/// Structure <code>RCConditionalFormatStyleRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCConditionalFormatStyleRecord: ISerializable, ITypedRecord<RCConditionalFormatStyleRecord> {
+		private static readonly GlobalObjectKey IdConditionalFormatStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*y6YL5WIzrBl9GcIMxzqpPg");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("ConditionalFormatStyle")]
+		public STConditionalFormatStyleStructure ssSTConditionalFormatStyle;
+
+
+		public static implicit operator STConditionalFormatStyleStructure(RCConditionalFormatStyleRecord r) {
+			return r.ssSTConditionalFormatStyle;
+		}
+
+		public static implicit operator RCConditionalFormatStyleRecord(STConditionalFormatStyleStructure r) {
+			RCConditionalFormatStyleRecord res = new RCConditionalFormatStyleRecord(null);
+			res.ssSTConditionalFormatStyle = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCConditionalFormatStyleRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTConditionalFormatStyle = new STConditionalFormatStyleStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTConditionalFormatStyle.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTConditionalFormatStyle.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCConditionalFormatStyleRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCConditionalFormatStyleRecord a, RCConditionalFormatStyleRecord b) {
+			if (a.ssSTConditionalFormatStyle != b.ssSTConditionalFormatStyle) return false;
+			return true;
+		}
+
+		public static bool operator != (RCConditionalFormatStyleRecord a, RCConditionalFormatStyleRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCConditionalFormatStyleRecord)) return false;
+			return (this == (RCConditionalFormatStyleRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTConditionalFormatStyle.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCConditionalFormatStyleRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTConditionalFormatStyle = new STConditionalFormatStyleStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTConditionalFormatStyle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTConditionalFormatStyle' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTConditionalFormatStyle = (STConditionalFormatStyleStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTConditionalFormatStyle.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTConditionalFormatStyle.InternalRecursiveSave();
+		}
+
+
+		public RCConditionalFormatStyleRecord Duplicate() {
+			RCConditionalFormatStyleRecord t;
+			t.ssSTConditionalFormatStyle = (STConditionalFormatStyleStructure) this.ssSTConditionalFormatStyle.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTConditionalFormatStyle.ToXml(this, recordElem, "ConditionalFormatStyle", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "conditionalformatstyle") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".ConditionalFormatStyle")) variable.Value = ssSTConditionalFormatStyle; else variable.Optimized = true;
+				variable.SetFieldName("conditionalformatstyle");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdConditionalFormatStyle) {
+				return ssSTConditionalFormatStyle;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTConditionalFormatStyle.FillFromOther((IRecord) other.AttributeGet(IdConditionalFormatStyle));
+		}
+		public bool IsDefault() {
+			RCConditionalFormatStyleRecord defaultStruct = new RCConditionalFormatStyleRecord(null);
+			if (this.ssSTConditionalFormatStyle != defaultStruct.ssSTConditionalFormatStyle) return false;
+			return true;
+		}
+	} // RCConditionalFormatStyleRecord
+
+	/// <summary>
+	/// Structure <code>RCBorderStyleRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCBorderStyleRecord: ISerializable, ITypedRecord<RCBorderStyleRecord> {
+		private static readonly GlobalObjectKey IdBorderStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*Qk1RPo4kpIt8bbkro1_gXg");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("BorderStyle")]
+		public STBorderStyleStructure ssSTBorderStyle;
+
+
+		public static implicit operator STBorderStyleStructure(RCBorderStyleRecord r) {
+			return r.ssSTBorderStyle;
+		}
+
+		public static implicit operator RCBorderStyleRecord(STBorderStyleStructure r) {
+			RCBorderStyleRecord res = new RCBorderStyleRecord(null);
+			res.ssSTBorderStyle = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCBorderStyleRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTBorderStyle = new STBorderStyleStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTBorderStyle.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTBorderStyle.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCBorderStyleRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCBorderStyleRecord a, RCBorderStyleRecord b) {
+			if (a.ssSTBorderStyle != b.ssSTBorderStyle) return false;
+			return true;
+		}
+
+		public static bool operator != (RCBorderStyleRecord a, RCBorderStyleRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCBorderStyleRecord)) return false;
+			return (this == (RCBorderStyleRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTBorderStyle.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCBorderStyleRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTBorderStyle = new STBorderStyleStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTBorderStyle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTBorderStyle' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTBorderStyle = (STBorderStyleStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTBorderStyle.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTBorderStyle.InternalRecursiveSave();
+		}
+
+
+		public RCBorderStyleRecord Duplicate() {
+			RCBorderStyleRecord t;
+			t.ssSTBorderStyle = (STBorderStyleStructure) this.ssSTBorderStyle.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTBorderStyle.ToXml(this, recordElem, "BorderStyle", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "borderstyle") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".BorderStyle")) variable.Value = ssSTBorderStyle; else variable.Optimized = true;
+				variable.SetFieldName("borderstyle");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdBorderStyle) {
+				return ssSTBorderStyle;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTBorderStyle.FillFromOther((IRecord) other.AttributeGet(IdBorderStyle));
+		}
+		public bool IsDefault() {
+			RCBorderStyleRecord defaultStruct = new RCBorderStyleRecord(null);
+			if (this.ssSTBorderStyle != defaultStruct.ssSTBorderStyle) return false;
+			return true;
+		}
+	} // RCBorderStyleRecord
+
+	/// <summary>
+	/// Structure <code>RCFontStyleRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCFontStyleRecord: ISerializable, ITypedRecord<RCFontStyleRecord> {
+		private static readonly GlobalObjectKey IdFontStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*iC8LENoZ3xeQG+z8tn_95w");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("FontStyle")]
+		public STFontStyleStructure ssSTFontStyle;
+
+
+		public static implicit operator STFontStyleStructure(RCFontStyleRecord r) {
+			return r.ssSTFontStyle;
+		}
+
+		public static implicit operator RCFontStyleRecord(STFontStyleStructure r) {
+			RCFontStyleRecord res = new RCFontStyleRecord(null);
+			res.ssSTFontStyle = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCFontStyleRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTFontStyle = new STFontStyleStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTFontStyle.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTFontStyle.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCFontStyleRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCFontStyleRecord a, RCFontStyleRecord b) {
+			if (a.ssSTFontStyle != b.ssSTFontStyle) return false;
+			return true;
+		}
+
+		public static bool operator != (RCFontStyleRecord a, RCFontStyleRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCFontStyleRecord)) return false;
+			return (this == (RCFontStyleRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTFontStyle.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCFontStyleRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTFontStyle = new STFontStyleStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTFontStyle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTFontStyle' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTFontStyle = (STFontStyleStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTFontStyle.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTFontStyle.InternalRecursiveSave();
+		}
+
+
+		public RCFontStyleRecord Duplicate() {
+			RCFontStyleRecord t;
+			t.ssSTFontStyle = (STFontStyleStructure) this.ssSTFontStyle.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTFontStyle.ToXml(this, recordElem, "FontStyle", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "fontstyle") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".FontStyle")) variable.Value = ssSTFontStyle; else variable.Optimized = true;
+				variable.SetFieldName("fontstyle");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdFontStyle) {
+				return ssSTFontStyle;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTFontStyle.FillFromOther((IRecord) other.AttributeGet(IdFontStyle));
+		}
+		public bool IsDefault() {
+			RCFontStyleRecord defaultStruct = new RCFontStyleRecord(null);
+			if (this.ssSTFontStyle != defaultStruct.ssSTFontStyle) return false;
+			return true;
+		}
+	} // RCFontStyleRecord
+
+	/// <summary>
+	/// Structure <code>RCFillStyleRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCFillStyleRecord: ISerializable, ITypedRecord<RCFillStyleRecord> {
+		private static readonly GlobalObjectKey IdFillStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*82di1uvMnp1r50+cxMnJrw");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("FillStyle")]
+		public STFillStyleStructure ssSTFillStyle;
+
+
+		public static implicit operator STFillStyleStructure(RCFillStyleRecord r) {
+			return r.ssSTFillStyle;
+		}
+
+		public static implicit operator RCFillStyleRecord(STFillStyleStructure r) {
+			RCFillStyleRecord res = new RCFillStyleRecord(null);
+			res.ssSTFillStyle = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCFillStyleRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTFillStyle = new STFillStyleStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTFillStyle.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTFillStyle.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCFillStyleRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCFillStyleRecord a, RCFillStyleRecord b) {
+			if (a.ssSTFillStyle != b.ssSTFillStyle) return false;
+			return true;
+		}
+
+		public static bool operator != (RCFillStyleRecord a, RCFillStyleRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCFillStyleRecord)) return false;
+			return (this == (RCFillStyleRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTFillStyle.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCFillStyleRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTFillStyle = new STFillStyleStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTFillStyle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTFillStyle' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTFillStyle = (STFillStyleStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTFillStyle.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTFillStyle.InternalRecursiveSave();
+		}
+
+
+		public RCFillStyleRecord Duplicate() {
+			RCFillStyleRecord t;
+			t.ssSTFillStyle = (STFillStyleStructure) this.ssSTFillStyle.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTFillStyle.ToXml(this, recordElem, "FillStyle", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "fillstyle") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".FillStyle")) variable.Value = ssSTFillStyle; else variable.Optimized = true;
+				variable.SetFieldName("fillstyle");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdFillStyle) {
+				return ssSTFillStyle;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTFillStyle.FillFromOther((IRecord) other.AttributeGet(IdFillStyle));
+		}
+		public bool IsDefault() {
+			RCFillStyleRecord defaultStruct = new RCFillStyleRecord(null);
+			if (this.ssSTFillStyle != defaultStruct.ssSTFillStyle) return false;
+			return true;
+		}
+	} // RCFillStyleRecord
 }

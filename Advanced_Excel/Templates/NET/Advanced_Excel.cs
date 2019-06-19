@@ -279,8 +279,8 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssWorksheet">The worksheet to insert the row(s) into</param>
 		/// <param name="ssInsertAt">The position of the new row
 		/// </param>
-		/// <param name="ssNrRows">Number of rows to insert</param>
-		/// <param name="ssCopyStyleFromRow">Copy Styles from this row. Applied to all inserted rows. 0 will not copy any styles</param>
+		/// <param name="ssNrRows">Number of rows to insert. Default 1</param>
+		/// <param name="ssCopyStyleFromRow">Copy Styles from this row. Applied to all inserted rows. 0 (default) will not copy any styles</param>
 		public void MssRow_Insert(object ssWorksheet, int ssInsertAt, int ssNrRows, int ssCopyStyleFromRow) {
 			// TODO: Write implementation for action
 		} // MssRow_Insert
@@ -301,9 +301,9 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssWorksheet">Worksheet object where formatting is to be applied</param>
 		/// <param name="ssCellFormat">CellFormat to apply</param>
 		/// <param name="ssRange">Range that CellFormat is to be applied to</param>
-		public void MssWorksheet_ApplyCellFormatToRange(object ssWorksheet, RCCellFormatRecord ssCellFormat, RCRangeRecord ssRange) {
+		public void MssCellFormat_ApplyToRange(object ssWorksheet, RCCellFormatRecord ssCellFormat, RCRangeRecord ssRange) {
 			// TODO: Write implementation for action
-		} // MssWorksheet_ApplyCellFormatToRange
+		} // MssCellFormat_ApplyToRange
 
 		/// <summary>
 		/// Find all cells that contain the specified value in the given worksheet
@@ -311,10 +311,10 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssWorksheet">The worksheet in which to search</param>
 		/// <param name="ssValueToFind">The value to search for</param>
 		/// <param name="ssListOfCells">List of cells (ranges) where the value has been found</param>
-		public void MssFindCellsByValue(object ssWorksheet, string ssValueToFind, out RLRangeRecordList ssListOfCells) {
+		public void MssCells_FindByValue(object ssWorksheet, string ssValueToFind, out RLRangeRecordList ssListOfCells) {
 			ssListOfCells = new RLRangeRecordList();
 			// TODO: Write implementation for action
-		} // MssFindCellsByValue
+		} // MssCells_FindByValue
 
 		/// <summary>
 		/// 
@@ -404,14 +404,19 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <summary>
 		/// Insert a column in a worksheet
 		/// </summary>
-		public void MssColumn_Insert() {
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssInsertAt"></param>
+		/// <param name="ssNrColumns">The number of columns to insert. Default = 1</param>
+		public void MssColumn_Insert(object ssWorksheet, int ssInsertAt, int ssNrColumns) {
 			// TODO: Write implementation for action
 		} // MssColumn_Insert
 
 		/// <summary>
 		/// Delete a row from a worksheet
 		/// </summary>
-		public void MssRow_Delete() {
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRowNumber">Row number of the row to delete</param>
+		public void MssRow_Delete(object ssWorksheet, int ssRowNumber) {
 			// TODO: Write implementation for action
 		} // MssRow_Delete
 
@@ -442,6 +447,39 @@ namespace OutSystems.NssAdvanced_Excel {
 		public void MssComment_GetAll() {
 			// TODO: Write implementation for action
 		} // MssComment_GetAll
+
+		/// <summary>
+		/// Add a rule for conditionally formatting a range of cells.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssConditionalFormatRecord">The conditional formatting to apply to the Address Range</param>
+		public void MssConditionalFormatting_AddRule(object ssWorksheet, RCConditionalFormatItemRecord ssConditionalFormatRecord) {
+			// TODO: Write implementation for action
+		} // MssConditionalFormatting_AddRule
+
+		/// <summary>
+		/// Get a list of all the conditional formatting rules in a worksheet.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssListOfRules">List of Conditional Formatting rules</param>
+		public void MssConditionalFormatting_GetAllRules(object ssWorksheet, out RLConditionalFormatItemRecordList ssListOfRules) {
+			ssListOfRules = new RLConditionalFormatItemRecordList();
+			// TODO: Write implementation for action
+		} // MssConditionalFormatting_GetAllRules
+
+		/// <summary>
+		/// Delete a specified Conditional Formatting rule on a worksheet
+		/// </summary>
+		public void MssConditionalFormatting_DeleteRule() {
+			// TODO: Write implementation for action
+		} // MssConditionalFormatting_DeleteRule
+
+		/// <summary>
+		/// Delete ALL Conditional Formatting rules for a worksheet
+		/// </summary>
+		public void MssConditionalFormatting_DeleteAllRules() {
+			// TODO: Write implementation for action
+		} // MssConditionalFormatting_DeleteAllRules
 
 	} // CssAdvanced_Excel
 

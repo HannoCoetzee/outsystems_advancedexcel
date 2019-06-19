@@ -682,4 +682,424 @@ namespace OutSystems.NssAdvanced_Excel {
 
 
 	} // RLDataSeriesRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLConditionalFormatItemRecordList</code> that represents a record list of
+	///  <code>ConditionalFormatItem</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLConditionalFormatItemRecordList: GenericRecordList<RCConditionalFormatItemRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCConditionalFormatItemRecord GetElementDefaultValue() {
+			return new RCConditionalFormatItemRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCConditionalFormatItemRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLConditionalFormatItemRecordList recordlist, Func<RCConditionalFormatItemRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLConditionalFormatItemRecordList(RCConditionalFormatItemRecord[] array) {
+			RLConditionalFormatItemRecordList result = new RLConditionalFormatItemRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLConditionalFormatItemRecordList ToList<T>(T[] array, Func <T, RCConditionalFormatItemRecord> converter) {
+			RLConditionalFormatItemRecordList result = new RLConditionalFormatItemRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLConditionalFormatItemRecordList FromRestList<T>(RestList<T> restList, Func <T, RCConditionalFormatItemRecord> converter) {
+			RLConditionalFormatItemRecordList result = new RLConditionalFormatItemRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLConditionalFormatItemRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLConditionalFormatItemRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLConditionalFormatItemRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLConditionalFormatItemRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCConditionalFormatItemRecord> NewList() {
+			return new RLConditionalFormatItemRecordList();
+		}
+
+
+	} // RLConditionalFormatItemRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLConditionalFormatStyleRecordList</code> that represents a record list of
+	///  <code>ConditionalFormatStyle</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLConditionalFormatStyleRecordList: GenericRecordList<RCConditionalFormatStyleRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCConditionalFormatStyleRecord GetElementDefaultValue() {
+			return new RCConditionalFormatStyleRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCConditionalFormatStyleRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLConditionalFormatStyleRecordList recordlist, Func<RCConditionalFormatStyleRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLConditionalFormatStyleRecordList(RCConditionalFormatStyleRecord[] array) {
+			RLConditionalFormatStyleRecordList result = new RLConditionalFormatStyleRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLConditionalFormatStyleRecordList ToList<T>(T[] array, Func <T, RCConditionalFormatStyleRecord> converter) {
+			RLConditionalFormatStyleRecordList result = new RLConditionalFormatStyleRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLConditionalFormatStyleRecordList FromRestList<T>(RestList<T> restList, Func <T, RCConditionalFormatStyleRecord> converter) {
+			RLConditionalFormatStyleRecordList result = new RLConditionalFormatStyleRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLConditionalFormatStyleRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLConditionalFormatStyleRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLConditionalFormatStyleRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLConditionalFormatStyleRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCConditionalFormatStyleRecord> NewList() {
+			return new RLConditionalFormatStyleRecordList();
+		}
+
+
+	} // RLConditionalFormatStyleRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLBorderStyleRecordList</code> that represents a record list of
+	///  <code>BorderStyle</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLBorderStyleRecordList: GenericRecordList<RCBorderStyleRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCBorderStyleRecord GetElementDefaultValue() {
+			return new RCBorderStyleRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCBorderStyleRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLBorderStyleRecordList recordlist, Func<RCBorderStyleRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLBorderStyleRecordList(RCBorderStyleRecord[] array) {
+			RLBorderStyleRecordList result = new RLBorderStyleRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLBorderStyleRecordList ToList<T>(T[] array, Func <T, RCBorderStyleRecord> converter) {
+			RLBorderStyleRecordList result = new RLBorderStyleRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLBorderStyleRecordList FromRestList<T>(RestList<T> restList, Func <T, RCBorderStyleRecord> converter) {
+			RLBorderStyleRecordList result = new RLBorderStyleRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLBorderStyleRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLBorderStyleRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLBorderStyleRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLBorderStyleRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCBorderStyleRecord> NewList() {
+			return new RLBorderStyleRecordList();
+		}
+
+
+	} // RLBorderStyleRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLFontStyleRecordList</code> that represents a record list of
+	///  <code>FontStyle</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLFontStyleRecordList: GenericRecordList<RCFontStyleRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCFontStyleRecord GetElementDefaultValue() {
+			return new RCFontStyleRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCFontStyleRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLFontStyleRecordList recordlist, Func<RCFontStyleRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLFontStyleRecordList(RCFontStyleRecord[] array) {
+			RLFontStyleRecordList result = new RLFontStyleRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLFontStyleRecordList ToList<T>(T[] array, Func <T, RCFontStyleRecord> converter) {
+			RLFontStyleRecordList result = new RLFontStyleRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLFontStyleRecordList FromRestList<T>(RestList<T> restList, Func <T, RCFontStyleRecord> converter) {
+			RLFontStyleRecordList result = new RLFontStyleRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLFontStyleRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLFontStyleRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLFontStyleRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLFontStyleRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCFontStyleRecord> NewList() {
+			return new RLFontStyleRecordList();
+		}
+
+
+	} // RLFontStyleRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLFillStyleRecordList</code> that represents a record list of
+	///  <code>FillStyle</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLFillStyleRecordList: GenericRecordList<RCFillStyleRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCFillStyleRecord GetElementDefaultValue() {
+			return new RCFillStyleRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCFillStyleRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLFillStyleRecordList recordlist, Func<RCFillStyleRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLFillStyleRecordList(RCFillStyleRecord[] array) {
+			RLFillStyleRecordList result = new RLFillStyleRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLFillStyleRecordList ToList<T>(T[] array, Func <T, RCFillStyleRecord> converter) {
+			RLFillStyleRecordList result = new RLFillStyleRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLFillStyleRecordList FromRestList<T>(RestList<T> restList, Func <T, RCFillStyleRecord> converter) {
+			RLFillStyleRecordList result = new RLFillStyleRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLFillStyleRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLFillStyleRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLFillStyleRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLFillStyleRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCFillStyleRecord> NewList() {
+			return new RLFillStyleRecordList();
+		}
+
+
+	} // RLFillStyleRecordList
 }
