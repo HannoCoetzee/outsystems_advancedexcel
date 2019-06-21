@@ -334,26 +334,34 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// Insert a column in a worksheet
 		/// </summary>
 		/// <param name="ssWorksheet">The worksheet to work with</param>
-		/// <param name="ssInsertAt"></param>
+		/// <param name="ssInsertAt">The position of the new column
+		/// </param>
 		/// <param name="ssNrColumns">The number of columns to insert. Default = 1</param>
-		void MssColumn_Insert(object ssWorksheet, int ssInsertAt, int ssNrColumns);
+		/// <param name="ssCopyStylesFromColumn">Copy Styles from this column. Applied to all inserted columns. 0 (default) will not copy any styles</param>
+		void MssColumn_Insert(object ssWorksheet, int ssInsertAt, int ssNrColumns, int ssCopyStylesFromColumn);
 
 		/// <summary>
-		/// Delete a row from a worksheet
+		/// Delete row(s) from a worksheet
 		/// </summary>
 		/// <param name="ssWorksheet">The worksheet to work with.</param>
-		/// <param name="ssRowNumber">Row number of the row to delete</param>
-		void MssRow_Delete(object ssWorksheet, int ssRowNumber);
+		/// <param name="ssStartRowNumber">Row number where to start deleting rows.</param>
+		/// <param name="ssNumberOfRows">The number of rows to delete. Default = 1.</param>
+		void MssRow_Delete(object ssWorksheet, int ssStartRowNumber, int ssNumberOfRows);
 
 		/// <summary>
-		/// Delete a column from a worksheet
+		/// Delete column(s) from a worksheet
 		/// </summary>
-		void MssColumn_Delete();
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssStartColumnNumber">The column number where to start deleting columns.</param>
+		/// <param name="ssNrColumns">The number of columns to delete.</param>
+		void MssColumn_Delete(object ssWorksheet, int ssStartColumnNumber, int ssNrColumns);
 
 		/// <summary>
-		/// Add a new comment.
+		/// Adds a new comment to the top left cell of the range.
 		/// </summary>
-		void MssComment_Add();
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssComment">The comment object to add to the worksheet.</param>
+		void MssComment_Add(object ssWorksheet, RCCommentRecord ssComment);
 
 		/// <summary>
 		/// Delete a specific comment.
@@ -363,7 +371,9 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <summary>
 		/// Get a list of all the comments in a worksheet.
 		/// </summary>
-		void MssComment_GetAll();
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssListOfComments">List of all comments.</param>
+		void MssComment_GetAll(object ssWorksheet, out RLCommentRecordList ssListOfComments);
 
 		/// <summary>
 		/// Add a rule for conditionally formatting a range of cells.
@@ -382,12 +392,22 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <summary>
 		/// Delete a specified Conditional Formatting rule on a worksheet
 		/// </summary>
-		void MssConditionalFormatting_DeleteRule();
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRuleToDeleteIndex">The index of the rule to be deleted.</param>
+		void MssConditionalFormatting_DeleteRule(object ssWorksheet, int ssRuleToDeleteIndex);
 
 		/// <summary>
 		/// Delete ALL Conditional Formatting rules for a worksheet
 		/// </summary>
-		void MssConditionalFormatting_DeleteAllRules();
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		void MssConditionalFormatting_DeleteAllRules(object ssWorksheet);
+
+		/// <summary>
+		/// Merge cells in the range provided
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssRangeToMerge">The range of the cells to merge</param>
+		void MssCell_Merge(object ssWorksheet, RCRangeRecord ssRangeToMerge);
 
 	} // IssAdvanced_Excel
 

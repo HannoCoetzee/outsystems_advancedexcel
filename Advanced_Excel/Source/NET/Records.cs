@@ -2494,4 +2494,195 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // RCFillStyleRecord
+
+	/// <summary>
+	/// Structure <code>RCCommentRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCCommentRecord: ISerializable, ITypedRecord<RCCommentRecord> {
+		private static readonly GlobalObjectKey IdComment = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*XEbBy0DXUdg4rAVIVi9k5g");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Comment")]
+		public STCommentStructure ssSTComment;
+
+
+		public static implicit operator STCommentStructure(RCCommentRecord r) {
+			return r.ssSTComment;
+		}
+
+		public static implicit operator RCCommentRecord(STCommentStructure r) {
+			RCCommentRecord res = new RCCommentRecord(null);
+			res.ssSTComment = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCCommentRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTComment = new STCommentStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTComment.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTComment.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCCommentRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCCommentRecord a, RCCommentRecord b) {
+			if (a.ssSTComment != b.ssSTComment) return false;
+			return true;
+		}
+
+		public static bool operator != (RCCommentRecord a, RCCommentRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCCommentRecord)) return false;
+			return (this == (RCCommentRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTComment.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCCommentRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTComment = new STCommentStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTComment", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTComment' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTComment = (STCommentStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTComment.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTComment.InternalRecursiveSave();
+		}
+
+
+		public RCCommentRecord Duplicate() {
+			RCCommentRecord t;
+			t.ssSTComment = (STCommentStructure) this.ssSTComment.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTComment.ToXml(this, recordElem, "Comment", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "comment") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Comment")) variable.Value = ssSTComment; else variable.Optimized = true;
+				variable.SetFieldName("comment");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdComment) {
+				return ssSTComment;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTComment.FillFromOther((IRecord) other.AttributeGet(IdComment));
+		}
+		public bool IsDefault() {
+			RCCommentRecord defaultStruct = new RCCommentRecord(null);
+			if (this.ssSTComment != defaultStruct.ssSTComment) return false;
+			return true;
+		}
+	} // RCCommentRecord
 }

@@ -3519,4 +3519,229 @@ namespace OutSystems.NssAdvanced_Excel {
 		}
 	} // STFillStyleStructure
 
+	/// <summary>
+	/// Structure <code>STCommentStructure</code> that represents the Service Studio structure
+	///  <code>Comment</code> <p> Description: Comment structure</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STCommentStructure: ISerializable, ITypedRecord<STCommentStructure>, ISimpleRecord {
+		private static readonly GlobalObjectKey IdRange = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*8UCH3ctDc0qV12pLSW37Jg");
+		private static readonly GlobalObjectKey IdText = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*p2v1fQreyEeLnJ3rwpTFXQ");
+		private static readonly GlobalObjectKey IdAuthor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*lM4xJL9kKEaOJ7zSk_PpGg");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Range")]
+		public string ssRange;
+
+		[System.Xml.Serialization.XmlElement("Text")]
+		public string ssText;
+
+		[System.Xml.Serialization.XmlElement("Author")]
+		public string ssAuthor;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STCommentStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssRange = "";
+			ssText = "";
+			ssAuthor = "";
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssRange = r.ReadText(index++, "Comment.Range", "");
+			ssText = r.ReadText(index++, "Comment.Text", "");
+			ssAuthor = r.ReadText(index++, "Comment.Author", "");
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STCommentStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STCommentStructure a, STCommentStructure b) {
+			if (a.ssRange != b.ssRange) return false;
+			if (a.ssText != b.ssText) return false;
+			if (a.ssAuthor != b.ssAuthor) return false;
+			return true;
+		}
+
+		public static bool operator != (STCommentStructure a, STCommentStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STCommentStructure)) return false;
+			return (this == (STCommentStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssRange.GetHashCode()
+				^ ssText.GetHashCode()
+				^ ssAuthor.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STCommentStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssRange = "";
+			ssText = "";
+			ssAuthor = "";
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssRange", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssRange' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssRange = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssText", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssText' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssText = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAuthor", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAuthor' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAuthor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STCommentStructure Duplicate() {
+			STCommentStructure t;
+			t.ssRange = this.ssRange;
+			t.ssText = this.ssText;
+			t.ssAuthor = this.ssAuthor;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Range")) VarValue.AppendAttribute(recordElem, "Range", ssRange, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Range");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Text")) VarValue.AppendAttribute(recordElem, "Text", ssText, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Text");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Author")) VarValue.AppendAttribute(recordElem, "Author", ssAuthor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Author");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "range") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Range")) variable.Value = ssRange; else variable.Optimized = true;
+			} else if (head == "text") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Text")) variable.Value = ssText; else variable.Optimized = true;
+			} else if (head == "author") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Author")) variable.Value = ssAuthor; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdRange) {
+				return ssRange;
+			} else if (key == IdText) {
+				return ssText;
+			} else if (key == IdAuthor) {
+				return ssAuthor;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssRange = (string) other.AttributeGet(IdRange);
+			ssText = (string) other.AttributeGet(IdText);
+			ssAuthor = (string) other.AttributeGet(IdAuthor);
+		}
+		public bool IsDefault() {
+			STCommentStructure defaultStruct = new STCommentStructure(null);
+			if (this.ssRange != defaultStruct.ssRange) return false;
+			if (this.ssText != defaultStruct.ssText) return false;
+			if (this.ssAuthor != defaultStruct.ssAuthor) return false;
+			return true;
+		}
+	} // STCommentStructure
+
 } // OutSystems.NssAdvanced_Excel

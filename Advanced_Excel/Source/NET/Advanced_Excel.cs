@@ -14,6 +14,9 @@ using System.Reflection;
 using System.Collections.Generic;
 using OfficeOpenXml.Style;
 using Newtonsoft.Json;
+using OfficeOpenXml.ConditionalFormatting;
+using OfficeOpenXml.ConditionalFormatting.Contracts;
+using OfficeOpenXml.Style.Dxf;
 
 namespace OutSystems.NssAdvanced_Excel
 {
@@ -21,124 +24,428 @@ namespace OutSystems.NssAdvanced_Excel
     public class CssAdvanced_Excel : IssAdvanced_Excel
     {
 
-		/// <summary>
-		/// Apply a specified cell format to the range specified for the given worksheet
-		/// </summary>
-		/// <param name="ssWorksheet">Worksheet object where formatting is to be applied</param>
-		/// <param name="ssCellFormat">CellFormat to apply</param>
-		/// <param name="ssRange">Range that CellFormat is to be applied to</param>
-		public void MssCellFormat_ApplyToRange(object ssWorksheet, RCCellFormatRecord ssCellFormat, RCRangeRecord ssRange) {
-			// TODO: Write implementation for action
-		} // MssCellFormat_ApplyToRange
+        /// <summary>
+        /// Merge cells in the range provided
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssRangeToMerge">The range of the cells to merge</param>
+        public void MssCell_Merge(object ssWorksheet, RCRangeRecord ssRangeToMerge)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
 
-		/// <summary>
-		/// Find all cells that contain the specified value in the given worksheet
-		/// </summary>
-		/// <param name="ssWorksheet">The worksheet in which to search</param>
-		/// <param name="ssValueToFind">The value to search for</param>
-		/// <param name="ssListOfCells">List of cells (ranges) where the value has been found</param>
-		public void MssCells_FindByValue(object ssWorksheet, string ssValueToFind, out RLRangeRecordList ssListOfCells) {
-			ssListOfCells = new RLRangeRecordList();
-			// TODO: Write implementation for action
-		} // MssCells_FindByValue
+            ws.Cells[ssRangeToMerge.ssSTRange.ssStartRow, ssRangeToMerge.ssSTRange.ssStartCol, ssRangeToMerge.ssSTRange.ssEndRow, ssRangeToMerge.ssSTRange.ssEndCol].Merge = true;
+        } // MssCell_Merge
 
-		/// <summary>
-		/// Add a rule for conditionally formatting a range of cells.
-		/// </summary>
-		/// <param name="ssWorksheet">The worksheet to work with.</param>
-		/// <param name="ssConditionalFormatRecord">The conditional formatting to apply to the Address Range</param>
-		public void MssConditionalFormatting_AddRule(object ssWorksheet, RCConditionalFormatItemRecord ssConditionalFormatRecord) {
-			// TODO: Write implementation for action
-		} // MssConditionalFormatting_AddRule
+        /// <summary>
+        /// Delete a specified Conditional Formatting rule on a worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssRuleToDeleteIndex">The index of the rule to be deleted.</param>
+        public void MssConditionalFormatting_DeleteRule(object ssWorksheet, int ssRuleToDeleteIndex)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.ConditionalFormatting.RemoveAt(ssRuleToDeleteIndex);
+        } // MssConditionalFormatting_DeleteRule
 
-		/// <summary>
-		/// Get a list of all the conditional formatting rules in a worksheet.
-		/// </summary>
-		/// <param name="ssWorksheet">The worksheet to work with</param>
-		/// <param name="ssListOfRules">List of Conditional Formatting rules</param>
-		public void MssConditionalFormatting_GetAllRules(object ssWorksheet, out RLConditionalFormatItemRecordList ssListOfRules) {
-			ssListOfRules = new RLConditionalFormatItemRecordList();
-			// TODO: Write implementation for action
-		} // MssConditionalFormatting_GetAllRules
+        /// <summary>
+        /// Delete ALL Conditional Formatting rules for a worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        public void MssConditionalFormatting_DeleteAllRules(object ssWorksheet)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.ConditionalFormatting.RemoveAll();
+        } // MssConditionalFormatting_DeleteAllRules
 
-		/// <summary>
-		/// Delete a specified Conditional Formatting rule on a worksheet
-		/// </summary>
-		public void MssConditionalFormatting_DeleteRule() {
-			// TODO: Write implementation for action
-		} // MssConditionalFormatting_DeleteRule
+        /// <summary>
+        /// Adds a new comment to the top left cell of the range.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssComment">The comment object to add to the worksheet.</param>
+        public void MssComment_Add(object ssWorksheet, RCCommentRecord ssComment)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.Comments.Add(ws.Cells[ssComment.ssSTComment.ssRange], ssComment.ssSTComment.ssText, ssComment.ssSTComment.ssAuthor);
+        } // MssComment_Add
 
-		/// <summary>
-		/// Delete ALL Conditional Formatting rules for a worksheet
-		/// </summary>
-		public void MssConditionalFormatting_DeleteAllRules() {
-			// TODO: Write implementation for action
-		} // MssConditionalFormatting_DeleteAllRules
+        /// <summary>
+        /// Delete a specific comment.
+        /// </summary>
+        public void MssComment_Delete()
+        {
+            // TODO: Write implementation for action
+        } // MssComment_Delete
 
-		/// <summary>
-		/// Add a new comment.
-		/// </summary>
-		public void MssComment_Add() {
-			// TODO: Write implementation for action
-		} // MssComment_Add
+        /// <summary>
+        /// Get a list of all the comments in a worksheet.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssListOfComments">List of all comments.</param>
+        public void MssComment_GetAll(object ssWorksheet, out RLCommentRecordList ssListOfComments)
+        {
+            ssListOfComments = new RLCommentRecordList();
+            // TODO: Write implementation for action
+        } // MssComment_GetAll
 
-		/// <summary>
-		/// Delete a specific comment.
-		/// </summary>
-		public void MssComment_Delete() {
-			// TODO: Write implementation for action
-		} // MssComment_Delete
+        /// <summary>
+        /// Inserts a new row into the spreadsheet.  Existing rows below the position are shifted down.  All formula are updated to take account of the new row.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to insert the row(s) into</param>
+        /// <param name="ssInsertAt">The position of the new row
+        /// </param>
+        /// <param name="ssNrRows">Number of rows to insert. Default 1</param>
+        /// <param name="ssCopyStyleFromRow">Copy Styles from this row. Applied to all inserted rows. 0 (default) will not copy any styles</param>
+        public void MssRow_Insert(object ssWorksheet, int ssInsertAt, int ssNrRows, int ssCopyStyleFromRow)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.InsertRow(ssInsertAt, ssNrRows, ssCopyStyleFromRow);
+        } // MssRow_Insert
 
-		/// <summary>
-		/// Get a list of all the comments in a worksheet.
-		/// </summary>
-		public void MssComment_GetAll() {
-			// TODO: Write implementation for action
-		} // MssComment_GetAll
+        /// <summary>
+        /// Insert a column in a worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssInsertAt">The position of the new column
+        /// </param>
+        /// <param name="ssNrColumns">The number of columns to insert. Default = 1</param>
+        /// <param name="ssCopyStylesFromColumn">Copy Styles from this column. Applied to all inserted columns. 0 (default) will not copy any styles</param>
+        public void MssColumn_Insert(object ssWorksheet, int ssInsertAt, int ssNrColumns, int ssCopyStylesFromColumn)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.InsertColumn(ssInsertAt, ssNrColumns, ssCopyStylesFromColumn);
+        } // MssColumn_Insert
+        /// <summary>
+        /// Delete row(s) from a worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssStartRowNumber">Row number where to start deleting rows.</param>
+        /// <param name="ssNumberOfRows">The number of rows to delete. Default = 1.</param>
+        public void MssRow_Delete(object ssWorksheet, int ssStartRowNumber, int ssNumberOfRows)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.DeleteRow(ssStartRowNumber, ssNumberOfRows);
+        } // MssRow_Delete
 
-		/// <summary>
-		/// Inserts a new row into the spreadsheet.  Existing rows below the position are shifted down.  All formula are updated to take account of the new row.
-		/// </summary>
-		/// <param name="ssWorksheet">The worksheet to insert the row(s) into</param>
-		/// <param name="ssInsertAt">The position of the new row
-		/// </param>
-		/// <param name="ssNrRows">Number of rows to insert</param>
-		/// <param name="ssCopyStyleFromRow">Copy Styles from this row. Applied to all inserted rows. 0 will not copy any styles</param>
-		public void MssRow_Insert(object ssWorksheet, int ssInsertAt, int ssNrRows, int ssCopyStyleFromRow) {
-			// TODO: Write implementation for action
-		} // MssRow_Insert
+        /// <summary>
+        /// Delete column(s) from a worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssStartColumnNumber">The column number where to start deleting columns.</param>
+        /// <param name="ssNrColumns">The number of columns to delete.</param>
+        public void MssColumn_Delete(object ssWorksheet, int ssStartColumnNumber, int ssNrColumns)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.DeleteColumn(ssStartColumnNumber, ssNrColumns);
+        } // MssColumn_Delete
 
-		/// <summary>
-		/// Find all cells that contain the specified value in the given worksheet
-		/// </summary>
-		/// <param name="ssWorksheet">The worksheet in which to search</param>
-		/// <param name="ssValueToFind">The value to search for</param>
-		/// <param name="ssListOfCells">List of cells (ranges) where the value has been found</param>
-		public void MssFindCellsByValue(object ssWorksheet, string ssValueToFind, out RLRangeRecordList ssListOfCells) {
-			ssListOfCells = new RLRangeRecordList();
-			// TODO: Write implementation for action
-		} // MssFindCellsByValue
+        /// <summary>
+        /// Apply a specified cell format to the range specified for the given worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">Worksheet object where formatting is to be applied</param>
+        /// <param name="ssCellFormat">CellFormat to apply</param>
+        /// <param name="ssRange">Range that CellFormat is to be applied to</param>
+        public void MssCellFormat_ApplyToRange(object ssWorksheet, RCCellFormatRecord ssCellFormat, RCRangeRecord ssRange)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
 
-		/// <summary>
-		/// Insert a column in a worksheet
-		/// </summary>
-		public void MssColumn_Insert(object ssWorksheet, int ssInsertAt, int ssNrColumns) {
-			// TODO: Write implementation for action
-		} // MssColumn_Insert
+            ExcelRange er = ws.Cells[ssRange.ssSTRange.ssStartRow, ssRange.ssSTRange.ssStartCol, ssRange.ssSTRange.ssEndRow, ssRange.ssSTRange.ssEndCol];
 
-		/// <summary>
-		/// Delete a row from a worksheet
-		/// </summary>
-		public void MssRow_Delete(object ssWorksheet, int ssRowNumber) {
-			// TODO: Write implementation for action
-		} // MssRow_Delete
+            Util.ApplyFormatToRange(er, ssCellFormat);
+        } // MssCellFormat_ApplyToRange
 
-		/// <summary>
-		/// Delete a column from a worksheet
-		/// </summary>
-		public void MssColumn_Delete() {
-			// TODO: Write implementation for action
-		} // MssColumn_Delete
+        /// <summary>
+        /// Find all cells that contain the specified value in the given worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet in which to search</param>
+        /// <param name="ssValueToFind">The value to search for</param>
+        /// <param name="ssListOfCells">List of cells (ranges) where the value has been found</param>
+        public void MssCells_FindByValue(object ssWorksheet, string ssValueToFind, out RLRangeRecordList ssListOfCells)
+        {
+            if (string.IsNullOrEmpty(ssValueToFind))
+            {
+                throw new Exception("Cannot search for an undefined value!");
+            }
+
+            ssListOfCells = new RLRangeRecordList();
+
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+
+            List<ExcelRangeBase> result = ws.Cells.Where(c => c.Value?.ToString() == ssValueToFind).ToList();
+
+            foreach (ExcelRangeBase item in result)
+            {
+                RCRangeRecord rc = new RCRangeRecord();
+                rc.ssSTRange.ssStartRow = item.Start.Row;
+                rc.ssSTRange.ssStartCol = item.Start.Column;
+
+                ssListOfCells.Add(rc);
+            }
+        } // MssCells_FindByValue
+
+        /// <summary>
+        /// Add a rule for conditionally formatting a range of cells.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssConditionalFormatRecord">The conditional formatting to apply to the Address Range</param>
+        public void MssConditionalFormatting_AddRule(object ssWorksheet, RCConditionalFormatItemRecord ssConditionalFormatRecord)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelAddress address = new ExcelAddress(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssAddress);
+
+            Util.LogMessage("Rule type: " + ssConditionalFormatRecord.ssSTConditionalFormatItem.ssRuleType);
+
+            eExcelConditionalFormattingRuleType ruleType = (eExcelConditionalFormattingRuleType)ssConditionalFormatRecord.ssSTConditionalFormatItem.ssRuleType;
+
+            switch (ruleType)
+            {
+                case eExcelConditionalFormattingRuleType.AboveAverage:
+                    break;
+                case eExcelConditionalFormattingRuleType.AboveOrEqualAverage:
+                    break;
+                case eExcelConditionalFormattingRuleType.BelowAverage:
+                    break;
+                case eExcelConditionalFormattingRuleType.BelowOrEqualAverage:
+                    break;
+                case eExcelConditionalFormattingRuleType.AboveStdDev:
+                    break;
+                case eExcelConditionalFormattingRuleType.BelowStdDev:
+                    break;
+                case eExcelConditionalFormattingRuleType.Bottom:
+                    break;
+                case eExcelConditionalFormattingRuleType.BottomPercent:
+                    break;
+                case eExcelConditionalFormattingRuleType.Top:
+                    break;
+                case eExcelConditionalFormattingRuleType.TopPercent:
+                    break;
+                case eExcelConditionalFormattingRuleType.Last7Days:
+                    break;
+                case eExcelConditionalFormattingRuleType.LastMonth:
+                    break;
+                case eExcelConditionalFormattingRuleType.LastWeek:
+                    break;
+                case eExcelConditionalFormattingRuleType.NextMonth:
+                    break;
+                case eExcelConditionalFormattingRuleType.NextWeek:
+                    break;
+                case eExcelConditionalFormattingRuleType.ThisMonth:
+                    break;
+                case eExcelConditionalFormattingRuleType.ThisWeek:
+                    break;
+                case eExcelConditionalFormattingRuleType.Today:
+                    break;
+                case eExcelConditionalFormattingRuleType.Tomorrow:
+                    break;
+                case eExcelConditionalFormattingRuleType.Yesterday:
+                    break;
+                case eExcelConditionalFormattingRuleType.BeginsWith:
+                    break;
+                case eExcelConditionalFormattingRuleType.Between:
+                    break;
+                case eExcelConditionalFormattingRuleType.ContainsBlanks:
+                    break;
+                case eExcelConditionalFormattingRuleType.ContainsErrors:
+                    break;
+                case eExcelConditionalFormattingRuleType.ContainsText:
+                    break;
+                case eExcelConditionalFormattingRuleType.DuplicateValues:
+                    break;
+                case eExcelConditionalFormattingRuleType.EndsWith:
+                    break;
+                case eExcelConditionalFormattingRuleType.Equal:
+                    break;
+                case eExcelConditionalFormattingRuleType.Expression:
+                    break;
+                case eExcelConditionalFormattingRuleType.GreaterThan:
+                    var gt = ws.ConditionalFormatting.AddGreaterThan(address);
+                    gt.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    gt.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    gt.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyStyle(gt.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    break;
+                case eExcelConditionalFormattingRuleType.GreaterThanOrEqual:
+                    var gte = ws.ConditionalFormatting.AddGreaterThanOrEqual(address);
+                    gte.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    gte.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    gte.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyStyle(gte.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    break;
+                case eExcelConditionalFormattingRuleType.LessThan:
+                    var lt = ws.ConditionalFormatting.AddLessThan(address);
+                    lt.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    lt.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    lt.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyStyle(lt.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    break;
+                case eExcelConditionalFormattingRuleType.LessThanOrEqual:
+                    var lte = ws.ConditionalFormatting.AddLessThanOrEqual(address);
+                    lte.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    lte.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    lte.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyStyle(lte.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    break;
+                case eExcelConditionalFormattingRuleType.NotBetween:
+                    break;
+                case eExcelConditionalFormattingRuleType.NotContains:
+                    break;
+                case eExcelConditionalFormattingRuleType.NotContainsBlanks:
+                    break;
+                case eExcelConditionalFormattingRuleType.NotContainsErrors:
+                    break;
+                case eExcelConditionalFormattingRuleType.NotContainsText:
+                    break;
+                case eExcelConditionalFormattingRuleType.NotEqual:
+                    break;
+                case eExcelConditionalFormattingRuleType.UniqueValues:
+                    break;
+                case eExcelConditionalFormattingRuleType.ThreeColorScale:
+                    break;
+                case eExcelConditionalFormattingRuleType.TwoColorScale:
+                    break;
+                case eExcelConditionalFormattingRuleType.ThreeIconSet:
+                    break;
+                case eExcelConditionalFormattingRuleType.FourIconSet:
+                    break;
+                case eExcelConditionalFormattingRuleType.FiveIconSet:
+                    break;
+                case eExcelConditionalFormattingRuleType.DataBar:
+                    break;
+                default:
+                    throw new Exception("Invalid Rule Type: " + ssConditionalFormatRecord.ssSTConditionalFormatItem.ssRuleType);
+            }
+        } // MssConditionalFormatting_AddRule
+
+        /// <summary>
+        /// Get a list of all the conditional formatting rules in a worksheet.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssListOfRules">List of Conditional Formatting rules</param>
+        public void MssConditionalFormatting_GetAllRules(object ssWorksheet, out RLConditionalFormatItemRecordList ssListOfRules)
+        {
+            ssListOfRules = new RLConditionalFormatItemRecordList();
+
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+
+            foreach (var item in ws.ConditionalFormatting)
+            {
+                RCConditionalFormatItemRecord newItem = new RCConditionalFormatItemRecord();
+                newItem.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssAddress = item.Address.Address;
+                newItem.ssSTConditionalFormatItem.ssPriority = item.Priority;
+                newItem.ssSTConditionalFormatItem.ssStopIfTrue = item.StopIfTrue;
+
+                switch (item.Type)
+                {
+                    case eExcelConditionalFormattingRuleType.AboveAverage:
+                        break;
+                    case eExcelConditionalFormattingRuleType.AboveOrEqualAverage:
+                        break;
+                    case eExcelConditionalFormattingRuleType.BelowAverage:
+                        break;
+                    case eExcelConditionalFormattingRuleType.BelowOrEqualAverage:
+                        break;
+                    case eExcelConditionalFormattingRuleType.AboveStdDev:
+                        break;
+                    case eExcelConditionalFormattingRuleType.BelowStdDev:
+                        break;
+                    case eExcelConditionalFormattingRuleType.Bottom:
+                        break;
+                    case eExcelConditionalFormattingRuleType.BottomPercent:
+                        break;
+                    case eExcelConditionalFormattingRuleType.Top:
+                        break;
+                    case eExcelConditionalFormattingRuleType.TopPercent:
+                        break;
+                    case eExcelConditionalFormattingRuleType.Last7Days:
+                        break;
+                    case eExcelConditionalFormattingRuleType.LastMonth:
+                        break;
+                    case eExcelConditionalFormattingRuleType.LastWeek:
+                        break;
+                    case eExcelConditionalFormattingRuleType.NextMonth:
+                        break;
+                    case eExcelConditionalFormattingRuleType.NextWeek:
+                        break;
+                    case eExcelConditionalFormattingRuleType.ThisMonth:
+                        break;
+                    case eExcelConditionalFormattingRuleType.ThisWeek:
+                        break;
+                    case eExcelConditionalFormattingRuleType.Today:
+                        break;
+                    case eExcelConditionalFormattingRuleType.Tomorrow:
+                        break;
+                    case eExcelConditionalFormattingRuleType.Yesterday:
+                        break;
+                    case eExcelConditionalFormattingRuleType.BeginsWith:
+                        break;
+                    case eExcelConditionalFormattingRuleType.Between:
+                        break;
+                    case eExcelConditionalFormattingRuleType.ContainsBlanks:
+                        break;
+                    case eExcelConditionalFormattingRuleType.ContainsErrors:
+                        break;
+                    case eExcelConditionalFormattingRuleType.ContainsText:
+                        break;
+                    case eExcelConditionalFormattingRuleType.DuplicateValues:
+                        break;
+                    case eExcelConditionalFormattingRuleType.EndsWith:
+                        break;
+                    case eExcelConditionalFormattingRuleType.Equal:
+                        break;
+                    case eExcelConditionalFormattingRuleType.Expression:
+                        break;
+                    case eExcelConditionalFormattingRuleType.GreaterThan:
+                        var gt = item as IExcelConditionalFormattingGreaterThan;
+                        newItem.ssSTConditionalFormatItem.ssFormula = gt.Formula;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)gt.Type;
+                        break;
+                    case eExcelConditionalFormattingRuleType.GreaterThanOrEqual:
+                        var gte = item as IExcelConditionalFormattingGreaterThanOrEqual;
+                        newItem.ssSTConditionalFormatItem.ssFormula = gte.Formula;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)gte.Type;
+                        break;
+                    case eExcelConditionalFormattingRuleType.LessThan:
+                        var lt = item as IExcelConditionalFormattingLessThan;
+                        newItem.ssSTConditionalFormatItem.ssFormula = lt.Formula;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)lt.Type;
+                        break;
+                    case eExcelConditionalFormattingRuleType.LessThanOrEqual:
+                        var lte = item as IExcelConditionalFormattingLessThanOrEqual;
+                        newItem.ssSTConditionalFormatItem.ssFormula = lte.Formula;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)lte.Type;
+                        break;
+                    case eExcelConditionalFormattingRuleType.NotBetween:
+                        break;
+                    case eExcelConditionalFormattingRuleType.NotContains:
+                        break;
+                    case eExcelConditionalFormattingRuleType.NotContainsBlanks:
+                        break;
+                    case eExcelConditionalFormattingRuleType.NotContainsErrors:
+                        break;
+                    case eExcelConditionalFormattingRuleType.NotContainsText:
+                        break;
+                    case eExcelConditionalFormattingRuleType.NotEqual:
+                        break;
+                    case eExcelConditionalFormattingRuleType.UniqueValues:
+                        break;
+                    case eExcelConditionalFormattingRuleType.ThreeColorScale:
+                        break;
+                    case eExcelConditionalFormattingRuleType.TwoColorScale:
+                        break;
+                    case eExcelConditionalFormattingRuleType.ThreeIconSet:
+                        break;
+                    case eExcelConditionalFormattingRuleType.FourIconSet:
+                        break;
+                    case eExcelConditionalFormattingRuleType.FiveIconSet:
+                        break;
+                    case eExcelConditionalFormattingRuleType.DataBar:
+                        break;
+                    default:
+                        break;
+                }
+
+                ssListOfRules.Add(newItem);
+            }
+        } // MssConditionalFormatting_GetAllRules
 
         /// <summary>
         /// Create a named range in an Excel Worksheet
@@ -150,11 +457,10 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssNamedRange_Add(object ssWorkbook, object ssWorksheet, string ssName, string ssRange)
         {
             ExcelPackage wb = ssWorkbook as ExcelPackage;
-            LogMessage("Named Ranges (add): " + JsonConvert.SerializeObject(wb.Workbook.Names.ToList()));
+            Util.LogMessage("Named Ranges (add): " + JsonConvert.SerializeObject(wb.Workbook.Names.ToList()));
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
             ExcelRange range = ws.Cells[ssRange];
             wb.Workbook.Names.Add(ssName, range);
-
         } // MssNamedRange_Add
 
         /// <summary>
@@ -167,7 +473,7 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssNamedRange_Update(object ssWorkbook, object ssWorksheet, string ssName, string ssRange)
         {
             ExcelPackage wb = ssWorkbook as ExcelPackage;
-            LogMessage("Named Ranges (del): " + JsonConvert.SerializeObject(wb.Workbook.Names.ToList()));
+            Util.LogMessage("Named Ranges (del): " + JsonConvert.SerializeObject(wb.Workbook.Names.ToList()));
 
             MssNamedRange_Delete(ssWorkbook, ssName);
             MssNamedRange_Add(ssWorkbook, ssWorksheet, ssName, ssRange);
@@ -343,7 +649,7 @@ namespace OutSystems.NssAdvanced_Excel
                     default: ws.SetValue(ssCellName, ssCellValue); break;
                 }
 
-                ApplyFormatToRange(ws.Cells[ssCellName], ssCellFormat);
+                Util.ApplyFormatToRange(ws.Cells[ssCellName], ssCellFormat);
                 return;
             }
             if (ssCellColumn >= 1 && ssCellRow >= 1)
@@ -357,7 +663,7 @@ namespace OutSystems.NssAdvanced_Excel
                     default: ws.SetValue(ssCellRow, ssCellColumn, ssCellValue); break;
                 }
 
-                ApplyFormatToRange(ws.Cells[ssCellRow, ssCellColumn], ssCellFormat);
+                Util.ApplyFormatToRange(ws.Cells[ssCellRow, ssCellColumn], ssCellFormat);
             }
         } // MssCell_Write
 
@@ -406,7 +712,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             ExcelRange er = ws.Cells[ssRange.ssSTRange.ssStartRow, ssRange.ssSTRange.ssStartCol, ssRange.ssSTRange.ssEndRow, ssRange.ssSTRange.ssEndCol];
 
-            ApplyFormatToRange(er, ssCellFormat);
+            Util.ApplyFormatToRange(er, ssCellFormat);
         } // MssWorksheet_ApplyCellFormatToRange
 
         /// <summary>
@@ -462,15 +768,7 @@ namespace OutSystems.NssAdvanced_Excel
             ws = p.Workbook.Worksheets[ssWorksheetName];
             ssWorksheet = ws;
 
-        } // MssWorksheet_Select
-        /// <summary>
-        /// Log a message to the General Log
-        /// </summary>
-        /// <param name="message">What to log</param>
-        void LogMessage(object message)
-        {
-            GenericExtendedActions.LogMessage(AppInfo.GetAppInfo().OsContext, message.ToString(), "AdvXL");
-        }
+        } // MssWorksheet_Select
 
         /// <summary>
         /// Delete a worksheet in a workbook by specifying either the index, or the name of the worksheet.
@@ -559,7 +857,7 @@ namespace OutSystems.NssAdvanced_Excel
             ssProperties.ssSTWorksheet.ssIndex = ws.Index;
             ssProperties.ssSTWorksheet.ssName = ws.Name;
 
-            ssProperties.ssSTWorksheet.ssDimension = CastDimension(ws.Dimension);
+            ssProperties.ssSTWorksheet.ssDimension = Util.CastDimension(ws.Dimension);
 
             Color c = ws.TabColor;
             RCColorRecord rc = new RCColorRecord();
@@ -579,114 +877,12 @@ namespace OutSystems.NssAdvanced_Excel
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="dimension"></param>
-        /// <returns></returns>
-        private RCDimensionRecord CastDimension(ExcelAddressBase dimension)
-        {
-            RCDimensionRecord dim = new RCDimensionRecord();
-
-            if (dimension == null)
-            {
-                return dim;
-            }
-
-            dim.ssSTDimension.ssAddress = dimension.Address;
-            dim.ssSTDimension.ssColumns = dimension.Columns;
-            dim.ssSTDimension.ssEnd = CastAddress(dimension.End);
-            dim.ssSTDimension.ssRows = dimension.Rows;
-            dim.ssSTDimension.ssStart = CastAddress(dimension.Start);
-
-            return dim;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="address"></param>
-        /// <returns></returns>
-        private RCAddressRecord CastAddress(ExcelCellAddress address)
-        {
-            RCAddressRecord add = new RCAddressRecord();
-
-            if (address == null)
-            {
-                return add;
-            }
-
-            add.ssSTAddress.ssAddress = address.Address;
-            add.ssSTAddress.ssColumn = address.Column;
-            add.ssSTAddress.ssIsRef = address.IsRef;
-            add.ssSTAddress.ssRow = address.Row;
-
-            return add;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="ssWorksheet"></param>
         /// <param name="ssWorksheetName"></param>
         public void MssWorksheet_GetName(object ssWorksheet, out string ssWorksheetName)
         {
             ssWorksheetName = (ssWorksheet as ExcelWorksheet).Name;
         } // MssWorksheet_GetName
-
-        /// <summary>
-        /// Apply the specified format to a range of cells
-        /// </summary>
-        /// <param name="range">The range of cells to apply the formatting to</param>
-        /// <param name="format">The format to apply to the range of cells</param>
-        private void ApplyFormatToRange(ExcelRange range, RCCellFormatRecord format)
-        {
-            if (format == null)
-            {
-                return;
-            }
-
-            if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssFontName))
-            {
-                range.Style.Font.Name = format.ssSTCellFormat.ssFontName;
-            }
-
-            if (format.ssSTCellFormat.ssFontSize != 0)
-            {
-                range.Style.Font.Size = format.ssSTCellFormat.ssFontSize;
-            }
-
-            if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBackgroundColor))
-            {
-                string strColor = format.ssSTCellFormat.ssBackgroundColor.Replace("#", "").Replace(";", "");
-                Int32 iColorInt = Convert.ToInt32(strColor, 16);
-                Color color = Color.FromArgb(iColorInt);
-                range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                range.Style.Fill.BackgroundColor.SetColor(color);
-            }
-
-            if (format.ssSTCellFormat.ssBold)
-            {
-                range.Style.Font.Bold = true;
-            }
-
-            if (format.ssSTCellFormat.ssBorderStyle > 0)
-            {
-                Color borderColor = new Color();
-                if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderColor))
-                {
-                    string strColor = format.ssSTCellFormat.ssBorderColor.Replace("#", "").Replace(";", "");
-                    Int32 iColorInt = Convert.ToInt32(strColor, 16);
-                    borderColor = Color.FromArgb(iColorInt);
-                }
-                OfficeOpenXml.Style.ExcelBorderStyle borderStyle = (OfficeOpenXml.Style.ExcelBorderStyle)format.ssSTCellFormat.ssBorderStyle;
-                range.Style.Border.BorderAround(borderStyle, borderColor);
-            }
-
-            if (format.ssSTCellFormat.ssAutofitColumn)
-            {
-                range.AutoFitColumns();
-            }
-
-            range.Style.Numberformat.Format = format.ssSTCellFormat.ssNumberFormat;
-        }
 
         /// <summary>
         /// Write a dataset to a range of cells.
@@ -710,17 +906,16 @@ namespace OutSystems.NssAdvanced_Excel
             if (rl.Data.Count > 0)
             {
                 dt = Util.ConvertArrayListToDataTable(rl.Data);
-                LogMessage(JsonConvert.SerializeObject(dt));
+
                 //exclude platform generated fields 
                 if (dt.Columns.Contains("OptimizedAttributes")) dt.Columns.Remove("OptimizedAttributes");
                 //if (dt.Columns.Contains("ChangedAttributes")) dt.Columns.Remove("ChangedAttributes");
                 if (dt.Columns.Contains("OriginalKey")) dt.Columns.Remove("OriginalKey");
 
                 ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, ssExportHeaders);
-
             }
 
-            ApplyFormatToRange(ws.Cells[ssRowStart, ssColumnStart], ssCellFormat);
+            Util.ApplyFormatToRange(ws.Cells[ssRowStart, ssColumnStart], ssCellFormat);
         } // MssCell_WriteRangeWithFormat
 
         /// <summary>
@@ -907,7 +1102,7 @@ namespace OutSystems.NssAdvanced_Excel
             ExcelWorksheet ws;
             ws = (ExcelWorksheet)ssWorksheet;
 
-            var chart = ws.Drawings.AddChart(ssChartName, stringToChartType(ssChartType));
+            var chart = ws.Drawings.AddChart(ssChartName, Util.stringToChartType(ssChartType));
             chart.SetPosition(ssRowPos, 0, ssColPos, 0);
             chart.SetSize(ssWidth, ssHeight);
 
@@ -933,86 +1128,6 @@ namespace OutSystems.NssAdvanced_Excel
             }
         } // MssChart_Create
 
-        private OfficeOpenXml.Drawing.Chart.eChartType stringToChartType(string chartType)
-        {
-            switch (chartType)
-            {
-                case "Area3D": return OfficeOpenXml.Drawing.Chart.eChartType.Area3D;
-                case "AreaStacked3D": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked3D;
-                case "AreaStacked1003D": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked1003D;
-                case "BarClustered3D": return OfficeOpenXml.Drawing.Chart.eChartType.BarClustered3D;
-                case "BarStacked3D": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked3D;
-                case "BarStacked1003D": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked1003D;
-                case "Column3D": return OfficeOpenXml.Drawing.Chart.eChartType.Column3D;
-                case "ColumnClustered3D": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnClustered3D;
-                case "ColumnStacked3D": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked3D;
-                case "ColumnStacked1003D": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked1003D;
-                case "Line3D": return OfficeOpenXml.Drawing.Chart.eChartType.Line3D;
-                case "Pie3D": return OfficeOpenXml.Drawing.Chart.eChartType.Pie3D;
-                case "PieExploded3D": return OfficeOpenXml.Drawing.Chart.eChartType.PieExploded3D;
-                case "Area": return OfficeOpenXml.Drawing.Chart.eChartType.Area;
-                case "AreaStacked": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked;
-                case "AreaStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked100;
-                case "BarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.BarClustered;
-                case "BarOfPie": return OfficeOpenXml.Drawing.Chart.eChartType.BarOfPie;
-                case "BarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked;
-                case "BarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked100;
-                case "Bubble": return OfficeOpenXml.Drawing.Chart.eChartType.Bubble;
-                case "Bubble3DEffect": return OfficeOpenXml.Drawing.Chart.eChartType.Bubble3DEffect;
-                case "ColumnClustered": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnClustered;
-                case "ColumnStacked": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked;
-                case "ColumnStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked100;
-                case "ConeBarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.ConeBarClustered;
-                case "ConeBarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.ConeBarStacked;
-                case "ConeBarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.ConeBarStacked100;
-                case "ConeCol": return OfficeOpenXml.Drawing.Chart.eChartType.ConeCol;
-                case "ConeColClustered": return OfficeOpenXml.Drawing.Chart.eChartType.ConeColClustered;
-                case "ConeColStacked": return OfficeOpenXml.Drawing.Chart.eChartType.ConeColStacked;
-                case "ConeColStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.ConeColStacked100;
-                case "CylinderBarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderBarClustered;
-                case "CylinderBarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderBarStacked;
-                case "CylinderBarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderBarStacked100;
-                case "CylinderCol": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderCol;
-                case "CylinderColClustered": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderColClustered;
-                case "CylinderColStacked": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderColStacked;
-                case "CylinderColStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderColStacked100;
-                case "Doughnut": return OfficeOpenXml.Drawing.Chart.eChartType.Doughnut;
-                case "DoughnutExploded": return OfficeOpenXml.Drawing.Chart.eChartType.DoughnutExploded;
-                case "Line": return OfficeOpenXml.Drawing.Chart.eChartType.Line;
-                case "LineMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.LineMarkers;
-                case "LineMarkersStacked": return OfficeOpenXml.Drawing.Chart.eChartType.LineMarkersStacked;
-                case "LineMarkersStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.LineMarkersStacked100;
-                case "LineStacked": return OfficeOpenXml.Drawing.Chart.eChartType.LineStacked;
-                case "LineStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.LineStacked100;
-                case "Pie": return OfficeOpenXml.Drawing.Chart.eChartType.Pie;
-                case "PieExploded": return OfficeOpenXml.Drawing.Chart.eChartType.PieExploded;
-                case "PieOfPie": return OfficeOpenXml.Drawing.Chart.eChartType.PieOfPie;
-                case "PyramidBarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidBarClustered;
-                case "PyramidBarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidBarStacked;
-                case "PyramidBarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidBarStacked100;
-                case "PyramidCol": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidCol;
-                case "PyramidColClustered": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidColClustered;
-                case "PyramidColStacked": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidColStacked;
-                case "PyramidColStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidColStacked100;
-                case "Radar": return OfficeOpenXml.Drawing.Chart.eChartType.Radar;
-                case "RadarFilled": return OfficeOpenXml.Drawing.Chart.eChartType.RadarFilled;
-                case "RadarMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.RadarMarkers;
-                case "StockHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockHLC;
-                case "StockOHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockOHLC;
-                case "StockVHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockVHLC;
-                case "StockVOHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockVOHLC;
-                case "Surface": return OfficeOpenXml.Drawing.Chart.eChartType.Surface;
-                case "SurfaceTopView": return OfficeOpenXml.Drawing.Chart.eChartType.SurfaceTopView;
-                case "SurfaceTopViewWireframe": return OfficeOpenXml.Drawing.Chart.eChartType.SurfaceTopViewWireframe;
-                case "SurfaceWireframe": return OfficeOpenXml.Drawing.Chart.eChartType.SurfaceWireframe;
-                case "XYScatter": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatter;
-                case "XYScatterLines": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterLines;
-                case "XYScatterLinesNoMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterLinesNoMarkers;
-                case "XYScatterSmooth": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterSmooth;
-                case "XYScatterSmoothNoMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterSmoothNoMarkers;
-            }
-            return OfficeOpenXml.Drawing.Chart.eChartType.Column3D;
-        }
 
     } // CssAdvanced_Excel
 
