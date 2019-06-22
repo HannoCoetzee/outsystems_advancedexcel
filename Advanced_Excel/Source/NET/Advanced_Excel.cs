@@ -21,6 +21,18 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
         /// <summary>
+        /// Merge cells in the range provided
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssRangeToMerge">The range of the cells to merge</param>
+        public void MssCell_Merge(object ssWorksheet, RCRangeRecord ssRangeToMerge)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+
+            ws.Cells[ssRangeToMerge.ssSTRange.ssStartRow, ssRangeToMerge.ssSTRange.ssStartCol, ssRangeToMerge.ssSTRange.ssEndRow, ssRangeToMerge.ssSTRange.ssEndCol].Merge = true;
+        } // MssCell_Merge
+
+        /// <summary>
         /// Find all cells that contain the specified value in the given worksheet
         /// </summary>
         /// <param name="ssWorksheet">The worksheet in which to search</param>

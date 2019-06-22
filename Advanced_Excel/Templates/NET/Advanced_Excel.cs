@@ -390,6 +390,15 @@ namespace OutSystems.NssAdvanced_Excel {
 			// TODO: Write implementation for action
 		} // MssConditionalFormatting_GetAllRules
 
+		/// <summary>
+		/// Merge cells in the range provided
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssRangeToMerge">The range of the cells to merge</param>
+		public void MssCell_Merge(object ssWorksheet, RCRangeRecord ssRangeToMerge) {
+			// TODO: Write implementation for action
+		} // MssCell_Merge
+
 	} // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
