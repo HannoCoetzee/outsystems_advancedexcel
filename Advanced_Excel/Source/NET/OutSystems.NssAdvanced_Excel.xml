@@ -4,6 +4,13 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_UnMerge(System.Object,OutSystems.NssAdvanced_Excel.RCRangeRecord)">
+            <summary>
+            Un-Merge cells in the range provided
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssRangeToUnmerge">The range of cell to un-merge</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_Merge(System.Object,OutSystems.NssAdvanced_Excel.RCRangeRecord)">
             <summary>
             Merge cells in the range provided
@@ -668,6 +675,13 @@
             </summary>
             <param name="ssWorksheet">The worksheet to work with</param>
             <param name="ssRangeToMerge">The range of the cells to merge</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_UnMerge(System.Object,OutSystems.NssAdvanced_Excel.RCRangeRecord)">
+            <summary>
+            Un-Merge cells in the range provided
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssRangeToUnmerge">The range of cell to un-merge</param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
