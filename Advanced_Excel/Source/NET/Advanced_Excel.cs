@@ -21,6 +21,18 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
         /// <summary>
+        /// Un-Merge cells in the range provided
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssRangeToUnmerge">The range of cell to un-merge</param>
+        public void MssCell_UnMerge(object ssWorksheet, RCRangeRecord ssRangeToUnmerge)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+
+            ws.Cells[ssRangeToUnmerge.ssSTRange.ssStartRow, ssRangeToUnmerge.ssSTRange.ssStartCol, ssRangeToUnmerge.ssSTRange.ssEndRow, ssRangeToUnmerge.ssSTRange.ssEndCol].Merge = false;
+        } // MssCell_UnMerge
+
+        /// <summary>
         /// Merge cells in the range provided
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with</param>
