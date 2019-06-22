@@ -1,0 +1,1781 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OutSystems.NssAdvanced_Excel</name>
+    </assembly>
+    <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCells_FindByValue(System.Object,System.String,OutSystems.NssAdvanced_Excel.RLRangeRecordList@)">
+            <summary>
+            Find all cells that contain the specified value in the given worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet in which to search</param>
+            <param name="ssValueToFind">The value to search for</param>
+            <param name="ssListOfCells">List of cells (ranges) where the value has been found</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssConditionalFormatting_GetAllRules(System.Object,OutSystems.NssAdvanced_Excel.RLConditionalFormatItemRecordList@)">
+            <summary>
+            Get a list of all the conditional formatting rules in a worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssListOfRule">List of conditional formatting rules</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssConditionalFormatting_AddRule(System.Object,OutSystems.NssAdvanced_Excel.RCConditionalFormatItemRecord)" -->
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.ApplyStyle(OfficeOpenXml.Style.Dxf.ExcelDxfStyleConditionalFormatting,OutSystems.NssAdvanced_Excel.RCConditionalFormatStyleRecord)">
+            <summary>
+            Apply conditional formatting style to rule style property
+            </summary>
+            <param name="style"></param>
+            <param name="ssStyle"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssRow_Insert(System.Object,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Inserts a new row into the spreadsheet.  Existing rows below the position are shifted down.  All formula are updated to take account of the new row.
+            </summary>
+            <param name="ssWorksheet">The worksheet to insert the row(s) into</param>
+            <param name="ssInsertAt">The position of the new row
+            </param>
+            <param name="ssNrRows">Number of rows to insert</param>
+            <param name="ssCopyStyleFromRow">Copy Styles from this row. Applied to all inserted rows. 0 will not copy any styles</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCellFormat_ApplyToRange(System.Object,OutSystems.NssAdvanced_Excel.RCCellFormatRecord,OutSystems.NssAdvanced_Excel.RCRangeRecord)">
+            <summary>
+            Apply a specified cell format to the range specified for the given worksheet
+            </summary>
+            <param name="ssWorksheet">Worksheet object where formatting is to be applied</param>
+            <param name="ssCellFormat">CellFormat to apply</param>
+            <param name="ssRange">Range that CellFormat is to be applied to</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Hide_Show(System.Object,System.Int32)">
+            <summary>
+            Hide / Show a worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssHidden">Visible = 0 - The worksheet is visible
+            Hidden = 1 - The worksheet is hidden but can be shown by the user via the user interface
+            VeryHidden = 2 - The worksheet is hidden and cannot be shown by the user via the user interface</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssContainInRange(System.Object,System.String,System.String,System.String,System.Boolean@,System.Int32@,System.Int32@)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssRange"></param>
+            <param name="ssValue"></param>
+            <param name="ssParameter1"></param>
+            <param name="ssFound"></param>
+            <param name="ssRowIndex"></param>
+            <param name="ssColumnIndex"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssRow_Hide_Show(System.Object,System.Int32,System.Boolean)">
+            <summary>
+            Hides / Shows Row passed by index
+            </summary>
+            <param name="ssWorksheet">Worksheet to work with</param>
+            <param name="ssRowIndex">Index of the Row to show/hide</param>
+            <param name="ssHidden">True = Hide, False = Show</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_Calculate(System.Object)">
+            <summary>
+            Calculate all formulae for the entire workbook provided.
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Calculate(System.Object)">
+            <summary>
+            Calculate all formulae on the provided worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_Hide_Show(System.Object,System.Int32,System.Boolean)">
+            <summary>
+            Hides / Shows Column passed by index
+            </summary>
+            <param name="ssWorksheet">The worksheet you want to work with.</param>
+            <param name="ssColumn">The index of the column within the worksheet that you want to hide/show.</param>
+            <param name="ssHidden">A Boolean value, set to True to hide the column, and to False to show the column.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_Read(System.Object,System.String,System.Int32,System.Int32,System.String@,System.Boolean)">
+            <summary>
+            Reads the value of a cell.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssCellName">Name of the cell to read from, i.e. A4. Required if CellRow and CellNumber set to 0.</param>
+            <param name="ssCellRow">Row number of the cell to read from. Required if CellName not set.</param>
+            <param name="ssCellColumn">Column number of the cell to read from. Required if CellName not set.</param>
+            <param name="ssCellValue">The value in the cell, as text.</param>
+            <param name="ssReadText">If true always reads the cell value as text</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_Write(System.Object,System.String,System.Int32,System.Int32,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Write a converted value to a cell, defined by its index.
+            Input is a worksheet-object.
+            Accepts format for the target cell
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides </param>
+            <param name="ssCellName">Name of the cell to write to, i.e. A4</param>
+            <param name="ssCellRow">Row number of the cell to write to</param>
+            <param name="ssCellColumn">Column number of the cell to write to</param>
+            <param name="ssCellValue">The value to write to the cell</param>
+            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellFormat">CellFormat for the target cell</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_ChangeSheetIndex(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Change the index of a worksheet in the document
+            </summary>
+            <param name="ssWorkbook">The workbook in which the change is to be made.</param>
+            <param name="ssCurrentIndex">The current index(position) of the sheet in question</param>
+            <param name="ssNewIndex">The new index for the sheet</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Select(System.Object,System.Int32,System.String,System.Object@)">
+            <summary>
+            Select a worksheet by its index or by its name
+            </summary>
+            <param name="ssWorkbook">The workbook wherein the worksheet exists</param>
+            <param name="ssWorksheetIndex">The index of the worksheet to find. Indexes start at 1</param>
+            <param name="ssWorksheetName">The name of the worksheet to find</param>
+            <param name="ssWorksheet">This is the worksheet object that you have been looking for,</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.LogMessage(System.Object)">
+            <summary>
+            Log a message to the General Log
+            </summary>
+            <param name="message">What to log</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Delete(System.Object,System.Int32,System.String)">
+            <summary>
+            Delete a worksheet in a workbook by specifying either the index, or the name of the worksheet.
+            </summary>
+            <param name="ssWorkbook">The workbook from which you want to delete the worksheet</param>
+            <param name="ssIndexToDelete">The index of the worksheet to delete. Set to 0 if using the worksheet name to delete</param>
+            <param name="ssNameToDelete">The name of the worksheet to delete. Set to empty string "" if using the index to delete.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkBook_AddSheet(System.Object,System.String,System.Object,System.Int32)">
+            <summary>
+            Add a worksheet to an existing workbook, optionally at the index specified. Specifying only a name will create a blank sheet. 
+            Specifying  a name with binary data, will add the sheet from the existing binary data, and then rename to the newly provided name
+            </summary>
+            <param name="ssWorkbook">The workbook that you want to add the sheet to</param>
+            <param name="ssWorksheetName">The name of the worksheet you want to add. If binary data is nullbinary(), an empty sheet will be added</param>
+            <param name="ssWorksheet">The worksheet object that you want to add. Set to nullbinary() if adding a new sheet by name</param>
+            <param name="ssIndexWhereToAdd">The index where to add the new sheet. Default will be highest sheet index plus 1</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_GetProperties(System.Object,OutSystems.NssAdvanced_Excel.RCWorkbookRecord@)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorkbook"></param>
+            <param name="ssProperties"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_GetProperties(System.Object,OutSystems.NssAdvanced_Excel.RCWorksheetRecord@)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssProperties"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.CastDimension(OfficeOpenXml.ExcelAddressBase)">
+            <summary>
+            
+            </summary>
+            <param name="dimension"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.CastAddress(OfficeOpenXml.ExcelCellAddress)">
+            <summary>
+            
+            </summary>
+            <param name="address"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_GetName(System.Object,System.String@)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssWorksheetName"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.ApplyFormatToRange(OfficeOpenXml.ExcelRange,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Apply the specified format to a range of cells
+            </summary>
+            <param name="range">The range of cells to apply the formatting to</param>
+            <param name="format">The format to apply to the range of cells</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteRange(System.Object,System.Int32,System.Int32,System.Object,OutSystems.NssAdvanced_Excel.RCCellFormatRecord,System.Boolean)">
+            <summary>
+            Write a dataset to a range of cells.
+            Accepts format for the taget cells
+            </summary>
+            <param name="ssWorksheet">Worksheet to write to</param>
+            <param name="ssRowStart">Start row (integer)</param>
+            <param name="ssColumnStart">Start column (integer)</param>
+            <param name="ssDataSet">Data to write</param>
+            <param name="ssCellFormat">CellFormat for the target cell</param>
+            <param name="ssExportHeaders">True if headers should be included in export</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Protect(System.Object,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="sspassword"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_Close(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorkbook"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Rename(System.Object,System.String)">
+            <summary>
+            Rename a worksheet
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssName"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_GetBinaryData(System.Object,System.Byte[]@)">
+            <summary>
+            Get the in-memory binary data of the specified workbook
+            </summary>
+            <param name="ssWorkbook">The workbook you want the binary data for</param>
+            <param name="ssBinaryData">The binary data of the file</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_Open(System.String,System.Byte[],System.Object@)">
+            <summary>
+            Opens an existing workbook for editing by either specifying a name or the binary data.
+            </summary>
+            <param name="ssFileName">Location of the file that you want to open. Set to empty string "" when using binary data</param>
+            <param name="ssBinary_Data">Binary data of the file that you want to open. Set to nullbinary() if using FileName</param>
+            <param name="ssWorkbook">The workbook that you want to work with.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_Create(System.Object@,System.String)">
+            <summary>
+             Creates a new excel workbook, optionally specifying the name of the fiirst sheet.
+            </summary>
+            <param name="ssWorkbook">The newly created workbook</param>
+            <param name="ssFirstSheetName">Specify the name of the initial sheet in the workbook. Default = "Sheet1"</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssChart_Create(System.Object,System.String,System.String,OutSystems.NssAdvanced_Excel.RLDataSeriesRecordList,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssChartType">Receives the graph type in text, possible types:
+            Area3D
+            AreaStacked3D
+            AreaStacked1003D
+            BarClustered3D
+            BarStacked3D
+            BarStacked1003D
+            Column3D
+            ColumnClustered3D
+            ColumnStacked3D
+            ColumnStacked1003D
+            Line3D
+            Pie3D
+            PieExploded3D
+            Area
+            AreaStacked
+            AreaStacked100
+            BarClustered
+            BarOfPie
+            BarStacked
+            BarStacked100
+            Bubble
+            Bubble3DEffect
+            ColumnClustered
+            ColumnStacked
+            ColumnStacked100
+            ConeBarClustered
+            ConeBarStacked
+            ConeBarStacked100
+            ConeCol
+            ConeColClustered
+            ConeColStacked
+            ConeColStacked100
+            CylinderBarClustered
+            CylinderBarStacked
+            CylinderBarStacked100
+            CylinderCol
+            CylinderColClustered
+            CylinderColStacked
+            CylinderColStacked100
+            Doughnut
+            DoughnutExploded
+            Line
+            LineMarkers
+            LineMarkersStacked
+            LineMarkersStacked100
+            LineStacked
+            LineStacked100
+            Pie
+            PieExploded
+            PieOfPie
+            PyramidBarClustered
+            PyramidBarStacked
+            PyramidBarStacked100
+            PyramidCol
+            PyramidColClustered
+            PyramidColStacked
+            PyramidColStacked100
+            Radar
+            RadarFilled
+            RadarMarkers
+            StockHLC
+            StockOHLC
+            StockVHLC
+            StockVOHLC
+            Surface
+            SurfaceTopView
+            SurfaceTopViewWireframe
+            SurfaceWireframe
+            XYScatter
+            XYScatterLines
+            XYScatterLinesNoMarkers
+            XYScatterSmooth
+            XYScatterSmoothNoMarkers=73</param>
+            <param name="ssChartName"></param>
+            <param name="ssDataSeries_List">List Of DataSeries</param>
+            <param name="ssHeight">Expressed in pixels</param>
+            <param name="ssWidth">Expressed in pixels</param>
+            <param name="ssRowPos">Row position to place the upper left corner graph</param>
+            <param name="ssColPos">Column position to place the upper left corner graph</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Open(System.String,System.Byte[],System.Object@)">
+            <summary>
+            Opens an existing workbook for editing by either specifying a name or the binary data.
+            </summary>
+            <param name="ssFileName">Location of the file that you want to open. Set to empty string &quot;&quot; when using binary data</param>
+            <param name="ssBinary_Data">Binary data of the file that you want to open. Set to nullbinary() if using FileName</param>
+            <param name="ssWorkbook">The workbook that you want to work with.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Select(System.Object,System.Int32,System.String,System.Object@)">
+            <summary>
+            Select a worksheet by its index or by its name
+            </summary>
+            <param name="ssWorkbook">The workbook wherein the worksheet exists</param>
+            <param name="ssWorksheetIndex">The index of the worksheet to find. Indexes start at 1</param>
+            <param name="ssWorksheetName">The name of the worksheet to find</param>
+            <param name="ssWorksheet">This is the worksheet object that you have been looking for,</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Create(System.Object@,System.String)">
+            <summary>
+            Creates a new excel workbook, optionally specifying the name of the fiirst sheet.
+            </summary>
+            <param name="ssWorkbook">The newly created workbook</param>
+            <param name="ssFirstSheetName">Specify the name of the initial sheet in the workbook. Default = &quot;Sheet1&quot;</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_GetBinaryData(System.Object,System.Byte[]@)">
+            <summary>
+            Get the in-memory binary data of the specified workbook
+            </summary>
+            <param name="ssWorkbook">The workbook you want the binary data for</param>
+            <param name="ssBinaryData">The binary data of the file</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Rename(System.Object,System.String)">
+            <summary>
+            Rename a worksheet
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssName">The new name for the spreadsheet</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Close(System.Object)">
+            <summary>
+            Closes the excel workbook
+            </summary>
+            <param name="ssWorkbook"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssColumn_Hide_Show(System.Object,System.Int32,System.Boolean)">
+            <summary>
+            Hides / Shows a Column passed by index
+            </summary>
+            <param name="ssWorksheet">The worksheet you want to work with.</param>
+            <param name="ssColumn">The index of the column within the worksheet that you want to hide/show.</param>
+            <param name="ssHidden">A Boolean value, set to True to hide the column, and to False to show the column.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_Read(System.Object,System.String,System.Int32,System.Int32,System.String@,System.Boolean)">
+            <summary>
+            Reads the value of a cell.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssCellName">Name of the cell to read from, i.e. A4. Required if CellRow and CellNumber set to 0.</param>
+            <param name="ssCellRow">Row number of the cell to read from. Required if CellName not set.</param>
+            <param name="ssCellColumn">Column number of the cell to read from. Required if CellName not set.</param>
+            <param name="ssCellValue">The value in the cell, as text.</param>
+            <param name="ssReadText">If true always reads the cell value as text</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Protect(System.Object,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorksheet">Worksheet to protect</param>
+            <param name="sspassword">Password to the protected spreadsheet</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_Write(System.Object,System.String,System.Int32,System.Int32,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Write a converted value to a cell.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides </param>
+            <param name="ssCellName">Name of the cell to write to, i.e. A4. Required if CellRow and CellColumn not set</param>
+            <param name="ssCellRow">Row number of the cell to write to. Required if CellName not set.</param>
+            <param name="ssCellColumn">Column number of the cell to write to. Required if CellName not set.</param>
+            <param name="ssCellValue">The value to write to the cell</param>
+            <param name="ssCellType">Type can be:
+            text (default),
+            datetime,
+            integer,
+            decimal,
+            boolean,
+            formula</param>
+            <param name="ssCellFormat">CellFormat for the target cell</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteRange(System.Object,System.Int32,System.Int32,System.Object,OutSystems.NssAdvanced_Excel.RCCellFormatRecord,System.Boolean)">
+            <summary>
+            Write a dataset to a range of cells.
+            Accepts format for the target cells
+            </summary>
+            <param name="ssWorksheet">Worksheet to write to</param>
+            <param name="ssRowStart">Start row (integer)</param>
+            <param name="ssColumnStart">Start column (integer)</param>
+            <param name="ssDataSet">Data to write</param>
+            <param name="ssCellFormat">CellFormat for the target cells</param>
+            <param name="ssExportHeaders">True to include headers in export file. Default value = False</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_GetName(System.Object,System.String@)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssWorksheetName"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_GetProperties(System.Object,OutSystems.NssAdvanced_Excel.RCWorkbookRecord@)">
+            <summary>
+            Get all properties of the workbook
+            </summary>
+            <param name="ssWorkbook">The workbook</param>
+            <param name="ssProperties"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_GetProperties(System.Object,OutSystems.NssAdvanced_Excel.RCWorksheetRecord@)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssProperties"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkBook_AddSheet(System.Object,System.String,System.Object,System.Int32)">
+            <summary>
+            Add a worksheet to an existing workbook, optionally at the index specified. Specifying only a name will create a blank sheet. Specifying  a name with binary data, will add the sheet from the existing binary data, and then rename to the newly provided name
+            </summary>
+            <param name="ssWorkbook">The workbook that you want to add the sheet to</param>
+            <param name="ssWorksheetName">The name of the worksheet you want to add. If binary data is nullbinary(), an empty sheet will be added</param>
+            <param name="ssWorksheet">The worksheet object that you want to add. Set to nullbinary() if adding a new sheet by name</param>
+            <param name="ssIndexWhereToAdd">The index where to add the new sheet. Default will be highest sheet index plus 1</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Delete(System.Object,System.Int32,System.String)">
+            <summary>
+            Delete a worksheet in a workbook by specifying either the index, or the name of the worksheet.
+            </summary>
+            <param name="ssWorkbook">The workbook from which you want to delete the worksheet</param>
+            <param name="ssIndexToDelete">The index of the worksheet to delete. Set to 0 if using the worksheet name to delete</param>
+            <param name="ssNameToDelete">The name of the worksheet to delete. Set to empty string &quot;&quot; if using the index to delete.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssChart_Create(System.Object,System.String,System.String,OutSystems.NssAdvanced_Excel.RLDataSeriesRecordList,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssChartType">Receives the chart type in text, possible types:
+            Area3D
+            AreaStacked3D
+            AreaStacked1003D
+            BarClustered3D
+            BarStacked3D
+            BarStacked1003D
+            Column3D
+            ColumnClustered3D
+            ColumnStacked3D
+            ColumnStacked1003D
+            Line3D
+            Pie3D
+            PieExploded3D
+            Area
+            AreaStacked
+            AreaStacked100
+            BarClustered
+            BarOfPie
+            BarStacked
+            BarStacked100
+            Bubble
+            Bubble3DEffect
+            ColumnClustered
+            ColumnStacked
+            ColumnStacked100
+            ConeBarClustered
+            ConeBarStacked
+            ConeBarStacked100
+            ConeCol
+            ConeColClustered
+            ConeColStacked
+            ConeColStacked100
+            CylinderBarClustered
+            CylinderBarStacked
+            CylinderBarStacked100
+            CylinderCol
+            CylinderColClustered
+            CylinderColStacked
+            CylinderColStacked100
+            Doughnut
+            DoughnutExploded
+            Line
+            LineMarkers
+            LineMarkersStacked
+            LineMarkersStacked100
+            LineStacked
+            LineStacked100
+            Pie
+            PieExploded
+            PieOfPie
+            PyramidBarClustered
+            PyramidBarStacked
+            PyramidBarStacked100
+            PyramidCol
+            PyramidColClustered
+            PyramidColStacked
+            PyramidColStacked100
+            Radar
+            RadarFilled
+            RadarMarkers
+            StockHLC
+            StockOHLC
+            StockVHLC
+            StockVOHLC
+            Surface
+            SurfaceTopView
+            SurfaceTopViewWireframe
+            SurfaceWireframe
+            XYScatter
+            XYScatterLines
+            XYScatterLinesNoMarkers
+            XYScatterSmooth
+            XYScatterSmoothNoMarkers=73</param>
+            <param name="ssChartName"></param>
+            <param name="ssDataSeries_List">List Of DataSeries</param>
+            <param name="ssHeight">Expressed in pixels</param>
+            <param name="ssWidth">Expressed in pixels</param>
+            <param name="ssRowPos">Row position to place the upper left corner graph</param>
+            <param name="ssColPos">Column position to place the upper left corner graph</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssRow_Insert(System.Object,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Inserts a new row into the spreadsheet.  Existing rows below the position are shifted down.  All formula are updated to take account of the new row.
+            </summary>
+            <param name="ssWorksheet">The worksheet to insert the row(s) into</param>
+            <param name="ssInsertAt">The position of the new row
+            </param>
+            <param name="ssNrRows">Number of rows to insert</param>
+            <param name="ssCopyStyleFromRow">Copy Styles from this row. Applied to all inserted rows. 0 will not copy any styles</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_ChangeSheetIndex(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Change the index of a worksheet in the document
+            </summary>
+            <param name="ssWorkbook">The workbook in which the change is to be made.</param>
+            <param name="ssCurrentIndex">The current index(position) of the sheet in question</param>
+            <param name="ssNewIndex">The new index for the sheet</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCellFormat_ApplyToRange(System.Object,OutSystems.NssAdvanced_Excel.RCCellFormatRecord,OutSystems.NssAdvanced_Excel.RCRangeRecord)">
+            <summary>
+            Apply a specified cell format to the range specified for the given worksheet
+            </summary>
+            <param name="ssWorksheet">Worksheet object where formatting is to be applied</param>
+            <param name="ssCellFormat">CellFormat to apply</param>
+            <param name="ssRange">Range that CellFormat is to be applied to</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCells_FindByValue(System.Object,System.String,OutSystems.NssAdvanced_Excel.RLRangeRecordList@)">
+            <summary>
+            Find all cells that contain the specified value in the given worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet in which to search</param>
+            <param name="ssValueToFind">The value to search for</param>
+            <param name="ssListOfCells">List of cells (ranges) where the value has been found</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssContainInRange(System.Object,System.String,System.String,System.String,System.Boolean@,System.Int32@,System.Int32@)">
+            <summary>
+            
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssRange"></param>
+            <param name="ssValue"></param>
+            <param name="ssParameter1"></param>
+            <param name="ssFound"></param>
+            <param name="ssRowIndex"></param>
+            <param name="ssColumnIndex"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Calculate(System.Object)">
+            <summary>
+            Calculate all formulae for the entire workbook provided.
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Calculate(System.Object)">
+            <summary>
+            Calculate all formulae on the provided worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssRow_Hide_Show(System.Object,System.Int32,System.Boolean)">
+            <summary>
+            Hides / Shows Row passed by index
+            </summary>
+            <param name="ssWorksheet">Worksheet to work with</param>
+            <param name="ssRowIndex">Index of the Row to show/hide</param>
+            <param name="ssHidden">A Boolean value, set to True to hide the row and to False to show the row</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Hide_Show(System.Object,System.Int32)">
+            <summary>
+            Hide / Show a worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssHidden">Visible = 0 - The worksheet is visible
+            Hidden = 1 - The worksheet is hidden but can be shown by the user via the user interface
+            VeryHidden = 2 - The worksheet is hidden and cannot be shown by the user via the user interface</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssConditionalFormatting_AddRule(System.Object,OutSystems.NssAdvanced_Excel.RCConditionalFormatItemRecord)">
+            <summary>
+            Add a rule for conditionally formatting a range of cells.
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssConditionalFormatRecord">The conditional formatting to apply to the Address Range</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssConditionalFormatting_GetAllRules(System.Object,OutSystems.NssAdvanced_Excel.RLConditionalFormatItemRecordList@)">
+            <summary>
+            Get a list of all the conditional formatting rules in a worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssListOfRule">List of conditional formatting rules</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
+            <summary>
+            Structure <code>STCellFormatStructure</code> that represents the Service Studio structure
+             <code>CellFormat</code> <p> Description: Structure to define all the formatting attributes that ca
+            n apply to a cell.</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STCellFormatStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STCellFormatStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STCellFormatStructure.ReadIM(OutSystems.NssAdvanced_Excel.STCellFormatStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STWorkbookStructure">
+            <summary>
+            Structure <code>STWorkbookStructure</code> that represents the Service Studio structure
+             <code>Workbook</code> <p> Description: The Excel File</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STWorkbookStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STWorkbookStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STWorkbookStructure.ReadIM(OutSystems.NssAdvanced_Excel.STWorkbookStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STWorksheetStructure">
+            <summary>
+            Structure <code>STWorksheetStructure</code> that represents the Service Studio structure
+             <code>Worksheet</code> <p> Description: Structure defining attributes pertaining to
+            a worksheet</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STWorksheetStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STWorksheetStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STWorksheetStructure.ReadIM(OutSystems.NssAdvanced_Excel.STWorksheetStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STColorStructure">
+            <summary>
+            Structure <code>STColorStructure</code> that represents the Service Studio structure
+             <code>Color</code> <p> Description: Represents an ARGB (alpha, red, green, blue) color.</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STColorStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STColorStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STColorStructure.ReadIM(OutSystems.NssAdvanced_Excel.STColorStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STDimensionStructure">
+            <summary>
+            Structure <code>STDimensionStructure</code> that represents the Service Studio structure
+             <code>Dimension</code> <p> Description: Worksheet dimension structure</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STDimensionStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STDimensionStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STDimensionStructure.ReadIM(OutSystems.NssAdvanced_Excel.STDimensionStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STAddressStructure">
+            <summary>
+            Structure <code>STAddressStructure</code> that represents the Service Studio structure
+             <code>Address</code> <p> Description: Excel Address Structure</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STAddressStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STAddressStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STAddressStructure.ReadIM(OutSystems.NssAdvanced_Excel.STAddressStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STRangeStructure">
+            <summary>
+            Structure <code>STRangeStructure</code> that represents the Service Studio structure
+             <code>Range</code> <p> Description: Describes a range of cells from RowStart, ColStart to RowEnd
+            , ColEnd, where 1,1 is the the 1A cell</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STRangeStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STRangeStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STRangeStructure.ReadIM(OutSystems.NssAdvanced_Excel.STRangeStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STDataSeriesStructure">
+            <summary>
+            Structure <code>STDataSeriesStructure</code> that represents the Service Studio structure
+             <code>DataSeries</code> <p> Description: Data series to be used in graphs, the n cell of the valu
+            e range will correspond to the n cell of the label range</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STDataSeriesStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STDataSeriesStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STDataSeriesStructure.ReadIM(OutSystems.NssAdvanced_Excel.STDataSeriesStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STConditionalFormatItemStructure">
+            <summary>
+            Structure <code>STConditionalFormatItemStructure</code> that represents the Service Studio
+             structure <code>ConditionalFormatItem</code> <p> Description: Represents a conditional formattin
+            g item.</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STConditionalFormatItemStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STConditionalFormatItemStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STConditionalFormatItemStructure.ReadIM(OutSystems.NssAdvanced_Excel.STConditionalFormatItemStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STConditionalFormatStyleStructure">
+            <summary>
+            Structure <code>STConditionalFormatStyleStructure</code> that represents the Service Studio
+             structure <code>ConditionalFormatStyle</code> <p> Description: Style (format) options fo
+            r Conditional Formatting.</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STConditionalFormatStyleStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STConditionalFormatStyleStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STConditionalFormatStyleStructure.ReadIM(OutSystems.NssAdvanced_Excel.STConditionalFormatStyleStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STBorderStyleStructure">
+            <summary>
+            Structure <code>STBorderStyleStructure</code> that represents the Service Studio structure
+             <code>BorderStyle</code> <p> Description: Style and color of border</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STBorderStyleStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STBorderStyleStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STBorderStyleStructure.ReadIM(OutSystems.NssAdvanced_Excel.STBorderStyleStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STFillStyleStructure">
+            <summary>
+            Structure <code>STFillStyleStructure</code> that represents the Service Studio structure
+             <code>FillStyle</code> <p> Description: Fill properties</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STFillStyleStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STFillStyleStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STFillStyleStructure.ReadIM(OutSystems.NssAdvanced_Excel.STFillStyleStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STFontStyleStructure">
+            <summary>
+            Structure <code>STFontStyleStructure</code> that represents the Service Studio structure
+             <code>FontStyle</code> <p> Description: </p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STFontStyleStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STFontStyleStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STFontStyleStructure.ReadIM(OutSystems.NssAdvanced_Excel.STFontStyleStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLCellFormatRecordList">
+            <summary>
+            RecordList type <code>RLCellFormatRecordList</code> that represents a record list of
+             <code>CellFormat</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLCellFormatRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLCellFormatRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLCellFormatRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCCellFormatRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLCellFormatRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLCellFormatRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLWorkbookRecordList">
+            <summary>
+            RecordList type <code>RLWorkbookRecordList</code> that represents a record list of
+             <code>Workbook</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLWorkbookRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLWorkbookRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLWorkbookRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCWorkbookRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLWorkbookRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLWorkbookRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLWorksheetRecordList">
+            <summary>
+            RecordList type <code>RLWorksheetRecordList</code> that represents a record list of
+             <code>Worksheet</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLWorksheetRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLWorksheetRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLWorksheetRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCWorksheetRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLWorksheetRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLWorksheetRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLColorRecordList">
+            <summary>
+            RecordList type <code>RLColorRecordList</code> that represents a record list of <code>Color</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLColorRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLColorRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLColorRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCColorRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLColorRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLColorRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLDimensionRecordList">
+            <summary>
+            RecordList type <code>RLDimensionRecordList</code> that represents a record list of
+             <code>Dimension</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLDimensionRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLDimensionRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLDimensionRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCDimensionRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLDimensionRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLDimensionRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLAddressRecordList">
+            <summary>
+            RecordList type <code>RLAddressRecordList</code> that represents a record list of
+             <code>Address</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLAddressRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLAddressRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLAddressRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCAddressRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLAddressRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLAddressRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLRangeRecordList">
+            <summary>
+            RecordList type <code>RLRangeRecordList</code> that represents a record list of <code>Range</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLRangeRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLRangeRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLRangeRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCRangeRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLRangeRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLRangeRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLDataSeriesRecordList">
+            <summary>
+            RecordList type <code>RLDataSeriesRecordList</code> that represents a record list of
+             <code>DataSeries</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLDataSeriesRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLDataSeriesRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLDataSeriesRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCDataSeriesRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLDataSeriesRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLDataSeriesRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLConditionalFormatItemRecordList">
+            <summary>
+            RecordList type <code>RLConditionalFormatItemRecordList</code> that represents a record list of
+             <code>ConditionalFormatItem</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLConditionalFormatItemRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLConditionalFormatItemRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLConditionalFormatItemRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCConditionalFormatItemRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLConditionalFormatItemRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLConditionalFormatItemRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLConditionalFormatStyleRecordList">
+            <summary>
+            RecordList type <code>RLConditionalFormatStyleRecordList</code> that represents a record list of
+             <code>ConditionalFormatStyle</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLConditionalFormatStyleRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLConditionalFormatStyleRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLConditionalFormatStyleRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCConditionalFormatStyleRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLConditionalFormatStyleRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLConditionalFormatStyleRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLBorderStyleRecordList">
+            <summary>
+            RecordList type <code>RLBorderStyleRecordList</code> that represents a record list of
+             <code>BorderStyle</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLBorderStyleRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLBorderStyleRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLBorderStyleRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCBorderStyleRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLBorderStyleRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLBorderStyleRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLFillStyleRecordList">
+            <summary>
+            RecordList type <code>RLFillStyleRecordList</code> that represents a record list of
+             <code>FillStyle</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLFillStyleRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLFillStyleRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLFillStyleRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCFillStyleRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLFillStyleRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLFillStyleRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLFontStyleRecordList">
+            <summary>
+            RecordList type <code>RLFontStyleRecordList</code> that represents a record list of
+             <code>FontStyle</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLFontStyleRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLFontStyleRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLFontStyleRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCFontStyleRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLFontStyleRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLFontStyleRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCCellFormatRecord">
+            <summary>
+            Structure <code>RCCellFormatRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCCellFormatRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCCellFormatRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCCellFormatRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCWorkbookRecord">
+            <summary>
+            Structure <code>RCWorkbookRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCWorkbookRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCWorkbookRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCWorkbookRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCWorkbookRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCWorksheetRecord">
+            <summary>
+            Structure <code>RCWorksheetRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCWorksheetRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCWorksheetRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCWorksheetRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCWorksheetRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCColorRecord">
+            <summary>
+            Structure <code>RCColorRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCColorRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCColorRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCColorRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCColorRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCDimensionRecord">
+            <summary>
+            Structure <code>RCDimensionRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCDimensionRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCDimensionRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCDimensionRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCDimensionRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCAddressRecord">
+            <summary>
+            Structure <code>RCAddressRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCAddressRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCAddressRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCAddressRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCAddressRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCRangeRecord">
+            <summary>
+            Structure <code>RCRangeRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCRangeRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCRangeRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCRangeRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCRangeRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCDataSeriesRecord">
+            <summary>
+            Structure <code>RCDataSeriesRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCDataSeriesRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCDataSeriesRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCDataSeriesRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCDataSeriesRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCConditionalFormatItemRecord">
+            <summary>
+            Structure <code>RCConditionalFormatItemRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCConditionalFormatItemRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCConditionalFormatItemRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCConditionalFormatItemRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCConditionalFormatItemRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCConditionalFormatStyleRecord">
+            <summary>
+            Structure <code>RCConditionalFormatStyleRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCConditionalFormatStyleRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCConditionalFormatStyleRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCConditionalFormatStyleRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCConditionalFormatStyleRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCBorderStyleRecord">
+            <summary>
+            Structure <code>RCBorderStyleRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCBorderStyleRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCBorderStyleRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCBorderStyleRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCBorderStyleRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCFillStyleRecord">
+            <summary>
+            Structure <code>RCFillStyleRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCFillStyleRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCFillStyleRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCFillStyleRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCFillStyleRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCFontStyleRecord">
+            <summary>
+            Structure <code>RCFontStyleRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCFontStyleRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCFontStyleRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCFontStyleRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCFontStyleRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+    </members>
+</doc>
