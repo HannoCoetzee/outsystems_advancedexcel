@@ -327,13 +327,6 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssRangeToMerge">The range of the cells to merge</param>
 		void MssCell_Merge(object ssWorksheet, RCRangeRecord ssRangeToMerge);
 
-		/// <summary>
-		/// Un-Merge cells in the range provided
-		/// </summary>
-		/// <param name="ssWorksheet">The worksheet to work with</param>
-		/// <param name="ssRangeToUnmerge">The range of cell to un-merge</param>
-		void MssCell_UnMerge(object ssWorksheet, RCRangeRecord ssRangeToUnmerge);
-
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
