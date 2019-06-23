@@ -21,6 +21,113 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
         /// <summary>
+        /// Add a comment to a cell
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssRowNumber">The row number of the cell to add the comment to.</param>
+        /// <param name="ssColumnNumber">The column number of the cell to add the comment to.</param>
+        /// <param name="ssText">The comment.</param>
+        /// <param name="ssAuthor">The author of the comment.</param>
+        public void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.Comments.Add(ws.Cells[ssRowNumber, ssColumnNumber], ssText, ssAuthor);
+        } // MssComment_Add
+
+        /// <summary>
+        /// Delete column(s) from a worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssStartColumnNumber">Column number where to start deleting columns.</param>
+        /// <param name="ssNumberOfColumns">The number of rows to delete. Default = 1.</param>
+        public void MssColumn_Delete(object ssWorksheet, int ssStartColumnNumber, int ssNumberOfColumns)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+
+            // Delete all comments from cells in column(s) before deleting the column(s).
+            // Considers the rows in the dimension of the worksheet to prevent unnecessary processing.
+            int nrRows = ws.Dimension.Rows;
+
+            for (int row = 1; row <= nrRows; row++)
+            {
+                for (int col = ssStartColumnNumber; col <= ssStartColumnNumber + ssNumberOfColumns; col++)
+                {
+                    if (ws.Cells[row, col].Comment == null)
+                    {
+                        continue;
+                    }
+                    ws.Comments.Remove(ws.Cells[row, col].Comment);
+                }
+            }
+
+            ws.DeleteColumn(ssStartColumnNumber, ssNumberOfColumns);
+        } // MssColumn_Delete
+
+        /// <summary>
+        /// Delete comment(s) in a specified range
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssRange">Range to delete comments from.</param>
+        public void MssComment_Delete(object ssWorksheet, RCRangeRecord ssRange)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+
+            for (int row = ssRange.ssSTRange.ssStartRow; row <= ssRange.ssSTRange.ssEndRow; row++)
+            {
+                for (int col = ssRange.ssSTRange.ssStartCol; col <= ssRange.ssSTRange.ssEndCol; col++)
+                {
+                    if (ws.Cells[row, col].Comment == null)
+                    {
+                        continue;
+                    }
+                    ws.Comments.Remove(ws.Cells[row, col].Comment);
+                }
+            }
+        } // MssComment_Delete
+
+        /// <summary>
+        /// Inserts a new column into the spreadsheet.  Existing columns to the right of the insert index will be shifted right.  All formula are updated to take account of the new column.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssInsertAt">Column number where to insert new column.</param>
+        /// <param name="ssNumberOfColumns">The number of columns to insert.</param>
+        /// <param name="ssCopyStylesFrom">Copy Styles from this column. Applied to all inserted columns. 0 (default) will not copy any styles</param>
+        public void MssColumn_Insert(object ssWorksheet, int ssInsertAt, int ssNumberOfColumns, int ssCopyStylesFrom)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.InsertColumn(ssInsertAt, ssNumberOfColumns, ssCopyStylesFrom);
+        } // MssColumn_Insert
+
+        /// <summary>
+        /// Delete row(s) from a worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssStartRowNumber">Row number where to start deleting rows.</param>
+        /// <param name="ssNumberOfRows">The number of rows to delete. Default = 1.</param>
+        public void MssRow_Delete(object ssWorksheet, int ssStartRowNumber, int ssNumberOfRows)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+
+            // Delete all comments from cells in row(s) before deleting the row(s).
+            // Considers the columns in the dimension of the worksheet to prevent unnecessary processing.
+            int nrColumns = ws.Dimension.Columns;
+
+            for (int col = 1; col <= nrColumns; col++)
+            {
+                for (int row = ssStartRowNumber; row <= ssStartRowNumber + ssNumberOfRows; row++)
+                {
+                    if (ws.Cells[row, col].Comment == null)
+                    {
+                        continue;
+                    }
+                    ws.Comments.Remove(ws.Cells[row, col].Comment);
+                }
+            }
+
+            ws.DeleteRow(ssStartRowNumber, ssNumberOfRows);
+        } // MssRow_Delete
+
+        /// <summary>
         /// Un-Merge cells in the range provided
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with</param>
@@ -208,14 +315,11 @@ namespace OutSystems.NssAdvanced_Excel
         /// Add a rule for conditionally formatting a range of cells.
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with</param>
-        /// <param name="ssConditionalFormatRecord">The conditional formatting to apply to the Address Range</param>
-        /// </param>
+        /// <param name="ssConditionalFormatRecord">The conditional formatting to apply to the Address Range</param>        
         public void MssConditionalFormatting_AddRule(object ssWorksheet, RCConditionalFormatItemRecord ssConditionalFormatRecord)
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
             ExcelAddress address = new ExcelAddress(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssAddress);
-
-            LogMessage("Rule type: " + ssConditionalFormatRecord.ssSTConditionalFormatItem.ssRuleType);
 
             eExcelConditionalFormattingRuleType ruleType = (eExcelConditionalFormattingRuleType)ssConditionalFormatRecord.ssSTConditionalFormatItem.ssRuleType;
 
@@ -284,28 +388,28 @@ namespace OutSystems.NssAdvanced_Excel
                     gt.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
                     gt.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
                     gt.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    ApplyStyle(gt.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    Util.ApplyConditionalFormattingStyle(gt.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.GreaterThanOrEqual:
                     var gte = ws.ConditionalFormatting.AddGreaterThanOrEqual(address);
                     gte.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
                     gte.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
                     gte.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    ApplyStyle(gte.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    Util.ApplyConditionalFormattingStyle(gte.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.LessThan:
                     var lt = ws.ConditionalFormatting.AddLessThan(address);
                     lt.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
                     lt.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
                     lt.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    ApplyStyle(lt.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    Util.ApplyConditionalFormattingStyle(lt.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.LessThanOrEqual:
                     var lte = ws.ConditionalFormatting.AddLessThanOrEqual(address);
                     lte.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
                     lte.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
                     lte.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    ApplyStyle(lte.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    Util.ApplyConditionalFormattingStyle(lte.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.NotBetween:
                     break;
@@ -341,45 +445,6 @@ namespace OutSystems.NssAdvanced_Excel
         } // MssConditionalFormatting_AddRule
 
         /// <summary>
-        /// Apply conditional formatting style to rule style property
-        /// </summary>
-        /// <param name="style"></param>
-        /// <param name="ssStyle"></param>
-        private void ApplyStyle(ExcelDxfStyleConditionalFormatting style, RCConditionalFormatStyleRecord ssStyle)
-        {
-            ExcelUnderLineType underline = (ExcelUnderLineType)ssStyle.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssUnderline;
-            ExcelBorderStyle bTop = (ExcelBorderStyle)ssStyle.ssSTConditionalFormatStyle.ssBorderTop.ssSTBorderStyle.ssStyle;
-            ExcelBorderStyle bBottom = (ExcelBorderStyle)ssStyle.ssSTConditionalFormatStyle.ssBorderBottom.ssSTBorderStyle.ssStyle;
-            ExcelBorderStyle bLeft = (ExcelBorderStyle)ssStyle.ssSTConditionalFormatStyle.ssBorderLeft.ssSTBorderStyle.ssStyle;
-            ExcelBorderStyle bRight = (ExcelBorderStyle)ssStyle.ssSTConditionalFormatStyle.ssBorderRight.ssSTBorderStyle.ssStyle;
-            ExcelFillStyle patternType = (ExcelFillStyle)ssStyle.ssSTConditionalFormatStyle.ssFill.ssSTFillStyle.ssPatternType;
-
-            style.Border.Bottom.Style = bBottom;
-            style.Border.Bottom.Color.Color = Util.ConvertFromColorCode(ssStyle.ssSTConditionalFormatStyle.ssBorderBottom.ssSTBorderStyle.ssColor);
-
-            style.Border.Left.Style = bLeft;
-            style.Border.Left.Color.Color = Util.ConvertFromColorCode(ssStyle.ssSTConditionalFormatStyle.ssBorderLeft.ssSTBorderStyle.ssColor);
-
-            style.Border.Right.Style = bRight;
-            style.Border.Right.Color.Color = Util.ConvertFromColorCode(ssStyle.ssSTConditionalFormatStyle.ssBorderRight.ssSTBorderStyle.ssColor);
-
-            style.Border.Top.Style = bTop;
-            style.Border.Top.Color.Color = Util.ConvertFromColorCode(ssStyle.ssSTConditionalFormatStyle.ssBorderTop.ssSTBorderStyle.ssColor);
-
-            style.Fill.BackgroundColor.Color = Util.ConvertFromColorCode(ssStyle.ssSTConditionalFormatStyle.ssFill.ssSTFillStyle.ssBackgroundColor);
-            style.Fill.PatternColor.Color = Util.ConvertFromColorCode(ssStyle.ssSTConditionalFormatStyle.ssFill.ssSTFillStyle.ssPatternColor);
-            style.Fill.PatternType = patternType;
-
-            style.Font.Bold = ssStyle.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssBold;
-            style.Font.Italic = ssStyle.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssItalic;
-            style.Font.Strike = ssStyle.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssStrike;
-            style.Font.Underline = underline;
-            style.Font.Color.Color = Util.ConvertFromColorCode(ssStyle.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssColor);
-
-            style.NumberFormat.Format = ssStyle.ssSTConditionalFormatStyle.ssNumberFormat;
-        }
-
-        /// <summary>
         /// Inserts a new row into the spreadsheet.  Existing rows below the position are shifted down.  All formula are updated to take account of the new row.
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to insert the row(s) into</param>
@@ -406,7 +471,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             ExcelRange er = ws.Cells[ssRange.ssSTRange.ssStartRow, ssRange.ssSTRange.ssStartCol, ssRange.ssSTRange.ssEndRow, ssRange.ssSTRange.ssEndCol];
 
-            ApplyFormatToRange(er, ssCellFormat);
+            Util.ApplyFormatToRange(er, ssCellFormat);
         } // MssCellFormat_ApplyToRange
 
         /// <summary>
@@ -570,7 +635,7 @@ namespace OutSystems.NssAdvanced_Excel
                     default: ws.SetValue(ssCellName, ssCellValue); break;
                 }
 
-                ApplyFormatToRange(ws.Cells[ssCellName], ssCellFormat);
+                Util.ApplyFormatToRange(ws.Cells[ssCellName], ssCellFormat);
                 return;
             }
             if (ssCellColumn >= 1 && ssCellRow >= 1)
@@ -585,7 +650,7 @@ namespace OutSystems.NssAdvanced_Excel
                     default: ws.SetValue(ssCellRow, ssCellColumn, ssCellValue); break;
                 }
 
-                ApplyFormatToRange(ws.Cells[ssCellRow, ssCellColumn], ssCellFormat);
+                Util.ApplyFormatToRange(ws.Cells[ssCellRow, ssCellColumn], ssCellFormat);
             }
         } // MssCell_Write
 
@@ -632,15 +697,6 @@ namespace OutSystems.NssAdvanced_Excel
             ssWorksheet = ws;
 
         } // MssWorksheet_Select
-        /// <summary>
-        /// Log a message to the General Log
-        /// </summary>
-        /// <param name="message">What to log</param>
-        void LogMessage(object message)
-        {
-            GenericExtendedActions.LogMessage(AppInfo.GetAppInfo().OsContext, message.ToString(), "AdvXL");
-        }
-
         /// <summary>
         /// Delete a worksheet in a workbook by specifying either the index, or the name of the worksheet.
         /// </summary>
@@ -728,7 +784,7 @@ namespace OutSystems.NssAdvanced_Excel
             ssProperties.ssSTWorksheet.ssIndex = ws.Index;
             ssProperties.ssSTWorksheet.ssName = ws.Name;
 
-            ssProperties.ssSTWorksheet.ssDimension = CastDimension(ws.Dimension);
+            ssProperties.ssSTWorksheet.ssDimension = Util.CastDimension(ws.Dimension);
 
             Color c = ws.TabColor;
             RCColorRecord rc = new RCColorRecord();
@@ -748,110 +804,12 @@ namespace OutSystems.NssAdvanced_Excel
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="dimension"></param>
-        /// <returns></returns>
-        private RCDimensionRecord CastDimension(ExcelAddressBase dimension)
-        {
-            RCDimensionRecord dim = new RCDimensionRecord();
-
-            if (dimension == null)
-            {
-                return dim;
-            }
-
-            dim.ssSTDimension.ssAddress = dimension.Address;
-            dim.ssSTDimension.ssColumns = dimension.Columns;
-            dim.ssSTDimension.ssEnd = CastAddress(dimension.End);
-            dim.ssSTDimension.ssRows = dimension.Rows;
-            dim.ssSTDimension.ssStart = CastAddress(dimension.Start);
-
-            return dim;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="address"></param>
-        /// <returns></returns>
-        private RCAddressRecord CastAddress(ExcelCellAddress address)
-        {
-            RCAddressRecord add = new RCAddressRecord();
-
-            if (address == null)
-            {
-                return add;
-            }
-
-            add.ssSTAddress.ssAddress = address.Address;
-            add.ssSTAddress.ssColumn = address.Column;
-            add.ssSTAddress.ssIsRef = address.IsRef;
-            add.ssSTAddress.ssRow = address.Row;
-
-            return add;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="ssWorksheet"></param>
         /// <param name="ssWorksheetName"></param>
         public void MssWorksheet_GetName(object ssWorksheet, out string ssWorksheetName)
         {
             ssWorksheetName = (ssWorksheet as ExcelWorksheet).Name;
         } // MssWorksheet_GetName
-
-        /// <summary>
-        /// Apply the specified format to a range of cells
-        /// </summary>
-        /// <param name="range">The range of cells to apply the formatting to</param>
-        /// <param name="format">The format to apply to the range of cells</param>
-        private void ApplyFormatToRange(ExcelRange range, RCCellFormatRecord format)
-        {
-            if (format == null)
-            {
-                return;
-            }
-
-            if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssFontName))
-            {
-                range.Style.Font.Name = format.ssSTCellFormat.ssFontName;
-            }
-
-            if (format.ssSTCellFormat.ssFontSize != 0)
-            {
-                range.Style.Font.Size = format.ssSTCellFormat.ssFontSize;
-            }
-
-            if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBackgroundColor))
-            {
-                Color color = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBackgroundColor);
-                range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                range.Style.Fill.BackgroundColor.SetColor(color);
-            }
-
-            if (format.ssSTCellFormat.ssBold)
-            {
-                range.Style.Font.Bold = true;
-            }
-
-            if (format.ssSTCellFormat.ssBorderStyle > 0)
-            {
-                Color borderColor = new Color();
-                if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderColor))
-                {
-                    borderColor = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBorderColor);
-                }
-                ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderStyle;
-                range.Style.Border.BorderAround(borderStyle, borderColor);
-            }
-
-            if (format.ssSTCellFormat.ssAutofitColumn)
-            {
-                range.AutoFitColumns();
-            }
-
-            range.Style.Numberformat.Format = format.ssSTCellFormat.ssNumberFormat;
-        }
 
         /// <summary>
         /// Write a dataset to a range of cells.
@@ -883,7 +841,7 @@ namespace OutSystems.NssAdvanced_Excel
                 ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, ssExportHeaders);
             }
 
-            ApplyFormatToRange(ws.Cells[ssRowStart, ssColumnStart], ssCellFormat);
+            Util.ApplyFormatToRange(ws.Cells[ssRowStart, ssColumnStart], ssCellFormat);
         } // MssCell_WriteRangeWithFormat
 
         /// <summary>

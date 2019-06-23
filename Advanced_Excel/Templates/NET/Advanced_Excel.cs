@@ -408,6 +408,58 @@ namespace OutSystems.NssAdvanced_Excel {
 			// TODO: Write implementation for action
 		} // MssCell_UnMerge
 
+		/// <summary>
+		/// Delete row(s) from a worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssStartRowNumber">Row number where to start deleting rows.</param>
+		/// <param name="ssNumberOfRows">The number of rows to delete. Default = 1.</param>
+		public void MssRow_Delete(object ssWorksheet, int ssStartRowNumber, int ssNumberOfRows) {
+			// TODO: Write implementation for action
+		} // MssRow_Delete
+
+		/// <summary>
+		/// Delete column(s) from a worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssStartColumnNumber">Column number where to start deleting columns.</param>
+		/// <param name="ssNumberOfColumns">The number of rows to delete. Default = 1.</param>
+		public void MssColumn_Delete(object ssWorksheet, int ssStartColumnNumber, int ssNumberOfColumns) {
+			// TODO: Write implementation for action
+		} // MssColumn_Delete
+
+		/// <summary>
+		/// Delete comment(s) in a specified range
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRange">Range to delete comments from.</param>
+		public void MssComment_Delete(object ssWorksheet, RCRangeRecord ssRange) {
+			// TODO: Write implementation for action
+		} // MssComment_Delete
+
+		/// <summary>
+		/// Add a comment to a cell
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRowNumber">The row number of the cell to add the comment to.</param>
+		/// <param name="ssColumnNumber">The column number of the cell to add the comment to.</param>
+		/// <param name="ssText">The comment.</param>
+		/// <param name="ssAuthor">The author of the comment.</param>
+		public void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor) {
+			// TODO: Write implementation for action
+		} // MssComment_Add
+
+		/// <summary>
+		/// Inserts a new column into the spreadsheet.  Existing columns to the right of the insert index will be shifted right.  All formula are updated to take account of the new column.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssInsertAt">Column number where to insert new column.</param>
+		/// <param name="ssNumberOfColumns">The number of columns to insert.</param>
+		/// <param name="ssCopyStylesFrom">Copy Styles from this column. Applied to all inserted columns. 0 (default) will not copy any styles</param>
+		public void MssColumn_Insert(object ssWorksheet, int ssInsertAt, int ssNumberOfColumns, int ssCopyStylesFrom) {
+			// TODO: Write implementation for action
+		} // MssColumn_Insert
+
 	} // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

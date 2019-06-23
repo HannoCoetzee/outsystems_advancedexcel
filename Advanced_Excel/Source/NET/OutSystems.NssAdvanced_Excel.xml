@@ -4,6 +4,48 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssComment_Add(System.Object,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Add a comment to a cell
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssRowNumber">The row number of the cell to add the comment to.</param>
+            <param name="ssColumnNumber">The column number of the cell to add the comment to.</param>
+            <param name="ssText">The comment.</param>
+            <param name="ssAuthor">The author of the comment.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_Delete(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Delete column(s) from a worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssStartColumnNumber">Column number where to start deleting columns.</param>
+            <param name="ssNumberOfColumns">The number of rows to delete. Default = 1.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssComment_Delete(System.Object,OutSystems.NssAdvanced_Excel.RCRangeRecord)">
+            <summary>
+            Delete comment(s) in a specified range
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssRange">Range to delete comments from.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_Insert(System.Object,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Inserts a new column into the spreadsheet.  Existing columns to the right of the insert index will be shifted right.  All formula are updated to take account of the new column.
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssInsertAt">Column number where to insert new column.</param>
+            <param name="ssNumberOfColumns">The number of columns to insert.</param>
+            <param name="ssCopyStylesFrom">Copy Styles from this column. Applied to all inserted columns. 0 (default) will not copy any styles</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssRow_Delete(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Delete row(s) from a worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssStartRowNumber">Row number where to start deleting rows.</param>
+            <param name="ssNumberOfRows">The number of rows to delete. Default = 1.</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_UnMerge(System.Object,OutSystems.NssAdvanced_Excel.RCRangeRecord)">
             <summary>
             Un-Merge cells in the range provided
@@ -33,13 +75,12 @@
             <param name="ssWorksheet">The worksheet to work with</param>
             <param name="ssListOfRule">List of conditional formatting rules</param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssConditionalFormatting_AddRule(System.Object,OutSystems.NssAdvanced_Excel.RCConditionalFormatItemRecord)" -->
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.ApplyStyle(OfficeOpenXml.Style.Dxf.ExcelDxfStyleConditionalFormatting,OutSystems.NssAdvanced_Excel.RCConditionalFormatStyleRecord)">
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssConditionalFormatting_AddRule(System.Object,OutSystems.NssAdvanced_Excel.RCConditionalFormatItemRecord)">
             <summary>
-            Apply conditional formatting style to rule style property
+            Add a rule for conditionally formatting a range of cells.
             </summary>
-            <param name="style"></param>
-            <param name="ssStyle"></param>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssConditionalFormatRecord">The conditional formatting to apply to the Address Range</param>        
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssRow_Insert(System.Object,System.Int32,System.Int32,System.Int32)">
             <summary>
@@ -150,12 +191,6 @@
             <param name="ssWorksheetName">The name of the worksheet to find</param>
             <param name="ssWorksheet">This is the worksheet object that you have been looking for,</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.LogMessage(System.Object)">
-            <summary>
-            Log a message to the General Log
-            </summary>
-            <param name="message">What to log</param>
-        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Delete(System.Object,System.Int32,System.String)">
             <summary>
             Delete a worksheet in a workbook by specifying either the index, or the name of the worksheet.
@@ -188,33 +223,12 @@
             <param name="ssWorksheet"></param>
             <param name="ssProperties"></param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.CastDimension(OfficeOpenXml.ExcelAddressBase)">
-            <summary>
-            
-            </summary>
-            <param name="dimension"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.CastAddress(OfficeOpenXml.ExcelCellAddress)">
-            <summary>
-            
-            </summary>
-            <param name="address"></param>
-            <returns></returns>
-        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_GetName(System.Object,System.String@)">
             <summary>
             
             </summary>
             <param name="ssWorksheet"></param>
             <param name="ssWorksheetName"></param>
-        </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.ApplyFormatToRange(OfficeOpenXml.ExcelRange,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
-            <summary>
-            Apply the specified format to a range of cells
-            </summary>
-            <param name="range">The range of cells to apply the formatting to</param>
-            <param name="format">The format to apply to the range of cells</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteRange(System.Object,System.Int32,System.Int32,System.Object,OutSystems.NssAdvanced_Excel.RCCellFormatRecord,System.Boolean)">
             <summary>
@@ -682,6 +696,48 @@
             </summary>
             <param name="ssWorksheet">The worksheet to work with</param>
             <param name="ssRangeToUnmerge">The range of cell to un-merge</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssRow_Delete(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Delete row(s) from a worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssStartRowNumber">Row number where to start deleting rows.</param>
+            <param name="ssNumberOfRows">The number of rows to delete. Default = 1.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssColumn_Delete(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Delete column(s) from a worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssStartColumnNumber">Column number where to start deleting columns.</param>
+            <param name="ssNumberOfColumns">The number of rows to delete. Default = 1.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssComment_Delete(System.Object,OutSystems.NssAdvanced_Excel.RCRangeRecord)">
+            <summary>
+            Delete comment(s) in a specified range
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssRange">Range to delete comments from.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssComment_Add(System.Object,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Add a comment to a cell
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssRowNumber">The row number of the cell to add the comment to.</param>
+            <param name="ssColumnNumber">The column number of the cell to add the comment to.</param>
+            <param name="ssText">The comment.</param>
+            <param name="ssAuthor">The author of the comment.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssColumn_Insert(System.Object,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Inserts a new column into the spreadsheet.  Existing columns to the right of the insert index will be shifted right.  All formula are updated to take account of the new column.
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssInsertAt">Column number where to insert new column.</param>
+            <param name="ssNumberOfColumns">The number of columns to insert.</param>
+            <param name="ssCopyStylesFrom">Copy Styles from this column. Applied to all inserted columns. 0 (default) will not copy any styles</param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
@@ -1804,6 +1860,40 @@
             Read from record
             </summary>
             <param name="r"> Record</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.Util.ApplyFormatToRange(OfficeOpenXml.ExcelRange,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Apply the specified format to a range of cells
+            </summary>
+            <param name="range">The range of cells to apply the formatting to</param>
+            <param name="format">The format to apply to the range of cells</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.Util.ApplyConditionalFormattingStyle(OfficeOpenXml.Style.Dxf.ExcelDxfStyleConditionalFormatting,OutSystems.NssAdvanced_Excel.RCConditionalFormatStyleRecord)">
+            <summary>
+            Apply conditional formatting style to rule style property
+            </summary>
+            <param name="style"></param>
+            <param name="ssStyle"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.Util.CastDimension(OfficeOpenXml.ExcelAddressBase)">
+            <summary>
+            
+            </summary>
+            <param name="dimension"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.Util.CastAddress(OfficeOpenXml.ExcelCellAddress)">
+            <summary>
+            
+            </summary>
+            <param name="address"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.Util.LogMessage(System.Object)">
+            <summary>
+            Log a message to the General Log
+            </summary>
+            <param name="message">What to log</param>
         </member>
     </members>
 </doc>
