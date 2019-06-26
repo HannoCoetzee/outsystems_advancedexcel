@@ -27,6 +27,11 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRuleToDeleteIndex">The index of the rule to be deleted.</param>
         public void MssConditionalFormatting_DeleteRule(object ssWorksheet, int ssRuleToDeleteIndex)
         {
+            if (ssRuleToDeleteIndex <= 0)
+            {
+                throw new IndexOutOfRangeException("Index needs to be >= 1.");
+            }
+
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
             ws.ConditionalFormatting.RemoveAt(ssRuleToDeleteIndex);
         } // MssConditionalFormatting_DeleteRule
@@ -600,6 +605,11 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ssCellValue = "";
 
+            if (string.IsNullOrEmpty(ssCellName) && ssCellColumn <= 0 && ssCellRow <= 0)
+            {
+                throw new Exception("You need to specify a valid cell name (i.e. A4) or cell index (row/column combination)");
+            }
+
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
 
             try
@@ -683,6 +693,11 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssNewIndex">The new index for the sheet</param>
         public void MssWorkbook_ChangeSheetIndex(object ssWorkbook, int ssCurrentIndex, int ssNewIndex)
         {
+            if (ssCurrentIndex <= 0 || ssNewIndex <= 0)
+            {
+                throw new Exception("Current and New index values must be >= 1.");
+            }
+
             ExcelPackage ee = ssWorkbook as ExcelPackage;
 
             if (ssNewIndex > ee.Workbook.Worksheets.Count)
@@ -702,6 +717,11 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet">This is the worksheet object that you have been looking for,</param>
         public void MssWorksheet_Select(object ssWorkbook, int ssWorksheetIndex, string ssWorksheetName, out object ssWorksheet)
         {
+            if (ssWorksheetIndex <= 0 && string.IsNullOrEmpty(ssWorksheetName))
+            {
+                throw new Exception("You need to specify at least one of WorksheetIndex or WorksheetName");
+            }
+
             ssWorksheet = null;
             ExcelPackage p = ssWorkbook as ExcelPackage;
             ExcelWorkbook wb = p.Workbook;
@@ -726,6 +746,11 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssNameToDelete">The name of the worksheet to delete. Set to empty string "" if using the index to delete.</param>
         public void MssWorksheet_Delete(object ssWorkbook, int ssIndexToDelete, string ssNameToDelete)
         {
+            if (ssIndexToDelete <= 0 && string.IsNullOrEmpty(ssNameToDelete))
+            {
+                throw new Exception("You need to specify at least one of WorksheetIndex or WorksheetName");
+            }
+
             ExcelPackage ee = ssWorkbook as ExcelPackage;
             if (ssIndexToDelete == 0)
             {
