@@ -9,6 +9,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using OfficeOpenXml.Style.Dxf;
 using OutSystems.HubEdition.RuntimePlatform;
+using OfficeOpenXml.Drawing.Chart;
 
 namespace OutSystems.NssAdvanced_Excel
 {
@@ -264,6 +265,93 @@ namespace OutSystems.NssAdvanced_Excel
         internal static void LogMessage(object message)
         {
             GenericExtendedActions.LogMessage(AppInfo.GetAppInfo().OsContext, message.ToString(), "AdvXL");
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="chartType"></param>
+        /// <returns></returns>
+        internal static eChartType stringToChartType(string chartType)
+        {
+            switch (chartType)
+            {
+                case "Area3D": return eChartType.Area3D;
+                case "AreaStacked3D": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked3D;
+                case "AreaStacked1003D": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked1003D;
+                case "BarClustered3D": return OfficeOpenXml.Drawing.Chart.eChartType.BarClustered3D;
+                case "BarStacked3D": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked3D;
+                case "BarStacked1003D": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked1003D;
+                case "Column3D": return OfficeOpenXml.Drawing.Chart.eChartType.Column3D;
+                case "ColumnClustered3D": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnClustered3D;
+                case "ColumnStacked3D": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked3D;
+                case "ColumnStacked1003D": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked1003D;
+                case "Line3D": return OfficeOpenXml.Drawing.Chart.eChartType.Line3D;
+                case "Pie3D": return OfficeOpenXml.Drawing.Chart.eChartType.Pie3D;
+                case "PieExploded3D": return OfficeOpenXml.Drawing.Chart.eChartType.PieExploded3D;
+                case "Area": return OfficeOpenXml.Drawing.Chart.eChartType.Area;
+                case "AreaStacked": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked;
+                case "AreaStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked100;
+                case "BarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.BarClustered;
+                case "BarOfPie": return OfficeOpenXml.Drawing.Chart.eChartType.BarOfPie;
+                case "BarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked;
+                case "BarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked100;
+                case "Bubble": return OfficeOpenXml.Drawing.Chart.eChartType.Bubble;
+                case "Bubble3DEffect": return OfficeOpenXml.Drawing.Chart.eChartType.Bubble3DEffect;
+                case "ColumnClustered": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnClustered;
+                case "ColumnStacked": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked;
+                case "ColumnStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked100;
+                case "ConeBarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.ConeBarClustered;
+                case "ConeBarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.ConeBarStacked;
+                case "ConeBarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.ConeBarStacked100;
+                case "ConeCol": return OfficeOpenXml.Drawing.Chart.eChartType.ConeCol;
+                case "ConeColClustered": return OfficeOpenXml.Drawing.Chart.eChartType.ConeColClustered;
+                case "ConeColStacked": return OfficeOpenXml.Drawing.Chart.eChartType.ConeColStacked;
+                case "ConeColStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.ConeColStacked100;
+                case "CylinderBarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderBarClustered;
+                case "CylinderBarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderBarStacked;
+                case "CylinderBarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderBarStacked100;
+                case "CylinderCol": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderCol;
+                case "CylinderColClustered": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderColClustered;
+                case "CylinderColStacked": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderColStacked;
+                case "CylinderColStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderColStacked100;
+                case "Doughnut": return OfficeOpenXml.Drawing.Chart.eChartType.Doughnut;
+                case "DoughnutExploded": return OfficeOpenXml.Drawing.Chart.eChartType.DoughnutExploded;
+                case "Line": return OfficeOpenXml.Drawing.Chart.eChartType.Line;
+                case "LineMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.LineMarkers;
+                case "LineMarkersStacked": return OfficeOpenXml.Drawing.Chart.eChartType.LineMarkersStacked;
+                case "LineMarkersStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.LineMarkersStacked100;
+                case "LineStacked": return OfficeOpenXml.Drawing.Chart.eChartType.LineStacked;
+                case "LineStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.LineStacked100;
+                case "Pie": return OfficeOpenXml.Drawing.Chart.eChartType.Pie;
+                case "PieExploded": return OfficeOpenXml.Drawing.Chart.eChartType.PieExploded;
+                case "PieOfPie": return OfficeOpenXml.Drawing.Chart.eChartType.PieOfPie;
+                case "PyramidBarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidBarClustered;
+                case "PyramidBarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidBarStacked;
+                case "PyramidBarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidBarStacked100;
+                case "PyramidCol": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidCol;
+                case "PyramidColClustered": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidColClustered;
+                case "PyramidColStacked": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidColStacked;
+                case "PyramidColStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidColStacked100;
+                case "Radar": return OfficeOpenXml.Drawing.Chart.eChartType.Radar;
+                case "RadarFilled": return OfficeOpenXml.Drawing.Chart.eChartType.RadarFilled;
+                case "RadarMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.RadarMarkers;
+                case "StockHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockHLC;
+                case "StockOHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockOHLC;
+                case "StockVHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockVHLC;
+                case "StockVOHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockVOHLC;
+                case "Surface": return OfficeOpenXml.Drawing.Chart.eChartType.Surface;
+                case "SurfaceTopView": return OfficeOpenXml.Drawing.Chart.eChartType.SurfaceTopView;
+                case "SurfaceTopViewWireframe": return OfficeOpenXml.Drawing.Chart.eChartType.SurfaceTopViewWireframe;
+                case "SurfaceWireframe": return OfficeOpenXml.Drawing.Chart.eChartType.SurfaceWireframe;
+                case "XYScatter": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatter;
+                case "XYScatterLines": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterLines;
+                case "XYScatterLinesNoMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterLinesNoMarkers;
+                case "XYScatterSmooth": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterSmooth;
+                case "XYScatterSmoothNoMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterSmoothNoMarkers;
+            }
+            return OfficeOpenXml.Drawing.Chart.eChartType.Column3D;
         }
 
 

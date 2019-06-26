@@ -1921,5 +1921,12 @@
             </summary>
             <param name="message">What to log</param>
         </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.Util.stringToChartType(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="chartType"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>
