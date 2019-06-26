@@ -376,6 +376,19 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssCopyStylesFrom">Copy Styles from this column. Applied to all inserted columns. 0 (default) will not copy any styles</param>
 		void MssColumn_Insert(object ssWorksheet, int ssInsertAt, int ssNumberOfColumns, int ssCopyStylesFrom);
 
+		/// <summary>
+		/// Delete a specified Conditional Formatting rule on a worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRuleToDeleteIndex">The index of the rule to be deleted.</param>
+		void MssConditionalFormatting_DeleteRule(object ssWorksheet, int ssRuleToDeleteIndex);
+
+		/// <summary>
+		/// Delete ALL Conditional Formatting rules for a worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		void MssConditionalFormatting_DeleteAllRules(object ssWorksheet);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

@@ -21,6 +21,27 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
         /// <summary>
+        /// Delete a specified Conditional Formatting rule on a worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssRuleToDeleteIndex">The index of the rule to be deleted.</param>
+        public void MssConditionalFormatting_DeleteRule(object ssWorksheet, int ssRuleToDeleteIndex)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.ConditionalFormatting.RemoveAt(ssRuleToDeleteIndex);
+        } // MssConditionalFormatting_DeleteRule
+
+        /// <summary>
+        /// Delete ALL Conditional Formatting rules for a worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        public void MssConditionalFormatting_DeleteAllRules(object ssWorksheet)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.ConditionalFormatting.RemoveAll();
+        } // MssConditionalFormatting_DeleteAllRules
+
+        /// <summary>
         /// Add a comment to a cell
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with.</param>

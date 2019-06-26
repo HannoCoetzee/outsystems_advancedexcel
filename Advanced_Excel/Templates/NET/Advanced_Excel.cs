@@ -460,6 +460,23 @@ namespace OutSystems.NssAdvanced_Excel {
 			// TODO: Write implementation for action
 		} // MssColumn_Insert
 
+		/// <summary>
+		/// Delete a specified Conditional Formatting rule on a worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRuleToDeleteIndex">The index of the rule to be deleted.</param>
+		public void MssConditionalFormatting_DeleteRule(object ssWorksheet, int ssRuleToDeleteIndex) {
+			// TODO: Write implementation for action
+		} // MssConditionalFormatting_DeleteRule
+
+		/// <summary>
+		/// Delete ALL Conditional Formatting rules for a worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		public void MssConditionalFormatting_DeleteAllRules(object ssWorksheet) {
+			// TODO: Write implementation for action
+		} // MssConditionalFormatting_DeleteAllRules
+
 	} // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

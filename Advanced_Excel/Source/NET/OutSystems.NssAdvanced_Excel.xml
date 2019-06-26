@@ -4,6 +4,19 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssConditionalFormatting_DeleteRule(System.Object,System.Int32)">
+            <summary>
+            Delete a specified Conditional Formatting rule on a worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssRuleToDeleteIndex">The index of the rule to be deleted.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssConditionalFormatting_DeleteAllRules(System.Object)">
+            <summary>
+            Delete ALL Conditional Formatting rules for a worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssComment_Add(System.Object,System.Int32,System.Int32,System.String,System.String)">
             <summary>
             Add a comment to a cell
@@ -738,6 +751,19 @@
             <param name="ssInsertAt">Column number where to insert new column.</param>
             <param name="ssNumberOfColumns">The number of columns to insert.</param>
             <param name="ssCopyStylesFrom">Copy Styles from this column. Applied to all inserted columns. 0 (default) will not copy any styles</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssConditionalFormatting_DeleteRule(System.Object,System.Int32)">
+            <summary>
+            Delete a specified Conditional Formatting rule on a worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssRuleToDeleteIndex">The index of the rule to be deleted.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssConditionalFormatting_DeleteAllRules(System.Object)">
+            <summary>
+            Delete ALL Conditional Formatting rules for a worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
