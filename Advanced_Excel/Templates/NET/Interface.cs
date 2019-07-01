@@ -389,6 +389,24 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssWorksheet">The worksheet to work with.</param>
 		void MssConditionalFormatting_DeleteAllRules(object ssWorksheet);
 
+		/// <summary>
+		/// Insert an image into a Worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssImageFile">Binary data of the image to be inserted</param>
+		/// <param name="ssImageType">File type. BMP, PNG, JPG</param>
+		/// <param name="ssImageName">Name reference for the image in the Worksheet</param>
+		/// <param name="ssRowNumber">Row index where to insert image. Ignored if CellName is specified</param>
+		/// <param name="ssColumnNumber">Column index where to insert image. Ignored if CellName is specified</param>
+		/// <param name="ssCellName">Cell Name where to insert image</param>
+		void MssImage_Insert(object ssWorksheet, byte[] ssImageFile, string ssImageType, string ssImageName, int ssRowNumber, int ssColumnNumber, string ssCellName);
+
+		/// <summary>
+		/// Apply the column autofit action to the specified range of cells specified in the given worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		void MssWorksheet_AutofitColumns(object ssWorksheet);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

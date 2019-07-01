@@ -4,6 +4,25 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_AutofitColumns(System.Object)">
+            <summary>
+            Apply the column autofit action to the specified range of cells specified in the given worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssRange">The range to which to apply the autofit action.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssImage_Insert(System.Object,System.Byte[],System.String,System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            Insert an image into a Worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssImageFile">Binary data of the image to be inserted</param>
+            <param name="ssImageType">File type. BMP, PNG, JPG</param>
+            <param name="ssImageName">Name reference for the image in the Worksheet</param>
+            <param name="ssRowNumber">Row index where to insert image. Ignored if CellName is specified</param>
+            <param name="ssColumnNumber">Column index where to insert image. Ignored if CellName is specified</param>
+            <param name="ssCellName">Cell Name where to insert image</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssConditionalFormatting_DeleteRule(System.Object,System.Int32)">
             <summary>
             Delete a specified Conditional Formatting rule on a worksheet
@@ -764,6 +783,24 @@
             Delete ALL Conditional Formatting rules for a worksheet
             </summary>
             <param name="ssWorksheet">The worksheet to work with.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssImage_Insert(System.Object,System.Byte[],System.String,System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            Insert an image into a Worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
+            <param name="ssImageFile">Binary data of the image to be inserted</param>
+            <param name="ssImageType">File type. BMP, PNG, JPG</param>
+            <param name="ssImageName">Name reference for the image in the Worksheet</param>
+            <param name="ssRowNumber">Row index where to insert image. Ignored if CellName is specified</param>
+            <param name="ssColumnNumber">Column index where to insert image. Ignored if CellName is specified</param>
+            <param name="ssCellName">Cell Name where to insert image</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_AutofitColumns(System.Object)">
+            <summary>
+            Apply the column autofit action to the specified range of cells specified in the given worksheet
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with</param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
