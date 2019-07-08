@@ -22,12 +22,13 @@ namespace OutSystems.NssAdvanced_Excel
     public class CssAdvanced_Excel : IssAdvanced_Excel
     {
 
-		/// <summary>
-		/// Apply the column autofit action to the specified range of cells specified in the given worksheet
-		/// </summary>
-		/// <param name="ssWorksheet">The worksheet to work with</param>
-		/// <param name="ssRange">The range to which to apply the autofit action.</param>
-		public void MssWorksheet_AutofitColumns(object ssWorksheet) {
+        /// <summary>
+        /// Apply the column autofit action to the specified range of cells specified in the given worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssRange">The range to which to apply the autofit action.</param>
+        public void MssWorksheet_AutofitColumns(object ssWorksheet)
+        {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
             ws.Cells.AutoFitColumns();
         } // MssWorksheet_AutofitColumns
@@ -279,44 +280,84 @@ namespace OutSystems.NssAdvanced_Excel
                 switch (item.Type)
                 {
                     case eExcelConditionalFormattingRuleType.AboveAverage:
+                        var aboveAverage = item as IExcelConditionalFormattingAverageGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)aboveAverage.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.AboveOrEqualAverage:
+                        var aboveOrEqualAverage = item as IExcelConditionalFormattingAverageGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)aboveOrEqualAverage.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.BelowAverage:
+                        var belowAverage = item as IExcelConditionalFormattingAverageGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)belowAverage.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.BelowOrEqualAverage:
+                        var belowOrEqualAverage = item as IExcelConditionalFormattingAverageGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)belowOrEqualAverage.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.AboveStdDev:
+                        var aboveStdDev = item as IExcelConditionalFormattingStdDevGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)aboveStdDev.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.BelowStdDev:
+                        var belowStdDev = item as IExcelConditionalFormattingStdDevGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)belowStdDev.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.Bottom:
+                        var bottom = item as IExcelConditionalFormattingRule;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)bottom.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.BottomPercent:
+                        var bottomPercent = item as IExcelConditionalFormattingRule;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)bottomPercent.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.Top:
+                        var top = item as IExcelConditionalFormattingRule;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)top.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.TopPercent:
+                        var topPercent = item as IExcelConditionalFormattingRule;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)topPercent.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.Last7Days:
+                        var last7Days = item as IExcelConditionalFormattingTimePeriodGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)last7Days.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.LastMonth:
+                        var lastMonth = item as IExcelConditionalFormattingTimePeriodGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)lastMonth.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.LastWeek:
+                        var lastWeek = item as IExcelConditionalFormattingTimePeriodGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)lastWeek.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.NextMonth:
+                        var nextMonth = item as IExcelConditionalFormattingTimePeriodGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)nextMonth.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.NextWeek:
+                        var nextWeek = item as IExcelConditionalFormattingTimePeriodGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)nextWeek.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.ThisMonth:
+                        var thisMonth = item as IExcelConditionalFormattingTimePeriodGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)thisMonth.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.ThisWeek:
+                        var thisWeek = item as IExcelConditionalFormattingTimePeriodGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)thisWeek.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.Today:
+                        var today = item as IExcelConditionalFormattingTimePeriodGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)today.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.Tomorrow:
+                        var tomorrow = item as IExcelConditionalFormattingTimePeriodGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)tomorrow.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.Yesterday:
+                        var yesterday = item as IExcelConditionalFormattingTimePeriodGroup;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)yesterday.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.BeginsWith:
                         break;
@@ -406,44 +447,124 @@ namespace OutSystems.NssAdvanced_Excel
             switch (ruleType)
             {
                 case eExcelConditionalFormattingRuleType.AboveAverage:
+                    var aa = ws.ConditionalFormatting.AddAboveAverage(address);
+                    aa.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    aa.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(aa.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.AboveOrEqualAverage:
+                    var aea = ws.ConditionalFormatting.AddAboveOrEqualAverage(address);
+                    aea.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    aea.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(aea.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.BelowAverage:
+                    var ba = ws.ConditionalFormatting.AddBelowAverage(address);
+                    ba.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    ba.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(ba.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.BelowOrEqualAverage:
+                    var bea = ws.ConditionalFormatting.AddBelowOrEqualAverage(address);
+                    bea.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    bea.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(bea.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.AboveStdDev:
+                    var astdev = ws.ConditionalFormatting.AddAboveStdDev(address);
+                    astdev.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    astdev.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(astdev.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.BelowStdDev:
+                    var bstdev = ws.ConditionalFormatting.AddBelowStdDev(address);
+                    bstdev.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    bstdev.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(bstdev.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.Bottom:
+                    var b = ws.ConditionalFormatting.AddBottom(address);
+                    b.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    b.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(b.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.BottomPercent:
+                    var bp = ws.ConditionalFormatting.AddBottomPercent(address);
+                    bp.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    bp.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(bp.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.Top:
+                    var t = ws.ConditionalFormatting.AddTop(address);
+                    t.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    t.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(t.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.TopPercent:
+                    var tp = ws.ConditionalFormatting.AddBottomPercent(address);
+                    tp.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    tp.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(tp.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.Last7Days:
+                    var last7Days = ws.ConditionalFormatting.AddLast7Days(address);
+                    last7Days.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    last7Days.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(last7Days.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.LastMonth:
+                    var lastMonth = ws.ConditionalFormatting.AddLastMonth(address);
+                    lastMonth.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    lastMonth.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(lastMonth.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.LastWeek:
+                    var lastWeek = ws.ConditionalFormatting.AddLastWeek(address);
+                    lastWeek.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    lastWeek.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(lastWeek.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.NextMonth:
+                    var nextMonth = ws.ConditionalFormatting.AddNextMonth(address);
+                    nextMonth.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    nextMonth.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(nextMonth.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.NextWeek:
+                    var nextWeek = ws.ConditionalFormatting.AddNextWeek(address);
+                    nextWeek.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    nextWeek.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(nextWeek.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.ThisMonth:
+                    var thisMonth = ws.ConditionalFormatting.AddThisMonth(address);
+                    thisMonth.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    thisMonth.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(thisMonth.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.ThisWeek:
+                    var thisWeek = ws.ConditionalFormatting.AddThisWeek(address);
+                    thisWeek.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    thisWeek.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(thisWeek.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.Today:
+                    var today = ws.ConditionalFormatting.AddToday(address);
+                    today.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    today.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(today.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.Tomorrow:
+                    var tomorrow = ws.ConditionalFormatting.AddTomorrow(address);
+                    tomorrow.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    tomorrow.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(tomorrow.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.Yesterday:
+                    var yesterday = ws.ConditionalFormatting.AddYesterday(address);
+                    yesterday.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    yesterday.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(yesterday.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.BeginsWith:
                     break;
