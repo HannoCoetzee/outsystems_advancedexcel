@@ -4,6 +4,13 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_AddAutoFilter(System.Object,OutSystems.NssAdvanced_Excel.RCRangeRecord)">
+            <summary>
+            Add the automatic filter option of Excel to the specified range of cells.
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssRangeToFilter">The range where to add the filter. If not supplied, the dimension of the worksheet will be used.</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_AutofitColumns(System.Object)">
             <summary>
             Apply the column autofit action to the specified range of cells specified in the given worksheet
@@ -801,6 +808,13 @@
             Apply the column autofit action to the specified range of cells specified in the given worksheet
             </summary>
             <param name="ssWorksheet">The worksheet to work with</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_AddAutoFilter(System.Object,OutSystems.NssAdvanced_Excel.RCRangeRecord)">
+            <summary>
+            Add the automatic filter option of Excel to the specified range of cells.
+            </summary>
+            <param name="ssWorksheet">The worksheet to work with.</param>
+            <param name="ssRangeToFilter">The range where to add the filter. If not supplied, the dimension of the worksheet will be used.</param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>

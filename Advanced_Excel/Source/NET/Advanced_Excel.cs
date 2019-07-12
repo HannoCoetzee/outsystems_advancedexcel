@@ -23,6 +23,39 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
         /// <summary>
+        /// Add the automatic filter option of Excel to the specified range of cells.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with.</param>
+        /// <param name="ssRangeToFilter">The range where to add the filter. If not supplied, the dimension of the worksheet will be used.</param>
+        public void MssWorksheet_AddAutoFilter(object ssWorksheet, RCRangeRecord ssRangeToFilter)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+
+            int startRow, startCol, endRow, endCol;
+
+            if (ssRangeToFilter == null || (ssRangeToFilter.ssSTRange.ssStartRow == 0 && ssRangeToFilter.ssSTRange.ssStartCol == 0 && ssRangeToFilter.ssSTRange.ssEndRow == 0 && ssRangeToFilter.ssSTRange.ssEndCol == 0))
+            {
+                startRow = ws.Dimension.Start.Row;
+                startCol = ws.Dimension.Start.Column;
+                endRow = ws.Dimension.End.Row;
+                endCol = ws.Dimension.End.Column;
+            }
+            else
+            {
+                startRow = ssRangeToFilter.ssSTRange.ssStartRow;
+                startCol = ssRangeToFilter.ssSTRange.ssStartCol;
+                endRow = ssRangeToFilter.ssSTRange.ssEndRow;
+                endCol = ssRangeToFilter.ssSTRange.ssEndCol;
+            }
+
+            using (var range = ws.Cells[startRow, startCol, endRow, endCol])
+            {
+                range.AutoFilter = true;
+            }
+        } // MssWorksheet_AddAutoFilter
+
+
+        /// <summary>
         /// Apply the column autofit action to the specified range of cells specified in the given worksheet
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with</param>
@@ -69,10 +102,14 @@ namespace OutSystems.NssAdvanced_Excel
 
             Image img = Image.FromStream(ms, true);
 
-            ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, img);
+            using (ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, img))
+            {
 
-            picture.SetPosition(range.Start.Row, 10, range.Start.Column, 10);
-            picture.SetSize(100, 100);
+                picture.SetPosition(range.Start.Row, 10, range.Start.Column, 10);
+                picture.SetSize(100, 100);
+            }
+
+            range.Dispose();
         } // MssImage_Insert
 
         /// <summary>

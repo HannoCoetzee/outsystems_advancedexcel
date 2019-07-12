@@ -499,6 +499,15 @@ namespace OutSystems.NssAdvanced_Excel {
 			// TODO: Write implementation for action
 		} // MssWorksheet_AutofitColumns
 
+		/// <summary>
+		/// Add the automatic filter option of Excel to the specified range of cells.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRangeToFilter">The range where to add the filter. If not supplied, the dimension of the worksheet will be used.</param>
+		public void MssWorksheet_AddAutoFilter(object ssWorksheet, RCRangeRecord ssRangeToFilter) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_AddAutoFilter
+
 	} // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
