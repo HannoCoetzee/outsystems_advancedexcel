@@ -874,7 +874,7 @@ namespace OutSystems.NssAdvanced_Excel
                     case "datetime": ws.SetValue(ssCellName, Convert.ToDateTime(ssCellValue)); break;
                     case "decimal": ws.SetValue(ssCellName, Convert.ToDecimal(ssCellValue)); break;
                     case "boolean": ws.SetValue(ssCellName, Convert.ToBoolean(ssCellValue)); break;
-                    case "formula": ws.Cells[ssCellName].Formula = ssCellValue.StartsWith("=") ? ssCellValue : string.Concat("=", ssCellValue); break;
+                    case "formula": ws.Cells[ssCellName].Formula = ssCellValue.StartsWith("=") ? ssCellValue.TrimStart('=') : ssCellValue; break;
                     default: ws.SetValue(ssCellName, ssCellValue); break;
                 }
 
@@ -889,7 +889,7 @@ namespace OutSystems.NssAdvanced_Excel
                     case "datetime": ws.SetValue(ssCellRow, ssCellColumn, Convert.ToDateTime(ssCellValue)); break;
                     case "decimal": ws.SetValue(ssCellRow, ssCellColumn, Convert.ToDecimal(ssCellValue)); break;
                     case "boolean": ws.SetValue(ssCellRow, ssCellColumn, Convert.ToBoolean(ssCellValue)); break;
-                    case "formula": ws.Cells[ssCellRow, ssCellColumn].Formula = ssCellValue.StartsWith("=") ? ssCellValue : string.Concat("=", ssCellValue); break;
+                    case "formula": ws.Cells[ssCellRow, ssCellColumn].Formula = ssCellValue.StartsWith("=") ? ssCellValue.TrimStart('=') : ssCellValue; break;
                     default: ws.SetValue(ssCellRow, ssCellColumn, ssCellValue); break;
                 }
 
