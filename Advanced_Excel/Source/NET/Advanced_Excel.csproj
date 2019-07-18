@@ -40,18 +40,24 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=4.5.3.2, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>packages\EPPlus.4.5.3.2\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.configuration" />
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
@@ -101,17 +107,14 @@
       <HintPath>bin\OutSystems.REST.API.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="EPPlus">
-      <HintPath>..\..\..\EPPlus 4.1\DotNet4\EPPlus.dll</HintPath>
+    <Reference Include="OutSystems.SOAP.API">
+      <Name>OutSystems.SOAP.API</Name>
+      <HintPath>bin\OutSystems.SOAP.API.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="EPPlus.dll">
       <Name>EPPlus.dll</Name>
       <HintPath>Bin\EPPlus.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="OutSystems.SOAP.API">
-      <Name>OutSystems.SOAP.API</Name>
-      <HintPath>bin\OutSystems.SOAP.API.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

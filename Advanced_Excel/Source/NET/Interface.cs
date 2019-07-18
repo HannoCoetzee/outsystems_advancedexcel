@@ -399,7 +399,9 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssRowNumber">Row index where to insert image. Ignored if CellName is specified</param>
 		/// <param name="ssColumnNumber">Column index where to insert image. Ignored if CellName is specified</param>
 		/// <param name="ssCellName">Cell Name where to insert image</param>
-		void MssImage_Insert(object ssWorksheet, byte[] ssImageFile, string ssImageType, string ssImageName, int ssRowNumber, int ssColumnNumber, string ssCellName);
+		/// <param name="ssImageWidth">The width of the image in pixels</param>
+		/// <param name="ssImageHeight">The height of the image in pixels</param>
+		void MssImage_Insert(object ssWorksheet, byte[] ssImageFile, string ssImageType, string ssImageName, int ssRowNumber, int ssColumnNumber, string ssCellName, int ssImageWidth, int ssImageHeight);
 
 		/// <summary>
 		/// Apply the column autofit action to the specified range of cells specified in the given worksheet

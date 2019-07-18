@@ -23,6 +23,53 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
         /// <summary>
+        /// Insert an image into a Worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssImageFile">Binary data of the image to be inserted</param>
+        /// <param name="ssImageType">File type. BMP, PNG, JPG</param>
+        /// <param name="ssImageName">Name reference for the image in the Worksheet</param>
+        /// <param name="ssRowNumber">Row index where to insert image. Ignored if CellName is specified</param>
+        /// <param name="ssColumnNumber">Column index where to insert image. Ignored if CellName is specified</param>
+        /// <param name="ssCellName">Cell Name where to insert image</param>
+        /// <param name="ssImageWidth">The width of the image in pixels</param>
+        /// <param name="ssImageHeight">The height of the image in pixels</param>
+        public void MssImage_Insert(object ssWorksheet, byte[] ssImageFile, string ssImageType, string ssImageName, int ssRowNumber, int ssColumnNumber, string ssCellName, int ssImageWidth, int ssImageHeight)
+        {
+            if (string.IsNullOrEmpty(ssCellName) && ssColumnNumber <= 0 && ssRowNumber <= 0)
+            {
+                throw new Exception("You need to specify a valid cell name (i.e. A4) or cell index (row/column combination)");
+            }
+
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+
+            ExcelRange range = ws.Cells["A1"];
+
+            if (!string.IsNullOrEmpty(ssCellName))
+            {
+                range = ws.Cells[ssCellName];
+            }
+            else if (ssRowNumber > 0 && ssColumnNumber > 0)
+            {
+                range = ws.Cells[ssRowNumber, ssColumnNumber];
+            }
+
+            Util.LogMessage(JsonConvert.SerializeObject(range));
+
+            MemoryStream ms = new MemoryStream(ssImageFile);
+
+            using (Bitmap bitmap = new Bitmap(ms))
+            {
+                using (ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, bitmap))
+                {
+                    picture.SetPosition(range.Start.Row, 10, range.Start.Column, 10);
+                    picture.SetSize(ssImageWidth, ssImageHeight);
+                }
+            }
+            range.Dispose();
+        } // MssImage_Insert
+
+        /// <summary>
         /// Add the automatic filter option of Excel to the specified range of cells.
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with.</param>
@@ -66,51 +113,7 @@ namespace OutSystems.NssAdvanced_Excel
             ws.Cells.AutoFitColumns();
         } // MssWorksheet_AutofitColumns
 
-        /// <summary>
-        /// Insert an image into a Worksheet
-        /// </summary>
-        /// <param name="ssWorksheet">The worksheet to work with</param>
-        /// <param name="ssImageFile">Binary data of the image to be inserted</param>
-        /// <param name="ssImageType">File type. BMP, PNG, JPG</param>
-        /// <param name="ssImageName">Name reference for the image in the Worksheet</param>
-        /// <param name="ssRowNumber">Row index where to insert image. Ignored if CellName is specified</param>
-        /// <param name="ssColumnNumber">Column index where to insert image. Ignored if CellName is specified</param>
-        /// <param name="ssCellName">Cell Name where to insert image</param>
-        public void MssImage_Insert(object ssWorksheet, byte[] ssImageFile, string ssImageType, string ssImageName, int ssRowNumber, int ssColumnNumber, string ssCellName)
-        {
-            if (string.IsNullOrEmpty(ssCellName) && ssColumnNumber <= 0 && ssRowNumber <= 0)
-            {
-                throw new Exception("You need to specify a valid cell name (i.e. A4) or cell index (row/column combination)");
-            }
 
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
-
-            ExcelRange range = ws.Cells["A1"];
-
-            if (!string.IsNullOrEmpty(ssCellName))
-            {
-                range = ws.Cells[ssCellName];
-            }
-            else if (ssRowNumber > 0 && ssColumnNumber > 0)
-            {
-                range = ws.Cells[ssRowNumber, ssColumnNumber];
-            }
-
-            Util.LogMessage(JsonConvert.SerializeObject(range));
-
-            MemoryStream ms = new MemoryStream(ssImageFile);
-
-            Image img = Image.FromStream(ms, true);
-
-            using (ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, img))
-            {
-
-                picture.SetPosition(range.Start.Row, 10, range.Start.Column, 10);
-                picture.SetSize(100, 100);
-            }
-
-            range.Dispose();
-        } // MssImage_Insert
 
         /// <summary>
         /// Delete a specified Conditional Formatting rule on a worksheet
