@@ -131,7 +131,10 @@ namespace OutSystems.NssAdvanced_Excel
                 range.AutoFitColumns();
             }
 
-            range.Style.Numberformat.Format = format.ssSTCellFormat.ssNumberFormat;
+            if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssNumberFormat))
+            {
+                range.Style.Numberformat.Format = format.ssSTCellFormat.ssNumberFormat;
+            }
         }
 
         /// <summary>

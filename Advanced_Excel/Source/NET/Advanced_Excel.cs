@@ -776,8 +776,24 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorkbook">The workbook to work with</param>
         public void MssWorkbook_Calculate(object ssWorkbook)
         {
+            // Output from the logger will be written to the following file
+            var logfile = new FileInfo(@"c:\logfile.txt");
+
+            Util.LogMessage("Workbook: " + JsonConvert.SerializeObject(ssWorkbook));
             ExcelWorkbook wb = ssWorkbook as ExcelWorkbook;
-            wb.Calculate();
+
+            // Attach the logger before the calculation is performed.
+            wb.FormulaParserManager.AttachLogger(logfile);
+
+            //wb.Calculate();
+            foreach (var ws in wb.Worksheets)
+            {
+                Util.LogMessage("Worksheet (" + ws.Index + ") : " + JsonConvert.SerializeObject(ws));
+                MssWorksheet_Calculate(ws);
+            }
+
+            wb.FormulaParserManager.DetachLogger();
+
         } // MssWorkbook_Calculate
 
         /// <summary>
