@@ -26,6 +26,16 @@ namespace OutSystems.NssAdvanced_Excel {
 		private static readonly GlobalObjectKey IdNumberFormat = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*T9IMXF6dHkeMjRsrROBwig");
 		private static readonly GlobalObjectKey IdBorderStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*4nZdbtDhvk+RtDYUBpdevA");
 		private static readonly GlobalObjectKey IdBorderColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ZTYcPbwyLEuVyw+rm2CbRg");
+		private static readonly GlobalObjectKey IdHorizontalAlignment = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*VTZwPSIcVkmeFW4OW0ZguQ");
+		private static readonly GlobalObjectKey IdVerticalAlignment = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ahrSd0mLV0Gc9jtbxoriRA");
+		private static readonly GlobalObjectKey IdWrapText = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*3uhZUV2hKkqHaaRD9xc48A");
+		private static readonly GlobalObjectKey IdShrinkToFit = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*paq0xKQFCEeqKMik8kiaNw");
+		private static readonly GlobalObjectKey IdTextRotation = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*XqOgxCqhiEyOcJ_Rg+aBsg");
+		private static readonly GlobalObjectKey IdHidden = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*vZcW2jua7E+q4utgGDRzeg");
+		private static readonly GlobalObjectKey IdIndent = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*JGWbJCDA00i7b+L3di8BPg");
+		private static readonly GlobalObjectKey IdLocked = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*OKB5o_cX0U+fvFVGpM3HQw");
+		private static readonly GlobalObjectKey IdQuotePrefix = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*FwRaU5uVeESO_8noGV00xw");
+		private static readonly GlobalObjectKey IdReadingOrder = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*xvpo+OQXa0uQmPDs2ZkhPQ");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("FontName")]
@@ -52,6 +62,36 @@ namespace OutSystems.NssAdvanced_Excel {
 		[System.Xml.Serialization.XmlElement("BorderColor")]
 		public string ssBorderColor;
 
+		[System.Xml.Serialization.XmlElement("HorizontalAlignment")]
+		public int ssHorizontalAlignment;
+
+		[System.Xml.Serialization.XmlElement("VerticalAlignment")]
+		public int ssVerticalAlignment;
+
+		[System.Xml.Serialization.XmlElement("WrapText")]
+		public bool ssWrapText;
+
+		[System.Xml.Serialization.XmlElement("ShrinkToFit")]
+		public bool ssShrinkToFit;
+
+		[System.Xml.Serialization.XmlElement("TextRotation")]
+		public int ssTextRotation;
+
+		[System.Xml.Serialization.XmlElement("Hidden")]
+		public bool ssHidden;
+
+		[System.Xml.Serialization.XmlElement("Indent")]
+		public int ssIndent;
+
+		[System.Xml.Serialization.XmlElement("Locked")]
+		public bool ssLocked;
+
+		[System.Xml.Serialization.XmlElement("QuotePrefix")]
+		public bool ssQuotePrefix;
+
+		[System.Xml.Serialization.XmlElement("ReadingOrder")]
+		public int ssReadingOrder;
+
 
 		public BitArray OptimizedAttributes;
 
@@ -65,6 +105,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssNumberFormat = "";
 			ssBorderStyle = 0;
 			ssBorderColor = "";
+			ssHorizontalAlignment = 0;
+			ssVerticalAlignment = 0;
+			ssWrapText = false;
+			ssShrinkToFit = false;
+			ssTextRotation = 0;
+			ssHidden = false;
+			ssIndent = 0;
+			ssLocked = false;
+			ssQuotePrefix = false;
+			ssReadingOrder = 0;
 		}
 
 		public BitArray[] GetDefaultOptimizedValues() {
@@ -98,6 +148,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssNumberFormat = r.ReadText(index++, "CellFormat.NumberFormat", "");
 			ssBorderStyle = r.ReadInteger(index++, "CellFormat.BorderStyle", 0);
 			ssBorderColor = r.ReadText(index++, "CellFormat.BorderColor", "");
+			ssHorizontalAlignment = r.ReadInteger(index++, "CellFormat.HorizontalAlignment", 0);
+			ssVerticalAlignment = r.ReadInteger(index++, "CellFormat.VerticalAlignment", 0);
+			ssWrapText = r.ReadBoolean(index++, "CellFormat.WrapText", false);
+			ssShrinkToFit = r.ReadBoolean(index++, "CellFormat.ShrinkToFit", false);
+			ssTextRotation = r.ReadInteger(index++, "CellFormat.TextRotation", 0);
+			ssHidden = r.ReadBoolean(index++, "CellFormat.Hidden", false);
+			ssIndent = r.ReadInteger(index++, "CellFormat.Indent", 0);
+			ssLocked = r.ReadBoolean(index++, "CellFormat.Locked", false);
+			ssQuotePrefix = r.ReadBoolean(index++, "CellFormat.QuotePrefix", false);
+			ssReadingOrder = r.ReadInteger(index++, "CellFormat.ReadingOrder", 0);
 		}
 		/// <summary>
 		/// Read from database
@@ -126,6 +186,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (a.ssNumberFormat != b.ssNumberFormat) return false;
 			if (a.ssBorderStyle != b.ssBorderStyle) return false;
 			if (a.ssBorderColor != b.ssBorderColor) return false;
+			if (a.ssHorizontalAlignment != b.ssHorizontalAlignment) return false;
+			if (a.ssVerticalAlignment != b.ssVerticalAlignment) return false;
+			if (a.ssWrapText != b.ssWrapText) return false;
+			if (a.ssShrinkToFit != b.ssShrinkToFit) return false;
+			if (a.ssTextRotation != b.ssTextRotation) return false;
+			if (a.ssHidden != b.ssHidden) return false;
+			if (a.ssIndent != b.ssIndent) return false;
+			if (a.ssLocked != b.ssLocked) return false;
+			if (a.ssQuotePrefix != b.ssQuotePrefix) return false;
+			if (a.ssReadingOrder != b.ssReadingOrder) return false;
 			return true;
 		}
 
@@ -149,6 +219,16 @@ namespace OutSystems.NssAdvanced_Excel {
 				^ ssNumberFormat.GetHashCode()
 				^ ssBorderStyle.GetHashCode()
 				^ ssBorderColor.GetHashCode()
+				^ ssHorizontalAlignment.GetHashCode()
+				^ ssVerticalAlignment.GetHashCode()
+				^ ssWrapText.GetHashCode()
+				^ ssShrinkToFit.GetHashCode()
+				^ ssTextRotation.GetHashCode()
+				^ ssHidden.GetHashCode()
+				^ ssIndent.GetHashCode()
+				^ ssLocked.GetHashCode()
+				^ ssQuotePrefix.GetHashCode()
+				^ ssReadingOrder.GetHashCode()
 				;
 			} catch {
 				return base.GetHashCode();
@@ -174,6 +254,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssNumberFormat = "";
 			ssBorderStyle = 0;
 			ssBorderColor = "";
+			ssHorizontalAlignment = 0;
+			ssVerticalAlignment = 0;
+			ssWrapText = false;
+			ssShrinkToFit = false;
+			ssTextRotation = 0;
+			ssHidden = false;
+			ssIndent = 0;
+			ssLocked = false;
+			ssQuotePrefix = false;
+			ssReadingOrder = 0;
 			Type objInfo = this.GetType();
 			FieldInfo fieldInfo = null;
 			fieldInfo = objInfo.GetField("ssFontName", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
@@ -232,6 +322,76 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (fieldInfo.FieldType.IsSerializable) {
 				ssBorderColor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
 			}
+			fieldInfo = objInfo.GetField("ssHorizontalAlignment", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssHorizontalAlignment' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssHorizontalAlignment = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssVerticalAlignment", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssVerticalAlignment' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssVerticalAlignment = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssWrapText", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssWrapText' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssWrapText = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssShrinkToFit", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssShrinkToFit' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssShrinkToFit = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssTextRotation", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssTextRotation' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssTextRotation = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssHidden", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssHidden' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssHidden = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssIndent", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssIndent' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssIndent = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssLocked", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssLocked' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssLocked = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssQuotePrefix", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssQuotePrefix' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssQuotePrefix = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssReadingOrder", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssReadingOrder' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssReadingOrder = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
 		}
 
 		public void RecursiveReset() {
@@ -251,6 +411,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			t.ssNumberFormat = this.ssNumberFormat;
 			t.ssBorderStyle = this.ssBorderStyle;
 			t.ssBorderColor = this.ssBorderColor;
+			t.ssHorizontalAlignment = this.ssHorizontalAlignment;
+			t.ssVerticalAlignment = this.ssVerticalAlignment;
+			t.ssWrapText = this.ssWrapText;
+			t.ssShrinkToFit = this.ssShrinkToFit;
+			t.ssTextRotation = this.ssTextRotation;
+			t.ssHidden = this.ssHidden;
+			t.ssIndent = this.ssIndent;
+			t.ssLocked = this.ssLocked;
+			t.ssQuotePrefix = this.ssQuotePrefix;
+			t.ssReadingOrder = this.ssReadingOrder;
 			t.OptimizedAttributes = null;
 			return t;
 		}
@@ -274,6 +444,16 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".NumberFormat")) VarValue.AppendAttribute(recordElem, "NumberFormat", ssNumberFormat, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "NumberFormat");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".BorderStyle")) VarValue.AppendAttribute(recordElem, "BorderStyle", ssBorderStyle, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "BorderStyle");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".BorderColor")) VarValue.AppendAttribute(recordElem, "BorderColor", ssBorderColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "BorderColor");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".HorizontalAlignment")) VarValue.AppendAttribute(recordElem, "HorizontalAlignment", ssHorizontalAlignment, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "HorizontalAlignment");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".VerticalAlignment")) VarValue.AppendAttribute(recordElem, "VerticalAlignment", ssVerticalAlignment, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "VerticalAlignment");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".WrapText")) VarValue.AppendAttribute(recordElem, "WrapText", ssWrapText, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "WrapText");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ShrinkToFit")) VarValue.AppendAttribute(recordElem, "ShrinkToFit", ssShrinkToFit, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "ShrinkToFit");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".TextRotation")) VarValue.AppendAttribute(recordElem, "TextRotation", ssTextRotation, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "TextRotation");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Hidden")) VarValue.AppendAttribute(recordElem, "Hidden", ssHidden, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Hidden");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Indent")) VarValue.AppendAttribute(recordElem, "Indent", ssIndent, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "Indent");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Locked")) VarValue.AppendAttribute(recordElem, "Locked", ssLocked, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Locked");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".QuotePrefix")) VarValue.AppendAttribute(recordElem, "QuotePrefix", ssQuotePrefix, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "QuotePrefix");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ReadingOrder")) VarValue.AppendAttribute(recordElem, "ReadingOrder", ssReadingOrder, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "ReadingOrder");
 			} else {
 				VarValue.AppendDeferredEvaluationElement(recordElem);
 			}
@@ -299,6 +479,26 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".BorderStyle")) variable.Value = ssBorderStyle; else variable.Optimized = true;
 			} else if (head == "bordercolor") {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".BorderColor")) variable.Value = ssBorderColor; else variable.Optimized = true;
+			} else if (head == "horizontalalignment") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".HorizontalAlignment")) variable.Value = ssHorizontalAlignment; else variable.Optimized = true;
+			} else if (head == "verticalalignment") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".VerticalAlignment")) variable.Value = ssVerticalAlignment; else variable.Optimized = true;
+			} else if (head == "wraptext") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".WrapText")) variable.Value = ssWrapText; else variable.Optimized = true;
+			} else if (head == "shrinktofit") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".ShrinkToFit")) variable.Value = ssShrinkToFit; else variable.Optimized = true;
+			} else if (head == "textrotation") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".TextRotation")) variable.Value = ssTextRotation; else variable.Optimized = true;
+			} else if (head == "hidden") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Hidden")) variable.Value = ssHidden; else variable.Optimized = true;
+			} else if (head == "indent") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Indent")) variable.Value = ssIndent; else variable.Optimized = true;
+			} else if (head == "locked") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Locked")) variable.Value = ssLocked; else variable.Optimized = true;
+			} else if (head == "quoteprefix") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".QuotePrefix")) variable.Value = ssQuotePrefix; else variable.Optimized = true;
+			} else if (head == "readingorder") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".ReadingOrder")) variable.Value = ssReadingOrder; else variable.Optimized = true;
 			}
 			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
 		}
@@ -328,6 +528,26 @@ namespace OutSystems.NssAdvanced_Excel {
 				return ssBorderStyle;
 			} else if (key == IdBorderColor) {
 				return ssBorderColor;
+			} else if (key == IdHorizontalAlignment) {
+				return ssHorizontalAlignment;
+			} else if (key == IdVerticalAlignment) {
+				return ssVerticalAlignment;
+			} else if (key == IdWrapText) {
+				return ssWrapText;
+			} else if (key == IdShrinkToFit) {
+				return ssShrinkToFit;
+			} else if (key == IdTextRotation) {
+				return ssTextRotation;
+			} else if (key == IdHidden) {
+				return ssHidden;
+			} else if (key == IdIndent) {
+				return ssIndent;
+			} else if (key == IdLocked) {
+				return ssLocked;
+			} else if (key == IdQuotePrefix) {
+				return ssQuotePrefix;
+			} else if (key == IdReadingOrder) {
+				return ssReadingOrder;
 			} else {
 				throw new Exception("Invalid key");
 			}
@@ -342,6 +562,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssNumberFormat = (string) other.AttributeGet(IdNumberFormat);
 			ssBorderStyle = (int) other.AttributeGet(IdBorderStyle);
 			ssBorderColor = (string) other.AttributeGet(IdBorderColor);
+			ssHorizontalAlignment = (int) other.AttributeGet(IdHorizontalAlignment);
+			ssVerticalAlignment = (int) other.AttributeGet(IdVerticalAlignment);
+			ssWrapText = (bool) other.AttributeGet(IdWrapText);
+			ssShrinkToFit = (bool) other.AttributeGet(IdShrinkToFit);
+			ssTextRotation = (int) other.AttributeGet(IdTextRotation);
+			ssHidden = (bool) other.AttributeGet(IdHidden);
+			ssIndent = (int) other.AttributeGet(IdIndent);
+			ssLocked = (bool) other.AttributeGet(IdLocked);
+			ssQuotePrefix = (bool) other.AttributeGet(IdQuotePrefix);
+			ssReadingOrder = (int) other.AttributeGet(IdReadingOrder);
 		}
 		public bool IsDefault() {
 			STCellFormatStructure defaultStruct = new STCellFormatStructure(null);
@@ -353,6 +583,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (this.ssNumberFormat != defaultStruct.ssNumberFormat) return false;
 			if (this.ssBorderStyle != defaultStruct.ssBorderStyle) return false;
 			if (this.ssBorderColor != defaultStruct.ssBorderColor) return false;
+			if (this.ssHorizontalAlignment != defaultStruct.ssHorizontalAlignment) return false;
+			if (this.ssVerticalAlignment != defaultStruct.ssVerticalAlignment) return false;
+			if (this.ssWrapText != defaultStruct.ssWrapText) return false;
+			if (this.ssShrinkToFit != defaultStruct.ssShrinkToFit) return false;
+			if (this.ssTextRotation != defaultStruct.ssTextRotation) return false;
+			if (this.ssHidden != defaultStruct.ssHidden) return false;
+			if (this.ssIndent != defaultStruct.ssIndent) return false;
+			if (this.ssLocked != defaultStruct.ssLocked) return false;
+			if (this.ssQuotePrefix != defaultStruct.ssQuotePrefix) return false;
+			if (this.ssReadingOrder != defaultStruct.ssReadingOrder) return false;
 			return true;
 		}
 	} // STCellFormatStructure

@@ -135,6 +135,25 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 range.Style.Numberformat.Format = format.ssSTCellFormat.ssNumberFormat;
             }
+
+            range.Style.HorizontalAlignment = (ExcelHorizontalAlignment)format.ssSTCellFormat.ssHorizontalAlignment;
+            range.Style.VerticalAlignment = (ExcelVerticalAlignment)format.ssSTCellFormat.ssVerticalAlignment;
+
+            range.Style.WrapText = format.ssSTCellFormat.ssWrapText;
+
+            range.Style.TextRotation = format.ssSTCellFormat.ssTextRotation;
+
+            range.Style.ShrinkToFit = format.ssSTCellFormat.ssShrinkToFit;
+
+            range.Style.ReadingOrder = (ExcelReadingOrder)format.ssSTCellFormat.ssReadingOrder;
+
+            range.Style.QuotePrefix = format.ssSTCellFormat.ssQuotePrefix;
+
+            range.Style.Locked = format.ssSTCellFormat.ssLocked;
+
+            range.Style.Indent = format.ssSTCellFormat.ssIndent;
+
+            range.Style.Hidden = format.ssSTCellFormat.ssHidden;
         }
 
         /// <summary>
