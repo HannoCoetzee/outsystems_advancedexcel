@@ -34,7 +34,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCellName">Cell Name where to insert image</param>
         /// <param name="ssImageWidth">The width of the image in pixels</param>
         /// <param name="ssImageHeight">The height of the image in pixels</param>
-        public void MssImage_Insert(object ssWorksheet, byte[] ssImageFile, string ssImageType, string ssImageName, int ssRowNumber, int ssColumnNumber, string ssCellName, int ssImageWidth, int ssImageHeight)
+        public void MssImage_Insert(object ssWorksheet, byte[] ssImageFile, string ssImageType, string ssImageName, int ssRowNumber, int ssColumnNumber, string ssCellName, int ssImageWidth, int ssImageHeight, int ssMarginTop, int ssMarginLeft)
         {
             if (string.IsNullOrEmpty(ssCellName) && ssColumnNumber <= 0 && ssRowNumber <= 0)
             {
