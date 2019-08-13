@@ -4,7 +4,7 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssImage_Insert(System.Object,System.Byte[],System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Int32)">
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssImage_Insert(System.Object,System.Byte[],System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             Insert an image into a Worksheet
             </summary>
@@ -793,7 +793,7 @@
             </summary>
             <param name="ssWorksheet">The worksheet to work with.</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssImage_Insert(System.Object,System.Byte[],System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Int32)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssImage_Insert(System.Object,System.Byte[],System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             Insert an image into a Worksheet
             </summary>
@@ -806,6 +806,8 @@
             <param name="ssCellName">Cell Name where to insert image</param>
             <param name="ssImageWidth">The width of the image in pixels</param>
             <param name="ssImageHeight">The height of the image in pixels</param>
+            <param name="ssMarginTop"> Offset in pixels	</param>
+            <param name="ssMarginLeft"> Offset in pixels</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_AutofitColumns(System.Object)">
             <summary>
