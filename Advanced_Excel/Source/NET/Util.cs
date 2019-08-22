@@ -110,6 +110,12 @@ namespace OutSystems.NssAdvanced_Excel
                 range.Style.Fill.BackgroundColor.SetColor(color);
             }
 
+            if(!string.IsNullOrEmpty(format.ssSTCellFormat.ssFontColor))
+            {
+                Color color = Util.ConvertFromColorCode(format.ssSTCellFormat.ssFontColor);
+                range.Style.Font.Color.SetColor(color);
+            }
+
             if (format.ssSTCellFormat.ssBold)
             {
                 range.Style.Font.Bold = true;
@@ -136,24 +142,55 @@ namespace OutSystems.NssAdvanced_Excel
                 range.Style.Numberformat.Format = format.ssSTCellFormat.ssNumberFormat;
             }
 
-            range.Style.HorizontalAlignment = (ExcelHorizontalAlignment)format.ssSTCellFormat.ssHorizontalAlignment;
-            range.Style.VerticalAlignment = (ExcelVerticalAlignment)format.ssSTCellFormat.ssVerticalAlignment;
+            if (format.ssSTCellFormat.ssHorizontalAlignment > 0)
+            {
+                range.Style.HorizontalAlignment = (ExcelHorizontalAlignment)format.ssSTCellFormat.ssHorizontalAlignment;
+            }
 
-            range.Style.WrapText = format.ssSTCellFormat.ssWrapText;
+            if (format.ssSTCellFormat.ssVerticalAlignment > 0)
+            {
+                range.Style.VerticalAlignment = (ExcelVerticalAlignment)format.ssSTCellFormat.ssVerticalAlignment;
+            }
 
-            range.Style.TextRotation = format.ssSTCellFormat.ssTextRotation;
+            if (format.ssSTCellFormat.ssWrapText)
+            {
+                range.Style.WrapText = format.ssSTCellFormat.ssWrapText;
+            }
 
-            range.Style.ShrinkToFit = format.ssSTCellFormat.ssShrinkToFit;
+            if (format.ssSTCellFormat.ssTextRotation > 0)
+            {
+                range.Style.TextRotation = format.ssSTCellFormat.ssTextRotation;
+            }
 
-            range.Style.ReadingOrder = (ExcelReadingOrder)format.ssSTCellFormat.ssReadingOrder;
+            if (format.ssSTCellFormat.ssShrinkToFit)
+            {
+                range.Style.ShrinkToFit = format.ssSTCellFormat.ssShrinkToFit;
+            }
 
-            range.Style.QuotePrefix = format.ssSTCellFormat.ssQuotePrefix;
+            if (format.ssSTCellFormat.ssReadingOrder > 0)
+            {
+                range.Style.ReadingOrder = (ExcelReadingOrder)format.ssSTCellFormat.ssReadingOrder;
+            }
 
-            range.Style.Locked = format.ssSTCellFormat.ssLocked;
+            if (format.ssSTCellFormat.ssQuotePrefix)
+            {
+                range.Style.QuotePrefix = format.ssSTCellFormat.ssQuotePrefix;
+            }
 
-            range.Style.Indent = format.ssSTCellFormat.ssIndent;
+            if (format.ssSTCellFormat.ssLocked)
+            {
+                range.Style.Locked = format.ssSTCellFormat.ssLocked;
+            }
 
-            range.Style.Hidden = format.ssSTCellFormat.ssHidden;
+            if (format.ssSTCellFormat.ssIndent > 0)
+            {
+                range.Style.Indent = format.ssSTCellFormat.ssIndent;
+            }
+
+            if (format.ssSTCellFormat.ssHidden)
+            {
+                range.Style.Hidden = format.ssSTCellFormat.ssHidden;
+            }
         }
 
         /// <summary>

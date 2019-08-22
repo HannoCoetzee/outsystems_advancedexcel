@@ -36,6 +36,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		private static readonly GlobalObjectKey IdLocked = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*OKB5o_cX0U+fvFVGpM3HQw");
 		private static readonly GlobalObjectKey IdQuotePrefix = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*FwRaU5uVeESO_8noGV00xw");
 		private static readonly GlobalObjectKey IdReadingOrder = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*xvpo+OQXa0uQmPDs2ZkhPQ");
+		private static readonly GlobalObjectKey IdFontColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*q3k5T2Uv00a1pJF4yVllTg");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("FontName")]
@@ -92,6 +93,9 @@ namespace OutSystems.NssAdvanced_Excel {
 		[System.Xml.Serialization.XmlElement("ReadingOrder")]
 		public int ssReadingOrder;
 
+		[System.Xml.Serialization.XmlElement("FontColor")]
+		public string ssFontColor;
+
 
 		public BitArray OptimizedAttributes;
 
@@ -115,6 +119,7 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssLocked = true;
 			ssQuotePrefix = false;
 			ssReadingOrder = 0;
+			ssFontColor = "";
 		}
 
 		public BitArray[] GetDefaultOptimizedValues() {
@@ -158,6 +163,7 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssLocked = r.ReadBoolean(index++, "CellFormat.Locked", false);
 			ssQuotePrefix = r.ReadBoolean(index++, "CellFormat.QuotePrefix", false);
 			ssReadingOrder = r.ReadInteger(index++, "CellFormat.ReadingOrder", 0);
+			ssFontColor = r.ReadText(index++, "CellFormat.FontColor", "");
 		}
 		/// <summary>
 		/// Read from database
@@ -196,6 +202,7 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (a.ssLocked != b.ssLocked) return false;
 			if (a.ssQuotePrefix != b.ssQuotePrefix) return false;
 			if (a.ssReadingOrder != b.ssReadingOrder) return false;
+			if (a.ssFontColor != b.ssFontColor) return false;
 			return true;
 		}
 
@@ -229,6 +236,7 @@ namespace OutSystems.NssAdvanced_Excel {
 				^ ssLocked.GetHashCode()
 				^ ssQuotePrefix.GetHashCode()
 				^ ssReadingOrder.GetHashCode()
+				^ ssFontColor.GetHashCode()
 				;
 			} catch {
 				return base.GetHashCode();
@@ -264,6 +272,7 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssLocked = true;
 			ssQuotePrefix = false;
 			ssReadingOrder = 0;
+			ssFontColor = "";
 			Type objInfo = this.GetType();
 			FieldInfo fieldInfo = null;
 			fieldInfo = objInfo.GetField("ssFontName", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
@@ -392,6 +401,13 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (fieldInfo.FieldType.IsSerializable) {
 				ssReadingOrder = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
 			}
+			fieldInfo = objInfo.GetField("ssFontColor", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssFontColor' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssFontColor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
 		}
 
 		public void RecursiveReset() {
@@ -421,6 +437,7 @@ namespace OutSystems.NssAdvanced_Excel {
 			t.ssLocked = this.ssLocked;
 			t.ssQuotePrefix = this.ssQuotePrefix;
 			t.ssReadingOrder = this.ssReadingOrder;
+			t.ssFontColor = this.ssFontColor;
 			t.OptimizedAttributes = null;
 			return t;
 		}
@@ -454,6 +471,7 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Locked")) VarValue.AppendAttribute(recordElem, "Locked", ssLocked, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Locked");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".QuotePrefix")) VarValue.AppendAttribute(recordElem, "QuotePrefix", ssQuotePrefix, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "QuotePrefix");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ReadingOrder")) VarValue.AppendAttribute(recordElem, "ReadingOrder", ssReadingOrder, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "ReadingOrder");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".FontColor")) VarValue.AppendAttribute(recordElem, "FontColor", ssFontColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "FontColor");
 			} else {
 				VarValue.AppendDeferredEvaluationElement(recordElem);
 			}
@@ -499,6 +517,8 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".QuotePrefix")) variable.Value = ssQuotePrefix; else variable.Optimized = true;
 			} else if (head == "readingorder") {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".ReadingOrder")) variable.Value = ssReadingOrder; else variable.Optimized = true;
+			} else if (head == "fontcolor") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".FontColor")) variable.Value = ssFontColor; else variable.Optimized = true;
 			}
 			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
 		}
@@ -548,6 +568,8 @@ namespace OutSystems.NssAdvanced_Excel {
 				return ssQuotePrefix;
 			} else if (key == IdReadingOrder) {
 				return ssReadingOrder;
+			} else if (key == IdFontColor) {
+				return ssFontColor;
 			} else {
 				throw new Exception("Invalid key");
 			}
@@ -572,6 +594,7 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssLocked = (bool) other.AttributeGet(IdLocked);
 			ssQuotePrefix = (bool) other.AttributeGet(IdQuotePrefix);
 			ssReadingOrder = (int) other.AttributeGet(IdReadingOrder);
+			ssFontColor = (string) other.AttributeGet(IdFontColor);
 		}
 		public bool IsDefault() {
 			STCellFormatStructure defaultStruct = new STCellFormatStructure(null);
@@ -593,6 +616,7 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (this.ssLocked != defaultStruct.ssLocked) return false;
 			if (this.ssQuotePrefix != defaultStruct.ssQuotePrefix) return false;
 			if (this.ssReadingOrder != defaultStruct.ssReadingOrder) return false;
+			if (this.ssFontColor != defaultStruct.ssFontColor) return false;
 			return true;
 		}
 	} // STCellFormatStructure
