@@ -1102,4 +1102,88 @@ namespace OutSystems.NssAdvanced_Excel {
 
 
 	} // RLFontStyleRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLNewSheetRecordList</code> that represents a record list of
+	///  <code>NewSheet</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLNewSheetRecordList: GenericRecordList<RCNewSheetRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCNewSheetRecord GetElementDefaultValue() {
+			return new RCNewSheetRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCNewSheetRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLNewSheetRecordList recordlist, Func<RCNewSheetRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLNewSheetRecordList(RCNewSheetRecord[] array) {
+			RLNewSheetRecordList result = new RLNewSheetRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLNewSheetRecordList ToList<T>(T[] array, Func <T, RCNewSheetRecord> converter) {
+			RLNewSheetRecordList result = new RLNewSheetRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLNewSheetRecordList FromRestList<T>(RestList<T> restList, Func <T, RCNewSheetRecord> converter) {
+			RLNewSheetRecordList result = new RLNewSheetRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLNewSheetRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLNewSheetRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLNewSheetRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLNewSheetRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCNewSheetRecord> NewList() {
+			return new RLNewSheetRecordList();
+		}
+
+
+	} // RLNewSheetRecordList
 }

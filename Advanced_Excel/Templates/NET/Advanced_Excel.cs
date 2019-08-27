@@ -36,7 +36,10 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// </summary>
 		/// <param name="ssWorkbook">The newly created workbook</param>
 		/// <param name="ssFirstSheetName">Specify the name of the initial sheet in the workbook. Default = &quot;Sheet1&quot;</param>
-		public void MssWorkbook_Create(out object ssWorkbook, string ssFirstSheetName) {
+		/// <param name="ssNrSheets">The number of sheets to add. Sheet names will be auto generated, i.e. Sheet1, Sheet2.</param>
+		/// <param name="ssSheetNames">List of new sheets to add, with at least a name specified. The index, if specified, will be used to add sheets in that order.
+		/// FirstSheetName and NrSheets are ignored if SheetNames is populated</param>
+		public void MssWorkbook_Create(out object ssWorkbook, string ssFirstSheetName, int ssNrSheets, RLNewSheetRecordList ssSheetNames) {
 			ssWorkbook = null;
 			// TODO: Write implementation for action
 		} // MssWorkbook_Create
@@ -93,11 +96,27 @@ namespace OutSystems.NssAdvanced_Excel {
 		} // MssCell_Read
 
 		/// <summary>
-		/// 
+		/// Set protection on an Excel Worksheet
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet to protect</param>
-		/// <param name="sspassword">Password to the protected spreadsheet</param>
-		public void MssWorksheet_Protect(object ssWorksheet, string sspassword) {
+		/// <param name="ssIsProtected">If the worksheet is protected.</param>
+		/// <param name="ssPassword">Password to protect the worksheet with.</param>
+		/// <param name="ssAllowAutoFilter">Allow users to use autofilters</param>
+		/// <param name="ssAllowDeleteColumns">Allow users to delete columns</param>
+		/// <param name="ssAllowDeleteRows">Allow users to delete rows</param>
+		/// <param name="ssAllowEditObject">Allow users to edit objects</param>
+		/// <param name="ssAllowEditScenarios">Allow users to edit senarios</param>
+		/// <param name="ssAllowFormatCells">Allow users to format cells</param>
+		/// <param name="ssAllowFormatColumns">Allow users to Format columns</param>
+		/// <param name="ssAllowFormatRows">Allow users to Format rows</param>
+		/// <param name="ssAllowInsertColumns">Allow users to insert columns</param>
+		/// <param name="ssAllowInsertHyperlinks">Allow users to insert hyperlinks</param>
+		/// <param name="ssAllowInsertRows">Allow users to Format rows</param>
+		/// <param name="ssAllowPivotTables">Allow users to use pivottables</param>
+		/// <param name="ssAllowSelectLockedCells">Allow users to select locked cells</param>
+		/// <param name="ssAllowSelectUnlockedCells">Allow users to select unlocked cells</param>
+		/// <param name="ssAllowSort">Allow users to sort a range</param>
+		public void MssWorksheet_Protect(object ssWorksheet, bool ssIsProtected, string ssPassword, bool ssAllowAutoFilter, bool ssAllowDeleteColumns, bool ssAllowDeleteRows, bool ssAllowEditObject, bool ssAllowEditScenarios, bool ssAllowFormatCells, bool ssAllowFormatColumns, bool ssAllowFormatRows, bool ssAllowInsertColumns, bool ssAllowInsertHyperlinks, bool ssAllowInsertRows, bool ssAllowPivotTables, bool ssAllowSelectLockedCells, bool ssAllowSelectUnlockedCells, bool ssAllowSort) {
 			// TODO: Write implementation for action
 		} // MssWorksheet_Protect
 
@@ -511,6 +530,18 @@ namespace OutSystems.NssAdvanced_Excel {
 		public void MssWorksheet_AddAutoFilter(object ssWorksheet, RCRangeRecord ssRangeToFilter) {
 			// TODO: Write implementation for action
 		} // MssWorksheet_AddAutoFilter
+
+		/// <summary>
+		/// Set protection on the workbook level
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook to work with</param>
+		/// <param name="ssPassword">The password to set for the workbook. This does not encrypt the workbook.</param>
+		/// <param name="ssLockStructure">Locks the structure,which prevents users from adding or deleting worksheets or from displaying hidden worksheets.</param>
+		/// <param name="ssLockWindows">Locks the position of the workbook window.</param>
+		/// <param name="ssLockRevision">Lock the workbook for revision</param>
+		public void MssWorkbook_Protect(object ssWorkbook, string ssPassword, bool ssLockStructure, bool ssLockWindows, bool ssLockRevision) {
+			// TODO: Write implementation for action
+		} // MssWorkbook_Protect
 
 	} // CssAdvanced_Excel
 

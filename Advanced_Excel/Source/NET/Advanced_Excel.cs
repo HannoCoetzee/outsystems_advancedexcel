@@ -23,6 +23,118 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
         /// <summary>
+        /// Creates a new excel workbook, optionally specifying the name of the fiirst sheet.
+        /// </summary>
+        /// <param name="ssWorkbook">The newly created workbook</param>
+        /// <param name="ssFirstSheetName">Specify the name of the initial sheet in the workbook. Default = &quot;Sheet1&quot;</param>
+        /// <param name="ssNrSheets">The number of sheets to add. Sheet names will be auto generated, i.e. Sheet1, Sheet2.</param>
+        /// <param name="ssSheetNames">List of new sheets to add, with at least a name specified. The index, if specified, will be used to add sheets in that order.
+        /// FirstSheetName and NrSheets are ignored if SheetNames is populated</param>
+        public void MssWorkbook_Create(out object ssWorkbook, string ssFirstSheetName, int ssNrSheets, RLNewSheetRecordList ssSheetNames)
+        {
+            ssWorkbook = null;
+
+            ExcelPackage p = new ExcelPackage();
+            ExcelWorkbook wb = p.Workbook;
+
+            if (ssSheetNames.Count == 1 && ssSheetNames[0].ssSTNewSheet.ssName == "" && ssSheetNames[0].ssSTNewSheet.ssIndex == 0)
+            {
+                if (string.IsNullOrEmpty(ssFirstSheetName))
+                {
+                    ssFirstSheetName = "Sheet1";
+                }
+
+                wb.Worksheets.Add(ssFirstSheetName);
+                if (ssNrSheets > 1)
+                {
+                    for (int i = 2; i <= ssNrSheets; i++)
+                    {
+                        wb.Worksheets.Add(string.Concat(ssFirstSheetName, i));
+                    }
+                }
+            }
+            else
+            {
+                ssSheetNames.Sort(s => s.ssSTNewSheet.ssIndex, true);
+                foreach (RCNewSheetRecord item in ssSheetNames)
+                {
+                    wb.Worksheets.Add(item.ssSTNewSheet.ssName);
+                }
+            }
+            ssWorkbook = p;
+        } // MssWorkbook_Create
+
+        /// <summary>
+        /// Set protection on the workbook level
+        /// </summary>
+        /// <param name="ssWorkbook">The workbook to work with</param>
+        /// <param name="ssPassword">The password to set for the workbook. This does not encrypt the workbook.</param>
+        /// <param name="ssLockStructure">Locks the structure,which prevents users from adding or deleting worksheets or from displaying hidden worksheets.</param>
+        /// <param name="ssLockWindows">Locks the position of the workbook window.</param>
+        /// <param name="ssLockRevision">Lock the workbook for revision</param>
+        public void MssWorkbook_Protect(object ssWorkbook, string ssPassword, bool ssLockStructure, bool ssLockWindows, bool ssLockRevision)
+        {
+            ExcelPackage p = ssWorkbook as ExcelPackage;
+
+            p.Encryption.Password = ssPassword;
+
+            ExcelWorkbook wb = p.Workbook;
+
+            wb.Protection.LockRevision = ssLockRevision;
+            wb.Protection.LockStructure = ssLockStructure;
+            wb.Protection.LockWindows = ssLockWindows;
+
+        } // MssWorkbook_Protect
+        /// <summary>
+        /// Set protection on an Excel Worksheet
+        /// </summary>
+        /// <param name="ssWorksheet">Worksheet to protect</param>
+        /// <param name="ssIsProtected">If the worksheet is protected.</param>
+        /// <param name="ssPassword">Password to protect the worksheet with.</param>
+        /// <param name="ssAllowAutoFilter">Allow users to use autofilters</param>
+        /// <param name="ssAllowDeleteColumns">Allow users to delete columns</param>
+        /// <param name="ssAllowDeleteRows">Allow users to delete rows</param>
+        /// <param name="ssAllowEditObject">Allow users to edit objects</param>
+        /// <param name="ssAllowEditScenarios">Allow users to edit senarios</param>
+        /// <param name="ssAllowFormatCells">Allow users to format cells</param>
+        /// <param name="ssAllowFormatColumns">Allow users to Format columns</param>
+        /// <param name="ssAllowFormatRows">Allow users to Format rows</param>
+        /// <param name="ssAllowInsertColumns">Allow users to insert columns</param>
+        /// <param name="ssAllowInsertHyperlinks">Allow users to insert hyperlinks</param>
+        /// <param name="ssAllowInsertRows">Allow users to Format rows</param>
+        /// <param name="ssAllowPivotTables">Allow users to use pivottables</param>
+        /// <param name="ssAllowSelectLockedCells">Allow users to select locked cells</param>
+        /// <param name="ssAllowSelectUnlockedCells">Allow users to select unlocked cells</param>
+        /// <param name="ssAllowSort">Allow users to sort a range</param>
+        public void MssWorksheet_Protect(object ssWorksheet, bool ssIsProtected, string ssPassword, bool ssAllowAutoFilter, bool ssAllowDeleteColumns, bool ssAllowDeleteRows, bool ssAllowEditObject, bool ssAllowEditScenarios, bool ssAllowFormatCells, bool ssAllowFormatColumns, bool ssAllowFormatRows, bool ssAllowInsertColumns, bool ssAllowInsertHyperlinks, bool ssAllowInsertRows, bool ssAllowPivotTables, bool ssAllowSelectLockedCells, bool ssAllowSelectUnlockedCells, bool ssAllowSort)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+
+            ws.Protection.IsProtected = ssIsProtected;
+
+            ws.Protection.AllowAutoFilter = ssAllowAutoFilter;
+            ws.Protection.AllowDeleteColumns = ssAllowDeleteColumns;
+            ws.Protection.AllowDeleteRows = ssAllowDeleteRows;
+            ws.Protection.AllowEditObject = ssAllowEditObject;
+            ws.Protection.AllowEditScenarios = ssAllowEditScenarios;
+            ws.Protection.AllowFormatCells = ssAllowFormatCells;
+            ws.Protection.AllowFormatColumns = ssAllowFormatColumns;
+            ws.Protection.AllowFormatRows = ssAllowFormatRows;
+            ws.Protection.AllowInsertColumns = ssAllowInsertColumns;
+            ws.Protection.AllowInsertHyperlinks = ssAllowInsertHyperlinks;
+            ws.Protection.AllowInsertRows = ssAllowInsertRows;
+            ws.Protection.AllowPivotTables = ssAllowPivotTables;
+            ws.Protection.AllowSelectLockedCells = ssAllowSelectLockedCells;
+            ws.Protection.AllowSelectUnlockedCells = ssAllowSelectUnlockedCells;
+            ws.Protection.AllowSort = ssAllowSort;
+
+            if (!string.IsNullOrEmpty(ssPassword))
+            {
+                ws.Protection.SetPassword(ssPassword);
+            }
+        } // MssWorksheet_Protect
+
+        /// <summary>
         /// Insert an image into a Worksheet
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with</param>
@@ -776,24 +888,11 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorkbook">The workbook to work with</param>
         public void MssWorkbook_Calculate(object ssWorkbook)
         {
+            ExcelPackage p = ssWorkbook as ExcelPackage;
             // Output from the logger will be written to the following file
-            var logfile = new FileInfo(@"c:\logfile.txt");
+            ExcelWorkbook wb = p.Workbook;
 
-            Util.LogMessage("Workbook: " + JsonConvert.SerializeObject(ssWorkbook));
-            ExcelWorkbook wb = ssWorkbook as ExcelWorkbook;
-
-            // Attach the logger before the calculation is performed.
-            wb.FormulaParserManager.AttachLogger(logfile);
-
-            //wb.Calculate();
-            foreach (var ws in wb.Worksheets)
-            {
-                Util.LogMessage("Worksheet (" + ws.Index + ") : " + JsonConvert.SerializeObject(ws));
-                MssWorksheet_Calculate(ws);
-            }
-
-            wb.FormulaParserManager.DetachLogger();
-
+            wb.Calculate();
         } // MssWorkbook_Calculate
 
         /// <summary>
@@ -1124,20 +1223,6 @@ namespace OutSystems.NssAdvanced_Excel
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="ssWorksheet"></param>
-        /// <param name="sspassword"></param>
-        public void MssWorksheet_Protect(object ssWorksheet, string sspassword)
-        {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
-            ws.Protection.IsProtected = true;
-            ws.Protection.AllowEditObject = false;
-            ws.Protection.SetPassword(sspassword);
-
-        } // MssWorksheet_Protect
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="ssWorkbook"></param>
         public void MssWorkbook_Close(object ssWorkbook)
         {
@@ -1205,18 +1290,6 @@ namespace OutSystems.NssAdvanced_Excel
 
             ssWorkbook = p;
         } // MssWorkbook_Open
-
-        /// <summary>
-        ///  Creates a new excel workbook, optionally specifying the name of the fiirst sheet.
-        /// </summary>
-        /// <param name="ssWorkbook">The newly created workbook</param>
-        /// <param name="ssFirstSheetName">Specify the name of the initial sheet in the workbook. Default = "Sheet1"</param>
-        public void MssWorkbook_Create(out object ssWorkbook, string ssFirstSheetName)
-        {
-            ExcelPackage p = new ExcelPackage();
-            p.Workbook.Worksheets.Add(string.IsNullOrEmpty(ssFirstSheetName) ? "Sheet1" : ssFirstSheetName);
-            ssWorkbook = p;
-        } // MssWorkbook_Create
 
         /// <summary>
         /// 

@@ -2494,4 +2494,195 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // RCFontStyleRecord
+
+	/// <summary>
+	/// Structure <code>RCNewSheetRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCNewSheetRecord: ISerializable, ITypedRecord<RCNewSheetRecord> {
+		private static readonly GlobalObjectKey IdNewSheet = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*8PN_BTMFTs6HsuytG2X1sg");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("NewSheet")]
+		public STNewSheetStructure ssSTNewSheet;
+
+
+		public static implicit operator STNewSheetStructure(RCNewSheetRecord r) {
+			return r.ssSTNewSheet;
+		}
+
+		public static implicit operator RCNewSheetRecord(STNewSheetStructure r) {
+			RCNewSheetRecord res = new RCNewSheetRecord(null);
+			res.ssSTNewSheet = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCNewSheetRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTNewSheet = new STNewSheetStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTNewSheet.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTNewSheet.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCNewSheetRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCNewSheetRecord a, RCNewSheetRecord b) {
+			if (a.ssSTNewSheet != b.ssSTNewSheet) return false;
+			return true;
+		}
+
+		public static bool operator != (RCNewSheetRecord a, RCNewSheetRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCNewSheetRecord)) return false;
+			return (this == (RCNewSheetRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTNewSheet.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCNewSheetRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTNewSheet = new STNewSheetStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTNewSheet", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTNewSheet' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTNewSheet = (STNewSheetStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTNewSheet.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTNewSheet.InternalRecursiveSave();
+		}
+
+
+		public RCNewSheetRecord Duplicate() {
+			RCNewSheetRecord t;
+			t.ssSTNewSheet = (STNewSheetStructure) this.ssSTNewSheet.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTNewSheet.ToXml(this, recordElem, "NewSheet", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "newsheet") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".NewSheet")) variable.Value = ssSTNewSheet; else variable.Optimized = true;
+				variable.SetFieldName("newsheet");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdNewSheet) {
+				return ssSTNewSheet;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTNewSheet.FillFromOther((IRecord) other.AttributeGet(IdNewSheet));
+		}
+		public bool IsDefault() {
+			RCNewSheetRecord defaultStruct = new RCNewSheetRecord(null);
+			if (this.ssSTNewSheet != defaultStruct.ssSTNewSheet) return false;
+			return true;
+		}
+	} // RCNewSheetRecord
 }

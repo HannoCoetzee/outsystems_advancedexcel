@@ -4,6 +4,49 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_Create(System.Object@,System.String,System.Int32,OutSystems.NssAdvanced_Excel.RLNewSheetRecordList)">
+            <summary>
+            Creates a new excel workbook, optionally specifying the name of the fiirst sheet.
+            </summary>
+            <param name="ssWorkbook">The newly created workbook</param>
+            <param name="ssFirstSheetName">Specify the name of the initial sheet in the workbook. Default = &quot;Sheet1&quot;</param>
+            <param name="ssNrSheets">The number of sheets to add. Sheet names will be auto generated, i.e. Sheet1, Sheet2.</param>
+            <param name="ssSheetNames">List of new sheets to add, with at least a name specified. The index, if specified, will be used to add sheets in that order.
+            FirstSheetName and NrSheets are ignored if SheetNames is populated</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_Protect(System.Object,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Set protection on the workbook level
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+            <param name="ssPassword">The password to set for the workbook. This does not encrypt the workbook.</param>
+            <param name="ssLockStructure">Locks the structure,which prevents users from adding or deleting worksheets or from displaying hidden worksheets.</param>
+            <param name="ssLockWindows">Locks the position of the workbook window.</param>
+            <param name="ssLockRevision">Lock the workbook for revision</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Protect(System.Object,System.Boolean,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Set protection on an Excel Worksheet
+            </summary>
+            <param name="ssWorksheet">Worksheet to protect</param>
+            <param name="ssIsProtected">If the worksheet is protected.</param>
+            <param name="ssPassword">Password to protect the worksheet with.</param>
+            <param name="ssAllowAutoFilter">Allow users to use autofilters</param>
+            <param name="ssAllowDeleteColumns">Allow users to delete columns</param>
+            <param name="ssAllowDeleteRows">Allow users to delete rows</param>
+            <param name="ssAllowEditObject">Allow users to edit objects</param>
+            <param name="ssAllowEditScenarios">Allow users to edit senarios</param>
+            <param name="ssAllowFormatCells">Allow users to format cells</param>
+            <param name="ssAllowFormatColumns">Allow users to Format columns</param>
+            <param name="ssAllowFormatRows">Allow users to Format rows</param>
+            <param name="ssAllowInsertColumns">Allow users to insert columns</param>
+            <param name="ssAllowInsertHyperlinks">Allow users to insert hyperlinks</param>
+            <param name="ssAllowInsertRows">Allow users to Format rows</param>
+            <param name="ssAllowPivotTables">Allow users to use pivottables</param>
+            <param name="ssAllowSelectLockedCells">Allow users to select locked cells</param>
+            <param name="ssAllowSelectUnlockedCells">Allow users to select unlocked cells</param>
+            <param name="ssAllowSort">Allow users to sort a range</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssImage_Insert(System.Object,System.Byte[],System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             Insert an image into a Worksheet
@@ -283,13 +326,6 @@
             <param name="ssCellFormat">CellFormat for the target cell</param>
             <param name="ssExportHeaders">True if headers should be included in export</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Protect(System.Object,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="ssWorksheet"></param>
-            <param name="sspassword"></param>
-        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_Close(System.Object)">
             <summary>
             
@@ -317,13 +353,6 @@
             <param name="ssFileName">Location of the file that you want to open. Set to empty string "" when using binary data</param>
             <param name="ssBinary_Data">Binary data of the file that you want to open. Set to nullbinary() if using FileName</param>
             <param name="ssWorkbook">The workbook that you want to work with.</param>
-        </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_Create(System.Object@,System.String)">
-            <summary>
-             Creates a new excel workbook, optionally specifying the name of the fiirst sheet.
-            </summary>
-            <param name="ssWorkbook">The newly created workbook</param>
-            <param name="ssFirstSheetName">Specify the name of the initial sheet in the workbook. Default = "Sheet1"</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssChart_Create(System.Object,System.String,System.String,OutSystems.NssAdvanced_Excel.RLDataSeriesRecordList,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
@@ -428,12 +457,15 @@
             <param name="ssWorksheetName">The name of the worksheet to find</param>
             <param name="ssWorksheet">This is the worksheet object that you have been looking for,</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Create(System.Object@,System.String)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Create(System.Object@,System.String,System.Int32,OutSystems.NssAdvanced_Excel.RLNewSheetRecordList)">
             <summary>
             Creates a new excel workbook, optionally specifying the name of the fiirst sheet.
             </summary>
             <param name="ssWorkbook">The newly created workbook</param>
             <param name="ssFirstSheetName">Specify the name of the initial sheet in the workbook. Default = &quot;Sheet1&quot;</param>
+            <param name="ssNrSheets">The number of sheets to add. Sheet names will be auto generated, i.e. Sheet1, Sheet2.</param>
+            <param name="ssSheetNames">List of new sheets to add, with at least a name specified. The index, if specified, will be used to add sheets in that order.
+            FirstSheetName and NrSheets are ignored if SheetNames is populated</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_GetBinaryData(System.Object,System.Byte[]@)">
             <summary>
@@ -474,12 +506,28 @@
             <param name="ssCellValue">The value in the cell, as text.</param>
             <param name="ssReadText">If true always reads the cell value as text</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Protect(System.Object,System.String)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Protect(System.Object,System.Boolean,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
-            
+            Set protection on an Excel Worksheet
             </summary>
             <param name="ssWorksheet">Worksheet to protect</param>
-            <param name="sspassword">Password to the protected spreadsheet</param>
+            <param name="ssIsProtected">If the worksheet is protected.</param>
+            <param name="ssPassword">Password to protect the worksheet with.</param>
+            <param name="ssAllowAutoFilter">Allow users to use autofilters</param>
+            <param name="ssAllowDeleteColumns">Allow users to delete columns</param>
+            <param name="ssAllowDeleteRows">Allow users to delete rows</param>
+            <param name="ssAllowEditObject">Allow users to edit objects</param>
+            <param name="ssAllowEditScenarios">Allow users to edit senarios</param>
+            <param name="ssAllowFormatCells">Allow users to format cells</param>
+            <param name="ssAllowFormatColumns">Allow users to Format columns</param>
+            <param name="ssAllowFormatRows">Allow users to Format rows</param>
+            <param name="ssAllowInsertColumns">Allow users to insert columns</param>
+            <param name="ssAllowInsertHyperlinks">Allow users to insert hyperlinks</param>
+            <param name="ssAllowInsertRows">Allow users to Format rows</param>
+            <param name="ssAllowPivotTables">Allow users to use pivottables</param>
+            <param name="ssAllowSelectLockedCells">Allow users to select locked cells</param>
+            <param name="ssAllowSelectUnlockedCells">Allow users to select unlocked cells</param>
+            <param name="ssAllowSort">Allow users to sort a range</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_Write(System.Object,System.String,System.Int32,System.Int32,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
             <summary>
@@ -822,6 +870,16 @@
             <param name="ssWorksheet">The worksheet to work with.</param>
             <param name="ssRangeToFilter">The range where to add the filter. If not supplied, the dimension of the worksheet will be used.</param>
         </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Protect(System.Object,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Set protection on the workbook level
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+            <param name="ssPassword">The password to set for the workbook. This does not encrypt the workbook.</param>
+            <param name="ssLockStructure">Locks the structure,which prevents users from adding or deleting worksheets or from displaying hidden worksheets.</param>
+            <param name="ssLockWindows">Locks the position of the workbook window.</param>
+            <param name="ssLockRevision">Lock the workbook for revision</param>
+        </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
             Structure <code>STCellFormatStructure</code> that represents the Service Studio structure
@@ -1148,6 +1206,31 @@
             <param name="r"> Data reader</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STFontStyleStructure.ReadIM(OutSystems.NssAdvanced_Excel.STFontStyleStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STNewSheetStructure">
+            <summary>
+            Structure <code>STNewSheetStructure</code> that represents the Service Studio structure
+             <code>NewSheet</code> <p> Description: New worksheet object</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STNewSheetStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STNewSheetStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STNewSheetStructure.ReadIM(OutSystems.NssAdvanced_Excel.STNewSheetStructure)">
             <summary>
             Read from record
             </summary>
@@ -1632,6 +1715,43 @@
             </summary>
             <returns>The new record list</returns>
         </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLNewSheetRecordList">
+            <summary>
+            RecordList type <code>RLNewSheetRecordList</code> that represents a record list of
+             <code>NewSheet</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLNewSheetRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLNewSheetRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLNewSheetRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCNewSheetRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLNewSheetRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLNewSheetRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
         <member name="T:OutSystems.NssAdvanced_Excel.RCCellFormatRecord">
             <summary>
             Structure <code>RCCellFormatRecord</code>
@@ -1939,6 +2059,30 @@
             <param name="r"> Data reader</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.RCFontStyleRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCFontStyleRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCNewSheetRecord">
+            <summary>
+            Structure <code>RCNewSheetRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCNewSheetRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCNewSheetRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCNewSheetRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCNewSheetRecord)">
             <summary>
             Read from record
             </summary>

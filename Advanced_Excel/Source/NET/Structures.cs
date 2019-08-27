@@ -3783,4 +3783,205 @@ namespace OutSystems.NssAdvanced_Excel {
 		}
 	} // STFontStyleStructure
 
+	/// <summary>
+	/// Structure <code>STNewSheetStructure</code> that represents the Service Studio structure
+	///  <code>NewSheet</code> <p> Description: New worksheet object</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STNewSheetStructure: ISerializable, ITypedRecord<STNewSheetStructure>, ISimpleRecord {
+		private static readonly GlobalObjectKey IdName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*T_pKIf3Ftk2QFFghtZPzTA");
+		private static readonly GlobalObjectKey IdIndex = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Gd9zj1aJrUKHcrFpKwI6tA");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Name")]
+		public string ssName;
+
+		[System.Xml.Serialization.XmlElement("Index")]
+		public int ssIndex;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STNewSheetStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssName = "";
+			ssIndex = 0;
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssName = r.ReadText(index++, "NewSheet.Name", "");
+			ssIndex = r.ReadInteger(index++, "NewSheet.Index", 0);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STNewSheetStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STNewSheetStructure a, STNewSheetStructure b) {
+			if (a.ssName != b.ssName) return false;
+			if (a.ssIndex != b.ssIndex) return false;
+			return true;
+		}
+
+		public static bool operator != (STNewSheetStructure a, STNewSheetStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STNewSheetStructure)) return false;
+			return (this == (STNewSheetStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssName.GetHashCode()
+				^ ssIndex.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STNewSheetStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssName = "";
+			ssIndex = 0;
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssName", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssName' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssName = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssIndex", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssIndex' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssIndex = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STNewSheetStructure Duplicate() {
+			STNewSheetStructure t;
+			t.ssName = this.ssName;
+			t.ssIndex = this.ssIndex;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Name")) VarValue.AppendAttribute(recordElem, "Name", ssName, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Name");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Index")) VarValue.AppendAttribute(recordElem, "Index", ssIndex, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "Index");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "name") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Name")) variable.Value = ssName; else variable.Optimized = true;
+			} else if (head == "index") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Index")) variable.Value = ssIndex; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdName) {
+				return ssName;
+			} else if (key == IdIndex) {
+				return ssIndex;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssName = (string) other.AttributeGet(IdName);
+			ssIndex = (int) other.AttributeGet(IdIndex);
+		}
+		public bool IsDefault() {
+			STNewSheetStructure defaultStruct = new STNewSheetStructure(null);
+			if (this.ssName != defaultStruct.ssName) return false;
+			if (this.ssIndex != defaultStruct.ssIndex) return false;
+			return true;
+		}
+	} // STNewSheetStructure
+
 } // OutSystems.NssAdvanced_Excel
