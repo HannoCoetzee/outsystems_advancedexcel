@@ -384,7 +384,9 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssColumnNumber">The column number of the cell to add the comment to.</param>
 		/// <param name="ssText">The comment.</param>
 		/// <param name="ssAuthor">The author of the comment.</param>
-		void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor);
+		/// <param name="ssAutofit">True to autofit the comment window to the comment text</param>
+		/// <param name="ssIsRichText">Is the comment rich text</param>
+		void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor, bool ssAutofit, bool ssIsRichText);
 
 		/// <summary>
 		/// Inserts a new column into the spreadsheet.  Existing columns to the right of the insert index will be shifted right.  All formula are updated to take account of the new column.
@@ -446,6 +448,220 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssLockWindows">Locks the position of the workbook window.</param>
 		/// <param name="ssLockRevision">Lock the workbook for revision</param>
 		void MssWorkbook_Protect(object ssWorkbook, string ssPassword, bool ssLockStructure, bool ssLockWindows, bool ssLockRevision);
+
+		/// <summary>
+		/// Calculates the formula of a cell, defined by its index.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row Number</param>
+		/// <param name="ssColumn">Column Number</param>
+		void MssCell_CalculateByIndex(object ssWorksheet, int ssRow, int ssColumn);
+
+		/// <summary>
+		/// Calculates the formula of a cell, defined by its name.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell-name (eg A4)</param>
+		void MssCell_CalculateByName(object ssWorksheet, string ssCellName);
+
+		/// <summary>
+		/// Apply format to a range of cells.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet to write to</param>
+		/// <param name="ssRowStart">Start row (integer)</param>
+		/// <param name="ssColumnStart">Start column (integer)</param>
+		/// <param name="ssRowEnd">End row (integer)</param>
+		/// <param name="ssColumnEnd">End column (integer)</param>
+		/// <param name="ssCellFormat">CellFormat for the target cells</param>
+		void MssCell_FormatRange(object ssWorksheet, int ssRowStart, int ssColumnStart, int ssRowEnd, int ssColumnEnd, RCCellFormatRecord ssCellFormat);
+
+		/// <summary>
+		/// Reads the value of a cell, defined by its index.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">row number</param>
+		/// <param name="ssColumn">column number</param>
+		/// <param name="ssReadText">If true always reads the cell value as text</param>
+		/// <param name="ssCellValue">text-value</param>
+		void MssCell_ReadByIndex(object ssWorksheet, int ssRow, int ssColumn, bool ssReadText, out string ssCellValue);
+
+		/// <summary>
+		/// Reads the value of a cell, defined by its name.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell-name (eg A4)</param>
+		/// <param name="ssReadText">If true always reads the cell value as text</param>
+		/// <param name="ssCellValue">text-value</param>
+		void MssCell_ReadByName(object ssWorksheet, string ssCellName, bool ssReadText, out string ssCellValue);
+
+		/// <summary>
+		/// Write a formula to a cell, defined by its index.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">rownumber</param>
+		/// <param name="ssColumn">columnnumber</param>
+		/// <param name="ssFormula">Formula</param>
+		void MssCell_SetFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, string ssFormula);
+
+		/// <summary>
+		/// Write a formula to a cell, defined by its name.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell-name (eg A4)</param>
+		/// <param name="ssFormula">Formula</param>
+		void MssCell_SetFormulaByName(object ssWorksheet, string ssCellName, string ssFormula);
+
+		/// <summary>
+		/// Adds a copy of a worksheet
+		/// </summary>
+		/// <param name="ssWorkbook"></param>
+		/// <param name="ssWorksheetName">The name of the spreadsheet to create</param>
+		/// <param name="ssWorksheetToCopy">The worksheet to be copied</param>
+		/// <param name="ssWorksheet"></param>
+		void MssWorkbook_AddCopyWorksheet(object ssWorkbook, string ssWorksheetName, object ssWorksheetToCopy, out object ssWorksheet);
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="ssWorksheet"></param>
+		/// <param name="ssImages"></param>
+		void MssWorksheet_GetImages(object ssWorksheet, out RLImageRecordList ssImages);
+
+		/// <summary>
+		/// 
+		/// </summary>
+		void MssWorksheet_SelectByIndex();
+
+		/// <summary>
+		/// Select a worksheet to work on by its name
+		/// </summary>
+		/// <param name="ssWorkbook"></param>
+		/// <param name="ssWorksheetName">The name of the spreadsheet to select</param>
+		/// <param name="ssWorksheet"></param>
+		void MssWorksheet_SelectByName(object ssWorkbook, string ssWorksheetName, out string ssWorksheet);
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="ssWorkbook"></param>
+		/// <param name="ssNameToDelete"></param>
+		void MssWorksheet_DeleteByName(object ssWorkbook, string ssNameToDelete);
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="ssWorkbook"></param>
+		/// <param name="ssIndexToDelete"></param>
+		void MssWorksheet_DeleteByIndex(object ssWorkbook, int ssIndexToDelete);
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet you want to work with.</param>
+		/// <param name="ssChartType">Receives the chart type in text, possible types:
+		/// Area3D
+		/// AreaStacked3D
+		/// AreaStacked1003D
+		/// BarClustered3D
+		/// BarStacked3D
+		/// BarStacked1003D
+		/// Column3D
+		/// ColumnClustered3D
+		/// ColumnStacked3D
+		/// ColumnStacked1003D
+		/// Line3D
+		/// Pie3D
+		/// PieExploded3D
+		/// Area
+		/// AreaStacked
+		/// AreaStacked100
+		/// BarClustered
+		/// BarOfPie
+		/// BarStacked
+		/// BarStacked100
+		/// Bubble
+		/// Bubble3DEffect
+		/// ColumnClustered
+		/// ColumnStacked
+		/// ColumnStacked100
+		/// ConeBarClustered
+		/// ConeBarStacked
+		/// ConeBarStacked100
+		/// ConeCol
+		/// ConeColClustered
+		/// ConeColStacked
+		/// ConeColStacked100
+		/// CylinderBarClustered
+		/// CylinderBarStacked
+		/// CylinderBarStacked100
+		/// CylinderCol
+		/// CylinderColClustered
+		/// CylinderColStacked
+		/// CylinderColStacked100
+		/// Doughnut
+		/// DoughnutExploded
+		/// Line
+		/// LineMarkers
+		/// LineMarkersStacked
+		/// LineMarkersStacked100
+		/// LineStacked
+		/// LineStacked100
+		/// Pie
+		/// PieExploded
+		/// PieOfPie
+		/// PyramidBarClustered
+		/// PyramidBarStacked
+		/// PyramidBarStacked100
+		/// PyramidCol
+		/// PyramidColClustered
+		/// PyramidColStacked
+		/// PyramidColStacked100
+		/// Radar
+		/// RadarFilled
+		/// RadarMarkers
+		/// StockHLC
+		/// StockOHLC
+		/// StockVHLC
+		/// StockVOHLC
+		/// Surface
+		/// SurfaceTopView
+		/// SurfaceTopViewWireframe
+		/// SurfaceWireframe
+		/// XYScatter
+		/// XYScatterLines
+		/// XYScatterLinesNoMarkers
+		/// XYScatterSmooth
+		/// XYScatterSmoothNoMarkers=73</param>
+		/// <param name="ssChartName"></param>
+		/// <param name="ssDataSeries_List">List Of DataSeries</param>
+		/// <param name="ssHeight">Expressed in pixels</param>
+		/// <param name="ssWidth">Expressed in pixels</param>
+		/// <param name="ssRowPos">Row position to place the upper left corner graph</param>
+		/// <param name="ssColPos">Column position to place the upper left corner graph</param>
+		void MssWorksheet_Chart_Create(object ssWorksheet, string ssChartType, string ssChartName, RLDataSeriesRecordList ssDataSeries_List, int ssHeight, int ssWidth, int ssRowPos, int ssColPos);
+
+		/// <summary>
+		/// Create a defined &quot;Name&quot; (a word or string of characters in Excel that represents a cell, range of cells, formula, or constant value) in excel, starting in the RowStart / ColumnStart cell.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet to write to</param>
+		/// <param name="ssName">&quot;Name&quot;</param>
+		/// <param name="ssDataSet">Values to assigned the name</param>
+		/// <param name="ssRowStart">Start row number</param>
+		/// <param name="ssColumnStart">Start column number</param>
+		void MssWorksheet_AddName(object ssWorksheet, string ssName, object ssDataSet, int ssRowStart, int ssColumnStart);
+
+		/// <summary>
+		/// Opens an existing workbook for editing and keeps it in memory
+		/// </summary>
+		/// <param name="ssBinaryData"></param>
+		/// <param name="ssWorkbook"></param>
+		void MssWorkbook_Open_BinaryData(byte[] ssBinaryData, out object ssWorkbook);
 
 	} // IssAdvanced_Excel
 

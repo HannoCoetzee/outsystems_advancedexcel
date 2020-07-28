@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ProductVersion>9.0.30428</ProductVersion>
 		<SchemaVersion>2.0</SchemaVersion>
 		<ProjectGuid>{7ECF0AB5-5D2A-4D3C-9F1D-0DF8983EF853}</ProjectGuid>
 		<OutputType>Library</OutputType>

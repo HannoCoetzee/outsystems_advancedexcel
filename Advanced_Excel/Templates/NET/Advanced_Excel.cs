@@ -464,7 +464,9 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssColumnNumber">The column number of the cell to add the comment to.</param>
 		/// <param name="ssText">The comment.</param>
 		/// <param name="ssAuthor">The author of the comment.</param>
-		public void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor) {
+		/// <param name="ssAutofit">True to autofit the comment window to the comment text</param>
+		/// <param name="ssIsRichText">Is the comment rich text</param>
+		public void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor, bool ssAutofit, bool ssIsRichText) {
 			// TODO: Write implementation for action
 		} // MssComment_Add
 
@@ -542,6 +544,258 @@ namespace OutSystems.NssAdvanced_Excel {
 		public void MssWorkbook_Protect(object ssWorkbook, string ssPassword, bool ssLockStructure, bool ssLockWindows, bool ssLockRevision) {
 			// TODO: Write implementation for action
 		} // MssWorkbook_Protect
+
+		/// <summary>
+		/// Calculates the formula of a cell, defined by its index.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row Number</param>
+		/// <param name="ssColumn">Column Number</param>
+		public void MssCell_CalculateByIndex(object ssWorksheet, int ssRow, int ssColumn) {
+			// TODO: Write implementation for action
+		} // MssCell_CalculateByIndex
+
+		/// <summary>
+		/// Calculates the formula of a cell, defined by its name.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell-name (eg A4)</param>
+		public void MssCell_CalculateByName(object ssWorksheet, string ssCellName) {
+			// TODO: Write implementation for action
+		} // MssCell_CalculateByName
+
+		/// <summary>
+		/// Apply format to a range of cells.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet to write to</param>
+		/// <param name="ssRowStart">Start row (integer)</param>
+		/// <param name="ssColumnStart">Start column (integer)</param>
+		/// <param name="ssRowEnd">End row (integer)</param>
+		/// <param name="ssColumnEnd">End column (integer)</param>
+		/// <param name="ssCellFormat">CellFormat for the target cells</param>
+		public void MssCell_FormatRange(object ssWorksheet, int ssRowStart, int ssColumnStart, int ssRowEnd, int ssColumnEnd, RCCellFormatRecord ssCellFormat) {
+			// TODO: Write implementation for action
+		} // MssCell_FormatRange
+
+		/// <summary>
+		/// Reads the value of a cell, defined by its index.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">row number</param>
+		/// <param name="ssColumn">column number</param>
+		/// <param name="ssReadText">If true always reads the cell value as text</param>
+		/// <param name="ssCellValue">text-value</param>
+		public void MssCell_ReadByIndex(object ssWorksheet, int ssRow, int ssColumn, bool ssReadText, out string ssCellValue) {
+			ssCellValue = "";
+			// TODO: Write implementation for action
+		} // MssCell_ReadByIndex
+
+		/// <summary>
+		/// Reads the value of a cell, defined by its name.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell-name (eg A4)</param>
+		/// <param name="ssReadText">If true always reads the cell value as text</param>
+		/// <param name="ssCellValue">text-value</param>
+		public void MssCell_ReadByName(object ssWorksheet, string ssCellName, bool ssReadText, out string ssCellValue) {
+			ssCellValue = "";
+			// TODO: Write implementation for action
+		} // MssCell_ReadByName
+
+		/// <summary>
+		/// Write a formula to a cell, defined by its index.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">rownumber</param>
+		/// <param name="ssColumn">columnnumber</param>
+		/// <param name="ssFormula">Formula</param>
+		public void MssCell_SetFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, string ssFormula) {
+			// TODO: Write implementation for action
+		} // MssCell_SetFormulaByIndex
+
+		/// <summary>
+		/// Write a formula to a cell, defined by its name.
+		/// Input is a worksheet-object
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell-name (eg A4)</param>
+		/// <param name="ssFormula">Formula</param>
+		public void MssCell_SetFormulaByName(object ssWorksheet, string ssCellName, string ssFormula) {
+			// TODO: Write implementation for action
+		} // MssCell_SetFormulaByName
+
+		/// <summary>
+		/// Adds a copy of a worksheet
+		/// </summary>
+		/// <param name="ssWorkbook"></param>
+		/// <param name="ssWorksheetName">The name of the spreadsheet to create</param>
+		/// <param name="ssWorksheetToCopy">The worksheet to be copied</param>
+		/// <param name="ssWorksheet"></param>
+		public void MssWorkbook_AddCopyWorksheet(object ssWorkbook, string ssWorksheetName, object ssWorksheetToCopy, out object ssWorksheet) {
+			ssWorksheet = null;
+			// TODO: Write implementation for action
+		} // MssWorkbook_AddCopyWorksheet
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="ssWorksheet"></param>
+		/// <param name="ssImages"></param>
+		public void MssWorksheet_GetImages(object ssWorksheet, out RLImageRecordList ssImages) {
+			ssImages = new RLImageRecordList();
+			// TODO: Write implementation for action
+		} // MssWorksheet_GetImages
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void MssWorksheet_SelectByIndex() {
+			// TODO: Write implementation for action
+		} // MssWorksheet_SelectByIndex
+
+		/// <summary>
+		/// Select a worksheet to work on by its name
+		/// </summary>
+		/// <param name="ssWorkbook"></param>
+		/// <param name="ssWorksheetName">The name of the spreadsheet to select</param>
+		/// <param name="ssWorksheet"></param>
+		public void MssWorksheet_SelectByName(object ssWorkbook, string ssWorksheetName, out string ssWorksheet) {
+			ssWorksheet = "";
+			// TODO: Write implementation for action
+		} // MssWorksheet_SelectByName
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="ssWorkbook"></param>
+		/// <param name="ssNameToDelete"></param>
+		public void MssWorksheet_DeleteByName(object ssWorkbook, string ssNameToDelete) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_DeleteByName
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="ssWorkbook"></param>
+		/// <param name="ssIndexToDelete"></param>
+		public void MssWorksheet_DeleteByIndex(object ssWorkbook, int ssIndexToDelete) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_DeleteByIndex
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet you want to work with.</param>
+		/// <param name="ssChartType">Receives the chart type in text, possible types:
+		/// Area3D
+		/// AreaStacked3D
+		/// AreaStacked1003D
+		/// BarClustered3D
+		/// BarStacked3D
+		/// BarStacked1003D
+		/// Column3D
+		/// ColumnClustered3D
+		/// ColumnStacked3D
+		/// ColumnStacked1003D
+		/// Line3D
+		/// Pie3D
+		/// PieExploded3D
+		/// Area
+		/// AreaStacked
+		/// AreaStacked100
+		/// BarClustered
+		/// BarOfPie
+		/// BarStacked
+		/// BarStacked100
+		/// Bubble
+		/// Bubble3DEffect
+		/// ColumnClustered
+		/// ColumnStacked
+		/// ColumnStacked100
+		/// ConeBarClustered
+		/// ConeBarStacked
+		/// ConeBarStacked100
+		/// ConeCol
+		/// ConeColClustered
+		/// ConeColStacked
+		/// ConeColStacked100
+		/// CylinderBarClustered
+		/// CylinderBarStacked
+		/// CylinderBarStacked100
+		/// CylinderCol
+		/// CylinderColClustered
+		/// CylinderColStacked
+		/// CylinderColStacked100
+		/// Doughnut
+		/// DoughnutExploded
+		/// Line
+		/// LineMarkers
+		/// LineMarkersStacked
+		/// LineMarkersStacked100
+		/// LineStacked
+		/// LineStacked100
+		/// Pie
+		/// PieExploded
+		/// PieOfPie
+		/// PyramidBarClustered
+		/// PyramidBarStacked
+		/// PyramidBarStacked100
+		/// PyramidCol
+		/// PyramidColClustered
+		/// PyramidColStacked
+		/// PyramidColStacked100
+		/// Radar
+		/// RadarFilled
+		/// RadarMarkers
+		/// StockHLC
+		/// StockOHLC
+		/// StockVHLC
+		/// StockVOHLC
+		/// Surface
+		/// SurfaceTopView
+		/// SurfaceTopViewWireframe
+		/// SurfaceWireframe
+		/// XYScatter
+		/// XYScatterLines
+		/// XYScatterLinesNoMarkers
+		/// XYScatterSmooth
+		/// XYScatterSmoothNoMarkers=73</param>
+		/// <param name="ssChartName"></param>
+		/// <param name="ssDataSeries_List">List Of DataSeries</param>
+		/// <param name="ssHeight">Expressed in pixels</param>
+		/// <param name="ssWidth">Expressed in pixels</param>
+		/// <param name="ssRowPos">Row position to place the upper left corner graph</param>
+		/// <param name="ssColPos">Column position to place the upper left corner graph</param>
+		public void MssWorksheet_Chart_Create(object ssWorksheet, string ssChartType, string ssChartName, RLDataSeriesRecordList ssDataSeries_List, int ssHeight, int ssWidth, int ssRowPos, int ssColPos) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_Chart_Create
+
+		/// <summary>
+		/// Create a defined &quot;Name&quot; (a word or string of characters in Excel that represents a cell, range of cells, formula, or constant value) in excel, starting in the RowStart / ColumnStart cell.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet to write to</param>
+		/// <param name="ssName">&quot;Name&quot;</param>
+		/// <param name="ssDataSet">Values to assigned the name</param>
+		/// <param name="ssRowStart">Start row number</param>
+		/// <param name="ssColumnStart">Start column number</param>
+		public void MssWorksheet_AddName(object ssWorksheet, string ssName, object ssDataSet, int ssRowStart, int ssColumnStart) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_AddName
+
+		/// <summary>
+		/// Opens an existing workbook for editing and keeps it in memory
+		/// </summary>
+		/// <param name="ssBinaryData"></param>
+		/// <param name="ssWorkbook"></param>
+		public void MssWorkbook_Open_BinaryData(byte[] ssBinaryData, out object ssWorkbook) {
+			ssWorkbook = null;
+			// TODO: Write implementation for action
+		} // MssWorkbook_Open_BinaryData
 
 	} // CssAdvanced_Excel
 

@@ -17,7 +17,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCCellFormatRecord: ISerializable, ITypedRecord<RCCellFormatRecord> {
-		private static readonly GlobalObjectKey IdCellFormat = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*_Kt8x60uod_oXugTPblTIQ");
+		internal static readonly GlobalObjectKey IdCellFormat = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*_Kt8x60uod_oXugTPblTIQ");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("CellFormat")]
@@ -208,7 +208,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCWorkbookRecord: ISerializable, ITypedRecord<RCWorkbookRecord> {
-		private static readonly GlobalObjectKey IdWorkbook = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*cSfFgXnOmYAmiyqaFCX8Wg");
+		internal static readonly GlobalObjectKey IdWorkbook = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*cSfFgXnOmYAmiyqaFCX8Wg");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Workbook")]
@@ -399,7 +399,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCWorksheetRecord: ISerializable, ITypedRecord<RCWorksheetRecord> {
-		private static readonly GlobalObjectKey IdWorksheet = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*33h7wXL3Z32j+S7n4JJ2+g");
+		internal static readonly GlobalObjectKey IdWorksheet = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*33h7wXL3Z32j+S7n4JJ2+g");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Worksheet")]
@@ -590,7 +590,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCColorRecord: ISerializable, ITypedRecord<RCColorRecord> {
-		private static readonly GlobalObjectKey IdColor = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*egnk0hJuQI_VWFqkbK8pLw");
+		internal static readonly GlobalObjectKey IdColor = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*egnk0hJuQI_VWFqkbK8pLw");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Color")]
@@ -781,7 +781,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCDimensionRecord: ISerializable, ITypedRecord<RCDimensionRecord> {
-		private static readonly GlobalObjectKey IdDimension = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*GgUWI0Z2l9Rs7FF+CSAoGQ");
+		internal static readonly GlobalObjectKey IdDimension = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*GgUWI0Z2l9Rs7FF+CSAoGQ");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Dimension")]
@@ -972,7 +972,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCAddressRecord: ISerializable, ITypedRecord<RCAddressRecord> {
-		private static readonly GlobalObjectKey IdAddress = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*sakV9VS1OspLz+KlcvXSag");
+		internal static readonly GlobalObjectKey IdAddress = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*sakV9VS1OspLz+KlcvXSag");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Address")]
@@ -1163,7 +1163,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCRangeRecord: ISerializable, ITypedRecord<RCRangeRecord> {
-		private static readonly GlobalObjectKey IdRange = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*fkdXsiMILofCapOVw0TaOg");
+		internal static readonly GlobalObjectKey IdRange = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*fkdXsiMILofCapOVw0TaOg");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Range")]
@@ -1354,7 +1354,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCDataSeriesRecord: ISerializable, ITypedRecord<RCDataSeriesRecord> {
-		private static readonly GlobalObjectKey IdDataSeries = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*8aE7EofndyiSFdNxWsJcng");
+		internal static readonly GlobalObjectKey IdDataSeries = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*8aE7EofndyiSFdNxWsJcng");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("DataSeries")]
@@ -1545,7 +1545,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCConditionalFormatItemRecord: ISerializable, ITypedRecord<RCConditionalFormatItemRecord> {
-		private static readonly GlobalObjectKey IdConditionalFormatItem = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*m7UhTXLoFcESauNFfSz_9Q");
+		internal static readonly GlobalObjectKey IdConditionalFormatItem = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*m7UhTXLoFcESauNFfSz_9Q");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("ConditionalFormatItem")]
@@ -1736,7 +1736,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCConditionalFormatStyleRecord: ISerializable, ITypedRecord<RCConditionalFormatStyleRecord> {
-		private static readonly GlobalObjectKey IdConditionalFormatStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*qsmbMO5tGXSuEne6oWL2FA");
+		internal static readonly GlobalObjectKey IdConditionalFormatStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*qsmbMO5tGXSuEne6oWL2FA");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("ConditionalFormatStyle")]
@@ -1927,7 +1927,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCBorderStyleRecord: ISerializable, ITypedRecord<RCBorderStyleRecord> {
-		private static readonly GlobalObjectKey IdBorderStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*+qrCrqrouya0sitZYLHvTA");
+		internal static readonly GlobalObjectKey IdBorderStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*+qrCrqrouya0sitZYLHvTA");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("BorderStyle")]
@@ -2118,7 +2118,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCFillStyleRecord: ISerializable, ITypedRecord<RCFillStyleRecord> {
-		private static readonly GlobalObjectKey IdFillStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*_XAc2AFE5eSXijSex78YQw");
+		internal static readonly GlobalObjectKey IdFillStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*_XAc2AFE5eSXijSex78YQw");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("FillStyle")]
@@ -2309,7 +2309,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCFontStyleRecord: ISerializable, ITypedRecord<RCFontStyleRecord> {
-		private static readonly GlobalObjectKey IdFontStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*T1EQYMn9flehlt5R1AdK6w");
+		internal static readonly GlobalObjectKey IdFontStyle = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*T1EQYMn9flehlt5R1AdK6w");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("FontStyle")]
@@ -2500,7 +2500,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct RCNewSheetRecord: ISerializable, ITypedRecord<RCNewSheetRecord> {
-		private static readonly GlobalObjectKey IdNewSheet = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*8PN_BTMFTs6HsuytG2X1sg");
+		internal static readonly GlobalObjectKey IdNewSheet = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*8PN_BTMFTs6HsuytG2X1sg");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("NewSheet")]
@@ -2685,4 +2685,195 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // RCNewSheetRecord
+
+	/// <summary>
+	/// Structure <code>RCImageRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCImageRecord: ISerializable, ITypedRecord<RCImageRecord> {
+		internal static readonly GlobalObjectKey IdImage = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*L8pc1RE5s9y+lvB+05yOfg");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Image")]
+		public STImageStructure ssSTImage;
+
+
+		public static implicit operator STImageStructure(RCImageRecord r) {
+			return r.ssSTImage;
+		}
+
+		public static implicit operator RCImageRecord(STImageStructure r) {
+			RCImageRecord res = new RCImageRecord(null);
+			res.ssSTImage = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCImageRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTImage = new STImageStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTImage.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTImage.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCImageRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCImageRecord a, RCImageRecord b) {
+			if (a.ssSTImage != b.ssSTImage) return false;
+			return true;
+		}
+
+		public static bool operator != (RCImageRecord a, RCImageRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCImageRecord)) return false;
+			return (this == (RCImageRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTImage.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCImageRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTImage = new STImageStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTImage", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTImage' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTImage = (STImageStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTImage.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTImage.InternalRecursiveSave();
+		}
+
+
+		public RCImageRecord Duplicate() {
+			RCImageRecord t;
+			t.ssSTImage = (STImageStructure) this.ssSTImage.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTImage.ToXml(this, recordElem, "Image", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "image") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Image")) variable.Value = ssSTImage; else variable.Optimized = true;
+				variable.SetFieldName("image");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdImage) {
+				return ssSTImage;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTImage.FillFromOther((IRecord) other.AttributeGet(IdImage));
+		}
+		public bool IsDefault() {
+			RCImageRecord defaultStruct = new RCImageRecord(null);
+			if (this.ssSTImage != defaultStruct.ssSTImage) return false;
+			return true;
+		}
+	} // RCImageRecord
 }

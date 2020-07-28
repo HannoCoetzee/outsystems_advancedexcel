@@ -18,25 +18,25 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STCellFormatStructure: ISerializable, ITypedRecord<STCellFormatStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdFontName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*BycYa7Www0ikxqPdTRgbGw");
-		private static readonly GlobalObjectKey IdFontSize = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*fQrThGBwgUybjIyLimeOPA");
-		private static readonly GlobalObjectKey IdBackgroundColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*3oXRIbtWvkKxhz4Cx7wIRg");
-		private static readonly GlobalObjectKey IdAutofitColumn = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*fH82ZL_ULky72619BBkR+w");
-		private static readonly GlobalObjectKey IdBold = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*GU0F2kjUe0W09TXtoXF07g");
-		private static readonly GlobalObjectKey IdNumberFormat = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*T9IMXF6dHkeMjRsrROBwig");
-		private static readonly GlobalObjectKey IdBorderStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*4nZdbtDhvk+RtDYUBpdevA");
-		private static readonly GlobalObjectKey IdBorderColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ZTYcPbwyLEuVyw+rm2CbRg");
-		private static readonly GlobalObjectKey IdHorizontalAlignment = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*VTZwPSIcVkmeFW4OW0ZguQ");
-		private static readonly GlobalObjectKey IdVerticalAlignment = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ahrSd0mLV0Gc9jtbxoriRA");
-		private static readonly GlobalObjectKey IdWrapText = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*3uhZUV2hKkqHaaRD9xc48A");
-		private static readonly GlobalObjectKey IdShrinkToFit = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*paq0xKQFCEeqKMik8kiaNw");
-		private static readonly GlobalObjectKey IdTextRotation = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*XqOgxCqhiEyOcJ_Rg+aBsg");
-		private static readonly GlobalObjectKey IdHidden = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*vZcW2jua7E+q4utgGDRzeg");
-		private static readonly GlobalObjectKey IdIndent = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*JGWbJCDA00i7b+L3di8BPg");
-		private static readonly GlobalObjectKey IdLocked = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*OKB5o_cX0U+fvFVGpM3HQw");
-		private static readonly GlobalObjectKey IdQuotePrefix = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*FwRaU5uVeESO_8noGV00xw");
-		private static readonly GlobalObjectKey IdReadingOrder = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*xvpo+OQXa0uQmPDs2ZkhPQ");
-		private static readonly GlobalObjectKey IdFontColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*q3k5T2Uv00a1pJF4yVllTg");
+		internal static readonly GlobalObjectKey IdFontName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*BycYa7Www0ikxqPdTRgbGw");
+		internal static readonly GlobalObjectKey IdFontSize = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*fQrThGBwgUybjIyLimeOPA");
+		internal static readonly GlobalObjectKey IdBackgroundColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*3oXRIbtWvkKxhz4Cx7wIRg");
+		internal static readonly GlobalObjectKey IdAutofitColumn = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*fH82ZL_ULky72619BBkR+w");
+		internal static readonly GlobalObjectKey IdBold = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*GU0F2kjUe0W09TXtoXF07g");
+		internal static readonly GlobalObjectKey IdNumberFormat = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*T9IMXF6dHkeMjRsrROBwig");
+		internal static readonly GlobalObjectKey IdBorderStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*4nZdbtDhvk+RtDYUBpdevA");
+		internal static readonly GlobalObjectKey IdBorderColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ZTYcPbwyLEuVyw+rm2CbRg");
+		internal static readonly GlobalObjectKey IdHorizontalAlignment = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*VTZwPSIcVkmeFW4OW0ZguQ");
+		internal static readonly GlobalObjectKey IdVerticalAlignment = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ahrSd0mLV0Gc9jtbxoriRA");
+		internal static readonly GlobalObjectKey IdWrapText = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*3uhZUV2hKkqHaaRD9xc48A");
+		internal static readonly GlobalObjectKey IdShrinkToFit = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*paq0xKQFCEeqKMik8kiaNw");
+		internal static readonly GlobalObjectKey IdTextRotation = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*XqOgxCqhiEyOcJ_Rg+aBsg");
+		internal static readonly GlobalObjectKey IdHidden = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*vZcW2jua7E+q4utgGDRzeg");
+		internal static readonly GlobalObjectKey IdIndent = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*JGWbJCDA00i7b+L3di8BPg");
+		internal static readonly GlobalObjectKey IdLocked = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*OKB5o_cX0U+fvFVGpM3HQw");
+		internal static readonly GlobalObjectKey IdQuotePrefix = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*FwRaU5uVeESO_8noGV00xw");
+		internal static readonly GlobalObjectKey IdReadingOrder = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*xvpo+OQXa0uQmPDs2ZkhPQ");
+		internal static readonly GlobalObjectKey IdFontColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*q3k5T2Uv00a1pJF4yVllTg");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("FontName")]
@@ -627,7 +627,7 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STWorkbookStructure: ISerializable, ITypedRecord<STWorkbookStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdWorksheets = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*izrPaRKZ_EqpgPLXabozRQ");
+		internal static readonly GlobalObjectKey IdWorksheets = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*izrPaRKZ_EqpgPLXabozRQ");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Worksheets")]
@@ -808,10 +808,10 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STWorksheetStructure: ISerializable, ITypedRecord<STWorksheetStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*qu+kXpI5mk2nEoopujaw1w");
-		private static readonly GlobalObjectKey IdIndex = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*y5APBAwZfkWoTqWCP01Pxg");
-		private static readonly GlobalObjectKey IdTabColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*vXO_uSpdREW_4CDsVlbFlQ");
-		private static readonly GlobalObjectKey IdDimension = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*xXgLP3ev_0mowvNYBfWMGg");
+		internal static readonly GlobalObjectKey IdName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*qu+kXpI5mk2nEoopujaw1w");
+		internal static readonly GlobalObjectKey IdIndex = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*y5APBAwZfkWoTqWCP01Pxg");
+		internal static readonly GlobalObjectKey IdTabColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*vXO_uSpdREW_4CDsVlbFlQ");
+		internal static readonly GlobalObjectKey IdDimension = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*xXgLP3ev_0mowvNYBfWMGg");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Name")]
@@ -1067,14 +1067,14 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STColorStructure: ISerializable, ITypedRecord<STColorStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdIsKnownColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*l5cu6CGHqkSOaN_PCVYsDA");
-		private static readonly GlobalObjectKey IdIsNamedColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*eekKwslJf0u5aYbXGPnflA");
-		private static readonly GlobalObjectKey IdIsSystemColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*OD+P0K4xt02YijR2RL18uw");
-		private static readonly GlobalObjectKey IdA = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*zUlWKdvonEGw1Rc65EoX6w");
-		private static readonly GlobalObjectKey IdR = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ECHSWe_rkkuNSf04BI6Adg");
-		private static readonly GlobalObjectKey IdG = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*5YqhHvTzz0aEouuGyeT4Ww");
-		private static readonly GlobalObjectKey IdB = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*c2IM4kriBEiuF+KhK3PbSg");
-		private static readonly GlobalObjectKey IdName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*eyCFq+evuk6c3ZgZ2JJS_g");
+		internal static readonly GlobalObjectKey IdIsKnownColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*l5cu6CGHqkSOaN_PCVYsDA");
+		internal static readonly GlobalObjectKey IdIsNamedColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*eekKwslJf0u5aYbXGPnflA");
+		internal static readonly GlobalObjectKey IdIsSystemColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*OD+P0K4xt02YijR2RL18uw");
+		internal static readonly GlobalObjectKey IdA = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*zUlWKdvonEGw1Rc65EoX6w");
+		internal static readonly GlobalObjectKey IdR = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ECHSWe_rkkuNSf04BI6Adg");
+		internal static readonly GlobalObjectKey IdG = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*5YqhHvTzz0aEouuGyeT4Ww");
+		internal static readonly GlobalObjectKey IdB = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*c2IM4kriBEiuF+KhK3PbSg");
+		internal static readonly GlobalObjectKey IdName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*eyCFq+evuk6c3ZgZ2JJS_g");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("IsKnownColor")]
@@ -1412,11 +1412,11 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STDimensionStructure: ISerializable, ITypedRecord<STDimensionStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdAddress = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*yHVFLdcUqE+X718XHPI+kw");
-		private static readonly GlobalObjectKey IdColumns = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*aNFKux7b1kWMQpn59TfPGQ");
-		private static readonly GlobalObjectKey IdRows = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*01Ula9rHSkKShXRia3Q7sQ");
-		private static readonly GlobalObjectKey IdStart = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*JaS35nzoPk2ZuTVFbuOf0Q");
-		private static readonly GlobalObjectKey IdEnd = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Gh6izWtZ+UKMWJvgHvCGSA");
+		internal static readonly GlobalObjectKey IdAddress = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*yHVFLdcUqE+X718XHPI+kw");
+		internal static readonly GlobalObjectKey IdColumns = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*aNFKux7b1kWMQpn59TfPGQ");
+		internal static readonly GlobalObjectKey IdRows = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*01Ula9rHSkKShXRia3Q7sQ");
+		internal static readonly GlobalObjectKey IdStart = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*JaS35nzoPk2ZuTVFbuOf0Q");
+		internal static readonly GlobalObjectKey IdEnd = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Gh6izWtZ+UKMWJvgHvCGSA");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Address")]
@@ -1695,10 +1695,10 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STAddressStructure: ISerializable, ITypedRecord<STAddressStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdAddress = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*AVbMSVppE0+cJ1ha0PX_Tg");
-		private static readonly GlobalObjectKey IdColumn = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*2K8ZTo2MUkGj+bwxIpHHSg");
-		private static readonly GlobalObjectKey IdIsRef = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*q_rA6foNt02HS9grG81W9w");
-		private static readonly GlobalObjectKey IdRow = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*+nGPqzJReEerUJI3NyiEPg");
+		internal static readonly GlobalObjectKey IdAddress = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*AVbMSVppE0+cJ1ha0PX_Tg");
+		internal static readonly GlobalObjectKey IdColumn = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*2K8ZTo2MUkGj+bwxIpHHSg");
+		internal static readonly GlobalObjectKey IdIsRef = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*q_rA6foNt02HS9grG81W9w");
+		internal static readonly GlobalObjectKey IdRow = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*+nGPqzJReEerUJI3NyiEPg");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Address")]
@@ -1945,10 +1945,10 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STRangeStructure: ISerializable, ITypedRecord<STRangeStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdStartRow = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*kAiDbHLyfka+BBBpQVgzag");
-		private static readonly GlobalObjectKey IdStartCol = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*LjVCwwGKH02mZjrBadmzXg");
-		private static readonly GlobalObjectKey IdEndRow = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*oW8H1BHvyEqUQO2kj1eHeQ");
-		private static readonly GlobalObjectKey IdEndCol = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*FidsGMKZGUKVmU2u5C7LgA");
+		internal static readonly GlobalObjectKey IdStartRow = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*kAiDbHLyfka+BBBpQVgzag");
+		internal static readonly GlobalObjectKey IdStartCol = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*LjVCwwGKH02mZjrBadmzXg");
+		internal static readonly GlobalObjectKey IdEndRow = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*oW8H1BHvyEqUQO2kj1eHeQ");
+		internal static readonly GlobalObjectKey IdEndCol = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*FidsGMKZGUKVmU2u5C7LgA");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("StartRow")]
@@ -2195,9 +2195,9 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STDataSeriesStructure: ISerializable, ITypedRecord<STDataSeriesStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdValueRange = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*z6UPL__K0EKq_2sixzDIRQ");
-		private static readonly GlobalObjectKey IdLabelRange = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*MtbosIZzqUKkocL3d4Zzhw");
-		private static readonly GlobalObjectKey IdName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*WqyHiIzy50W0NRqZbpcBKg");
+		internal static readonly GlobalObjectKey IdValueRange = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*z6UPL__K0EKq_2sixzDIRQ");
+		internal static readonly GlobalObjectKey IdLabelRange = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*MtbosIZzqUKkocL3d4Zzhw");
+		internal static readonly GlobalObjectKey IdName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*WqyHiIzy50W0NRqZbpcBKg");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("ValueRange")]
@@ -2431,12 +2431,12 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STConditionalFormatItemStructure: ISerializable, ITypedRecord<STConditionalFormatItemStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdAddress = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*9quUxhHXV06FIXUHzAo0tA");
-		private static readonly GlobalObjectKey IdPriority = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ZiyfnTaZTUSqZ9KxgazsJA");
-		private static readonly GlobalObjectKey IdStopIfTrue = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*V+9zUV7vZE6ULG3ngGiKqw");
-		private static readonly GlobalObjectKey IdFormula = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*bvwikWuyc0CFIjUukGNxMw");
-		private static readonly GlobalObjectKey IdRuleType = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*kAiJT_QaJEaD40wTFCo+pw");
-		private static readonly GlobalObjectKey IdStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*CVx5EPnKoka3xe7InYEb7Q");
+		internal static readonly GlobalObjectKey IdAddress = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*9quUxhHXV06FIXUHzAo0tA");
+		internal static readonly GlobalObjectKey IdPriority = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ZiyfnTaZTUSqZ9KxgazsJA");
+		internal static readonly GlobalObjectKey IdStopIfTrue = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*V+9zUV7vZE6ULG3ngGiKqw");
+		internal static readonly GlobalObjectKey IdFormula = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*bvwikWuyc0CFIjUukGNxMw");
+		internal static readonly GlobalObjectKey IdRuleType = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*kAiJT_QaJEaD40wTFCo+pw");
+		internal static readonly GlobalObjectKey IdStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*CVx5EPnKoka3xe7InYEb7Q");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Address")]
@@ -2739,13 +2739,13 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STConditionalFormatStyleStructure: ISerializable, ITypedRecord<STConditionalFormatStyleStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdFill = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*8Lre4DmEEUGF3nDQEdYz4w");
-		private static readonly GlobalObjectKey IdNumberFormat = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ScnLCO8PME+pYUGxccUiVQ");
-		private static readonly GlobalObjectKey IdBorderTop = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Z1IJbohI1kW1D19RhHAzLA");
-		private static readonly GlobalObjectKey IdBorderBottom = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*iE4ewOcDZkqpxqiarvwtHA");
-		private static readonly GlobalObjectKey IdBorderLeft = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*C3y1_2KaaUmS52Km4SrEcg");
-		private static readonly GlobalObjectKey IdBorderRight = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*l1YNOqYcbUWXa8VCdoyuRQ");
-		private static readonly GlobalObjectKey IdFont = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*lLGusVRpd0G1Hsch057P7g");
+		internal static readonly GlobalObjectKey IdFill = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*8Lre4DmEEUGF3nDQEdYz4w");
+		internal static readonly GlobalObjectKey IdNumberFormat = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ScnLCO8PME+pYUGxccUiVQ");
+		internal static readonly GlobalObjectKey IdBorderTop = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Z1IJbohI1kW1D19RhHAzLA");
+		internal static readonly GlobalObjectKey IdBorderBottom = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*iE4ewOcDZkqpxqiarvwtHA");
+		internal static readonly GlobalObjectKey IdBorderLeft = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*C3y1_2KaaUmS52Km4SrEcg");
+		internal static readonly GlobalObjectKey IdBorderRight = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*l1YNOqYcbUWXa8VCdoyuRQ");
+		internal static readonly GlobalObjectKey IdFont = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*lLGusVRpd0G1Hsch057P7g");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Fill")]
@@ -3090,8 +3090,8 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STBorderStyleStructure: ISerializable, ITypedRecord<STBorderStyleStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*j+Bh82+j9kGFWhNQ0zRlEg");
-		private static readonly GlobalObjectKey IdColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*lJE4e2V5rUWa3RMyGg_CqA");
+		internal static readonly GlobalObjectKey IdStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*j+Bh82+j9kGFWhNQ0zRlEg");
+		internal static readonly GlobalObjectKey IdColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*lJE4e2V5rUWa3RMyGg_CqA");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Style")]
@@ -3291,9 +3291,9 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STFillStyleStructure: ISerializable, ITypedRecord<STFillStyleStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdBackgroundColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*PYSKmk8IJ0SWPNkGHZI+nw");
-		private static readonly GlobalObjectKey IdPatternColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*67yv3NhuPUudYNgC61tldQ");
-		private static readonly GlobalObjectKey IdPatternType = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Wxly5fCSdEqAzKDA6dBrhA");
+		internal static readonly GlobalObjectKey IdBackgroundColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*PYSKmk8IJ0SWPNkGHZI+nw");
+		internal static readonly GlobalObjectKey IdPatternColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*67yv3NhuPUudYNgC61tldQ");
+		internal static readonly GlobalObjectKey IdPatternType = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Wxly5fCSdEqAzKDA6dBrhA");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("BackgroundColor")]
@@ -3516,11 +3516,11 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STFontStyleStructure: ISerializable, ITypedRecord<STFontStyleStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdBold = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*8fsIq2UKukCxtqCm89cwKw");
-		private static readonly GlobalObjectKey IdItalic = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*_iYwYIFAR0WMCT_NxN9F1w");
-		private static readonly GlobalObjectKey IdStrike = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*uJNOSb7cQUScvCImDAYnHw");
-		private static readonly GlobalObjectKey IdColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*7O071h1R9UOTFc35XugTxA");
-		private static readonly GlobalObjectKey IdUnderline = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*0_1vqRNHpUSMHYrgwUD9uA");
+		internal static readonly GlobalObjectKey IdBold = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*8fsIq2UKukCxtqCm89cwKw");
+		internal static readonly GlobalObjectKey IdItalic = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*_iYwYIFAR0WMCT_NxN9F1w");
+		internal static readonly GlobalObjectKey IdStrike = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*uJNOSb7cQUScvCImDAYnHw");
+		internal static readonly GlobalObjectKey IdColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*7O071h1R9UOTFc35XugTxA");
+		internal static readonly GlobalObjectKey IdUnderline = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*0_1vqRNHpUSMHYrgwUD9uA");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Bold")]
@@ -3789,8 +3789,8 @@ namespace OutSystems.NssAdvanced_Excel {
 	/// </summary>
 	[Serializable()]
 	public partial struct STNewSheetStructure: ISerializable, ITypedRecord<STNewSheetStructure>, ISimpleRecord {
-		private static readonly GlobalObjectKey IdName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*T_pKIf3Ftk2QFFghtZPzTA");
-		private static readonly GlobalObjectKey IdIndex = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Gd9zj1aJrUKHcrFpKwI6tA");
+		internal static readonly GlobalObjectKey IdName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*T_pKIf3Ftk2QFFghtZPzTA");
+		internal static readonly GlobalObjectKey IdIndex = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Gd9zj1aJrUKHcrFpKwI6tA");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Name")]
@@ -3983,5 +3983,258 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // STNewSheetStructure
+
+	/// <summary>
+	/// Structure <code>STImageStructure</code> that represents the Service Studio structure
+	///  <code>Image</code> <p> Description: </p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STImageStructure: ISerializable, ITypedRecord<STImageStructure>, ISimpleRecord {
+		internal static readonly GlobalObjectKey IdName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*658By1ms2kWlOg_UYpTHXA");
+		internal static readonly GlobalObjectKey IdContent = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*3no2SVVvxkO8zFBWeiCOTw");
+		internal static readonly GlobalObjectKey IdRow = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*wXDmnydcA0iEGPTBG_EY2A");
+		internal static readonly GlobalObjectKey IdColumn = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*kewa5eHGGEyXFYsIBtKYjA");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Name")]
+		public string ssName;
+
+		[System.Xml.Serialization.XmlElement("Content")]
+		public byte[] ssContent;
+
+		[System.Xml.Serialization.XmlElement("Row")]
+		public int ssRow;
+
+		[System.Xml.Serialization.XmlElement("Column")]
+		public int ssColumn;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STImageStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssName = "";
+			ssContent = new byte[] {};
+			ssRow = 0;
+			ssColumn = 0;
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssName = r.ReadText(index++, "Image.Name", "");
+			ssContent = r.ReadBinaryData(index++, "Image.Content", new byte[] {});
+			ssRow = r.ReadInteger(index++, "Image.Row", 0);
+			ssColumn = r.ReadInteger(index++, "Image.Column", 0);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STImageStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STImageStructure a, STImageStructure b) {
+			if (a.ssName != b.ssName) return false;
+			if (!RuntimePlatformUtils.CompareByteArrays(a.ssContent, b.ssContent)) return false;
+			if (a.ssRow != b.ssRow) return false;
+			if (a.ssColumn != b.ssColumn) return false;
+			return true;
+		}
+
+		public static bool operator != (STImageStructure a, STImageStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STImageStructure)) return false;
+			return (this == (STImageStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssName.GetHashCode()
+				^ ssContent.GetHashCode()
+				^ ssRow.GetHashCode()
+				^ ssColumn.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STImageStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssName = "";
+			ssContent = new byte[] {};
+			ssRow = 0;
+			ssColumn = 0;
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssName", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssName' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssName = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssContent", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssContent' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssContent = (byte[]) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssRow", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssRow' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssRow = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssColumn", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssColumn' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssColumn = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STImageStructure Duplicate() {
+			STImageStructure t;
+			t.ssName = this.ssName;
+			if (this.ssContent != null) {
+				t.ssContent = (byte[]) this.ssContent.Clone();
+			} else {
+				t.ssContent = null;
+			}
+			t.ssRow = this.ssRow;
+			t.ssColumn = this.ssColumn;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Name")) VarValue.AppendAttribute(recordElem, "Name", ssName, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Name");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Content")) VarValue.AppendAttribute(recordElem, "Content", ssContent, detailLevel, TypeKind.BinaryData); else VarValue.AppendOptimizedAttribute(recordElem, "Content");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Row")) VarValue.AppendAttribute(recordElem, "Row", ssRow, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "Row");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Column")) VarValue.AppendAttribute(recordElem, "Column", ssColumn, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "Column");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "name") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Name")) variable.Value = ssName; else variable.Optimized = true;
+			} else if (head == "content") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Content")) variable.Value = ssContent; else variable.Optimized = true;
+			} else if (head == "row") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Row")) variable.Value = ssRow; else variable.Optimized = true;
+			} else if (head == "column") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Column")) variable.Value = ssColumn; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdName) {
+				return ssName;
+			} else if (key == IdContent) {
+				return ssContent;
+			} else if (key == IdRow) {
+				return ssRow;
+			} else if (key == IdColumn) {
+				return ssColumn;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssName = (string) other.AttributeGet(IdName);
+			ssContent = (byte[]) other.AttributeGet(IdContent);
+			ssRow = (int) other.AttributeGet(IdRow);
+			ssColumn = (int) other.AttributeGet(IdColumn);
+		}
+		public bool IsDefault() {
+			STImageStructure defaultStruct = new STImageStructure(null);
+			if (this.ssName != defaultStruct.ssName) return false;
+			if (!RuntimePlatformUtils.CompareByteArrays(this.ssContent, defaultStruct.ssContent)) return false;
+			if (this.ssRow != defaultStruct.ssRow) return false;
+			if (this.ssColumn != defaultStruct.ssColumn) return false;
+			return true;
+		}
+	} // STImageStructure
 
 } // OutSystems.NssAdvanced_Excel

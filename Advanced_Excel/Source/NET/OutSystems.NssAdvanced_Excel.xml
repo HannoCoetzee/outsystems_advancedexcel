@@ -440,6 +440,15 @@
             <param name="ssRowPos">Row position to place the upper left corner graph</param>
             <param name="ssColPos">Column position to place the upper left corner graph</param>
         </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_CalculateByIndex(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Calculates the formula of a cell, defined by its index.
+            Input is a worksheet-object
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssRow">row number</param>
+            <param name="ssColumn">column number</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Open(System.String,System.Byte[],System.Object@)">
             <summary>
             Opens an existing workbook for editing by either specifying a name or the binary data.
