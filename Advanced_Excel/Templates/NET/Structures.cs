@@ -4237,4 +4237,565 @@ namespace OutSystems.NssAdvanced_Excel {
 		}
 	} // STImageStructure
 
+	/// <summary>
+	/// Structure <code>STProtectionStructure</code> that represents the Service Studio structure
+	///  <code>Protection</code> <p> Description: </p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STProtectionStructure: ISerializable, ITypedRecord<STProtectionStructure>, ISimpleRecord {
+		internal static readonly GlobalObjectKey IdIsProtected = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*1RvnZvV+GECxUtNqxXvdCw");
+		internal static readonly GlobalObjectKey IdPassword = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*77dK3_I82ESdnESy6TGMiA");
+		internal static readonly GlobalObjectKey IdAllowAutoFilter = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*DNo4sZ8J0EedqEmjAfA80Q");
+		internal static readonly GlobalObjectKey IdAllowDeleteColumns = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*jibnGNyGREOXHKLcCGLalQ");
+		internal static readonly GlobalObjectKey IdAllowDeleteRows = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*jB_e3lwjf0ylOxN8eZ_bUg");
+		internal static readonly GlobalObjectKey IdAllowEditObject = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*KaOnE6+4TkmDny4SjIuSjQ");
+		internal static readonly GlobalObjectKey IdAllowEditScenarios = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*btY4uKmBZEKY9l8XycpKNg");
+		internal static readonly GlobalObjectKey IdAllowFormatCells = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*j+vEKB6jr0ypKa2__G9UsQ");
+		internal static readonly GlobalObjectKey IdAllowFormatColumns = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*J+LUWojcikijLFzOO5EQgg");
+		internal static readonly GlobalObjectKey IdAllowFormatRows = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*n1FKMjd5nE6ellaPIUYmDg");
+		internal static readonly GlobalObjectKey IdAllowInsertColumns = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*4LDfpUYDaUa3g6hjuEpfeQ");
+		internal static readonly GlobalObjectKey IdAllowInsertRows = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*YRY18SXUlEmdU2Lal3sqvw");
+		internal static readonly GlobalObjectKey IdAllowInsertHyperlinks = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*XM8NvJ2rr0GZdAWs8OvCUA");
+		internal static readonly GlobalObjectKey IdAllowPivotTables = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*UWGsSYL9xUu5AI0NnWNO1g");
+		internal static readonly GlobalObjectKey IdAllowSelectLockedCells = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*qgnDQZigYEK2C23hCAV2+w");
+		internal static readonly GlobalObjectKey IdAllowSelectUnlockedCells = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*CW2QrrlyrkytX7ca45JJrg");
+		internal static readonly GlobalObjectKey IdAllowSort = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*KtG+E71FdEWp9bk3YIkBzw");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("IsProtected")]
+		public bool ssIsProtected;
+
+		[System.Xml.Serialization.XmlElement("Password")]
+		public string ssPassword;
+
+		[System.Xml.Serialization.XmlElement("AllowAutoFilter")]
+		public bool ssAllowAutoFilter;
+
+		[System.Xml.Serialization.XmlElement("AllowDeleteColumns")]
+		public bool ssAllowDeleteColumns;
+
+		[System.Xml.Serialization.XmlElement("AllowDeleteRows")]
+		public bool ssAllowDeleteRows;
+
+		[System.Xml.Serialization.XmlElement("AllowEditObject")]
+		public bool ssAllowEditObject;
+
+		[System.Xml.Serialization.XmlElement("AllowEditScenarios")]
+		public bool ssAllowEditScenarios;
+
+		[System.Xml.Serialization.XmlElement("AllowFormatCells")]
+		public bool ssAllowFormatCells;
+
+		[System.Xml.Serialization.XmlElement("AllowFormatColumns")]
+		public bool ssAllowFormatColumns;
+
+		[System.Xml.Serialization.XmlElement("AllowFormatRows")]
+		public bool ssAllowFormatRows;
+
+		[System.Xml.Serialization.XmlElement("AllowInsertColumns")]
+		public bool ssAllowInsertColumns;
+
+		[System.Xml.Serialization.XmlElement("AllowInsertRows")]
+		public bool ssAllowInsertRows;
+
+		[System.Xml.Serialization.XmlElement("AllowInsertHyperlinks")]
+		public bool ssAllowInsertHyperlinks;
+
+		[System.Xml.Serialization.XmlElement("AllowPivotTables")]
+		public bool ssAllowPivotTables;
+
+		[System.Xml.Serialization.XmlElement("AllowSelectLockedCells")]
+		public bool ssAllowSelectLockedCells;
+
+		[System.Xml.Serialization.XmlElement("AllowSelectUnlockedCells")]
+		public bool ssAllowSelectUnlockedCells;
+
+		[System.Xml.Serialization.XmlElement("AllowSort")]
+		public bool ssAllowSort;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STProtectionStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssIsProtected = false;
+			ssPassword = "";
+			ssAllowAutoFilter = false;
+			ssAllowDeleteColumns = false;
+			ssAllowDeleteRows = false;
+			ssAllowEditObject = false;
+			ssAllowEditScenarios = false;
+			ssAllowFormatCells = false;
+			ssAllowFormatColumns = false;
+			ssAllowFormatRows = false;
+			ssAllowInsertColumns = false;
+			ssAllowInsertRows = false;
+			ssAllowInsertHyperlinks = false;
+			ssAllowPivotTables = false;
+			ssAllowSelectLockedCells = false;
+			ssAllowSelectUnlockedCells = false;
+			ssAllowSort = false;
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssIsProtected = r.ReadBoolean(index++, "Protection.IsProtected", false);
+			ssPassword = r.ReadText(index++, "Protection.Password", "");
+			ssAllowAutoFilter = r.ReadBoolean(index++, "Protection.AllowAutoFilter", false);
+			ssAllowDeleteColumns = r.ReadBoolean(index++, "Protection.AllowDeleteColumns", false);
+			ssAllowDeleteRows = r.ReadBoolean(index++, "Protection.AllowDeleteRows", false);
+			ssAllowEditObject = r.ReadBoolean(index++, "Protection.AllowEditObject", false);
+			ssAllowEditScenarios = r.ReadBoolean(index++, "Protection.AllowEditScenarios", false);
+			ssAllowFormatCells = r.ReadBoolean(index++, "Protection.AllowFormatCells", false);
+			ssAllowFormatColumns = r.ReadBoolean(index++, "Protection.AllowFormatColumns", false);
+			ssAllowFormatRows = r.ReadBoolean(index++, "Protection.AllowFormatRows", false);
+			ssAllowInsertColumns = r.ReadBoolean(index++, "Protection.AllowInsertColumns", false);
+			ssAllowInsertRows = r.ReadBoolean(index++, "Protection.AllowInsertRows", false);
+			ssAllowInsertHyperlinks = r.ReadBoolean(index++, "Protection.AllowInsertHyperlinks", false);
+			ssAllowPivotTables = r.ReadBoolean(index++, "Protection.AllowPivotTables", false);
+			ssAllowSelectLockedCells = r.ReadBoolean(index++, "Protection.AllowSelectLockedCells", false);
+			ssAllowSelectUnlockedCells = r.ReadBoolean(index++, "Protection.AllowSelectUnlockedCells", false);
+			ssAllowSort = r.ReadBoolean(index++, "Protection.AllowSort", false);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STProtectionStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STProtectionStructure a, STProtectionStructure b) {
+			if (a.ssIsProtected != b.ssIsProtected) return false;
+			if (a.ssPassword != b.ssPassword) return false;
+			if (a.ssAllowAutoFilter != b.ssAllowAutoFilter) return false;
+			if (a.ssAllowDeleteColumns != b.ssAllowDeleteColumns) return false;
+			if (a.ssAllowDeleteRows != b.ssAllowDeleteRows) return false;
+			if (a.ssAllowEditObject != b.ssAllowEditObject) return false;
+			if (a.ssAllowEditScenarios != b.ssAllowEditScenarios) return false;
+			if (a.ssAllowFormatCells != b.ssAllowFormatCells) return false;
+			if (a.ssAllowFormatColumns != b.ssAllowFormatColumns) return false;
+			if (a.ssAllowFormatRows != b.ssAllowFormatRows) return false;
+			if (a.ssAllowInsertColumns != b.ssAllowInsertColumns) return false;
+			if (a.ssAllowInsertRows != b.ssAllowInsertRows) return false;
+			if (a.ssAllowInsertHyperlinks != b.ssAllowInsertHyperlinks) return false;
+			if (a.ssAllowPivotTables != b.ssAllowPivotTables) return false;
+			if (a.ssAllowSelectLockedCells != b.ssAllowSelectLockedCells) return false;
+			if (a.ssAllowSelectUnlockedCells != b.ssAllowSelectUnlockedCells) return false;
+			if (a.ssAllowSort != b.ssAllowSort) return false;
+			return true;
+		}
+
+		public static bool operator != (STProtectionStructure a, STProtectionStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STProtectionStructure)) return false;
+			return (this == (STProtectionStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssIsProtected.GetHashCode()
+				^ ssPassword.GetHashCode()
+				^ ssAllowAutoFilter.GetHashCode()
+				^ ssAllowDeleteColumns.GetHashCode()
+				^ ssAllowDeleteRows.GetHashCode()
+				^ ssAllowEditObject.GetHashCode()
+				^ ssAllowEditScenarios.GetHashCode()
+				^ ssAllowFormatCells.GetHashCode()
+				^ ssAllowFormatColumns.GetHashCode()
+				^ ssAllowFormatRows.GetHashCode()
+				^ ssAllowInsertColumns.GetHashCode()
+				^ ssAllowInsertRows.GetHashCode()
+				^ ssAllowInsertHyperlinks.GetHashCode()
+				^ ssAllowPivotTables.GetHashCode()
+				^ ssAllowSelectLockedCells.GetHashCode()
+				^ ssAllowSelectUnlockedCells.GetHashCode()
+				^ ssAllowSort.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STProtectionStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssIsProtected = false;
+			ssPassword = "";
+			ssAllowAutoFilter = false;
+			ssAllowDeleteColumns = false;
+			ssAllowDeleteRows = false;
+			ssAllowEditObject = false;
+			ssAllowEditScenarios = false;
+			ssAllowFormatCells = false;
+			ssAllowFormatColumns = false;
+			ssAllowFormatRows = false;
+			ssAllowInsertColumns = false;
+			ssAllowInsertRows = false;
+			ssAllowInsertHyperlinks = false;
+			ssAllowPivotTables = false;
+			ssAllowSelectLockedCells = false;
+			ssAllowSelectUnlockedCells = false;
+			ssAllowSort = false;
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssIsProtected", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssIsProtected' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssIsProtected = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssPassword", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssPassword' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssPassword = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowAutoFilter", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowAutoFilter' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowAutoFilter = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowDeleteColumns", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowDeleteColumns' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowDeleteColumns = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowDeleteRows", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowDeleteRows' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowDeleteRows = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowEditObject", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowEditObject' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowEditObject = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowEditScenarios", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowEditScenarios' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowEditScenarios = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowFormatCells", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowFormatCells' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowFormatCells = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowFormatColumns", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowFormatColumns' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowFormatColumns = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowFormatRows", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowFormatRows' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowFormatRows = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowInsertColumns", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowInsertColumns' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowInsertColumns = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowInsertRows", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowInsertRows' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowInsertRows = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowInsertHyperlinks", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowInsertHyperlinks' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowInsertHyperlinks = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowPivotTables", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowPivotTables' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowPivotTables = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowSelectLockedCells", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowSelectLockedCells' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowSelectLockedCells = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowSelectUnlockedCells", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowSelectUnlockedCells' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowSelectUnlockedCells = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowSort", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowSort' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowSort = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STProtectionStructure Duplicate() {
+			STProtectionStructure t;
+			t.ssIsProtected = this.ssIsProtected;
+			t.ssPassword = this.ssPassword;
+			t.ssAllowAutoFilter = this.ssAllowAutoFilter;
+			t.ssAllowDeleteColumns = this.ssAllowDeleteColumns;
+			t.ssAllowDeleteRows = this.ssAllowDeleteRows;
+			t.ssAllowEditObject = this.ssAllowEditObject;
+			t.ssAllowEditScenarios = this.ssAllowEditScenarios;
+			t.ssAllowFormatCells = this.ssAllowFormatCells;
+			t.ssAllowFormatColumns = this.ssAllowFormatColumns;
+			t.ssAllowFormatRows = this.ssAllowFormatRows;
+			t.ssAllowInsertColumns = this.ssAllowInsertColumns;
+			t.ssAllowInsertRows = this.ssAllowInsertRows;
+			t.ssAllowInsertHyperlinks = this.ssAllowInsertHyperlinks;
+			t.ssAllowPivotTables = this.ssAllowPivotTables;
+			t.ssAllowSelectLockedCells = this.ssAllowSelectLockedCells;
+			t.ssAllowSelectUnlockedCells = this.ssAllowSelectUnlockedCells;
+			t.ssAllowSort = this.ssAllowSort;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".IsProtected")) VarValue.AppendAttribute(recordElem, "IsProtected", ssIsProtected, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "IsProtected");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Password")) VarValue.AppendAttribute(recordElem, "Password", ssPassword, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Password");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowAutoFilter")) VarValue.AppendAttribute(recordElem, "AllowAutoFilter", ssAllowAutoFilter, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowAutoFilter");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowDeleteColumns")) VarValue.AppendAttribute(recordElem, "AllowDeleteColumns", ssAllowDeleteColumns, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowDeleteColumns");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowDeleteRows")) VarValue.AppendAttribute(recordElem, "AllowDeleteRows", ssAllowDeleteRows, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowDeleteRows");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowEditObject")) VarValue.AppendAttribute(recordElem, "AllowEditObject", ssAllowEditObject, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowEditObject");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowEditScenarios")) VarValue.AppendAttribute(recordElem, "AllowEditScenarios", ssAllowEditScenarios, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowEditScenarios");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowFormatCells")) VarValue.AppendAttribute(recordElem, "AllowFormatCells", ssAllowFormatCells, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowFormatCells");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowFormatColumns")) VarValue.AppendAttribute(recordElem, "AllowFormatColumns", ssAllowFormatColumns, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowFormatColumns");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowFormatRows")) VarValue.AppendAttribute(recordElem, "AllowFormatRows", ssAllowFormatRows, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowFormatRows");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowInsertColumns")) VarValue.AppendAttribute(recordElem, "AllowInsertColumns", ssAllowInsertColumns, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowInsertColumns");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowInsertRows")) VarValue.AppendAttribute(recordElem, "AllowInsertRows", ssAllowInsertRows, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowInsertRows");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowInsertHyperlinks")) VarValue.AppendAttribute(recordElem, "AllowInsertHyperlinks", ssAllowInsertHyperlinks, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowInsertHyperlinks");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowPivotTables")) VarValue.AppendAttribute(recordElem, "AllowPivotTables", ssAllowPivotTables, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowPivotTables");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowSelectLockedCells")) VarValue.AppendAttribute(recordElem, "AllowSelectLockedCells", ssAllowSelectLockedCells, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowSelectLockedCells");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowSelectUnlockedCells")) VarValue.AppendAttribute(recordElem, "AllowSelectUnlockedCells", ssAllowSelectUnlockedCells, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowSelectUnlockedCells");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowSort")) VarValue.AppendAttribute(recordElem, "AllowSort", ssAllowSort, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowSort");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "isprotected") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".IsProtected")) variable.Value = ssIsProtected; else variable.Optimized = true;
+			} else if (head == "password") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Password")) variable.Value = ssPassword; else variable.Optimized = true;
+			} else if (head == "allowautofilter") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowAutoFilter")) variable.Value = ssAllowAutoFilter; else variable.Optimized = true;
+			} else if (head == "allowdeletecolumns") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowDeleteColumns")) variable.Value = ssAllowDeleteColumns; else variable.Optimized = true;
+			} else if (head == "allowdeleterows") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowDeleteRows")) variable.Value = ssAllowDeleteRows; else variable.Optimized = true;
+			} else if (head == "alloweditobject") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowEditObject")) variable.Value = ssAllowEditObject; else variable.Optimized = true;
+			} else if (head == "alloweditscenarios") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowEditScenarios")) variable.Value = ssAllowEditScenarios; else variable.Optimized = true;
+			} else if (head == "allowformatcells") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowFormatCells")) variable.Value = ssAllowFormatCells; else variable.Optimized = true;
+			} else if (head == "allowformatcolumns") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowFormatColumns")) variable.Value = ssAllowFormatColumns; else variable.Optimized = true;
+			} else if (head == "allowformatrows") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowFormatRows")) variable.Value = ssAllowFormatRows; else variable.Optimized = true;
+			} else if (head == "allowinsertcolumns") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowInsertColumns")) variable.Value = ssAllowInsertColumns; else variable.Optimized = true;
+			} else if (head == "allowinsertrows") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowInsertRows")) variable.Value = ssAllowInsertRows; else variable.Optimized = true;
+			} else if (head == "allowinserthyperlinks") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowInsertHyperlinks")) variable.Value = ssAllowInsertHyperlinks; else variable.Optimized = true;
+			} else if (head == "allowpivottables") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowPivotTables")) variable.Value = ssAllowPivotTables; else variable.Optimized = true;
+			} else if (head == "allowselectlockedcells") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowSelectLockedCells")) variable.Value = ssAllowSelectLockedCells; else variable.Optimized = true;
+			} else if (head == "allowselectunlockedcells") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowSelectUnlockedCells")) variable.Value = ssAllowSelectUnlockedCells; else variable.Optimized = true;
+			} else if (head == "allowsort") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowSort")) variable.Value = ssAllowSort; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdIsProtected) {
+				return ssIsProtected;
+			} else if (key == IdPassword) {
+				return ssPassword;
+			} else if (key == IdAllowAutoFilter) {
+				return ssAllowAutoFilter;
+			} else if (key == IdAllowDeleteColumns) {
+				return ssAllowDeleteColumns;
+			} else if (key == IdAllowDeleteRows) {
+				return ssAllowDeleteRows;
+			} else if (key == IdAllowEditObject) {
+				return ssAllowEditObject;
+			} else if (key == IdAllowEditScenarios) {
+				return ssAllowEditScenarios;
+			} else if (key == IdAllowFormatCells) {
+				return ssAllowFormatCells;
+			} else if (key == IdAllowFormatColumns) {
+				return ssAllowFormatColumns;
+			} else if (key == IdAllowFormatRows) {
+				return ssAllowFormatRows;
+			} else if (key == IdAllowInsertColumns) {
+				return ssAllowInsertColumns;
+			} else if (key == IdAllowInsertRows) {
+				return ssAllowInsertRows;
+			} else if (key == IdAllowInsertHyperlinks) {
+				return ssAllowInsertHyperlinks;
+			} else if (key == IdAllowPivotTables) {
+				return ssAllowPivotTables;
+			} else if (key == IdAllowSelectLockedCells) {
+				return ssAllowSelectLockedCells;
+			} else if (key == IdAllowSelectUnlockedCells) {
+				return ssAllowSelectUnlockedCells;
+			} else if (key == IdAllowSort) {
+				return ssAllowSort;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssIsProtected = (bool) other.AttributeGet(IdIsProtected);
+			ssPassword = (string) other.AttributeGet(IdPassword);
+			ssAllowAutoFilter = (bool) other.AttributeGet(IdAllowAutoFilter);
+			ssAllowDeleteColumns = (bool) other.AttributeGet(IdAllowDeleteColumns);
+			ssAllowDeleteRows = (bool) other.AttributeGet(IdAllowDeleteRows);
+			ssAllowEditObject = (bool) other.AttributeGet(IdAllowEditObject);
+			ssAllowEditScenarios = (bool) other.AttributeGet(IdAllowEditScenarios);
+			ssAllowFormatCells = (bool) other.AttributeGet(IdAllowFormatCells);
+			ssAllowFormatColumns = (bool) other.AttributeGet(IdAllowFormatColumns);
+			ssAllowFormatRows = (bool) other.AttributeGet(IdAllowFormatRows);
+			ssAllowInsertColumns = (bool) other.AttributeGet(IdAllowInsertColumns);
+			ssAllowInsertRows = (bool) other.AttributeGet(IdAllowInsertRows);
+			ssAllowInsertHyperlinks = (bool) other.AttributeGet(IdAllowInsertHyperlinks);
+			ssAllowPivotTables = (bool) other.AttributeGet(IdAllowPivotTables);
+			ssAllowSelectLockedCells = (bool) other.AttributeGet(IdAllowSelectLockedCells);
+			ssAllowSelectUnlockedCells = (bool) other.AttributeGet(IdAllowSelectUnlockedCells);
+			ssAllowSort = (bool) other.AttributeGet(IdAllowSort);
+		}
+		public bool IsDefault() {
+			STProtectionStructure defaultStruct = new STProtectionStructure(null);
+			if (this.ssIsProtected != defaultStruct.ssIsProtected) return false;
+			if (this.ssPassword != defaultStruct.ssPassword) return false;
+			if (this.ssAllowAutoFilter != defaultStruct.ssAllowAutoFilter) return false;
+			if (this.ssAllowDeleteColumns != defaultStruct.ssAllowDeleteColumns) return false;
+			if (this.ssAllowDeleteRows != defaultStruct.ssAllowDeleteRows) return false;
+			if (this.ssAllowEditObject != defaultStruct.ssAllowEditObject) return false;
+			if (this.ssAllowEditScenarios != defaultStruct.ssAllowEditScenarios) return false;
+			if (this.ssAllowFormatCells != defaultStruct.ssAllowFormatCells) return false;
+			if (this.ssAllowFormatColumns != defaultStruct.ssAllowFormatColumns) return false;
+			if (this.ssAllowFormatRows != defaultStruct.ssAllowFormatRows) return false;
+			if (this.ssAllowInsertColumns != defaultStruct.ssAllowInsertColumns) return false;
+			if (this.ssAllowInsertRows != defaultStruct.ssAllowInsertRows) return false;
+			if (this.ssAllowInsertHyperlinks != defaultStruct.ssAllowInsertHyperlinks) return false;
+			if (this.ssAllowPivotTables != defaultStruct.ssAllowPivotTables) return false;
+			if (this.ssAllowSelectLockedCells != defaultStruct.ssAllowSelectLockedCells) return false;
+			if (this.ssAllowSelectUnlockedCells != defaultStruct.ssAllowSelectUnlockedCells) return false;
+			if (this.ssAllowSort != defaultStruct.ssAllowSort) return false;
+			return true;
+		}
+	} // STProtectionStructure
+
 } // OutSystems.NssAdvanced_Excel

@@ -797,6 +797,90 @@ namespace OutSystems.NssAdvanced_Excel {
 			// TODO: Write implementation for action
 		} // MssWorkbook_Open_BinaryData
 
+		/// <summary>
+		/// Set the pixel width of a column on a specific worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssColumnNumber">The column number, starting at 1</param>
+		/// <param name="ssDesiredWidth">The pixel width you desire for the column.</param>
+		public void MssColumn_SetWidth(object ssWorksheet, int ssColumnNumber, decimal ssDesiredWidth) {
+			// TODO: Write implementation for action
+		} // MssColumn_SetWidth
+
+		/// <summary>
+		/// Set the pixel height for a specific row in a worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with
+		/// </param>
+		/// <param name="ssRowNumber">The number of the row to set the height for</param>
+		/// <param name="ssDesiredHeight">The desired pixel height for the row</param>
+		public void MssRow_SetHeight(object ssWorksheet, int ssRowNumber, decimal ssDesiredHeight) {
+			// TODO: Write implementation for action
+		} // MssRow_SetHeight
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void MssCell_WriteByIndex() {
+			// TODO: Write implementation for action
+		} // MssCell_WriteByIndex
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void MssCell_WriteByIndexWithFormat() {
+			// TODO: Write implementation for action
+		} // MssCell_WriteByIndexWithFormat
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void MssCell_WriteByName() {
+			// TODO: Write implementation for action
+		} // MssCell_WriteByName
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void MssCell_WriteByNameWithFormat() {
+			// TODO: Write implementation for action
+		} // MssCell_WriteByNameWithFormat
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void MssCell_WriteColumnRange() {
+			// TODO: Write implementation for action
+		} // MssCell_WriteColumnRange
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void MssCell_WriteColumnRangeWithFormat() {
+			// TODO: Write implementation for action
+		} // MssCell_WriteColumnRangeWithFormat
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void MssCell_WriteImageByIndex() {
+			// TODO: Write implementation for action
+		} // MssCell_WriteImageByIndex
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void MssCell_WriteImageByName() {
+			// TODO: Write implementation for action
+		} // MssCell_WriteImageByName
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void MssCell_WriteRangeWithFormat() {
+			// TODO: Write implementation for action
+		} // MssCell_WriteRangeWithFormat
+
 	} // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

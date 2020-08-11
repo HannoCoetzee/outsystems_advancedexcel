@@ -663,6 +663,68 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssWorkbook"></param>
 		void MssWorkbook_Open_BinaryData(byte[] ssBinaryData, out object ssWorkbook);
 
+		/// <summary>
+		/// Set the pixel width of a column on a specific worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssColumnNumber">The column number, starting at 1</param>
+		/// <param name="ssDesiredWidth">The pixel width you desire for the column.</param>
+		void MssColumn_SetWidth(object ssWorksheet, int ssColumnNumber, decimal ssDesiredWidth);
+
+		/// <summary>
+		/// Set the pixel height for a specific row in a worksheet
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with
+		/// </param>
+		/// <param name="ssRowNumber">The number of the row to set the height for</param>
+		/// <param name="ssDesiredHeight">The desired pixel height for the row</param>
+		void MssRow_SetHeight(object ssWorksheet, int ssRowNumber, decimal ssDesiredHeight);
+
+		/// <summary>
+		/// 
+		/// </summary>
+		void MssCell_WriteByIndex();
+
+		/// <summary>
+		/// 
+		/// </summary>
+		void MssCell_WriteByIndexWithFormat();
+
+		/// <summary>
+		/// 
+		/// </summary>
+		void MssCell_WriteByName();
+
+		/// <summary>
+		/// 
+		/// </summary>
+		void MssCell_WriteByNameWithFormat();
+
+		/// <summary>
+		/// 
+		/// </summary>
+		void MssCell_WriteColumnRange();
+
+		/// <summary>
+		/// 
+		/// </summary>
+		void MssCell_WriteColumnRangeWithFormat();
+
+		/// <summary>
+		/// 
+		/// </summary>
+		void MssCell_WriteImageByIndex();
+
+		/// <summary>
+		/// 
+		/// </summary>
+		void MssCell_WriteImageByName();
+
+		/// <summary>
+		/// 
+		/// </summary>
+		void MssCell_WriteRangeWithFormat();
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

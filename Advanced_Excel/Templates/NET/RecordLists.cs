@@ -1269,4 +1269,88 @@ namespace OutSystems.NssAdvanced_Excel {
 
 
 	} // RLImageRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLProtectionRecordList</code> that represents a record list of
+	///  <code>Protection</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLProtectionRecordList: GenericRecordList<RCProtectionRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCProtectionRecord GetElementDefaultValue() {
+			return new RCProtectionRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCProtectionRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLProtectionRecordList recordlist, Func<RCProtectionRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLProtectionRecordList(RCProtectionRecord[] array) {
+			RLProtectionRecordList result = new RLProtectionRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLProtectionRecordList ToList<T>(T[] array, Func <T, RCProtectionRecord> converter) {
+			RLProtectionRecordList result = new RLProtectionRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLProtectionRecordList FromRestList<T>(RestList<T> restList, Func <T, RCProtectionRecord> converter) {
+			RLProtectionRecordList result = new RLProtectionRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLProtectionRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLProtectionRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLProtectionRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLProtectionRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCProtectionRecord> NewList() {
+			return new RLProtectionRecordList();
+		}
+
+
+	} // RLProtectionRecordList
 }

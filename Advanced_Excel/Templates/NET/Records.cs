@@ -2876,4 +2876,195 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // RCImageRecord
+
+	/// <summary>
+	/// Structure <code>RCProtectionRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCProtectionRecord: ISerializable, ITypedRecord<RCProtectionRecord> {
+		internal static readonly GlobalObjectKey IdProtection = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*+rf7_yBpNP4rpi8ZD0RRGg");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Protection")]
+		public STProtectionStructure ssSTProtection;
+
+
+		public static implicit operator STProtectionStructure(RCProtectionRecord r) {
+			return r.ssSTProtection;
+		}
+
+		public static implicit operator RCProtectionRecord(STProtectionStructure r) {
+			RCProtectionRecord res = new RCProtectionRecord(null);
+			res.ssSTProtection = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCProtectionRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTProtection = new STProtectionStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTProtection.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTProtection.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCProtectionRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCProtectionRecord a, RCProtectionRecord b) {
+			if (a.ssSTProtection != b.ssSTProtection) return false;
+			return true;
+		}
+
+		public static bool operator != (RCProtectionRecord a, RCProtectionRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCProtectionRecord)) return false;
+			return (this == (RCProtectionRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTProtection.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCProtectionRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTProtection = new STProtectionStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTProtection", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTProtection' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTProtection = (STProtectionStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTProtection.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTProtection.InternalRecursiveSave();
+		}
+
+
+		public RCProtectionRecord Duplicate() {
+			RCProtectionRecord t;
+			t.ssSTProtection = (STProtectionStructure) this.ssSTProtection.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTProtection.ToXml(this, recordElem, "Protection", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "protection") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Protection")) variable.Value = ssSTProtection; else variable.Optimized = true;
+				variable.SetFieldName("protection");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdProtection) {
+				return ssSTProtection;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTProtection.FillFromOther((IRecord) other.AttributeGet(IdProtection));
+		}
+		public bool IsDefault() {
+			RCProtectionRecord defaultStruct = new RCProtectionRecord(null);
+			if (this.ssSTProtection != defaultStruct.ssSTProtection) return false;
+			return true;
+		}
+	} // RCProtectionRecord
 }
