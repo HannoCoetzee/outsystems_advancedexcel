@@ -3067,4 +3067,195 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // RCProtectionRecord
+
+	/// <summary>
+	/// Structure <code>RCValueRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCValueRecord: ISerializable, ITypedRecord<RCValueRecord> {
+		internal static readonly GlobalObjectKey IdValue = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*ywknZwsbBd4S4BrGWiFq7g");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Value")]
+		public STValueStructure ssSTValue;
+
+
+		public static implicit operator STValueStructure(RCValueRecord r) {
+			return r.ssSTValue;
+		}
+
+		public static implicit operator RCValueRecord(STValueStructure r) {
+			RCValueRecord res = new RCValueRecord(null);
+			res.ssSTValue = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCValueRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTValue = new STValueStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTValue.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTValue.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCValueRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCValueRecord a, RCValueRecord b) {
+			if (a.ssSTValue != b.ssSTValue) return false;
+			return true;
+		}
+
+		public static bool operator != (RCValueRecord a, RCValueRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCValueRecord)) return false;
+			return (this == (RCValueRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTValue.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCValueRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTValue = new STValueStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTValue", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTValue' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTValue = (STValueStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTValue.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTValue.InternalRecursiveSave();
+		}
+
+
+		public RCValueRecord Duplicate() {
+			RCValueRecord t;
+			t.ssSTValue = (STValueStructure) this.ssSTValue.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTValue.ToXml(this, recordElem, "Value", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "value") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Value")) variable.Value = ssSTValue; else variable.Optimized = true;
+				variable.SetFieldName("value");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdValue) {
+				return ssSTValue;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTValue.FillFromOther((IRecord) other.AttributeGet(IdValue));
+		}
+		public bool IsDefault() {
+			RCValueRecord defaultStruct = new RCValueRecord(null);
+			if (this.ssSTValue != defaultStruct.ssSTValue) return false;
+			return true;
+		}
+	} // RCValueRecord
 }

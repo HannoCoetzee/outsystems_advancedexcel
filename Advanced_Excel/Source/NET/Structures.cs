@@ -37,6 +37,10 @@ namespace OutSystems.NssAdvanced_Excel {
 		internal static readonly GlobalObjectKey IdQuotePrefix = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*FwRaU5uVeESO_8noGV00xw");
 		internal static readonly GlobalObjectKey IdReadingOrder = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*xvpo+OQXa0uQmPDs2ZkhPQ");
 		internal static readonly GlobalObjectKey IdFontColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*q3k5T2Uv00a1pJF4yVllTg");
+		internal static readonly GlobalObjectKey IdBorderLeft = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*EPZLndQSTkSUg3UxRzT6ZA");
+		internal static readonly GlobalObjectKey IdBorderTop = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*eIxFh_7vf0aGL3Gn8XdcLw");
+		internal static readonly GlobalObjectKey IdBorderRight = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*8bbxDxtuUEOdhEk+1zWV2g");
+		internal static readonly GlobalObjectKey IdBorderBottom = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*8U_3914qYU6GzAwQ1G21jg");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("FontName")]
@@ -96,6 +100,18 @@ namespace OutSystems.NssAdvanced_Excel {
 		[System.Xml.Serialization.XmlElement("FontColor")]
 		public string ssFontColor;
 
+		[System.Xml.Serialization.XmlElement("BorderLeft")]
+		public RCBorderStyleRecord ssBorderLeft;
+
+		[System.Xml.Serialization.XmlElement("BorderTop")]
+		public RCBorderStyleRecord ssBorderTop;
+
+		[System.Xml.Serialization.XmlElement("BorderRight")]
+		public RCBorderStyleRecord ssBorderRight;
+
+		[System.Xml.Serialization.XmlElement("BorderBottom")]
+		public RCBorderStyleRecord ssBorderBottom;
+
 
 		public BitArray OptimizedAttributes;
 
@@ -120,10 +136,18 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssQuotePrefix = false;
 			ssReadingOrder = 0;
 			ssFontColor = "";
+			ssBorderLeft = new RCBorderStyleRecord(null);
+			ssBorderTop = new RCBorderStyleRecord(null);
+			ssBorderRight = new RCBorderStyleRecord(null);
+			ssBorderBottom = new RCBorderStyleRecord(null);
 		}
 
 		public BitArray[] GetDefaultOptimizedValues() {
-			BitArray[] all = new BitArray[0];
+			BitArray[] all = new BitArray[4];
+			all[0] = null;
+			all[1] = null;
+			all[2] = null;
+			all[3] = null;
 			return all;
 		}
 
@@ -131,10 +155,18 @@ namespace OutSystems.NssAdvanced_Excel {
 			set {
 				if (value == null) {
 				} else {
+					ssBorderLeft.OptimizedAttributes = value[0];
+					ssBorderTop.OptimizedAttributes = value[1];
+					ssBorderRight.OptimizedAttributes = value[2];
+					ssBorderBottom.OptimizedAttributes = value[3];
 				}
 			}
 			get {
-				BitArray[] all = new BitArray[0];
+				BitArray[] all = new BitArray[4];
+				all[0] = null;
+				all[1] = null;
+				all[2] = null;
+				all[3] = null;
 				return all;
 			}
 		}
@@ -203,6 +235,10 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (a.ssQuotePrefix != b.ssQuotePrefix) return false;
 			if (a.ssReadingOrder != b.ssReadingOrder) return false;
 			if (a.ssFontColor != b.ssFontColor) return false;
+			if (a.ssBorderLeft != b.ssBorderLeft) return false;
+			if (a.ssBorderTop != b.ssBorderTop) return false;
+			if (a.ssBorderRight != b.ssBorderRight) return false;
+			if (a.ssBorderBottom != b.ssBorderBottom) return false;
 			return true;
 		}
 
@@ -237,6 +273,10 @@ namespace OutSystems.NssAdvanced_Excel {
 				^ ssQuotePrefix.GetHashCode()
 				^ ssReadingOrder.GetHashCode()
 				^ ssFontColor.GetHashCode()
+				^ ssBorderLeft.GetHashCode()
+				^ ssBorderTop.GetHashCode()
+				^ ssBorderRight.GetHashCode()
+				^ ssBorderBottom.GetHashCode()
 				;
 			} catch {
 				return base.GetHashCode();
@@ -273,6 +313,10 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssQuotePrefix = false;
 			ssReadingOrder = 0;
 			ssFontColor = "";
+			ssBorderLeft = new RCBorderStyleRecord(null);
+			ssBorderTop = new RCBorderStyleRecord(null);
+			ssBorderRight = new RCBorderStyleRecord(null);
+			ssBorderBottom = new RCBorderStyleRecord(null);
 			Type objInfo = this.GetType();
 			FieldInfo fieldInfo = null;
 			fieldInfo = objInfo.GetField("ssFontName", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
@@ -408,12 +452,48 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (fieldInfo.FieldType.IsSerializable) {
 				ssFontColor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
 			}
+			fieldInfo = objInfo.GetField("ssBorderLeft", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssBorderLeft' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssBorderLeft = (RCBorderStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssBorderTop", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssBorderTop' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssBorderTop = (RCBorderStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssBorderRight", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssBorderRight' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssBorderRight = (RCBorderStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssBorderBottom", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssBorderBottom' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssBorderBottom = (RCBorderStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
 		}
 
 		public void RecursiveReset() {
+			ssBorderLeft.RecursiveReset();
+			ssBorderTop.RecursiveReset();
+			ssBorderRight.RecursiveReset();
+			ssBorderBottom.RecursiveReset();
 		}
 
 		public void InternalRecursiveSave() {
+			ssBorderLeft.InternalRecursiveSave();
+			ssBorderTop.InternalRecursiveSave();
+			ssBorderRight.InternalRecursiveSave();
+			ssBorderBottom.InternalRecursiveSave();
 		}
 
 
@@ -438,6 +518,10 @@ namespace OutSystems.NssAdvanced_Excel {
 			t.ssQuotePrefix = this.ssQuotePrefix;
 			t.ssReadingOrder = this.ssReadingOrder;
 			t.ssFontColor = this.ssFontColor;
+			t.ssBorderLeft = (RCBorderStyleRecord) this.ssBorderLeft.Duplicate();
+			t.ssBorderTop = (RCBorderStyleRecord) this.ssBorderTop.Duplicate();
+			t.ssBorderRight = (RCBorderStyleRecord) this.ssBorderRight.Duplicate();
+			t.ssBorderBottom = (RCBorderStyleRecord) this.ssBorderBottom.Duplicate();
 			t.OptimizedAttributes = null;
 			return t;
 		}
@@ -472,6 +556,10 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".QuotePrefix")) VarValue.AppendAttribute(recordElem, "QuotePrefix", ssQuotePrefix, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "QuotePrefix");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ReadingOrder")) VarValue.AppendAttribute(recordElem, "ReadingOrder", ssReadingOrder, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "ReadingOrder");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".FontColor")) VarValue.AppendAttribute(recordElem, "FontColor", ssFontColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "FontColor");
+				ssBorderLeft.ToXml(this, recordElem, "BorderLeft", detailLevel - 1);
+				ssBorderTop.ToXml(this, recordElem, "BorderTop", detailLevel - 1);
+				ssBorderRight.ToXml(this, recordElem, "BorderRight", detailLevel - 1);
+				ssBorderBottom.ToXml(this, recordElem, "BorderBottom", detailLevel - 1);
 			} else {
 				VarValue.AppendDeferredEvaluationElement(recordElem);
 			}
@@ -519,6 +607,18 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".ReadingOrder")) variable.Value = ssReadingOrder; else variable.Optimized = true;
 			} else if (head == "fontcolor") {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".FontColor")) variable.Value = ssFontColor; else variable.Optimized = true;
+			} else if (head == "borderleft") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".BorderLeft")) variable.Value = ssBorderLeft; else variable.Optimized = true;
+				variable.SetFieldName("borderleft");
+			} else if (head == "bordertop") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".BorderTop")) variable.Value = ssBorderTop; else variable.Optimized = true;
+				variable.SetFieldName("bordertop");
+			} else if (head == "borderright") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".BorderRight")) variable.Value = ssBorderRight; else variable.Optimized = true;
+				variable.SetFieldName("borderright");
+			} else if (head == "borderbottom") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".BorderBottom")) variable.Value = ssBorderBottom; else variable.Optimized = true;
+				variable.SetFieldName("borderbottom");
 			}
 			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
 		}
@@ -570,6 +670,14 @@ namespace OutSystems.NssAdvanced_Excel {
 				return ssReadingOrder;
 			} else if (key == IdFontColor) {
 				return ssFontColor;
+			} else if (key == IdBorderLeft) {
+				return ssBorderLeft;
+			} else if (key == IdBorderTop) {
+				return ssBorderTop;
+			} else if (key == IdBorderRight) {
+				return ssBorderRight;
+			} else if (key == IdBorderBottom) {
+				return ssBorderBottom;
 			} else {
 				throw new Exception("Invalid key");
 			}
@@ -595,6 +703,10 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssQuotePrefix = (bool) other.AttributeGet(IdQuotePrefix);
 			ssReadingOrder = (int) other.AttributeGet(IdReadingOrder);
 			ssFontColor = (string) other.AttributeGet(IdFontColor);
+			ssBorderLeft.FillFromOther((IRecord) other.AttributeGet(IdBorderLeft));
+			ssBorderTop.FillFromOther((IRecord) other.AttributeGet(IdBorderTop));
+			ssBorderRight.FillFromOther((IRecord) other.AttributeGet(IdBorderRight));
+			ssBorderBottom.FillFromOther((IRecord) other.AttributeGet(IdBorderBottom));
 		}
 		public bool IsDefault() {
 			STCellFormatStructure defaultStruct = new STCellFormatStructure(null);
@@ -617,6 +729,10 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (this.ssQuotePrefix != defaultStruct.ssQuotePrefix) return false;
 			if (this.ssReadingOrder != defaultStruct.ssReadingOrder) return false;
 			if (this.ssFontColor != defaultStruct.ssFontColor) return false;
+			if (this.ssBorderLeft != defaultStruct.ssBorderLeft) return false;
+			if (this.ssBorderTop != defaultStruct.ssBorderTop) return false;
+			if (this.ssBorderRight != defaultStruct.ssBorderRight) return false;
+			if (this.ssBorderBottom != defaultStruct.ssBorderBottom) return false;
 			return true;
 		}
 	} // STCellFormatStructure
@@ -4239,7 +4355,8 @@ namespace OutSystems.NssAdvanced_Excel {
 
 	/// <summary>
 	/// Structure <code>STProtectionStructure</code> that represents the Service Studio structure
-	///  <code>Protection</code> <p> Description: </p>
+	///  <code>Protection</code> <p> Description: Options used when setting the protection on
+	/// a worksheet</p>
 	/// </summary>
 	[Serializable()]
 	public partial struct STProtectionStructure: ISerializable, ITypedRecord<STProtectionStructure>, ISimpleRecord {
@@ -4797,5 +4914,182 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // STProtectionStructure
+
+	/// <summary>
+	/// Structure <code>STValueStructure</code> that represents the Service Studio structure
+	///  <code>Value</code> <p> Description: </p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STValueStructure: ISerializable, ITypedRecord<STValueStructure>, ISimpleRecord {
+		internal static readonly GlobalObjectKey IdCellValue = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*PNXH_gjAu06FnnS5nox6DQ");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("CellValue")]
+		public string ssCellValue;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STValueStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssCellValue = "";
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssCellValue = r.ReadText(index++, "Value.CellValue", "");
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STValueStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STValueStructure a, STValueStructure b) {
+			if (a.ssCellValue != b.ssCellValue) return false;
+			return true;
+		}
+
+		public static bool operator != (STValueStructure a, STValueStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STValueStructure)) return false;
+			return (this == (STValueStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssCellValue.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STValueStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssCellValue = "";
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssCellValue", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssCellValue' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssCellValue = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STValueStructure Duplicate() {
+			STValueStructure t;
+			t.ssCellValue = this.ssCellValue;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".CellValue")) VarValue.AppendAttribute(recordElem, "CellValue", ssCellValue, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "CellValue");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "cellvalue") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".CellValue")) variable.Value = ssCellValue; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdCellValue) {
+				return ssCellValue;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssCellValue = (string) other.AttributeGet(IdCellValue);
+		}
+		public bool IsDefault() {
+			STValueStructure defaultStruct = new STValueStructure(null);
+			if (this.ssCellValue != defaultStruct.ssCellValue) return false;
+			return true;
+		}
+	} // STValueStructure
 
 } // OutSystems.NssAdvanced_Excel

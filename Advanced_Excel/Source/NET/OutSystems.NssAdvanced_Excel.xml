@@ -4,6 +4,114 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteByIndex(System.Object,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Write a converted value to a cell, defined by its index.
+            Input is a worksheet-object
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssRow">Row Number</param>
+            <param name="ssColumn">Column Number</param>
+            <param name="ssCellValue">Text Value</param>
+            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteByIndexWithFormat(System.Object,System.Int32,System.Int32,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Write a converted value to a cell, defined by its index.
+            Input is a worksheet-object.
+            Accepts format for the target cell
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssRow">Row Number</param>
+            <param name="ssColumn">Column Number</param>
+            <param name="ssCellValue">Text Value</param>
+            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellFormat">CellFormat for the target cell</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteByName(System.Object,System.String,System.String,System.String)">
+            <summary>
+            Write a converted value to a cell, defined by its name.
+            Input is a worksheet-object
+            </summary>
+            <param name="ssWorksheet">Worksheet in which the cell resides</param>
+            <param name="ssCellName">Cell-name (eg A4)</param>
+            <param name="ssCellValue">Value to write</param>
+            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteByNameWithFormat(System.Object,System.String,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Write a converted value to a cell, defined by its name.
+            Input is a worksheet-object.
+            Accepts format for the target cell
+            </summary>
+            <param name="ssWorksheet">Worksheet in which the cell resides</param>
+            <param name="ssCellName">Cell-name (eg A4)</param>
+            <param name="ssCellValue">Value to write</param>
+            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellFormat">CellFormat for the target cell</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteColumnRange(System.Object,System.Int32,System.Int32,OutSystems.NssAdvanced_Excel.RLValueRecordList,System.String)">
+            <summary>
+            Write a dataset to a range of column cells
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssRow"></param>
+            <param name="ssColumnStart"></param>
+            <param name="ssValueList"></param>
+            <param name="ssCellType"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteColumnRangeWithFormat(System.Object,System.Int32,System.Int32,OutSystems.NssAdvanced_Excel.RLValueRecordList,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Write a dataset to a range of column cells
+            Accepts format for the target cells
+            </summary>
+            <param name="ssWorksheet">Worksheet to write to</param>
+            <param name="ssRow">rownumber</param>
+            <param name="ssColumnStart">Start column (integer)</param>
+            <param name="ssValueList">Values to write to columns</param>
+            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellFormat">CellFormat for the target cells</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteImageByIndex(System.Object,System.Int32,System.Int32,System.String,System.Byte[])">
+            <summary>
+            Write a image on a cell, defined by its index.
+            Input are a worksheet-object and a image-object.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssRow">row number</param>
+            <param name="ssColumn">column number</param>
+            <param name="ssImageName">The image name</param>
+            <param name="ssImage">The image to write.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteImageByName(System.Object,System.String,System.String,System.Byte[])">
+            <summary>
+            Write a image on a cell, defined by its name.
+            Input are a worksheet-object and a image-object.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssCellName">Cell-name (eg A4)</param>
+            <param name="ssImageName">The image name</param>
+            <param name="ssImage">The image to write.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteRangeWithFormat(System.Object,System.Int32,System.Int32,System.Object,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Write a dataset to a range of cells.
+            Accepts format for the target cells
+            </summary>
+            <param name="ssWorksheet">Worksheet to write to</param>
+            <param name="ssRowStart">Start row (integer)</param>
+            <param name="ssColumnStart">Start column (integer)</param>
+            <param name="ssDataSet">Data to write</param>
+            <param name="ssCellFormat">CellFormat for the target cells</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_AddName(System.Object,System.String,System.Object@)">
+            <summary>
+            Add a worksheet to work on by its name
+            </summary>
+            <param name="ssWorkbook">Workbook where the sheet is to be added</param>
+            <param name="ssWorksheetName">The name of the spreadsheet to create</param>
+            <param name="ssWorksheet">The newly added worksheet</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_SetWidth(System.Object,System.Int32,System.Decimal)">
             <summary>
             Set the pixel width of a column on a specific worksheet
@@ -96,12 +204,12 @@
             <param name="ssWorksheet"></param>
             <param name="ssImages"></param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_SelectByIndex">
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_SelectByIndex(System.Object,System.Int32,System.Object@)">
             <summary>
             
             </summary>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_SelectByName(System.Object,System.String,System.String@)">
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_SelectByName(System.Object,System.String,System.Object@)">
             <summary>
             Select a worksheet to work on by its name
             </summary>
@@ -226,13 +334,13 @@
             <param name="ssBinaryData"></param>
             <param name="ssWorkbook"></param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_Create(System.Object@,System.String,System.Int32,OutSystems.NssAdvanced_Excel.RLNewSheetRecordList)">
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_Create(System.Int32,System.String,OutSystems.NssAdvanced_Excel.RLNewSheetRecordList,System.Object@)">
             <summary>
             Creates a new excel workbook, optionally specifying the name of the fiirst sheet.
             </summary>
             <param name="ssWorkbook">The newly created workbook</param>
             <param name="ssFirstSheetName">Specify the name of the initial sheet in the workbook. Default = &quot;Sheet1&quot;</param>
-            <param name="ssNrSheets">The number of sheets to add. Sheet names will be auto generated, i.e. Sheet1, Sheet2.</param>
+            <param name="ssNumberOfSheets">The number of sheets to add. Sheet names will be auto generated, i.e. Sheet1, Sheet2.</param>
             <param name="ssSheetNames">List of new sheets to add, with at least a name specified. The index, if specified, will be used to add sheets in that order.
             FirstSheetName and NrSheets are ignored if SheetNames is populated</param>
         </member>
@@ -246,13 +354,14 @@
             <param name="ssLockWindows">Locks the position of the workbook window.</param>
             <param name="ssLockRevision">Lock the workbook for revision</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Protect(System.Object,System.Boolean,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_Protect(System.Object,System.String,OutSystems.NssAdvanced_Excel.RCProtectionRecord)">
             <summary>
             Set protection on an Excel Worksheet
             </summary>
             <param name="ssWorksheet">Worksheet to protect</param>
-            <param name="ssIsProtected">If the worksheet is protected.</param>
             <param name="ssPassword">Password to protect the worksheet with.</param>
+            <param name="ssProtectionOptions"></param>
+            <param name="ssIsProtected">If the worksheet is protected.</param>
             <param name="ssAllowAutoFilter">Allow users to use autofilters</param>
             <param name="ssAllowDeleteColumns">Allow users to delete columns</param>
             <param name="ssAllowDeleteRows">Allow users to delete rows</param>
@@ -282,6 +391,8 @@
             <param name="ssCellName">Cell Name where to insert image</param>
             <param name="ssImageWidth">The width of the image in pixels</param>
             <param name="ssImageHeight">The height of the image in pixels</param>
+            <param name="ssMarginLeft"></param>
+            <param name="ssMarginTop"></param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_AddAutoFilter(System.Object,OutSystems.NssAdvanced_Excel.RCRangeRecord)">
             <summary>
@@ -319,6 +430,8 @@
             <param name="ssColumnNumber">The column number of the cell to add the comment to.</param>
             <param name="ssText">The comment.</param>
             <param name="ssAuthor">The author of the comment.</param>
+            <param name="ssAutofit"></param>
+            <param name="ssIsRichText"></param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_Delete(System.Object,System.Int32,System.Int32)">
             <summary>
@@ -688,15 +801,15 @@
             <param name="ssWorksheetName">The name of the worksheet to find</param>
             <param name="ssWorksheet">This is the worksheet object that you have been looking for,</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Create(System.Object@,System.String,System.Int32,OutSystems.NssAdvanced_Excel.RLNewSheetRecordList)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Create(System.Int32,System.String,OutSystems.NssAdvanced_Excel.RLNewSheetRecordList,System.Object@)">
             <summary>
             Creates a new excel workbook, optionally specifying the name of the fiirst sheet.
             </summary>
-            <param name="ssWorkbook">The newly created workbook</param>
+            <param name="ssNumberOfSheets">The number of sheets to add. Sheet names will be auto generated, i.e. Sheet1, Sheet2.</param>
             <param name="ssFirstSheetName">Specify the name of the initial sheet in the workbook. Default = &quot;Sheet1&quot;</param>
-            <param name="ssNrSheets">The number of sheets to add. Sheet names will be auto generated, i.e. Sheet1, Sheet2.</param>
             <param name="ssSheetNames">List of new sheets to add, with at least a name specified. The index, if specified, will be used to add sheets in that order.
             FirstSheetName and NrSheets are ignored if SheetNames is populated</param>
+            <param name="ssWorkbook">The newly created workbook</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_GetBinaryData(System.Object,System.Byte[]@)">
             <summary>
@@ -737,28 +850,17 @@
             <param name="ssCellValue">The value in the cell, as text.</param>
             <param name="ssReadText">If true always reads the cell value as text</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Protect(System.Object,System.Boolean,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_Protect(System.Object,System.String,OutSystems.NssAdvanced_Excel.RCProtectionRecord)">
             <summary>
             Set protection on an Excel Worksheet
             </summary>
             <param name="ssWorksheet">Worksheet to protect</param>
-            <param name="ssIsProtected">If the worksheet is protected.</param>
-            <param name="ssPassword">Password to protect the worksheet with.</param>
-            <param name="ssAllowAutoFilter">Allow users to use autofilters</param>
-            <param name="ssAllowDeleteColumns">Allow users to delete columns</param>
-            <param name="ssAllowDeleteRows">Allow users to delete rows</param>
-            <param name="ssAllowEditObject">Allow users to edit objects</param>
-            <param name="ssAllowEditScenarios">Allow users to edit senarios</param>
-            <param name="ssAllowFormatCells">Allow users to format cells</param>
-            <param name="ssAllowFormatColumns">Allow users to Format columns</param>
-            <param name="ssAllowFormatRows">Allow users to Format rows</param>
-            <param name="ssAllowInsertColumns">Allow users to insert columns</param>
-            <param name="ssAllowInsertHyperlinks">Allow users to insert hyperlinks</param>
-            <param name="ssAllowInsertRows">Allow users to Format rows</param>
-            <param name="ssAllowPivotTables">Allow users to use pivottables</param>
-            <param name="ssAllowSelectLockedCells">Allow users to select locked cells</param>
-            <param name="ssAllowSelectUnlockedCells">Allow users to select unlocked cells</param>
-            <param name="ssAllowSort">Allow users to sort a range</param>
+            <param name="ssPassword">DEPRECATED
+            Can be used for backwards compatibility with Excel_Package
+            
+            Password to protect the worksheet with.
+            </param>
+            <param name="ssProtectionOptions">Options to set when protecting the worksheet</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_Write(System.Object,System.String,System.Int32,System.Int32,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
             <summary>
@@ -792,7 +894,7 @@
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_GetName(System.Object,System.String@)">
             <summary>
-            
+            Get the name of the given worksheet
             </summary>
             <param name="ssWorksheet"></param>
             <param name="ssWorksheetName"></param>
@@ -806,7 +908,7 @@
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_GetProperties(System.Object,OutSystems.NssAdvanced_Excel.RCWorksheetRecord@)">
             <summary>
-            
+            Get the properties of the given worksheet
             </summary>
             <param name="ssWorksheet"></param>
             <param name="ssProperties"></param>
@@ -1185,30 +1287,34 @@
             <summary>
             Adds a copy of a worksheet
             </summary>
-            <param name="ssWorkbook"></param>
+            <param name="ssWorkbook">The workbook in which the worksheet is to be copied
+            </param>
             <param name="ssWorksheetName">The name of the spreadsheet to create</param>
             <param name="ssWorksheetToCopy">The worksheet to be copied</param>
-            <param name="ssWorksheet"></param>
+            <param name="ssWorksheet">The copied worksheet</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_GetImages(System.Object,OutSystems.NssAdvanced_Excel.RLImageRecordList@)">
             <summary>
-            
+            Get all images in a worksheet
             </summary>
             <param name="ssWorksheet"></param>
             <param name="ssImages"></param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_SelectByIndex">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_SelectByIndex(System.Object,System.Int32,System.Object@)">
             <summary>
-            
+            Select a worksheet by its index
             </summary>
+            <param name="ssWorkbook">The worksheet to work with</param>
+            <param name="ssWorksheetNumber">The index of the spreadsheet to select, starting at 1</param>
+            <param name="ssWorksheet">The selected worksheet</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_SelectByName(System.Object,System.String,System.String@)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_SelectByName(System.Object,System.String,System.Object@)">
             <summary>
             Select a worksheet to work on by its name
             </summary>
-            <param name="ssWorkbook"></param>
+            <param name="ssWorkbook">The workbook to work with</param>
             <param name="ssWorksheetName">The name of the spreadsheet to select</param>
-            <param name="ssWorksheet"></param>
+            <param name="ssWorksheet">The selected worksheet</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_DeleteByName(System.Object,System.String)">
             <summary>
@@ -1343,6 +1449,114 @@
             </param>
             <param name="ssRowNumber">The number of the row to set the height for</param>
             <param name="ssDesiredHeight">The desired pixel height for the row</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteByIndex(System.Object,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Write a converted value to a cell, defined by its index.
+            Input is a worksheet-object
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssRow">Row Number</param>
+            <param name="ssColumn">Column Number</param>
+            <param name="ssCellValue">Text Value</param>
+            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteByIndexWithFormat(System.Object,System.Int32,System.Int32,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Write a converted value to a cell, defined by its index.
+            Input is a worksheet-object.
+            Accepts format for the target cell
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssRow">Row Number</param>
+            <param name="ssColumn">Column Number</param>
+            <param name="ssCellValue">Text Value</param>
+            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellFormat">CellFormat for the target cell</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteByName(System.Object,System.String,System.String,System.String)">
+            <summary>
+            Write a converted value to a cell, defined by its name.
+            Input is a worksheet-object
+            </summary>
+            <param name="ssWorksheet">Worksheet in which the cell resides</param>
+            <param name="ssCellName">Cell-name (eg A4)</param>
+            <param name="ssCellValue">Value to write</param>
+            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteByNameWithFormat(System.Object,System.String,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Write a converted value to a cell, defined by its name.
+            Input is a worksheet-object.
+            Accepts format for the target cell
+            </summary>
+            <param name="ssWorksheet">Worksheet in which the cell resides</param>
+            <param name="ssCellName">Cell-name (eg A4)</param>
+            <param name="ssCellValue">Value to write</param>
+            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellFormat">CellFormat for the target cell</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteColumnRange(System.Object,System.Int32,System.Int32,OutSystems.NssAdvanced_Excel.RLValueRecordList,System.String)">
+            <summary>
+            Write a dataset to a range of column cells
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssRow"></param>
+            <param name="ssColumnStart"></param>
+            <param name="ssValueList"></param>
+            <param name="ssCellType"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteColumnRangeWithFormat(System.Object,System.Int32,System.Int32,OutSystems.NssAdvanced_Excel.RLValueRecordList,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Write a dataset to a range of column cells
+            Accepts format for the target cells
+            </summary>
+            <param name="ssWorksheet">Worksheet to write to</param>
+            <param name="ssRow">rownumber</param>
+            <param name="ssColumnStart">Start column (integer)</param>
+            <param name="ssValueList">Values to write to columns</param>
+            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellFormat">CellFormat for the target cells</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteImageByIndex(System.Object,System.Int32,System.Int32,System.String,System.Byte[])">
+            <summary>
+            Write a image on a cell, defined by its index.
+            Input are a worksheet-object and a image-object.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssRow">row number</param>
+            <param name="ssColumn">column number</param>
+            <param name="ssImageName">The image name</param>
+            <param name="ssImage">The image to write.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteImageByName(System.Object,System.String,System.String,System.Byte[])">
+            <summary>
+            Write a image on a cell, defined by its name.
+            Input are a worksheet-object and a image-object.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssCellName">Cell-name (eg A4)</param>
+            <param name="ssImageName">The image name</param>
+            <param name="ssImage">The image to write.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteRangeWithFormat(System.Object,System.Int32,System.Int32,System.Object,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+            <summary>
+            Write a dataset to a range of cells.
+            Accepts format for the target cells
+            </summary>
+            <param name="ssWorksheet">Worksheet to write to</param>
+            <param name="ssRowStart">Start row (integer)</param>
+            <param name="ssColumnStart">Start column (integer)</param>
+            <param name="ssDataSet">Data to write</param>
+            <param name="ssCellFormat">CellFormat for the target cells</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_AddName(System.Object,System.String,System.Object@)">
+            <summary>
+            Add a worksheet to work on by its name
+            </summary>
+            <param name="ssWorkbook">Workbook where the sheet is to be added</param>
+            <param name="ssWorksheetName">The name of the spreadsheet to create</param>
+            <param name="ssWorksheet">The newly added worksheet</param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
@@ -1728,7 +1942,8 @@
         <member name="T:OutSystems.NssAdvanced_Excel.STProtectionStructure">
             <summary>
             Structure <code>STProtectionStructure</code> that represents the Service Studio structure
-             <code>Protection</code> <p> Description: </p>
+             <code>Protection</code> <p> Description: Options used when setting the protection on
+            a worksheet</p>
             </summary>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STProtectionStructure.Read(System.Data.IDataReader,System.Int32@)">
@@ -1745,6 +1960,31 @@
             <param name="r"> Data reader</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STProtectionStructure.ReadIM(OutSystems.NssAdvanced_Excel.STProtectionStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STValueStructure">
+            <summary>
+            Structure <code>STValueStructure</code> that represents the Service Studio structure
+             <code>Value</code> <p> Description: </p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STValueStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STValueStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STValueStructure.ReadIM(OutSystems.NssAdvanced_Excel.STValueStructure)">
             <summary>
             Read from record
             </summary>
@@ -2339,6 +2579,42 @@
             </summary>
             <returns>The new record list</returns>
         </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLValueRecordList">
+            <summary>
+            RecordList type <code>RLValueRecordList</code> that represents a record list of <code>Value</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLValueRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLValueRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLValueRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCValueRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLValueRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLValueRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
         <member name="T:OutSystems.NssAdvanced_Excel.RCCellFormatRecord">
             <summary>
             Structure <code>RCCellFormatRecord</code>
@@ -2718,6 +2994,30 @@
             <param name="r"> Data reader</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.RCProtectionRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCProtectionRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCValueRecord">
+            <summary>
+            Structure <code>RCValueRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCValueRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCValueRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCValueRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCValueRecord)">
             <summary>
             Read from record
             </summary>

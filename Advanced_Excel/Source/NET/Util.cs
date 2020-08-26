@@ -10,11 +10,59 @@ using OfficeOpenXml.Style;
 using OfficeOpenXml.Style.Dxf;
 using OutSystems.HubEdition.RuntimePlatform;
 using OfficeOpenXml.Drawing.Chart;
+using System.IO;
 
 namespace OutSystems.NssAdvanced_Excel
 {
     class Util
     {
+        public static DataTable Transpose(DataTable dt, string ssCellType)
+        {
+            DataTable dtNew = new DataTable();
+
+            //adding columns    
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                DataColumn c = dtNew.Columns.Add(i.ToString());
+                switch (ssCellType.ToLower())
+                {
+                    case "integer": c.DataType = System.Type.GetType("System.Int32"); break;
+                    case "datetime": c.DataType = System.Type.GetType("System.DateTime"); break;
+                    case "decimal": c.DataType = System.Type.GetType("System.Decimal"); break;
+                    case "boolean": c.DataType = System.Type.GetType("System.Boolean"); break;
+                }
+            }
+
+            //Adding Row Data
+            for (int k = 0; k < dt.Columns.Count; k++)
+            {
+                DataRow r = dtNew.NewRow();
+                for (int j = 0; j < dt.Rows.Count; j++)
+                {
+                    switch (ssCellType.ToLower())
+                    {
+                        case "integer": r[j] = Convert.ToInt32(dt.Rows[j][k]); break;
+                        case "datetime": r[j] = Convert.ToDateTime(dt.Rows[j][k]); break;
+                        case "decimal": r[j] = Convert.ToDecimal(dt.Rows[j][k]); break;
+                        case "boolean": r[j] = Convert.ToBoolean(dt.Rows[j][k]); break;
+                        default: r[j] = dt.Rows[j][k]; break;
+                    }
+                }
+
+                dtNew.Rows.Add(r);
+            }
+
+            return dtNew;
+        }
+
+        public static byte[] ImageToByteArray(Image imageIn)
+        {
+            using (var ms = new MemoryStream())
+            {
+                imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+                return ms.ToArray();
+            }
+        }
         public static DataTable ConvertArrayListToDataTable(IList<IRecord> arrayList)
         {
             DataTable dt = new DataTable();

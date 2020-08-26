@@ -14,7 +14,7 @@ namespace ConsoleApp1
         {
             CssAdvanced_Excel excel = new CssAdvanced_Excel();
 
-            excel.MssWorkbook_Create(out object workBook, "Test", 1, new RLNewSheetRecordList());
+            excel.MssWorkbook_Create(1, "Test", new RLNewSheetRecordList(), out object workBook);
 
             excel.MssWorksheet_Select(workBook, 0, "Test", out object workSheet);
 

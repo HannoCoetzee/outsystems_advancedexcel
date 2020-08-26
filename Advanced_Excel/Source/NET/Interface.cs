@@ -27,12 +27,12 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <summary>
 		/// Creates a new excel workbook, optionally specifying the name of the fiirst sheet.
 		/// </summary>
-		/// <param name="ssWorkbook">The newly created workbook</param>
+		/// <param name="ssNumberOfSheets">The number of sheets to add. Sheet names will be auto generated, i.e. Sheet1, Sheet2.</param>
 		/// <param name="ssFirstSheetName">Specify the name of the initial sheet in the workbook. Default = &quot;Sheet1&quot;</param>
-		/// <param name="ssNrSheets">The number of sheets to add. Sheet names will be auto generated, i.e. Sheet1, Sheet2.</param>
 		/// <param name="ssSheetNames">List of new sheets to add, with at least a name specified. The index, if specified, will be used to add sheets in that order.
 		/// FirstSheetName and NrSheets are ignored if SheetNames is populated</param>
-		void MssWorkbook_Create(out object ssWorkbook, string ssFirstSheetName, int ssNrSheets, RLNewSheetRecordList ssSheetNames);
+		/// <param name="ssWorkbook">The newly created workbook</param>
+		void MssWorkbook_Create(int ssNumberOfSheets, string ssFirstSheetName, RLNewSheetRecordList ssSheetNames, out object ssWorkbook);
 
 		/// <summary>
 		/// Get the in-memory binary data of the specified workbook
@@ -77,24 +77,13 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// Set protection on an Excel Worksheet
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet to protect</param>
-		/// <param name="ssIsProtected">If the worksheet is protected.</param>
-		/// <param name="ssPassword">Password to protect the worksheet with.</param>
-		/// <param name="ssAllowAutoFilter">Allow users to use autofilters</param>
-		/// <param name="ssAllowDeleteColumns">Allow users to delete columns</param>
-		/// <param name="ssAllowDeleteRows">Allow users to delete rows</param>
-		/// <param name="ssAllowEditObject">Allow users to edit objects</param>
-		/// <param name="ssAllowEditScenarios">Allow users to edit senarios</param>
-		/// <param name="ssAllowFormatCells">Allow users to format cells</param>
-		/// <param name="ssAllowFormatColumns">Allow users to Format columns</param>
-		/// <param name="ssAllowFormatRows">Allow users to Format rows</param>
-		/// <param name="ssAllowInsertColumns">Allow users to insert columns</param>
-		/// <param name="ssAllowInsertHyperlinks">Allow users to insert hyperlinks</param>
-		/// <param name="ssAllowInsertRows">Allow users to Format rows</param>
-		/// <param name="ssAllowPivotTables">Allow users to use pivottables</param>
-		/// <param name="ssAllowSelectLockedCells">Allow users to select locked cells</param>
-		/// <param name="ssAllowSelectUnlockedCells">Allow users to select unlocked cells</param>
-		/// <param name="ssAllowSort">Allow users to sort a range</param>
-		void MssWorksheet_Protect(object ssWorksheet, bool ssIsProtected, string ssPassword, bool ssAllowAutoFilter, bool ssAllowDeleteColumns, bool ssAllowDeleteRows, bool ssAllowEditObject, bool ssAllowEditScenarios, bool ssAllowFormatCells, bool ssAllowFormatColumns, bool ssAllowFormatRows, bool ssAllowInsertColumns, bool ssAllowInsertHyperlinks, bool ssAllowInsertRows, bool ssAllowPivotTables, bool ssAllowSelectLockedCells, bool ssAllowSelectUnlockedCells, bool ssAllowSort);
+		/// <param name="ssPassword">DEPRECATED
+		/// Can be used for backwards compatibility with Excel_Package
+		/// 
+		/// Password to protect the worksheet with.
+		/// </param>
+		/// <param name="ssProtectionOptions">Options to set when protecting the worksheet</param>
+		void MssWorksheet_Protect(object ssWorksheet, string ssPassword, RCProtectionRecord ssProtectionOptions);
 
 		/// <summary>
 		/// Write a converted value to a cell.
@@ -127,7 +116,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		void MssCell_WriteRange(object ssWorksheet, int ssRowStart, int ssColumnStart, object ssDataSet, RCCellFormatRecord ssCellFormat, bool ssExportHeaders);
 
 		/// <summary>
-		/// 
+		/// Get the name of the given worksheet
 		/// </summary>
 		/// <param name="ssWorksheet"></param>
 		/// <param name="ssWorksheetName"></param>
@@ -141,7 +130,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		void MssWorkbook_GetProperties(object ssWorkbook, out RCWorkbookRecord ssProperties);
 
 		/// <summary>
-		/// 
+		/// Get the properties of the given worksheet
 		/// </summary>
 		/// <param name="ssWorksheet"></param>
 		/// <param name="ssProperties"></param>
@@ -520,31 +509,35 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <summary>
 		/// Adds a copy of a worksheet
 		/// </summary>
-		/// <param name="ssWorkbook"></param>
+		/// <param name="ssWorkbook">The workbook in which the worksheet is to be copied
+		/// </param>
 		/// <param name="ssWorksheetName">The name of the spreadsheet to create</param>
 		/// <param name="ssWorksheetToCopy">The worksheet to be copied</param>
-		/// <param name="ssWorksheet"></param>
+		/// <param name="ssWorksheet">The copied worksheet</param>
 		void MssWorkbook_AddCopyWorksheet(object ssWorkbook, string ssWorksheetName, object ssWorksheetToCopy, out object ssWorksheet);
 
 		/// <summary>
-		/// 
+		/// Get all images in a worksheet
 		/// </summary>
 		/// <param name="ssWorksheet"></param>
 		/// <param name="ssImages"></param>
 		void MssWorksheet_GetImages(object ssWorksheet, out RLImageRecordList ssImages);
 
 		/// <summary>
-		/// 
+		/// Select a worksheet by its index
 		/// </summary>
-		void MssWorksheet_SelectByIndex();
+		/// <param name="ssWorkbook">The worksheet to work with</param>
+		/// <param name="ssWorksheetNumber">The index of the spreadsheet to select, starting at 1</param>
+		/// <param name="ssWorksheet">The selected worksheet</param>
+		void MssWorksheet_SelectByIndex(object ssWorkbook, int ssWorksheetNumber, out object ssWorksheet);
 
 		/// <summary>
 		/// Select a worksheet to work on by its name
 		/// </summary>
-		/// <param name="ssWorkbook"></param>
+		/// <param name="ssWorkbook">The workbook to work with</param>
 		/// <param name="ssWorksheetName">The name of the spreadsheet to select</param>
-		/// <param name="ssWorksheet"></param>
-		void MssWorksheet_SelectByName(object ssWorkbook, string ssWorksheetName, out string ssWorksheet);
+		/// <param name="ssWorksheet">The selected worksheet</param>
+		void MssWorksheet_SelectByName(object ssWorkbook, string ssWorksheetName, out object ssWorksheet);
 
 		/// <summary>
 		/// 
@@ -681,49 +674,112 @@ namespace OutSystems.NssAdvanced_Excel {
 		void MssRow_SetHeight(object ssWorksheet, int ssRowNumber, decimal ssDesiredHeight);
 
 		/// <summary>
-		/// 
+		/// Write a converted value to a cell, defined by its index.
+		/// Input is a worksheet-object
 		/// </summary>
-		void MssCell_WriteByIndex();
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row Number</param>
+		/// <param name="ssColumn">Column Number</param>
+		/// <param name="ssCellValue">Text Value</param>
+		/// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+		void MssCell_WriteByIndex(object ssWorksheet, int ssRow, int ssColumn, string ssCellValue, string ssCellType);
 
 		/// <summary>
-		/// 
+		/// Write a converted value to a cell, defined by its index.
+		/// Input is a worksheet-object.
+		/// Accepts format for the target cell
 		/// </summary>
-		void MssCell_WriteByIndexWithFormat();
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row Number</param>
+		/// <param name="ssColumn">Column Number</param>
+		/// <param name="ssCellValue">Text Value</param>
+		/// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+		/// <param name="ssCellFormat">CellFormat for the target cell</param>
+		void MssCell_WriteByIndexWithFormat(object ssWorksheet, int ssRow, int ssColumn, string ssCellValue, string ssCellType, RCCellFormatRecord ssCellFormat);
 
 		/// <summary>
-		/// 
+		/// Write a converted value to a cell, defined by its name.
+		/// Input is a worksheet-object
 		/// </summary>
-		void MssCell_WriteByName();
+		/// <param name="ssWorksheet">Worksheet in which the cell resides</param>
+		/// <param name="ssCellName">Cell-name (eg A4)</param>
+		/// <param name="ssCellValue">Value to write</param>
+		/// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+		void MssCell_WriteByName(object ssWorksheet, string ssCellName, string ssCellValue, string ssCellType);
 
 		/// <summary>
-		/// 
+		/// Write a converted value to a cell, defined by its name.
+		/// Input is a worksheet-object.
+		/// Accepts format for the target cell
 		/// </summary>
-		void MssCell_WriteByNameWithFormat();
+		/// <param name="ssWorksheet">Worksheet in which the cell resides</param>
+		/// <param name="ssCellName">Cell-name (eg A4)</param>
+		/// <param name="ssCellValue">Value to write</param>
+		/// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+		/// <param name="ssCellFormat">CellFormat for the target cell</param>
+		void MssCell_WriteByNameWithFormat(object ssWorksheet, string ssCellName, string ssCellValue, string ssCellType, RCCellFormatRecord ssCellFormat);
 
 		/// <summary>
-		/// 
+		/// Write a dataset to a range of column cells
 		/// </summary>
-		void MssCell_WriteColumnRange();
+		/// <param name="ssWorksheet"></param>
+		/// <param name="ssRow"></param>
+		/// <param name="ssColumnStart"></param>
+		/// <param name="ssValueList"></param>
+		/// <param name="ssCellType"></param>
+		void MssCell_WriteColumnRange(object ssWorksheet, int ssRow, int ssColumnStart, RLValueRecordList ssValueList, string ssCellType);
 
 		/// <summary>
-		/// 
+		/// Write a dataset to a range of column cells
+		/// Accepts format for the target cells
 		/// </summary>
-		void MssCell_WriteColumnRangeWithFormat();
+		/// <param name="ssWorksheet">Worksheet to write to</param>
+		/// <param name="ssRow">rownumber</param>
+		/// <param name="ssColumnStart">Start column (integer)</param>
+		/// <param name="ssValueList">Values to write to columns</param>
+		/// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+		/// <param name="ssCellFormat">CellFormat for the target cells</param>
+		void MssCell_WriteColumnRangeWithFormat(object ssWorksheet, int ssRow, int ssColumnStart, RLValueRecordList ssValueList, string ssCellType, RCCellFormatRecord ssCellFormat);
 
 		/// <summary>
-		/// 
+		/// Write a image on a cell, defined by its index.
+		/// Input are a worksheet-object and a image-object.
 		/// </summary>
-		void MssCell_WriteImageByIndex();
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">row number</param>
+		/// <param name="ssColumn">column number</param>
+		/// <param name="ssImageName">The image name</param>
+		/// <param name="ssImage">The image to write.</param>
+		void MssCell_WriteImageByIndex(object ssWorksheet, int ssRow, int ssColumn, string ssImageName, byte[] ssImage);
 
 		/// <summary>
-		/// 
+		/// Write a image on a cell, defined by its name.
+		/// Input are a worksheet-object and a image-object.
 		/// </summary>
-		void MssCell_WriteImageByName();
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell-name (eg A4)</param>
+		/// <param name="ssImageName">The image name</param>
+		/// <param name="ssImage">The image to write.</param>
+		void MssCell_WriteImageByName(object ssWorksheet, string ssCellName, string ssImageName, byte[] ssImage);
 
 		/// <summary>
-		/// 
+		/// Write a dataset to a range of cells.
+		/// Accepts format for the target cells
 		/// </summary>
-		void MssCell_WriteRangeWithFormat();
+		/// <param name="ssWorksheet">Worksheet to write to</param>
+		/// <param name="ssRowStart">Start row (integer)</param>
+		/// <param name="ssColumnStart">Start column (integer)</param>
+		/// <param name="ssDataSet">Data to write</param>
+		/// <param name="ssCellFormat">CellFormat for the target cells</param>
+		void MssCell_WriteRangeWithFormat(object ssWorksheet, int ssRowStart, int ssColumnStart, object ssDataSet, RCCellFormatRecord ssCellFormat);
+
+		/// <summary>
+		/// Add a worksheet to work on by its name
+		/// </summary>
+		/// <param name="ssWorkbook">Workbook where the sheet is to be added</param>
+		/// <param name="ssWorksheetName">The name of the spreadsheet to create</param>
+		/// <param name="ssWorksheet">The newly added worksheet</param>
+		void MssWorkbook_AddName(object ssWorkbook, string ssWorksheetName, out object ssWorksheet);
 
 	} // IssAdvanced_Excel
 
