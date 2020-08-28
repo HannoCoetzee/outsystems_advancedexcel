@@ -195,7 +195,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		} // MssWorksheet_Delete
 
 		/// <summary>
-		/// 
+		/// Create a chart
 		/// </summary>
 		/// <param name="ssWorksheet"></param>
 		/// <param name="ssChartType">Receives the chart type in text, possible types:
@@ -536,7 +536,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Calculates the formula of a cell, defined by its index.
-		/// Input is a worksheet-object
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
 		/// <param name="ssRow">Row Number</param>
@@ -547,7 +546,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Calculates the formula of a cell, defined by its name.
-		/// Input is a worksheet-object
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
 		/// <param name="ssCellName">Cell-name (eg A4)</param>
@@ -570,7 +568,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Reads the value of a cell, defined by its index.
-		/// Input is a worksheet-object
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
 		/// <param name="ssRow">row number</param>
@@ -584,7 +581,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Reads the value of a cell, defined by its name.
-		/// Input is a worksheet-object
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
 		/// <param name="ssCellName">Cell-name (eg A4)</param>
@@ -597,7 +593,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Write a formula to a cell, defined by its index.
-		/// Input is a worksheet-object
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
 		/// <param name="ssRow">rownumber</param>
@@ -609,7 +604,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Write a formula to a cell, defined by its name.
-		/// Input is a worksheet-object
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
 		/// <param name="ssCellName">Cell-name (eg A4)</param>
@@ -814,7 +808,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Write a converted value to a cell, defined by its index.
-		/// Input is a worksheet-object
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
 		/// <param name="ssRow">Row Number</param>
@@ -827,7 +820,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Write a converted value to a cell, defined by its index.
-		/// Input is a worksheet-object.
 		/// Accepts format for the target cell
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
@@ -842,7 +834,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Write a converted value to a cell, defined by its name.
-		/// Input is a worksheet-object
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet in which the cell resides</param>
 		/// <param name="ssCellName">Cell-name (eg A4)</param>
@@ -854,7 +845,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Write a converted value to a cell, defined by its name.
-		/// Input is a worksheet-object.
 		/// Accepts format for the target cell
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet in which the cell resides</param>
@@ -894,7 +884,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Write a image on a cell, defined by its index.
-		/// Input are a worksheet-object and a image-object.
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
 		/// <param name="ssRow">row number</param>
@@ -907,7 +896,6 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		/// <summary>
 		/// Write a image on a cell, defined by its name.
-		/// Input are a worksheet-object and a image-object.
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
 		/// <param name="ssCellName">Cell-name (eg A4)</param>

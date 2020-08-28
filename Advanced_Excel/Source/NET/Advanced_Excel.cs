@@ -9,10 +9,8 @@ using OutSystems.HubEdition.RuntimePlatform.Db;
 using OutSystems.RuntimeCommon;
 using System.Linq;
 using System.Collections.Generic;
-using OfficeOpenXml.Style;
 using OfficeOpenXml.ConditionalFormatting;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
-using OfficeOpenXml.Style.Dxf;
 using OfficeOpenXml.Drawing;
 using Newtonsoft.Json;
 
@@ -1458,7 +1456,6 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorkbook_Calculate(object ssWorkbook)
         {
             ExcelPackage p = ssWorkbook as ExcelPackage;
-            // Output from the logger will be written to the following file
             ExcelWorkbook wb = p.Workbook;
 
             wb.Calculate();

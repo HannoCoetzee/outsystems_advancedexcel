@@ -3628,7 +3628,7 @@ namespace OutSystems.NssAdvanced_Excel {
 
 	/// <summary>
 	/// Structure <code>STFontStyleStructure</code> that represents the Service Studio structure
-	///  <code>FontStyle</code> <p> Description: </p>
+	///  <code>FontStyle</code> <p> Description: Font style options</p>
 	/// </summary>
 	[Serializable()]
 	public partial struct STFontStyleStructure: ISerializable, ITypedRecord<STFontStyleStructure>, ISimpleRecord {
@@ -4102,7 +4102,7 @@ namespace OutSystems.NssAdvanced_Excel {
 
 	/// <summary>
 	/// Structure <code>STImageStructure</code> that represents the Service Studio structure
-	///  <code>Image</code> <p> Description: </p>
+	///  <code>Image</code> <p> Description: Image properties</p>
 	/// </summary>
 	[Serializable()]
 	public partial struct STImageStructure: ISerializable, ITypedRecord<STImageStructure>, ISimpleRecord {
@@ -4917,7 +4917,7 @@ namespace OutSystems.NssAdvanced_Excel {
 
 	/// <summary>
 	/// Structure <code>STValueStructure</code> that represents the Service Studio structure
-	///  <code>Value</code> <p> Description: </p>
+	///  <code>Value</code> <p> Description: Text Value</p>
 	/// </summary>
 	[Serializable()]
 	public partial struct STValueStructure: ISerializable, ITypedRecord<STValueStructure>, ISimpleRecord {

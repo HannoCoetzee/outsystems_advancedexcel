@@ -932,7 +932,7 @@
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssChart_Create(System.Object,System.String,System.String,OutSystems.NssAdvanced_Excel.RLDataSeriesRecordList,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
-            
+            Create a chart
             </summary>
             <param name="ssWorksheet"></param>
             <param name="ssChartType">Receives the chart type in text, possible types:
@@ -1218,7 +1218,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_CalculateByIndex(System.Object,System.Int32,System.Int32)">
             <summary>
             Calculates the formula of a cell, defined by its index.
-            Input is a worksheet-object
             </summary>
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
             <param name="ssRow">Row Number</param>
@@ -1227,7 +1226,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_CalculateByName(System.Object,System.String)">
             <summary>
             Calculates the formula of a cell, defined by its name.
-            Input is a worksheet-object
             </summary>
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
             <param name="ssCellName">Cell-name (eg A4)</param>
@@ -1246,7 +1244,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_ReadByIndex(System.Object,System.Int32,System.Int32,System.Boolean,System.String@)">
             <summary>
             Reads the value of a cell, defined by its index.
-            Input is a worksheet-object
             </summary>
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
             <param name="ssRow">row number</param>
@@ -1257,7 +1254,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_ReadByName(System.Object,System.String,System.Boolean,System.String@)">
             <summary>
             Reads the value of a cell, defined by its name.
-            Input is a worksheet-object
             </summary>
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
             <param name="ssCellName">Cell-name (eg A4)</param>
@@ -1267,7 +1263,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_SetFormulaByIndex(System.Object,System.Int32,System.Int32,System.String)">
             <summary>
             Write a formula to a cell, defined by its index.
-            Input is a worksheet-object
             </summary>
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
             <param name="ssRow">rownumber</param>
@@ -1277,7 +1272,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_SetFormulaByName(System.Object,System.String,System.String)">
             <summary>
             Write a formula to a cell, defined by its name.
-            Input is a worksheet-object
             </summary>
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
             <param name="ssCellName">Cell-name (eg A4)</param>
@@ -1453,7 +1447,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteByIndex(System.Object,System.Int32,System.Int32,System.String,System.String)">
             <summary>
             Write a converted value to a cell, defined by its index.
-            Input is a worksheet-object
             </summary>
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
             <param name="ssRow">Row Number</param>
@@ -1464,7 +1457,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteByIndexWithFormat(System.Object,System.Int32,System.Int32,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
             <summary>
             Write a converted value to a cell, defined by its index.
-            Input is a worksheet-object.
             Accepts format for the target cell
             </summary>
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
@@ -1477,7 +1469,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteByName(System.Object,System.String,System.String,System.String)">
             <summary>
             Write a converted value to a cell, defined by its name.
-            Input is a worksheet-object
             </summary>
             <param name="ssWorksheet">Worksheet in which the cell resides</param>
             <param name="ssCellName">Cell-name (eg A4)</param>
@@ -1487,7 +1478,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteByNameWithFormat(System.Object,System.String,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
             <summary>
             Write a converted value to a cell, defined by its name.
-            Input is a worksheet-object.
             Accepts format for the target cell
             </summary>
             <param name="ssWorksheet">Worksheet in which the cell resides</param>
@@ -1521,7 +1511,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteImageByIndex(System.Object,System.Int32,System.Int32,System.String,System.Byte[])">
             <summary>
             Write a image on a cell, defined by its index.
-            Input are a worksheet-object and a image-object.
             </summary>
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
             <param name="ssRow">row number</param>
@@ -1532,7 +1521,6 @@
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteImageByName(System.Object,System.String,System.String,System.Byte[])">
             <summary>
             Write a image on a cell, defined by its name.
-            Input are a worksheet-object and a image-object.
             </summary>
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
             <param name="ssCellName">Cell-name (eg A4)</param>
@@ -1867,7 +1855,7 @@
         <member name="T:OutSystems.NssAdvanced_Excel.STFontStyleStructure">
             <summary>
             Structure <code>STFontStyleStructure</code> that represents the Service Studio structure
-             <code>FontStyle</code> <p> Description: </p>
+             <code>FontStyle</code> <p> Description: Font style options</p>
             </summary>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STFontStyleStructure.Read(System.Data.IDataReader,System.Int32@)">
@@ -1917,7 +1905,7 @@
         <member name="T:OutSystems.NssAdvanced_Excel.STImageStructure">
             <summary>
             Structure <code>STImageStructure</code> that represents the Service Studio structure
-             <code>Image</code> <p> Description: </p>
+             <code>Image</code> <p> Description: Image properties</p>
             </summary>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STImageStructure.Read(System.Data.IDataReader,System.Int32@)">
@@ -1968,7 +1956,7 @@
         <member name="T:OutSystems.NssAdvanced_Excel.STValueStructure">
             <summary>
             Structure <code>STValueStructure</code> that represents the Service Studio structure
-             <code>Value</code> <p> Description: </p>
+             <code>Value</code> <p> Description: Text Value</p>
             </summary>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STValueStructure.Read(System.Data.IDataReader,System.Int32@)">
