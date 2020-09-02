@@ -237,7 +237,8 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssDesiredWidth">The pixel width you desire for the column.</param>
         public void MssColumn_SetWidth(object ssWorksheet, int ssColumnNumber, decimal ssDesiredWidth)
         {
-            // TODO: Write implementation for action
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ws.Column(ssColumnNumber).Width = (double)ssDesiredWidth;
         } // MssColumn_SetWidth
 
         /// <summary>
@@ -249,7 +250,8 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssDesiredHeight">The desired pixel height for the row</param>
         public void MssRow_SetHeight(object ssWorksheet, int ssRowNumber, decimal ssDesiredHeight)
         {
-            // TODO: Write implementation for action
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ws.Row(ssRowNumber).Height = (double)ssDesiredHeight;
         } // MssRow_SetHeight
 
 
@@ -630,22 +632,6 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet">Worksheet to protect</param>
         /// <param name="ssPassword">Password to protect the worksheet with.</param>
         /// <param name="ssProtectionOptions"></param>
-        /// <param name="ssIsProtected">If the worksheet is protected.</param>
-        /// <param name="ssAllowAutoFilter">Allow users to use autofilters</param>
-        /// <param name="ssAllowDeleteColumns">Allow users to delete columns</param>
-        /// <param name="ssAllowDeleteRows">Allow users to delete rows</param>
-        /// <param name="ssAllowEditObject">Allow users to edit objects</param>
-        /// <param name="ssAllowEditScenarios">Allow users to edit senarios</param>
-        /// <param name="ssAllowFormatCells">Allow users to format cells</param>
-        /// <param name="ssAllowFormatColumns">Allow users to Format columns</param>
-        /// <param name="ssAllowFormatRows">Allow users to Format rows</param>
-        /// <param name="ssAllowInsertColumns">Allow users to insert columns</param>
-        /// <param name="ssAllowInsertHyperlinks">Allow users to insert hyperlinks</param>
-        /// <param name="ssAllowInsertRows">Allow users to Format rows</param>
-        /// <param name="ssAllowPivotTables">Allow users to use pivottables</param>
-        /// <param name="ssAllowSelectLockedCells">Allow users to select locked cells</param>
-        /// <param name="ssAllowSelectUnlockedCells">Allow users to select unlocked cells</param>
-        /// <param name="ssAllowSort">Allow users to sort a range</param>
         public void MssWorksheet_Protect(object ssWorksheet, string ssPassword, RCProtectionRecord ssProtectionOptions)
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
@@ -775,7 +761,6 @@ namespace OutSystems.NssAdvanced_Excel
         /// Apply the column autofit action to the specified range of cells specified in the given worksheet
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with</param>
-        /// <param name="ssRange">The range to which to apply the autofit action.</param>
         public void MssWorksheet_AutofitColumns(object ssWorksheet)
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
@@ -1782,6 +1767,14 @@ namespace OutSystems.NssAdvanced_Excel
 
                 //if (dt.Columns.Contains("ChangedAttributes")) dt.Columns.Remove("ChangedAttributes");
                 if (dt.Columns.Contains("OriginalKey")) dt.Columns.Remove("OriginalKey");
+
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    if (dt.Columns[i].ColumnName.StartsWith("ss", StringComparison.CurrentCulture))
+                    {
+                        dt.Columns[i].ColumnName = dt.Columns[i].ColumnName.Substring(2);
+                    }
+                }
 
                 ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, ssExportHeaders);
             }

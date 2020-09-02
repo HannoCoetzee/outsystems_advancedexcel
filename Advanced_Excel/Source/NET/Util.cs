@@ -138,6 +138,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             if (format == null)
             {
+                LogMessage("Format object is null");
                 return;
             }
 
@@ -169,6 +170,7 @@ namespace OutSystems.NssAdvanced_Excel
                 range.Style.Font.Bold = true;
             }
 
+            // Entire Border - DEPRECATED
             if (format.ssSTCellFormat.ssBorderStyle > 0)
             {
                 Color borderColor = new Color();
@@ -177,6 +179,54 @@ namespace OutSystems.NssAdvanced_Excel
                     borderColor = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBorderColor);
                 }
                 ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderStyle;
+                range.Style.Border.BorderAround(borderStyle, borderColor);
+            }
+
+            // Border Top
+            if (format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssStyle > 0)
+            {
+                Color borderColor = new Color();
+                if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssColor))
+                {
+                    borderColor = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssColor);
+                }
+                ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssStyle;
+                range.Style.Border.BorderAround(borderStyle, borderColor);
+            }
+
+            // Border Left
+            if (format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssStyle > 0)
+            {
+                Color borderColor = new Color();
+                if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssColor))
+                {
+                    borderColor = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssColor);
+                }
+                ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssStyle;
+                range.Style.Border.BorderAround(borderStyle, borderColor);
+            }
+
+            // Border Right
+            if (format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssStyle > 0)
+            {
+                Color borderColor = new Color();
+                if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssColor))
+                {
+                    borderColor = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssColor);
+                }
+                ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssStyle;
+                range.Style.Border.BorderAround(borderStyle, borderColor);
+            }
+
+            // Border Bottom
+            if (format.ssSTCellFormat.ssBorderBottom.ssSTBorderStyle.ssStyle > 0)
+            {
+                Color borderColor = new Color();
+                if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderBottom.ssSTBorderStyle.ssColor))
+                {
+                    borderColor = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBorderBottom.ssSTBorderStyle.ssColor);
+                }
+                ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderBottom.ssSTBorderStyle.ssStyle;
                 range.Style.Border.BorderAround(borderStyle, borderColor);
             }
 
