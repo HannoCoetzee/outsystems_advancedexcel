@@ -706,7 +706,7 @@ namespace OutSystems.NssAdvanced_Excel
                 range = ws.Cells[ssRowNumber, ssColumnNumber];
             }
 
-            Util.LogMessage(JsonConvert.SerializeObject(range));
+            //Util.LogMessage(JsonConvert.SerializeObject(range));
 
             MemoryStream ms = new MemoryStream(ssImageFile);
 
