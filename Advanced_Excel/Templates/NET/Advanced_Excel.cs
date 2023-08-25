@@ -929,6 +929,78 @@ namespace OutSystems.NssAdvanced_Excel {
 			// TODO: Write implementation for action
 		} // MssWorkbook_AddName
 
+		/// <summary>
+		/// Set the header of the specified worksheet.
+		/// To insert fields use the following:
+		/// Filename: &amp;F
+		/// Sheet name: &amp;A
+		/// Last saved date: &amp;D
+		/// Last saved time: &amp;T
+		/// Page number: &amp;P
+		/// Number of pages: &amp;N
+		/// To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
+		/// To set the color to red for example use &amp;KFF0000
+		/// eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
+		/// <param name="ssLeftSection">The content for the left section</param>
+		/// <param name="ssCenterSection">The content for the center section</param>
+		/// <param name="ssRightSection">The content for the right section</param>
+		public void MssWorksheet_SetHeader(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_SetHeader
+
+		/// <summary>
+		/// Set the footer on the specified worksheet.
+		/// To insert fields use the following:
+		/// Filename: &amp;F
+		/// Sheet name: &amp;A
+		/// Last saved date: &amp;D
+		/// Last saved time: &amp;T
+		/// Page number: &amp;P
+		/// Number of pages: &amp;N
+		/// To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
+		/// To set the color to red for example use &amp;KFF0000
+		/// eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet for which the footer is to be set.</param>
+		/// <param name="ssLeftSection">The content for the left section.</param>
+		/// <param name="ssCenterSection">The content for the center section</param>
+		/// <param name="ssRightSection">The content for the right section</param>
+		public void MssWorksheet_SetFooter(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_SetFooter
+
+		/// <summary>
+		/// Get the left, center and right sections for the odd or even page header of the specified worksheet.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet from which to retrieve the header</param>
+		/// <param name="ssIsEven">If True, retrieves the even page header, otherwise the odd page header.</param>
+		/// <param name="ssLeftSection">The left section of the header.</param>
+		/// <param name="ssCenterSection">The center section of the header.</param>
+		/// <param name="ssRightSection">The right section of the header.</param>
+		public void MssWorksheet_GetHeader(object ssWorksheet, bool ssIsEven, out string ssLeftSection, out string ssCenterSection, out string ssRightSection) {
+			ssLeftSection = "";
+			ssCenterSection = "";
+			ssRightSection = "";
+			// TODO: Write implementation for action
+		} // MssWorksheet_GetHeader
+
+		/// <summary>
+		/// Get the left, center and right sections for the odd or even page footer of the specified worksheet.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet for which to get the footer.</param>
+		/// <param name="ssIsEven">If True, retrieves the even page footer, otherwise the odd page footer.</param>
+		/// <param name="ssLeftSection">The left section of the footer.</param>
+		/// <param name="ssCenterSection">The center section of the footer.</param>
+		/// <param name="ssRightSection">The right section of the footer.</param>
+		public void MssWorksheet_GetFooter(object ssWorksheet, bool ssIsEven, out string ssLeftSection, out string ssCenterSection, out string ssRightSection) {
+			ssLeftSection = "";
+			ssCenterSection = "";
+			ssRightSection = "";
+			// TODO: Write implementation for action
+		} // MssWorksheet_GetFooter
+
 	} // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

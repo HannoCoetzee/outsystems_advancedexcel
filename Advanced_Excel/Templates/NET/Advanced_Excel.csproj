@@ -15,7 +15,7 @@
 		<DefineConstants>TRACE</DefineConstants>
 		<DocumentationFile>OutSystems.NssAdvanced_Excel.xml</DocumentationFile>
 		<DebugSymbols>false</DebugSymbols>
-		<NoWarn>1591;1587</NoWarn>		
+		<NoWarn>1591;1587</NoWarn>
 		<Optimize>true</Optimize>
 		<WarningLevel>4</WarningLevel>
 		<DebugType>none</DebugType>
@@ -116,7 +116,7 @@
 	<ItemGroup>
 		<Compile Include="AssemblyInfo.cs">
 			<SubType>Code</SubType>
-		</Compile>	
+		</Compile>
 		<Compile Include="Advanced_Excel.cs">
 			<SubType>Code</SubType>
 		</Compile>
