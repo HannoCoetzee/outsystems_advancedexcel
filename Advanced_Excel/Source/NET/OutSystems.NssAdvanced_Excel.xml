@@ -767,6 +767,44 @@
             <param name="ssRow">row number</param>
             <param name="ssColumn">column number</param>
         </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_SetHeader(System.Object,System.String,System.String,System.String)">
+            <summary>
+            Set the header of the specified worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
+            <param name="ssLeftSection">The content for the left section</param>
+            <param name="ssCenterSection">The content for the center section</param>
+            <param name="ssRightSection">The content for the right section</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_SetFooter(System.Object,System.String,System.String,System.String)">
+            <summary>
+            Set the footer on the specified worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet for which the footer is to be set.</param>
+            <param name="ssLeftSection">The content for the left section.</param>
+            <param name="ssCenterSection">The content for the center section</param>
+            <param name="ssRightSection">The content for the right section</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_GetHeader(System.Object,System.Boolean,System.String@,System.String@,System.String@)">
+            <summary>
+            Get the left, center and right sections for the odd or even page header of the specified worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet from which to retrieve the header</param>
+            <param name="ssIsEven">If True, retrieves the even page header, otherwise the odd page header.</param>
+            <param name="ssLeftSection">The left section of the header.</param>
+            <param name="ssCenterSection">The center section of the header.</param>
+            <param name="ssRightSection">The right section of the header.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_GetFooter(System.Object,System.Boolean,System.String@,System.String@,System.String@)">
+            <summary>
+            Get the left, center and right sections for the odd or even page footer of the specified worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet for which to get the footer.</param>
+            <param name="ssIsEven">If True, retrieves the even page footer, otherwise the odd page footer.</param>
+            <param name="ssLeftSection">The left section of the footer.</param>
+            <param name="ssCenterSection">The center section of the footer.</param>
+            <param name="ssRightSection">The right section of the footer.</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Open(System.String,System.Byte[],System.Object@)">
             <summary>
             Opens an existing workbook for editing by either specifying a name or the binary data.
@@ -1528,6 +1566,64 @@
             <param name="ssWorkbook">Workbook where the sheet is to be added</param>
             <param name="ssWorksheetName">The name of the spreadsheet to create</param>
             <param name="ssWorksheet">The newly added worksheet</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_SetHeader(System.Object,System.String,System.String,System.String)">
+            <summary>
+            Set the header of the specified worksheet.
+            To insert fields use the following:
+            Filename: &amp;F
+            Sheet name: &amp;A
+            Last saved date: &amp;D
+            Last saved time: &amp;T
+            Page number: &amp;P
+            Number of pages: &amp;N
+            To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
+            To set the color to red for example use &amp;KFF0000
+            eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
+            </summary>
+            <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
+            <param name="ssLeftSection">The content for the left section</param>
+            <param name="ssCenterSection">The content for the center section</param>
+            <param name="ssRightSection">The content for the right section</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_SetFooter(System.Object,System.String,System.String,System.String)">
+            <summary>
+            Set the footer on the specified worksheet.
+            To insert fields use the following:
+            Filename: &amp;F
+            Sheet name: &amp;A
+            Last saved date: &amp;D
+            Last saved time: &amp;T
+            Page number: &amp;P
+            Number of pages: &amp;N
+            To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
+            To set the color to red for example use &amp;KFF0000
+            eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
+            </summary>
+            <param name="ssWorksheet">The worksheet for which the footer is to be set.</param>
+            <param name="ssLeftSection">The content for the left section.</param>
+            <param name="ssCenterSection">The content for the center section</param>
+            <param name="ssRightSection">The content for the right section</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_GetHeader(System.Object,System.Boolean,System.String@,System.String@,System.String@)">
+            <summary>
+            Get the left, center and right sections for the odd or even page header of the specified worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet from which to retrieve the header</param>
+            <param name="ssIsEven">If True, retrieves the even page header, otherwise the odd page header.</param>
+            <param name="ssLeftSection">The left section of the header.</param>
+            <param name="ssCenterSection">The center section of the header.</param>
+            <param name="ssRightSection">The right section of the header.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_GetFooter(System.Object,System.Boolean,System.String@,System.String@,System.String@)">
+            <summary>
+            Get the left, center and right sections for the odd or even page footer of the specified worksheet.
+            </summary>
+            <param name="ssWorksheet">The worksheet for which to get the footer.</param>
+            <param name="ssIsEven">If True, retrieves the even page footer, otherwise the odd page footer.</param>
+            <param name="ssLeftSection">The left section of the footer.</param>
+            <param name="ssCenterSection">The center section of the footer.</param>
+            <param name="ssRightSection">The right section of the footer.</param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>

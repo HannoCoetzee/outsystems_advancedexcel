@@ -1981,7 +1981,73 @@ namespace OutSystems.NssAdvanced_Excel
             ws.Cells[ssRow, ssColumn].Calculate();
         } // MssCell_CalculateByIndex
 
+        /// <summary>
+        /// Set the header of the specified worksheet.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
+        /// <param name="ssLeftSection">The content for the left section</param>
+        /// <param name="ssCenterSection">The content for the center section</param>
+        /// <param name="ssRightSection">The content for the right section</param>
+        public void MssWorksheet_SetHeader(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.HeaderFooter.OddHeader.LeftAlignedText = ssLeftSection;
+            ws.HeaderFooter.OddHeader.CenteredText = ssCenterSection;
+            ws.HeaderFooter.OddHeader.RightAlignedText = ssRightSection;
+            ws.HeaderFooter.EvenHeader.LeftAlignedText = ssLeftSection;
+            ws.HeaderFooter.EvenHeader.CenteredText = ssCenterSection;
+            ws.HeaderFooter.EvenHeader.RightAlignedText = ssRightSection;
+        } // MssWorksheet_SetHeader
 
+        /// <summary>
+        /// Set the footer on the specified worksheet.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet for which the footer is to be set.</param>
+        /// <param name="ssLeftSection">The content for the left section.</param>
+        /// <param name="ssCenterSection">The content for the center section</param>
+        /// <param name="ssRightSection">The content for the right section</param>
+        public void MssWorksheet_SetFooter(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.HeaderFooter.OddFooter.LeftAlignedText = ssLeftSection;
+            ws.HeaderFooter.OddFooter.CenteredText = ssCenterSection;
+            ws.HeaderFooter.OddFooter.RightAlignedText = ssRightSection;
+            ws.HeaderFooter.EvenFooter.LeftAlignedText = ssLeftSection;
+            ws.HeaderFooter.EvenFooter.CenteredText = ssCenterSection;
+            ws.HeaderFooter.EvenFooter.RightAlignedText = ssRightSection;
+        } // MssWorksheet_SetFooter
+
+        /// <summary>
+        /// Get the left, center and right sections for the odd or even page header of the specified worksheet.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet from which to retrieve the header</param>
+        /// <param name="ssIsEven">If True, retrieves the even page header, otherwise the odd page header.</param>
+        /// <param name="ssLeftSection">The left section of the header.</param>
+        /// <param name="ssCenterSection">The center section of the header.</param>
+        /// <param name="ssRightSection">The right section of the header.</param>
+        public void MssWorksheet_GetHeader(object ssWorksheet, bool ssIsEven, out string ssLeftSection, out string ssCenterSection, out string ssRightSection)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ssLeftSection = (ssIsEven ? ws.HeaderFooter.EvenHeader.LeftAlignedText : ws.HeaderFooter.OddHeader.LeftAlignedText);
+            ssCenterSection = (ssIsEven ? ws.HeaderFooter.EvenHeader.CenteredText : ws.HeaderFooter.OddHeader.CenteredText);
+            ssRightSection = (ssIsEven ? ws.HeaderFooter.EvenHeader.RightAlignedText : ws.HeaderFooter.OddHeader.RightAlignedText);
+        } // MssWorksheet_GetHeader
+
+        /// <summary>
+        /// Get the left, center and right sections for the odd or even page footer of the specified worksheet.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet for which to get the footer.</param>
+        /// <param name="ssIsEven">If True, retrieves the even page footer, otherwise the odd page footer.</param>
+        /// <param name="ssLeftSection">The left section of the footer.</param>
+        /// <param name="ssCenterSection">The center section of the footer.</param>
+        /// <param name="ssRightSection">The right section of the footer.</param>
+        public void MssWorksheet_GetFooter(object ssWorksheet, bool ssIsEven, out string ssLeftSection, out string ssCenterSection, out string ssRightSection)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ssLeftSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.LeftAlignedText : ws.HeaderFooter.OddFooter.LeftAlignedText);
+            ssCenterSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.CenteredText : ws.HeaderFooter.OddFooter.CenteredText);
+            ssRightSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.RightAlignedText : ws.HeaderFooter.OddFooter.RightAlignedText);
+        } // MssWorksheet_GetFooter
 
     } // CssAdvanced_Excel
 
