@@ -21,6 +21,79 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
         /// <summary>
+        /// Action is used to add Drop down list.
+        /// </summary>
+        /// <param name="ssWorksheet">Current worksheet the values to be added.</param>
+        /// <param name="ssItemsList">Items values to be added to dropdown.</param>
+        /// <param name="ssItemsAddress">Instead of using the itemslist to make a list of values, you can refer to a location within your Excel sheet for the list of values. Example: &quot;=B10:B20&quot; or &quot;=Sheet2!$C$1:$C$1000&quot;</param>
+        /// <param name="ssCellRange">Sheet Cell range on which dropdown to be added, e.g. &quot;B:B&quot;</param>
+        /// <param name="ssTitleMessage">Dropdown title message to be shown.</param>
+        /// <param name="ssPromptMessage">Dropdown propmt message to be shown.</param>
+        /// <param name="ssShowError">Show error when using invalid input on dropdown</param>
+        /// <param name="ssCustomErrorMessage">Error to be shown when using invalid input on dropdown</param>
+        /// <param name="ssCustomErrorTitle">Title of error popup to be shown when using invalid input on dropdown</param>
+        public void MssWorksheet_AddDropdown(object ssWorksheet, RLItemsRecordList ssItemsList, string ssItemsAddress, string ssCellRange, string ssTitleMessage, string ssPromptMessage, bool ssShowError, string ssCustomErrorMessage, string ssCustomErrorTitle)
+        {
+            /* 
+             * Miguel 'Kelter' Antunes
+             * Code from Advanced_Excel_Dropdowns component
+             * https://www.outsystems.com/forge/component-overview/10562/advanced-excel-dropdowns
+             * 
+             */
+
+            var ws = (ExcelWorksheet)ssWorksheet;
+            var unitMeasure = ws.DataValidations.AddListValidation(ssCellRange);
+
+            if (String.IsNullOrEmpty(ssItemsAddress)) //Check if address string is empty, proceed to fill list with items.
+            {
+                for (int i = 0; i < ssItemsList.Count; i++)
+                {
+                    unitMeasure.Formula.Values.Add(ssItemsList[i].ssSTItems.ssItemText);
+                }
+            }
+            else
+            {
+                //TODO: Validation of Formula?
+                //TODO: Input sheet as Object instead of within string.
+                unitMeasure.Formula.ExcelFormula = ssItemsAddress;
+            }
+
+            unitMeasure.ShowInputMessage = true;
+            unitMeasure.PromptTitle = ssTitleMessage;
+            unitMeasure.Prompt = ssPromptMessage;
+            unitMeasure.Error = ssCustomErrorMessage;
+            unitMeasure.ErrorTitle = ssCustomErrorTitle;
+            unitMeasure.ShowErrorMessage = ssShowError;
+            unitMeasure.AllowBlank = true;
+
+
+
+
+        } // MssWorksheet_AddDropdown
+
+
+        /// <summary>
+        /// Set the active sheet
+        /// </summary>
+        /// <param name="ssWorkbook"></param>
+        /// <param name="ssWorksheetName"></param>
+        /// <param name="ssWorksheetIndex"></param>
+        public void MssWorksheet_SetActive(object ssWorkbook, string ssWorksheetName, int ssWorksheetIndex)
+        {
+            ExcelPackage ee = ssWorkbook as ExcelPackage;
+            if (ssWorksheetName != "")
+            {
+                ee.Workbook.Worksheets[ssWorksheetName].Select();
+            }
+            if (ssWorksheetIndex > 0)
+            {
+                ee.Workbook.Worksheets[ssWorksheetIndex].Select();
+
+            }
+        } // MssWorksheet_SetActive
+
+
+        /// <summary>
         /// Write a converted value to a cell, defined by its index.
         /// Input is a worksheet-object
         /// </summary>
@@ -706,7 +779,7 @@ namespace OutSystems.NssAdvanced_Excel
                 range = ws.Cells[ssRowNumber, ssColumnNumber];
             }
 
-            //Util.LogMessage(JsonConvert.SerializeObject(range));
+            // Util.LogMessage(JsonConvert.SerializeObject(range));
 
             MemoryStream ms = new MemoryStream(ssImageFile);
 
@@ -1982,30 +2055,22 @@ namespace OutSystems.NssAdvanced_Excel
         } // MssCell_CalculateByIndex
 
         /// <summary>
-        /// Set the header of the specified worksheet.
-        /// </summary>
-        /// <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
-        /// <param name="ssLeftSection">The content for the left section</param>
-        /// <param name="ssCenterSection">The content for the center section</param>
-        /// <param name="ssRightSection">The content for the right section</param>
-        public void MssWorksheet_SetHeader(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection)
-        {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
-            ws.HeaderFooter.OddHeader.LeftAlignedText = ssLeftSection;
-            ws.HeaderFooter.OddHeader.CenteredText = ssCenterSection;
-            ws.HeaderFooter.OddHeader.RightAlignedText = ssRightSection;
-            ws.HeaderFooter.EvenHeader.LeftAlignedText = ssLeftSection;
-            ws.HeaderFooter.EvenHeader.CenteredText = ssCenterSection;
-            ws.HeaderFooter.EvenHeader.RightAlignedText = ssRightSection;
-        } // MssWorksheet_SetHeader
-
-        /// <summary>
         /// Set the footer on the specified worksheet.
+        /// To insert fields use the following:
+        /// Filename: &amp;F
+        /// Sheet name: &amp;A
+        /// Last saved date: &amp;D
+        /// Last saved time: &amp;T
+        /// Page number: &amp;P
+        /// Number of pages: &amp;N
+        /// To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
+        /// To set the color to red for example use &amp;KFF0000
+        /// eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
         /// </summary>
         /// <param name="ssWorksheet">The worksheet for which the footer is to be set.</param>
         /// <param name="ssLeftSection">The content for the left section.</param>
-        /// <param name="ssCenterSection">The content for the center section</param>
-        /// <param name="ssRightSection">The content for the right section</param>
+        /// <param name="ssCenterSection">The content for the center section.</param>
+        /// <param name="ssRightSection">The content for the right section.</param>
         public void MssWorksheet_SetFooter(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection)
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
@@ -2018,9 +2083,37 @@ namespace OutSystems.NssAdvanced_Excel
         } // MssWorksheet_SetFooter
 
         /// <summary>
+        /// Set the header of the specified worksheet.
+        /// To insert fields use the following:
+        /// Filename: &amp;F
+        /// Sheet name: &amp;A
+        /// Last saved date: &amp;D
+        /// Last saved time: &amp;T
+        /// Page number: &amp;P
+        /// Number of pages: &amp;N
+        /// To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
+        /// To set the color to red for example use &amp;KFF0000
+        /// eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
+        /// <param name="ssLeftSection">The content for the left section.</param>
+        /// <param name="ssCenterSection">The content for the center section.</param>
+        /// <param name="ssRightSection">The content for the right section.</param>
+        public void MssWorksheet_SetHeader(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection)
+        {
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ws.HeaderFooter.OddHeader.LeftAlignedText = ssLeftSection;
+            ws.HeaderFooter.OddHeader.CenteredText = ssCenterSection;
+            ws.HeaderFooter.OddHeader.RightAlignedText = ssRightSection;
+            ws.HeaderFooter.EvenHeader.LeftAlignedText = ssLeftSection;
+            ws.HeaderFooter.EvenHeader.CenteredText = ssCenterSection;
+            ws.HeaderFooter.EvenHeader.RightAlignedText = ssRightSection;
+        } // MssWorksheet_SetHeader
+
+        /// <summary>
         /// Get the left, center and right sections for the odd or even page header of the specified worksheet.
         /// </summary>
-        /// <param name="ssWorksheet">The worksheet from which to retrieve the header</param>
+        /// <param name="ssWorksheet">The worksheet from which to retrieve the header.</param>
         /// <param name="ssIsEven">If True, retrieves the even page header, otherwise the odd page header.</param>
         /// <param name="ssLeftSection">The left section of the header.</param>
         /// <param name="ssCenterSection">The center section of the header.</param>
@@ -2047,8 +2140,7 @@ namespace OutSystems.NssAdvanced_Excel
             ssLeftSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.LeftAlignedText : ws.HeaderFooter.OddFooter.LeftAlignedText);
             ssCenterSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.CenteredText : ws.HeaderFooter.OddFooter.CenteredText);
             ssRightSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.RightAlignedText : ws.HeaderFooter.OddFooter.RightAlignedText);
-        } // MssWorksheet_GetFooter
-
+        } // MssWorksheet_GetFooter
     } // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

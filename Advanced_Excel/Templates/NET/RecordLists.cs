@@ -1436,4 +1436,87 @@ namespace OutSystems.NssAdvanced_Excel {
 
 
 	} // RLValueRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLItemsRecordList</code> that represents a record list of <code>Items</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLItemsRecordList: GenericRecordList<RCItemsRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCItemsRecord GetElementDefaultValue() {
+			return new RCItemsRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCItemsRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLItemsRecordList recordlist, Func<RCItemsRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLItemsRecordList(RCItemsRecord[] array) {
+			RLItemsRecordList result = new RLItemsRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLItemsRecordList ToList<T>(T[] array, Func <T, RCItemsRecord> converter) {
+			RLItemsRecordList result = new RLItemsRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLItemsRecordList FromRestList<T>(RestList<T> restList, Func <T, RCItemsRecord> converter) {
+			RLItemsRecordList result = new RLItemsRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLItemsRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLItemsRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLItemsRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLItemsRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCItemsRecord> NewList() {
+			return new RLItemsRecordList();
+		}
+
+
+	} // RLItemsRecordList
 }

@@ -4,6 +4,28 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_AddDropdown(System.Object,OutSystems.NssAdvanced_Excel.RLItemsRecordList,System.String,System.String,System.String,System.String,System.Boolean,System.String,System.String)">
+            <summary>
+            Action is used to add Drop down list.
+            </summary>
+            <param name="ssWorksheet">Current worksheet the values to be added.</param>
+            <param name="ssItemsList">Items values to be added to dropdown.</param>
+            <param name="ssItemsAddress">Instead of using the itemslist to make a list of values, you can refer to a location within your Excel sheet for the list of values. Example: &quot;=B10:B20&quot; or &quot;=Sheet2!$C$1:$C$1000&quot;</param>
+            <param name="ssCellRange">Sheet Cell range on which dropdown to be added, e.g. &quot;B:B&quot;</param>
+            <param name="ssTitleMessage">Dropdown title message to be shown.</param>
+            <param name="ssPromptMessage">Dropdown propmt message to be shown.</param>
+            <param name="ssShowError">Show error when using invalid input on dropdown</param>
+            <param name="ssCustomErrorMessage">Error to be shown when using invalid input on dropdown</param>
+            <param name="ssCustomErrorTitle">Title of error popup to be shown when using invalid input on dropdown</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_SetActive(System.Object,System.String,System.Int32)">
+            <summary>
+            Set the active sheet
+            </summary>
+            <param name="ssWorkbook"></param>
+            <param name="ssWorksheetName"></param>
+            <param name="ssWorksheetIndex"></param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteByIndex(System.Object,System.Int32,System.Int32,System.String,System.String)">
             <summary>
             Write a converted value to a cell, defined by its index.
@@ -767,29 +789,49 @@
             <param name="ssRow">row number</param>
             <param name="ssColumn">column number</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_SetHeader(System.Object,System.String,System.String,System.String)">
-            <summary>
-            Set the header of the specified worksheet.
-            </summary>
-            <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
-            <param name="ssLeftSection">The content for the left section</param>
-            <param name="ssCenterSection">The content for the center section</param>
-            <param name="ssRightSection">The content for the right section</param>
-        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_SetFooter(System.Object,System.String,System.String,System.String)">
             <summary>
             Set the footer on the specified worksheet.
+            To insert fields use the following:
+            Filename: &amp;F
+            Sheet name: &amp;A
+            Last saved date: &amp;D
+            Last saved time: &amp;T
+            Page number: &amp;P
+            Number of pages: &amp;N
+            To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
+            To set the color to red for example use &amp;KFF0000
+            eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
             </summary>
             <param name="ssWorksheet">The worksheet for which the footer is to be set.</param>
             <param name="ssLeftSection">The content for the left section.</param>
-            <param name="ssCenterSection">The content for the center section</param>
-            <param name="ssRightSection">The content for the right section</param>
+            <param name="ssCenterSection">The content for the center section.</param>
+            <param name="ssRightSection">The content for the right section.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_SetHeader(System.Object,System.String,System.String,System.String)">
+            <summary>
+            Set the header of the specified worksheet.
+            To insert fields use the following:
+            Filename: &amp;F
+            Sheet name: &amp;A
+            Last saved date: &amp;D
+            Last saved time: &amp;T
+            Page number: &amp;P
+            Number of pages: &amp;N
+            To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
+            To set the color to red for example use &amp;KFF0000
+            eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
+            </summary>
+            <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
+            <param name="ssLeftSection">The content for the left section.</param>
+            <param name="ssCenterSection">The content for the center section.</param>
+            <param name="ssRightSection">The content for the right section.</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_GetHeader(System.Object,System.Boolean,System.String@,System.String@,System.String@)">
             <summary>
             Get the left, center and right sections for the odd or even page header of the specified worksheet.
             </summary>
-            <param name="ssWorksheet">The worksheet from which to retrieve the header</param>
+            <param name="ssWorksheet">The worksheet from which to retrieve the header.</param>
             <param name="ssIsEven">If True, retrieves the even page header, otherwise the odd page header.</param>
             <param name="ssLeftSection">The left section of the header.</param>
             <param name="ssCenterSection">The center section of the header.</param>
@@ -1210,7 +1252,7 @@
             <param name="ssCellName">Cell Name where to insert image</param>
             <param name="ssImageWidth">The width of the image in pixels</param>
             <param name="ssImageHeight">The height of the image in pixels</param>
-            <param name="ssMarginTop"> Offset in pixels	</param>
+            <param name="ssMarginTop"> Offset in pixels </param>
             <param name="ssMarginLeft"> Offset in pixels</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_AutofitColumns(System.Object)">
@@ -1567,24 +1609,27 @@
             <param name="ssWorksheetName">The name of the spreadsheet to create</param>
             <param name="ssWorksheet">The newly added worksheet</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_SetHeader(System.Object,System.String,System.String,System.String)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_SetActive(System.Object,System.String,System.Int32)">
             <summary>
-            Set the header of the specified worksheet.
-            To insert fields use the following:
-            Filename: &amp;F
-            Sheet name: &amp;A
-            Last saved date: &amp;D
-            Last saved time: &amp;T
-            Page number: &amp;P
-            Number of pages: &amp;N
-            To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
-            To set the color to red for example use &amp;KFF0000
-            eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
+            Set the active sheet
             </summary>
-            <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
-            <param name="ssLeftSection">The content for the left section</param>
-            <param name="ssCenterSection">The content for the center section</param>
-            <param name="ssRightSection">The content for the right section</param>
+            <param name="ssWorkbook"></param>
+            <param name="ssWorksheetName"></param>
+            <param name="ssWorksheetIndex"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_AddDropdown(System.Object,OutSystems.NssAdvanced_Excel.RLItemsRecordList,System.String,System.String,System.String,System.String,System.Boolean,System.String,System.String)">
+            <summary>
+            Action is used to add Drop down list.
+            </summary>
+            <param name="ssWorksheet">Current worksheet the values to be added.</param>
+            <param name="ssItemsList">Items values to be added to dropdown.</param>
+            <param name="ssItemsAddress">Instead of using the itemslist to make a list of values, you can refer to a location within your Excel sheet for the list of values. Example: &quot;=B10:B20&quot; or &quot;=Sheet2!$C$1:$C$1000&quot;</param>
+            <param name="ssCellRange">Sheet Cell range on which dropdown to be added, e.g. &quot;B:B&quot;</param>
+            <param name="ssTitleMessage">Dropdown title message to be shown.</param>
+            <param name="ssPromptMessage">Dropdown propmt message to be shown.</param>
+            <param name="ssShowError">Show error when using invalid input on dropdown</param>
+            <param name="ssCustomErrorMessage">Error to be shown when using invalid input on dropdown</param>
+            <param name="ssCustomErrorTitle">Title of error popup to be shown when using invalid input on dropdown</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_SetFooter(System.Object,System.String,System.String,System.String)">
             <summary>
@@ -1602,14 +1647,33 @@
             </summary>
             <param name="ssWorksheet">The worksheet for which the footer is to be set.</param>
             <param name="ssLeftSection">The content for the left section.</param>
-            <param name="ssCenterSection">The content for the center section</param>
-            <param name="ssRightSection">The content for the right section</param>
+            <param name="ssCenterSection">The content for the center section.</param>
+            <param name="ssRightSection">The content for the right section.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_SetHeader(System.Object,System.String,System.String,System.String)">
+            <summary>
+            Set the header of the specified worksheet.
+            To insert fields use the following:
+            Filename: &amp;F
+            Sheet name: &amp;A
+            Last saved date: &amp;D
+            Last saved time: &amp;T
+            Page number: &amp;P
+            Number of pages: &amp;N
+            To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
+            To set the color to red for example use &amp;KFF0000
+            eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
+            </summary>
+            <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
+            <param name="ssLeftSection">The content for the left section.</param>
+            <param name="ssCenterSection">The content for the center section.</param>
+            <param name="ssRightSection">The content for the right section.</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_GetHeader(System.Object,System.Boolean,System.String@,System.String@,System.String@)">
             <summary>
             Get the left, center and right sections for the odd or even page header of the specified worksheet.
             </summary>
-            <param name="ssWorksheet">The worksheet from which to retrieve the header</param>
+            <param name="ssWorksheet">The worksheet from which to retrieve the header.</param>
             <param name="ssIsEven">If True, retrieves the even page header, otherwise the odd page header.</param>
             <param name="ssLeftSection">The left section of the header.</param>
             <param name="ssCenterSection">The center section of the header.</param>
@@ -2052,6 +2116,31 @@
             <param name="r"> Data reader</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STValueStructure.ReadIM(OutSystems.NssAdvanced_Excel.STValueStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STItemsStructure">
+            <summary>
+            Structure <code>STItemsStructure</code> that represents the Service Studio structure
+             <code>Items</code> <p> Description: Items list to be used in dropdown.</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STItemsStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STItemsStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STItemsStructure.ReadIM(OutSystems.NssAdvanced_Excel.STItemsStructure)">
             <summary>
             Read from record
             </summary>
@@ -2682,6 +2771,42 @@
             </summary>
             <returns>The new record list</returns>
         </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLItemsRecordList">
+            <summary>
+            RecordList type <code>RLItemsRecordList</code> that represents a record list of <code>Items</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLItemsRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLItemsRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLItemsRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCItemsRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLItemsRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLItemsRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
         <member name="T:OutSystems.NssAdvanced_Excel.RCCellFormatRecord">
             <summary>
             Structure <code>RCCellFormatRecord</code>
@@ -3085,6 +3210,30 @@
             <param name="r"> Data reader</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.RCValueRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCValueRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCItemsRecord">
+            <summary>
+            Structure <code>RCItemsRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCItemsRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCItemsRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCItemsRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCItemsRecord)">
             <summary>
             Read from record
             </summary>

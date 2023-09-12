@@ -26,10 +26,10 @@ namespace OutSystems.NssAdvanced_Excel
                 DataColumn c = dtNew.Columns.Add(i.ToString());
                 switch (ssCellType.ToLower())
                 {
-                    case "integer": c.DataType = System.Type.GetType("System.Int32"); break;
-                    case "datetime": c.DataType = System.Type.GetType("System.DateTime"); break;
-                    case "decimal": c.DataType = System.Type.GetType("System.Decimal"); break;
-                    case "boolean": c.DataType = System.Type.GetType("System.Boolean"); break;
+                    case "integer": c.DataType = Type.GetType("System.Int32"); break;
+                    case "datetime": c.DataType = Type.GetType("System.DateTime"); break;
+                    case "decimal": c.DataType = Type.GetType("System.Decimal"); break;
+                    case "boolean": c.DataType = Type.GetType("System.Boolean"); break;
                 }
             }
 
@@ -138,9 +138,9 @@ namespace OutSystems.NssAdvanced_Excel
         {
             if (format == null)
             {
-                LogMessage("Format object is null");
                 return;
             }
+
 
             if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssFontName))
             {
@@ -154,14 +154,14 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBackgroundColor))
             {
-                Color color = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBackgroundColor);
-                range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                Color color = ConvertFromColorCode(format.ssSTCellFormat.ssBackgroundColor);
+                range.Style.Fill.PatternType = ExcelFillStyle.Solid;
                 range.Style.Fill.BackgroundColor.SetColor(color);
             }
 
-            if(!string.IsNullOrEmpty(format.ssSTCellFormat.ssFontColor))
+            if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssFontColor))
             {
-                Color color = Util.ConvertFromColorCode(format.ssSTCellFormat.ssFontColor);
+                Color color = ConvertFromColorCode(format.ssSTCellFormat.ssFontColor);
                 range.Style.Font.Color.SetColor(color);
             }
 
@@ -170,65 +170,64 @@ namespace OutSystems.NssAdvanced_Excel
                 range.Style.Font.Bold = true;
             }
 
-            // Entire Border - DEPRECATED
+            /*
+             * Deprecated, must use specific styles for BorderBottom,BorderTop,BorderLeft,BorderRight
+             */
             if (format.ssSTCellFormat.ssBorderStyle > 0)
             {
                 Color borderColor = new Color();
                 if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderColor))
                 {
-                    borderColor = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBorderColor);
+                    borderColor = ConvertFromColorCode(format.ssSTCellFormat.ssBorderColor);
                 }
                 ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderStyle;
                 range.Style.Border.BorderAround(borderStyle, borderColor);
             }
 
-            // Border Top
-            if (format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssStyle > 0)
-            {
-                Color borderColor = new Color();
-                if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssColor))
-                {
-                    borderColor = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssColor);
-                }
-                ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssStyle;
-                range.Style.Border.BorderAround(borderStyle, borderColor);
-            }
 
-            // Border Left
-            if (format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssStyle > 0)
+            /*
+             * Border styling. BorderBottom,BorderTop,BorderLeft,BorderRight
+             */
+            //BorderBottom
+            if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderBottom.ssSTBorderStyle.ssColor) ||
+                          format.ssSTCellFormat.ssBorderBottom.ssSTBorderStyle.ssStyle != 0)
             {
-                Color borderColor = new Color();
-                if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssColor))
-                {
-                    borderColor = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssColor);
-                }
-                ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssStyle;
-                range.Style.Border.BorderAround(borderStyle, borderColor);
-            }
-
-            // Border Right
-            if (format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssStyle > 0)
-            {
-                Color borderColor = new Color();
-                if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssColor))
-                {
-                    borderColor = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssColor);
-                }
-                ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssStyle;
-                range.Style.Border.BorderAround(borderStyle, borderColor);
-            }
-
-            // Border Bottom
-            if (format.ssSTCellFormat.ssBorderBottom.ssSTBorderStyle.ssStyle > 0)
-            {
-                Color borderColor = new Color();
-                if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderBottom.ssSTBorderStyle.ssColor))
-                {
-                    borderColor = Util.ConvertFromColorCode(format.ssSTCellFormat.ssBorderBottom.ssSTBorderStyle.ssColor);
-                }
+                Color borderColor = ConvertFromColorCode(format.ssSTCellFormat.ssBorderBottom.ssSTBorderStyle.ssColor);
                 ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderBottom.ssSTBorderStyle.ssStyle;
-                range.Style.Border.BorderAround(borderStyle, borderColor);
+                range.Style.Border.Bottom.Style = borderStyle;
+                range.Style.Border.Bottom.Color.SetColor(borderColor);
             }
+
+            //BorderTop
+            if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssColor) ||
+                          format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssStyle != 0)
+            {
+                Color borderColor = ConvertFromColorCode(format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssColor);
+                ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderTop.ssSTBorderStyle.ssStyle;
+                range.Style.Border.Top.Style = borderStyle;
+                range.Style.Border.Top.Color.SetColor(borderColor);
+            }
+
+            //BorderLeft
+            if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssColor) ||
+                          format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssStyle != 0)
+            {
+                Color borderColor = ConvertFromColorCode(format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssColor);
+                ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderLeft.ssSTBorderStyle.ssStyle;
+                range.Style.Border.Left.Style = borderStyle;
+                range.Style.Border.Left.Color.SetColor(borderColor);
+            }
+
+            //BorderRight
+            if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssColor) ||
+                          format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssStyle != 0)
+            {
+                Color borderColor = ConvertFromColorCode(format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssColor);
+                ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderRight.ssSTBorderStyle.ssStyle;
+                range.Style.Border.Right.Style = borderStyle;
+                range.Style.Border.Right.Color.SetColor(borderColor);
+            }
+
 
             if (format.ssSTCellFormat.ssAutofitColumn)
             {
@@ -435,80 +434,80 @@ namespace OutSystems.NssAdvanced_Excel
             switch (chartType)
             {
                 case "Area3D": return eChartType.Area3D;
-                case "AreaStacked3D": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked3D;
-                case "AreaStacked1003D": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked1003D;
-                case "BarClustered3D": return OfficeOpenXml.Drawing.Chart.eChartType.BarClustered3D;
-                case "BarStacked3D": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked3D;
-                case "BarStacked1003D": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked1003D;
-                case "Column3D": return OfficeOpenXml.Drawing.Chart.eChartType.Column3D;
-                case "ColumnClustered3D": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnClustered3D;
-                case "ColumnStacked3D": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked3D;
-                case "ColumnStacked1003D": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked1003D;
-                case "Line3D": return OfficeOpenXml.Drawing.Chart.eChartType.Line3D;
-                case "Pie3D": return OfficeOpenXml.Drawing.Chart.eChartType.Pie3D;
-                case "PieExploded3D": return OfficeOpenXml.Drawing.Chart.eChartType.PieExploded3D;
-                case "Area": return OfficeOpenXml.Drawing.Chart.eChartType.Area;
-                case "AreaStacked": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked;
-                case "AreaStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.AreaStacked100;
-                case "BarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.BarClustered;
-                case "BarOfPie": return OfficeOpenXml.Drawing.Chart.eChartType.BarOfPie;
-                case "BarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked;
-                case "BarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.BarStacked100;
-                case "Bubble": return OfficeOpenXml.Drawing.Chart.eChartType.Bubble;
-                case "Bubble3DEffect": return OfficeOpenXml.Drawing.Chart.eChartType.Bubble3DEffect;
-                case "ColumnClustered": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnClustered;
-                case "ColumnStacked": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked;
-                case "ColumnStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked100;
-                case "ConeBarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.ConeBarClustered;
-                case "ConeBarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.ConeBarStacked;
-                case "ConeBarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.ConeBarStacked100;
-                case "ConeCol": return OfficeOpenXml.Drawing.Chart.eChartType.ConeCol;
-                case "ConeColClustered": return OfficeOpenXml.Drawing.Chart.eChartType.ConeColClustered;
-                case "ConeColStacked": return OfficeOpenXml.Drawing.Chart.eChartType.ConeColStacked;
-                case "ConeColStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.ConeColStacked100;
-                case "CylinderBarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderBarClustered;
-                case "CylinderBarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderBarStacked;
-                case "CylinderBarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderBarStacked100;
-                case "CylinderCol": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderCol;
-                case "CylinderColClustered": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderColClustered;
-                case "CylinderColStacked": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderColStacked;
-                case "CylinderColStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.CylinderColStacked100;
-                case "Doughnut": return OfficeOpenXml.Drawing.Chart.eChartType.Doughnut;
-                case "DoughnutExploded": return OfficeOpenXml.Drawing.Chart.eChartType.DoughnutExploded;
-                case "Line": return OfficeOpenXml.Drawing.Chart.eChartType.Line;
-                case "LineMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.LineMarkers;
-                case "LineMarkersStacked": return OfficeOpenXml.Drawing.Chart.eChartType.LineMarkersStacked;
-                case "LineMarkersStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.LineMarkersStacked100;
-                case "LineStacked": return OfficeOpenXml.Drawing.Chart.eChartType.LineStacked;
-                case "LineStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.LineStacked100;
-                case "Pie": return OfficeOpenXml.Drawing.Chart.eChartType.Pie;
-                case "PieExploded": return OfficeOpenXml.Drawing.Chart.eChartType.PieExploded;
-                case "PieOfPie": return OfficeOpenXml.Drawing.Chart.eChartType.PieOfPie;
-                case "PyramidBarClustered": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidBarClustered;
-                case "PyramidBarStacked": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidBarStacked;
-                case "PyramidBarStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidBarStacked100;
-                case "PyramidCol": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidCol;
-                case "PyramidColClustered": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidColClustered;
-                case "PyramidColStacked": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidColStacked;
-                case "PyramidColStacked100": return OfficeOpenXml.Drawing.Chart.eChartType.PyramidColStacked100;
-                case "Radar": return OfficeOpenXml.Drawing.Chart.eChartType.Radar;
-                case "RadarFilled": return OfficeOpenXml.Drawing.Chart.eChartType.RadarFilled;
-                case "RadarMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.RadarMarkers;
-                case "StockHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockHLC;
-                case "StockOHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockOHLC;
-                case "StockVHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockVHLC;
-                case "StockVOHLC": return OfficeOpenXml.Drawing.Chart.eChartType.StockVOHLC;
-                case "Surface": return OfficeOpenXml.Drawing.Chart.eChartType.Surface;
-                case "SurfaceTopView": return OfficeOpenXml.Drawing.Chart.eChartType.SurfaceTopView;
-                case "SurfaceTopViewWireframe": return OfficeOpenXml.Drawing.Chart.eChartType.SurfaceTopViewWireframe;
-                case "SurfaceWireframe": return OfficeOpenXml.Drawing.Chart.eChartType.SurfaceWireframe;
-                case "XYScatter": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatter;
-                case "XYScatterLines": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterLines;
-                case "XYScatterLinesNoMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterLinesNoMarkers;
-                case "XYScatterSmooth": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterSmooth;
-                case "XYScatterSmoothNoMarkers": return OfficeOpenXml.Drawing.Chart.eChartType.XYScatterSmoothNoMarkers;
+                case "AreaStacked3D": return eChartType.AreaStacked3D;
+                case "AreaStacked1003D": return eChartType.AreaStacked1003D;
+                case "BarClustered3D": return eChartType.BarClustered3D;
+                case "BarStacked3D": return eChartType.BarStacked3D;
+                case "BarStacked1003D": return eChartType.BarStacked1003D;
+                case "Column3D": return eChartType.Column3D;
+                case "ColumnClustered3D": return eChartType.ColumnClustered3D;
+                case "ColumnStacked3D": return eChartType.ColumnStacked3D;
+                case "ColumnStacked1003D": return eChartType.ColumnStacked1003D;
+                case "Line3D": return eChartType.Line3D;
+                case "Pie3D": return eChartType.Pie3D;
+                case "PieExploded3D": return eChartType.PieExploded3D;
+                case "Area": return eChartType.Area;
+                case "AreaStacked": return eChartType.AreaStacked;
+                case "AreaStacked100": return eChartType.AreaStacked100;
+                case "BarClustered": return eChartType.BarClustered;
+                case "BarOfPie": return eChartType.BarOfPie;
+                case "BarStacked": return eChartType.BarStacked;
+                case "BarStacked100": return eChartType.BarStacked100;
+                case "Bubble": return eChartType.Bubble;
+                case "Bubble3DEffect": return eChartType.Bubble3DEffect;
+                case "ColumnClustered": return eChartType.ColumnClustered;
+                case "ColumnStacked": return eChartType.ColumnStacked;
+                case "ColumnStacked100": return eChartType.ColumnStacked100;
+                case "ConeBarClustered": return eChartType.ConeBarClustered;
+                case "ConeBarStacked": return eChartType.ConeBarStacked;
+                case "ConeBarStacked100": return eChartType.ConeBarStacked100;
+                case "ConeCol": return eChartType.ConeCol;
+                case "ConeColClustered": return eChartType.ConeColClustered;
+                case "ConeColStacked": return eChartType.ConeColStacked;
+                case "ConeColStacked100": return eChartType.ConeColStacked100;
+                case "CylinderBarClustered": return eChartType.CylinderBarClustered;
+                case "CylinderBarStacked": return eChartType.CylinderBarStacked;
+                case "CylinderBarStacked100": return eChartType.CylinderBarStacked100;
+                case "CylinderCol": return eChartType.CylinderCol;
+                case "CylinderColClustered": return eChartType.CylinderColClustered;
+                case "CylinderColStacked": return eChartType.CylinderColStacked;
+                case "CylinderColStacked100": return eChartType.CylinderColStacked100;
+                case "Doughnut": return eChartType.Doughnut;
+                case "DoughnutExploded": return eChartType.DoughnutExploded;
+                case "Line": return eChartType.Line;
+                case "LineMarkers": return eChartType.LineMarkers;
+                case "LineMarkersStacked": return eChartType.LineMarkersStacked;
+                case "LineMarkersStacked100": return eChartType.LineMarkersStacked100;
+                case "LineStacked": return eChartType.LineStacked;
+                case "LineStacked100": return eChartType.LineStacked100;
+                case "Pie": return eChartType.Pie;
+                case "PieExploded": return eChartType.PieExploded;
+                case "PieOfPie": return eChartType.PieOfPie;
+                case "PyramidBarClustered": return eChartType.PyramidBarClustered;
+                case "PyramidBarStacked": return eChartType.PyramidBarStacked;
+                case "PyramidBarStacked100": return eChartType.PyramidBarStacked100;
+                case "PyramidCol": return eChartType.PyramidCol;
+                case "PyramidColClustered": return eChartType.PyramidColClustered;
+                case "PyramidColStacked": return eChartType.PyramidColStacked;
+                case "PyramidColStacked100": return eChartType.PyramidColStacked100;
+                case "Radar": return eChartType.Radar;
+                case "RadarFilled": return eChartType.RadarFilled;
+                case "RadarMarkers": return eChartType.RadarMarkers;
+                case "StockHLC": return eChartType.StockHLC;
+                case "StockOHLC": return eChartType.StockOHLC;
+                case "StockVHLC": return eChartType.StockVHLC;
+                case "StockVOHLC": return eChartType.StockVOHLC;
+                case "Surface": return eChartType.Surface;
+                case "SurfaceTopView": return eChartType.SurfaceTopView;
+                case "SurfaceTopViewWireframe": return eChartType.SurfaceTopViewWireframe;
+                case "SurfaceWireframe": return eChartType.SurfaceWireframe;
+                case "XYScatter": return eChartType.XYScatter;
+                case "XYScatterLines": return eChartType.XYScatterLines;
+                case "XYScatterLinesNoMarkers": return eChartType.XYScatterLinesNoMarkers;
+                case "XYScatterSmooth": return eChartType.XYScatterSmooth;
+                case "XYScatterSmoothNoMarkers": return eChartType.XYScatterSmoothNoMarkers;
             }
-            return OfficeOpenXml.Drawing.Chart.eChartType.Column3D;
+            return eChartType.Column3D;
         }
 
 
