@@ -1027,6 +1027,42 @@ namespace OutSystems.NssAdvanced_Excel {
 			// TODO: Write implementation for action
 		} // MssWorksheet_GetFooter
 
+		/// <summary>
+		/// Clear value of a cell, defined by its index.
+		/// Option to specify whether the cell is part of a merged group or not.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row Number</param>
+		/// <param name="ssStartColumn">Column Number</param>
+		/// <param name="ssEndColumn">Column Number, Mandatory if IsMerged is True</param>
+		/// <param name="ssIsMerged">If True, cells are merged and will be unmerged.</param>
+		public void MssCell_ClearValueByIndex(object ssWorksheet, int ssRow, int ssStartColumn, int ssEndColumn, bool ssIsMerged) {
+			// TODO: Write implementation for action
+		} // MssCell_ClearValueByIndex
+
+		/// <summary>
+		/// Clear value clear the value of a specific cell by its name.
+		/// Option to specify whether the cell is part of a merged group or not.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell name (eg A1:B1, if cells are merged; eg A1, if single cell)</param>
+		/// <param name="ssIsMerged">If True cells are merged and will be unmerged.</param>
+		public void MssCell_ClearValueByName(object ssWorksheet, string ssCellName, bool ssIsMerged) {
+			// TODO: Write implementation for action
+		} // MssCell_ClearValueByName
+
+		/// <summary>
+		/// Reads formula of a cell, defined by its index.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row Number</param>
+		/// <param name="ssColumn">Column Number</param>
+		/// <param name="ssFormula">The formula</param>
+		public void MssCell_ReadFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFormula) {
+			ssFormula = "";
+			// TODO: Write implementation for action
+		} // MssCell_ReadFormulaByIndex
+
 	} // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
