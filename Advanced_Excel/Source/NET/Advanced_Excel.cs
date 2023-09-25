@@ -2018,6 +2018,98 @@ namespace OutSystems.NssAdvanced_Excel
         } // MssWorksheet_SetFooter
 
         /// <summary>
+        /// Clear value of a cell, defined by its index.
+        /// Option to specify whether the cell is part of a merged group or not.
+        /// </summary>
+        /// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+        /// <param name="ssRow">Row Number</param>
+        /// <param name="ssStartColumn">Column Number</param>
+        /// <param name="ssEndColumn">Column Number. Mandatory if IsMerged is True</param>
+        /// <param name="ssIsMerged">If True cells are merged</param>
+        public void MssCell_ClearValueByIndex(object ssWorksheet, int ssRow, int ssStartColumn, int ssEndColumn, bool ssIsMerged) {
+            // Select the worksheet
+            ExcelWorksheet ws;
+            ws = (ExcelWorksheet)ssWorksheet;
+        
+            // Check if the specified cell is part of a merged range
+            if (ssIsMerged)
+            {
+                if (ssEndColumn <= 0)
+                {
+                    throw new Exception("You need to specify a valid cell column for End Column");
+                }
+        
+                // Select the range of merged cells to clear
+                ExcelRange mergedCells = ws.Cells[ssRow, ssStartColumn, ssRow, ssEndColumn];
+        
+                // Unmerge the cells in the range
+                mergedCells.Merge = false;
+        
+                // Clear the values in the range
+                mergedCells.Value = null;
+        
+                // Merge the cells again
+                mergedCells.Merge = true;
+            }
+            else
+            {
+                // The specified cell is not part of a merged range
+                ws.Cells[ssRow, ssStartColumn].Value = null;
+            }
+        } // MssCell_ClearValueByIndex
+        
+        /// <summary>
+        /// Clear value clear the value of a specific cell by its name.
+        /// Option to specify whether the cell is part of a merged group or not.
+        /// </summary>
+        /// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+        /// <param name="ssCellName">Cell-name (eg A1:B1, if cells are merged; eg A1, if single cell)</param>
+        /// <param name="ssIsMerged">If True cells are merged</param>
+        public void MssCell_ClearValueByName(object ssWorksheet, string ssCellName, bool ssIsMerged) {
+            // Select the worksheet
+            ExcelWorksheet ws;
+            ws = (ExcelWorksheet)ssWorksheet;
+        
+            if (ssIsMerged)
+            {   // Select the range of merged cells to clear
+                ExcelRange cell = ws.Cells[ssCellName];
+        
+                // Unmerge the cells in the range
+                cell.Merge = false;
+        
+                // Clear the values in the range
+                cell.Value = null;
+        
+                // Merge the cells again 
+                cell.Merge = true;
+            }
+        
+            else
+            {
+                ws.Cells[ssCellName].Value = null;
+            }
+        } // MssCell_ClearValueByName
+        
+        /// <summary>
+        /// Reads formula of a cell, defined by its index.
+        /// </summary>
+        /// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+        /// <param name="ssRow">Row Number</param>
+        /// <param name="ssColumn">Column Number</param>
+        /// <param name="ssCellValue">The value in the cell, as text</param>
+        public void MssCell_ReadFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssCellValue) {
+            // Select the worksheet
+            ExcelWorksheet ws;
+            ws = (ExcelWorksheet)ssWorksheet;
+        
+            // Get the cell
+            ExcelRange cell = ws.Cells[ssRow, ssColumn];
+        
+            // Get the value of the cell containing the formula
+            ssCellValue = cell.Formula;
+        } // MssCell_ReadFormulaByIndex
+
+        /// <summary>
         /// Get the left, center and right sections for the odd or even page header of the specified worksheet.
         /// </summary>
         /// <param name="ssWorksheet">The worksheet from which to retrieve the header</param>
