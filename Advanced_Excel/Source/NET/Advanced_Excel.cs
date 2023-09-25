@@ -876,7 +876,7 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 using (ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, bitmap))
                 {
-                    Util.LogMessage(string.Format("Start Row: {0} Start Column: {1}  Width: {2} Height {3}", range.Start.Row, range.Start.Column, ssImageWidth, ssImageHeight));
+                    //Util.LogMessage(string.Format("Start Row: {0} Start Column: {1}  Width: {2} Height {3}", range.Start.Row, range.Start.Column, ssImageWidth, ssImageHeight));
                     picture.SetPosition(range.Start.Row, 10, range.Start.Column, 10);
                     picture.SetSize(ssImageWidth, ssImageHeight);
                 }
@@ -2229,7 +2229,8 @@ namespace OutSystems.NssAdvanced_Excel
             ssLeftSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.LeftAlignedText : ws.HeaderFooter.OddFooter.LeftAlignedText);
             ssCenterSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.CenteredText : ws.HeaderFooter.OddFooter.CenteredText);
             ssRightSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.RightAlignedText : ws.HeaderFooter.OddFooter.RightAlignedText);
-        } // MssWorksheet_GetFooter
+        } // MssWorksheet_GetFooter
+
     } // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
