@@ -499,7 +499,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssCellName">Cell Name where to insert image</param>
 		/// <param name="ssImageWidth">The width of the image in pixels</param>
 		/// <param name="ssImageHeight">The height of the image in pixels</param>
-		/// <param name="ssMarginTop"> Offset in pixels	</param>
+		/// <param name="ssMarginTop"> Offset in pixels </param>
 		/// <param name="ssMarginLeft"> Offset in pixels</param>
 		public void MssImage_Insert(object ssWorksheet, byte[] ssImageFile, string ssImageType, string ssImageName, int ssRowNumber, int ssColumnNumber, string ssCellName, int ssImageWidth, int ssImageHeight, int ssMarginTop, int ssMarginLeft) {
 			// TODO: Write implementation for action
@@ -930,25 +930,30 @@ namespace OutSystems.NssAdvanced_Excel {
 		} // MssWorkbook_AddName
 
 		/// <summary>
-		/// Set the header of the specified worksheet.
-		/// To insert fields use the following:
-		/// Filename: &amp;F
-		/// Sheet name: &amp;A
-		/// Last saved date: &amp;D
-		/// Last saved time: &amp;T
-		/// Page number: &amp;P
-		/// Number of pages: &amp;N
-		/// To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
-		/// To set the color to red for example use &amp;KFF0000
-		/// eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
+		/// Set the active sheet
 		/// </summary>
-		/// <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
-		/// <param name="ssLeftSection">The content for the left section</param>
-		/// <param name="ssCenterSection">The content for the center section</param>
-		/// <param name="ssRightSection">The content for the right section</param>
-		public void MssWorksheet_SetHeader(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection) {
+		/// <param name="ssWorkbook"></param>
+		/// <param name="ssWorksheetName"></param>
+		/// <param name="ssWorksheetIndex"></param>
+		public void MssWorksheet_SetActive(object ssWorkbook, string ssWorksheetName, int ssWorksheetIndex) {
 			// TODO: Write implementation for action
-		} // MssWorksheet_SetHeader
+		} // MssWorksheet_SetActive
+
+		/// <summary>
+		/// Action is used to add Drop down list.
+		/// </summary>
+		/// <param name="ssWorksheet">Current worksheet the values to be added.</param>
+		/// <param name="ssItemsList">Items values to be added to dropdown.</param>
+		/// <param name="ssItemsAddress">Instead of using the itemslist to make a list of values, you can refer to a location within your Excel sheet for the list of values. Example: &quot;=B10:B20&quot; or &quot;=Sheet2!$C$1:$C$1000&quot;</param>
+		/// <param name="ssCellRange">Sheet Cell range on which dropdown to be added, e.g. &quot;B:B&quot;</param>
+		/// <param name="ssTitleMessage">Dropdown title message to be shown.</param>
+		/// <param name="ssPromptMessage">Dropdown propmt message to be shown.</param>
+		/// <param name="ssShowError">Show error when using invalid input on dropdown</param>
+		/// <param name="ssCustomErrorMessage">Error to be shown when using invalid input on dropdown</param>
+		/// <param name="ssCustomErrorTitle">Title of error popup to be shown when using invalid input on dropdown</param>
+		public void MssWorksheet_AddDropdown(object ssWorksheet, RLItemsRecordList ssItemsList, string ssItemsAddress, string ssCellRange, string ssTitleMessage, string ssPromptMessage, bool ssShowError, string ssCustomErrorMessage, string ssCustomErrorTitle) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_AddDropdown
 
 		/// <summary>
 		/// Set the footer on the specified worksheet.
@@ -965,16 +970,37 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// </summary>
 		/// <param name="ssWorksheet">The worksheet for which the footer is to be set.</param>
 		/// <param name="ssLeftSection">The content for the left section.</param>
-		/// <param name="ssCenterSection">The content for the center section</param>
-		/// <param name="ssRightSection">The content for the right section</param>
+		/// <param name="ssCenterSection">The content for the center section.</param>
+		/// <param name="ssRightSection">The content for the right section.</param>
 		public void MssWorksheet_SetFooter(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection) {
 			// TODO: Write implementation for action
 		} // MssWorksheet_SetFooter
 
 		/// <summary>
+		/// Set the header of the specified worksheet.
+		/// To insert fields use the following:
+		/// Filename: &amp;F
+		/// Sheet name: &amp;A
+		/// Last saved date: &amp;D
+		/// Last saved time: &amp;T
+		/// Page number: &amp;P
+		/// Number of pages: &amp;N
+		/// To set the color of the following part of the section using &amp;K immediately followed by a hexadecimal RGB color
+		/// To set the color to red for example use &amp;KFF0000
+		/// eg Set the LeftSection to red and include the filename, set LeftSection to &quot;&amp;KFF0000Here is the filename &amp;F&quot;
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet for which the header is to be set.</param>
+		/// <param name="ssLeftSection">The content for the left section.</param>
+		/// <param name="ssCenterSection">The content for the center section.</param>
+		/// <param name="ssRightSection">The content for the right section.</param>
+		public void MssWorksheet_SetHeader(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_SetHeader
+
+		/// <summary>
 		/// Get the left, center and right sections for the odd or even page header of the specified worksheet.
 		/// </summary>
-		/// <param name="ssWorksheet">The worksheet from which to retrieve the header</param>
+		/// <param name="ssWorksheet">The worksheet from which to retrieve the header.</param>
 		/// <param name="ssIsEven">If True, retrieves the even page header, otherwise the odd page header.</param>
 		/// <param name="ssLeftSection">The left section of the header.</param>
 		/// <param name="ssCenterSection">The center section of the header.</param>
@@ -1000,6 +1026,42 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssRightSection = "";
 			// TODO: Write implementation for action
 		} // MssWorksheet_GetFooter
+
+		/// <summary>
+		/// Clear value of a cell, defined by its index.
+		/// Option to specify whether the cell is part of a merged group or not.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row Number</param>
+		/// <param name="ssStartColumn">Column Number</param>
+		/// <param name="ssEndColumn">Column Number, Mandatory if IsMerged is True</param>
+		/// <param name="ssIsMerged">If True, cells are merged and will be unmerged.</param>
+		public void MssCell_ClearValueByIndex(object ssWorksheet, int ssRow, int ssStartColumn, int ssEndColumn, bool ssIsMerged) {
+			// TODO: Write implementation for action
+		} // MssCell_ClearValueByIndex
+
+		/// <summary>
+		/// Clear value clear the value of a specific cell by its name.
+		/// Option to specify whether the cell is part of a merged group or not.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell name (eg A1:B1, if cells are merged; eg A1, if single cell)</param>
+		/// <param name="ssIsMerged">If True cells are merged and will be unmerged.</param>
+		public void MssCell_ClearValueByName(object ssWorksheet, string ssCellName, bool ssIsMerged) {
+			// TODO: Write implementation for action
+		} // MssCell_ClearValueByName
+
+		/// <summary>
+		/// Reads formula of a cell, defined by its index.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row Number</param>
+		/// <param name="ssColumn">Column Number</param>
+		/// <param name="ssFormula">The formula</param>
+		public void MssCell_ReadFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFormula) {
+			ssFormula = "";
+			// TODO: Write implementation for action
+		} // MssCell_ReadFormulaByIndex
 
 	} // CssAdvanced_Excel
 
