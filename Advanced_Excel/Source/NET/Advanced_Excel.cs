@@ -2141,7 +2141,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
             ws.Cells[ssRow, ssColumn].Calculate();
-        } // MssCell_CalculateByIndex
+        } // MssCell_CalculateByIndex 
 
         /// <summary>
         /// Set the footer on the specified worksheet.
