@@ -12,103 +12,12 @@ using System.Collections.Generic;
 using OfficeOpenXml.ConditionalFormatting;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
 using OfficeOpenXml.Drawing;
-using Newtonsoft.Json;
 
 namespace OutSystems.NssAdvanced_Excel
 {
 
     public class CssAdvanced_Excel : IssAdvanced_Excel
     {
-
-		/// <summary>
-		/// Clear value of a cell, defined by its index.
-		/// Option to specify whether the cell is part of a merged group or not.
-		/// </summary>
-		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
-		/// <param name="ssRow">Row Number</param>
-		/// <param name="ssStartColumn">Column Number</param>
-		/// <param name="ssEndColumn">Column Number, Mandatory if IsMerged is True</param>
-		/// <param name="ssIsMerged">If True, cells are merged and will be unmerged.</param>
-		public void MssCell_ClearValueByIndex(object ssWorksheet, int ssRow, int ssStartColumn, int ssEndColumn, bool ssIsMerged) {
-            // Select the worksheet
-            var ws = (ExcelWorksheet)ssWorksheet;
-
-            // Check if the specified cell is part of a merged range
-            if (ssIsMerged)
-            {
-                if (ssEndColumn <= 0)
-                {
-                    throw new Exception("You need to specify a valid cell column for End Column");
-                }
-
-                // Select the range of merged cells to clear
-                var mergedCells = ws.Cells[ssRow, ssStartColumn, ssRow, ssEndColumn];
-
-                // Unmerge the cells in the range
-                mergedCells.Merge = false;
-
-                // Clear the values in the range
-                mergedCells.Value = null;
-
-                // Merge the cells again
-                mergedCells.Merge = true;
-            }
-            else
-            {
-                // The specified cell is not part of a merged range
-                ws.Cells[ssRow, ssStartColumn].Value = null;
-            }
-		} // MssCell_ClearValueByIndex
-
-        /// <summary>
-        /// Clear value clear the value of a specific cell by its name.
-        /// Option to specify whether the cell is part of a merged group or not.
-        /// </summary>
-        /// <param name="ssWorksheet">Worksheet on which the cell resides</param>
-        /// <param name="ssCellName">Cell name (eg A1:B1, if cells are merged; eg A1, if single cell)</param>
-        /// <param name="ssIsMerged">If True cells are merged and will be unmerged.</param>
-        public void MssCell_ClearValueByName(object ssWorksheet, string ssCellName, bool ssIsMerged) {
-            // Select the worksheet
-            var ws = (ExcelWorksheet)ssWorksheet;
-
-            if (ssIsMerged)
-            {   // Select the range of merged cells to clear
-                var cell = ws.Cells[ssCellName];
-
-                // Unmerge the cells in the range
-                cell.Merge = false;
-
-                // Clear the values in the range
-                cell.Value = null;
-
-                // Merge the cells again 
-                cell.Merge = true;
-            }
-
-            else
-            {
-                ws.Cells[ssCellName].Value = null;
-            }
-        } // MssCell_ClearValueByName
-
-		/// <summary>
-		/// Reads formula of a cell, defined by its index.
-		/// </summary>
-		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
-		/// <param name="ssRow">Row Number</param>
-		/// <param name="ssColumn">Column Number</param>
-		/// <param name="ssFormula">The formula</param>
-		public void MssCell_ReadFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFormula) {
-            // Select the worksheet
-            var ws = (ExcelWorksheet)ssWorksheet;
-
-            // Get the cell
-            var cell = ws.Cells[ssRow, ssColumn];
-
-            // Get the value of the cell containing the formula
-            ssFormula = cell.Formula;
-        } // MssCell_ReadFormulaByIndex
-
         /// <summary>
         /// Action is used to add Drop down list.
         /// </summary>
@@ -868,15 +777,12 @@ namespace OutSystems.NssAdvanced_Excel
                 range = ws.Cells[ssRowNumber, ssColumnNumber];
             }
 
-            // Util.LogMessage(JsonConvert.SerializeObject(range));
-
             MemoryStream ms = new MemoryStream(ssImageFile);
 
             using (Bitmap bitmap = new Bitmap(ms))
             {
                 using (ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, bitmap))
                 {
-                    //Util.LogMessage(string.Format("Start Row: {0} Start Column: {1}  Width: {2} Height {3}", range.Start.Row, range.Start.Column, ssImageWidth, ssImageHeight));
                     picture.SetPosition(range.Start.Row, 10, range.Start.Column, 10);
                     picture.SetSize(ssImageWidth, ssImageHeight);
                 }

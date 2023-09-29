@@ -4,35 +4,6 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_ClearValueByIndex(System.Object,System.Int32,System.Int32,System.Int32,System.Boolean)">
-            <summary>
-            Clear value of a cell, defined by its index.
-            Option to specify whether the cell is part of a merged group or not.
-            </summary>
-            <param name="ssWorksheet">Worksheet on which the cell resides</param>
-            <param name="ssRow">Row Number</param>
-            <param name="ssStartColumn">Column Number</param>
-            <param name="ssEndColumn">Column Number, Mandatory if IsMerged is True</param>
-            <param name="ssIsMerged">If True, cells are merged and will be unmerged.</param>
-        </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_ClearValueByName(System.Object,System.String,System.Boolean)">
-            <summary>
-            Clear value clear the value of a specific cell by its name.
-            Option to specify whether the cell is part of a merged group or not.
-            </summary>
-            <param name="ssWorksheet">Worksheet on which the cell resides</param>
-            <param name="ssCellName">Cell name (eg A1:B1, if cells are merged; eg A1, if single cell)</param>
-            <param name="ssIsMerged">If True cells are merged and will be unmerged.</param>
-        </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_ReadFormulaByIndex(System.Object,System.Int32,System.Int32,System.String@)">
-            <summary>
-            Reads formula of a cell, defined by its index.
-            </summary>
-            <param name="ssWorksheet">Worksheet on which the cell resides</param>
-            <param name="ssRow">Row Number</param>
-            <param name="ssColumn">Column Number</param>
-            <param name="ssFormula">The formula</param>
-        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_AddDropdown(System.Object,OutSystems.NssAdvanced_Excel.RLItemsRecordList,System.String,System.String,System.String,System.String,System.Boolean,System.String,System.String)">
             <summary>
             Action is used to add Drop down list.
@@ -875,6 +846,35 @@
             <param name="ssLeftSection">The left section of the footer.</param>
             <param name="ssCenterSection">The center section of the footer.</param>
             <param name="ssRightSection">The right section of the footer.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_ClearValueByIndex(System.Object,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Clear value of a cell, defined by its index.
+            Option to specify whether the cell is part of a merged group or not.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssRow">Row Number</param>
+            <param name="ssStartColumn">Column Number</param>
+            <param name="ssEndColumn">Column Number. Mandatory if IsMerged is True</param>
+            <param name="ssIsMerged">If True cells are merged</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_ClearValueByName(System.Object,System.String,System.Boolean)">
+            <summary>
+            Clear value clear the value of a specific cell by its name.
+            Option to specify whether the cell is part of a merged group or not.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssCellName">Cell-name (eg A1:B1, if cells are merged; eg A1, if single cell)</param>
+            <param name="ssIsMerged">If True cells are merged</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_ReadFormulaByIndex(System.Object,System.Int32,System.Int32,System.String@)">
+            <summary>
+            Reads formula of a cell, defined by its index.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssRow">Row Number</param>
+            <param name="ssColumn">Column Number</param>
+            <param name="ssCellValue">The value in the cell, as text</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Open(System.String,System.Byte[],System.Object@)">
             <summary>
