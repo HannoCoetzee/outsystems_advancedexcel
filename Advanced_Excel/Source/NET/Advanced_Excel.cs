@@ -2217,7 +2217,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRow">Row Number</param>
         /// <param name="ssColumn">Column Number</param>
         /// <param name="ssCellValue">The value in the cell, as text</param>
-        public void MssCell_ReadFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssCellValue) {
+        public void MssCell_ReadFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFormula) {
             // Select the worksheet
             ExcelWorksheet ws;
             ws = (ExcelWorksheet)ssWorksheet;
@@ -2226,7 +2226,7 @@ namespace OutSystems.NssAdvanced_Excel
             ExcelRange cell = ws.Cells[ssRow, ssColumn];
 
             // Get the value of the cell containing the formula
-            ssCellValue = cell.Formula;
+            ssFormula = cell.Formula;
         } // MssCell_ReadFormulaByIndex
 
 
