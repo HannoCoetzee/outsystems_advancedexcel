@@ -47,6 +47,22 @@ namespace ConsoleApp1
             // Write a cell
             excel.MssCell_Write(workSheet, "A4", 0, 0, "8000", "", new RCCellFormatRecord());
 
+            RCConditionalFormatItemRecord r1 = new RCConditionalFormatItemRecord
+            {
+                ssSTConditionalFormatItem = new STConditionalFormatItemStructure
+                {
+                    ssRuleType = 20
+                }
+            };
+            RCAddressRecord addressRecord = new RCAddressRecord
+            {
+                ssSTAddress = new STAddressStructure()
+            };
+            addressRecord.ssSTAddress.ssColumn = 1;
+            addressRecord.ssSTAddress.ssRow = 1;
+            r1.ssSTConditionalFormatItem.ssAddress = addressRecord;
+            excel.MssConditionalFormatting_AddRule(workSheet, r1);
+
             // Header and Footer
             if (exists)
             {

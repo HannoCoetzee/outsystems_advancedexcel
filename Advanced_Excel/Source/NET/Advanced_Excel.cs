@@ -1212,8 +1212,19 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssConditionalFormatting_AddRule(object ssWorksheet, RCConditionalFormatItemRecord ssConditionalFormatRecord)
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
-            ExcelAddress address = new ExcelAddress(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssAddress);
-
+            ExcelAddress address;
+            if (string.IsNullOrEmpty(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssAddress))
+            {
+                address = new ExcelAddress(
+                    ssConditionalFormatRecord.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssRow,
+                    ssConditionalFormatRecord.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssColumn,
+                    ssConditionalFormatRecord.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssRow,
+                    ssConditionalFormatRecord.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssColumn);
+            }
+            else
+            {
+                address = new ExcelAddress(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssAddress);
+            }
             eExcelConditionalFormattingRuleType ruleType = (eExcelConditionalFormattingRuleType)ssConditionalFormatRecord.ssSTConditionalFormatItem.ssRuleType;
 
             switch (ruleType)
