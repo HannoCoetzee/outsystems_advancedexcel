@@ -17,6 +17,15 @@ namespace ConsoleApp1
         {
             CssAdvanced_Excel excel = new CssAdvanced_Excel();
 
+            excel.MssAddress_From_RowCol(3, 3, 3, 6, out string address);
+            Console.WriteLine("3,3,3,6 -> {0}", address);
+            excel.MssAddress_From_RowCol(3, 3, 0, -13, out address);
+            Console.WriteLine("3,3,0,-13 -> {0}", address);
+
+            address = "AB47";
+            excel.MssAddress_From_Text(address, out int rStart, out int cStart, out int rEnd, out int cEnd);
+            Console.WriteLine("{0} -> {1} {2} {3} {4}", address, rStart, cStart, rEnd, cEnd);
+
             var path = "Test.xlsx";
 
             var exists = false;

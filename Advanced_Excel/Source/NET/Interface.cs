@@ -878,6 +878,27 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssFormula">The formula</param>
 		void MssCell_ReadFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFormula);
 
+		/// <summary>
+		/// Input text address and get back the Row/Col values
+		/// </summary>
+		/// <param name="ssAddress">Text address, e.g. AB47 or A11:AB47</param>
+		/// <param name="ssRowStart">Address row or range start row</param>
+		/// <param name="ssColStart">Address col or range start column</param>
+		/// <param name="ssRowEnd">Range end row</param>
+		/// <param name="ssColEnd">Range end column</param>
+		void MssAddress_From_Text(string ssAddress, out int ssRowStart, out int ssColStart, out int ssRowEnd, out int ssColEnd);
+
+		/// <summary>
+		/// Input Row/Col values and get the text address
+		/// </summary>
+		/// <param name="ssRowStart">Start row of the address</param>
+		/// <param name="ssColStart">Start column of the address</param>
+		/// <param name="ssRowEnd">End row of the address or zero</param>
+		/// <param name="ssColEnd">End column of the address or zero</param>
+		/// <param name="ssAddress">Text address, e.g. AB47 or C11:AB47</param>
+		/// <param name="ssParameter1"></param>
+		void MssAddress_From_RowCol(int ssRowStart, int ssColStart, int ssRowEnd, int ssColEnd, out string ssAddress, string ssParameter1);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

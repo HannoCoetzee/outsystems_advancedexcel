@@ -18,6 +18,56 @@ namespace OutSystems.NssAdvanced_Excel
 
     public class CssAdvanced_Excel : IssAdvanced_Excel
     {
+
+        /// <summary>
+        /// Input text address and get back the Row/Col values
+        /// </summary>
+        /// <param name="ssAddress">Text address, e.g. AB47 or A11:AB47</param>
+        /// <param name="ssRowStart">Address row or range start row</param>
+        /// <param name="ssColStart">Address col or range start column</param>
+        /// <param name="ssRowEnd">Range end row</param>
+        /// <param name="ssColEnd">Range end column</param>
+        public void MssAddress_From_Text(string ssAddress, out int ssRowStart, out int ssColStart, out int ssRowEnd, out int ssColEnd)
+        {
+            ssRowStart = 0;
+            ssColStart = 0;
+            ssRowEnd = 0;
+            ssColEnd = 0;
+
+            if (string.IsNullOrEmpty(ssAddress))
+            {
+                throw new Exception("Address cannot be empty");
+            }
+            ExcelAddress address = new ExcelAddress(ssAddress);
+            ssRowStart = address.Start.Row;
+            ssColStart = address.Start.Column;
+            ssRowEnd = address.End.Row;
+            ssColEnd = address.End.Column;
+        } // MssAddress_From_Text
+
+        /// <summary>
+        /// Input Row/Col values and get the text address
+        /// </summary>
+        /// <param name="ssRowStart">Start row of the address</param>
+        /// <param name="ssColStart">Start column of the address</param>
+        /// <param name="ssRowEnd">End row of the address or zero</param>
+        /// <param name="ssColEnd">End column of the address or zero</param>
+        /// <param name="ssAddress">Text address, e.g. AB47 or C11:AB47</param>
+        public void MssAddress_From_RowCol(int ssRowStart, int ssColStart, int ssRowEnd, int ssColEnd, out string ssAddress, string ssParameter1)
+        {
+            ssAddress = "";
+            if (ssRowStart < 1 || ssColStart < 1)
+            {
+                throw new Exception("RowStart and ColStart need to be greater than 0");
+            }
+            if (ssRowEnd <= 0 || ssColEnd <= 0)
+            {
+                ssRowEnd = ssRowStart;
+                ssColEnd = ssColStart;
+            }
+            ssAddress = (new ExcelAddress(ssRowStart , ssColStart, ssRowEnd, ssColEnd)).Address;
+        } // MssAddress_From_RowCol
+
         /// <summary>
         /// Action is used to add Drop down list.
         /// </summary>
@@ -2148,7 +2198,7 @@ namespace OutSystems.NssAdvanced_Excel
             ssRightSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.RightAlignedText : ws.HeaderFooter.OddFooter.RightAlignedText);
         } // MssWorksheet_GetFooter
 
-  	/// <summary>
+        /// <summary>
         /// Clear value of a cell, defined by its index.
         /// Option to specify whether the cell is part of a merged group or not.
         /// </summary>
@@ -2157,7 +2207,8 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssStartColumn">Column Number</param>
         /// <param name="ssEndColumn">Column Number. Mandatory if IsMerged is True</param>
         /// <param name="ssIsMerged">If True cells are merged</param>
-        public void MssCell_ClearValueByIndex(object ssWorksheet, int ssRow, int ssStartColumn, int ssEndColumn, bool ssIsMerged) {
+        public void MssCell_ClearValueByIndex(object ssWorksheet, int ssRow, int ssStartColumn, int ssEndColumn, bool ssIsMerged)
+        {
             // Select the worksheet
             ExcelWorksheet ws;
             ws = (ExcelWorksheet)ssWorksheet;
@@ -2196,7 +2247,8 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet">Worksheet on which the cell resides</param>
         /// <param name="ssCellName">Cell-name (eg A1:B1, if cells are merged; eg A1, if single cell)</param>
         /// <param name="ssIsMerged">If True cells are merged</param>
-        public void MssCell_ClearValueByName(object ssWorksheet, string ssCellName, bool ssIsMerged) {
+        public void MssCell_ClearValueByName(object ssWorksheet, string ssCellName, bool ssIsMerged)
+        {
             // Select the worksheet
             ExcelWorksheet ws;
             ws = (ExcelWorksheet)ssWorksheet;
@@ -2228,7 +2280,8 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRow">Row Number</param>
         /// <param name="ssColumn">Column Number</param>
         /// <param name="ssCellValue">The value in the cell, as text</param>
-        public void MssCell_ReadFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFormula) {
+        public void MssCell_ReadFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFormula)
+        {
             // Select the worksheet
             ExcelWorksheet ws;
             ws = (ExcelWorksheet)ssWorksheet;

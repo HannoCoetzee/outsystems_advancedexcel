@@ -1063,6 +1063,36 @@ namespace OutSystems.NssAdvanced_Excel {
 			// TODO: Write implementation for action
 		} // MssCell_ReadFormulaByIndex
 
+		/// <summary>
+		/// Input text address and get back the Row/Col values
+		/// </summary>
+		/// <param name="ssAddress">Text address, e.g. AB47 or A11:AB47</param>
+		/// <param name="ssRowStart">Address row or range start row</param>
+		/// <param name="ssColStart">Address col or range start column</param>
+		/// <param name="ssRowEnd">Range end row</param>
+		/// <param name="ssColEnd">Range end column</param>
+		public void MssAddress_From_Text(string ssAddress, out int ssRowStart, out int ssColStart, out int ssRowEnd, out int ssColEnd) {
+			ssRowStart = 0;
+			ssColStart = 0;
+			ssRowEnd = 0;
+			ssColEnd = 0;
+			// TODO: Write implementation for action
+		} // MssAddress_From_Text
+
+		/// <summary>
+		/// Input Row/Col values and get the text address
+		/// </summary>
+		/// <param name="ssRowStart">Start row of the address</param>
+		/// <param name="ssColStart">Start column of the address</param>
+		/// <param name="ssRowEnd">End row of the address or zero</param>
+		/// <param name="ssColEnd">End column of the address or zero</param>
+		/// <param name="ssAddress">Text address, e.g. AB47 or C11:AB47</param>
+		/// <param name="ssParameter1"></param>
+		public void MssAddress_From_RowCol(int ssRowStart, int ssColStart, int ssRowEnd, int ssColEnd, out string ssAddress, string ssParameter1) {
+			ssAddress = "";
+			// TODO: Write implementation for action
+		} // MssAddress_From_RowCol
+
 	} // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

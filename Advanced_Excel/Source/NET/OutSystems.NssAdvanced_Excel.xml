@@ -4,6 +4,26 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssAddress_From_Text(System.String,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Input text address and get back the Row/Col values
+            </summary>
+            <param name="ssAddress">Text address, e.g. AB47 or A11:AB47</param>
+            <param name="ssRowStart">Address row or range start row</param>
+            <param name="ssColStart">Address col or range start column</param>
+            <param name="ssRowEnd">Range end row</param>
+            <param name="ssColEnd">Range end column</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssAddress_From_RowCol(System.Int32,System.Int32,System.Int32,System.Int32,System.String@,System.String)">
+            <summary>
+            Input Row/Col values and get the text address
+            </summary>
+            <param name="ssRowStart">Start row of the address</param>
+            <param name="ssColStart">Start column of the address</param>
+            <param name="ssRowEnd">End row of the address or zero</param>
+            <param name="ssColEnd">End column of the address or zero</param>
+            <param name="ssAddress">Text address, e.g. AB47 or C11:AB47</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_AddDropdown(System.Object,OutSystems.NssAdvanced_Excel.RLItemsRecordList,System.String,System.String,System.String,System.String,System.Boolean,System.String,System.String)">
             <summary>
             Action is used to add Drop down list.
@@ -1746,6 +1766,27 @@
             <param name="ssRow">Row Number</param>
             <param name="ssColumn">Column Number</param>
             <param name="ssFormula">The formula</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssAddress_From_Text(System.String,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Input text address and get back the Row/Col values
+            </summary>
+            <param name="ssAddress">Text address, e.g. AB47 or A11:AB47</param>
+            <param name="ssRowStart">Address row or range start row</param>
+            <param name="ssColStart">Address col or range start column</param>
+            <param name="ssRowEnd">Range end row</param>
+            <param name="ssColEnd">Range end column</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssAddress_From_RowCol(System.Int32,System.Int32,System.Int32,System.Int32,System.String@,System.String)">
+            <summary>
+            Input Row/Col values and get the text address
+            </summary>
+            <param name="ssRowStart">Start row of the address</param>
+            <param name="ssColStart">Start column of the address</param>
+            <param name="ssRowEnd">End row of the address or zero</param>
+            <param name="ssColEnd">End column of the address or zero</param>
+            <param name="ssAddress">Text address, e.g. AB47 or C11:AB47</param>
+            <param name="ssParameter1"></param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
