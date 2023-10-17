@@ -833,7 +833,7 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 using (ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, bitmap))
                 {
-                    picture.SetPosition(range.Start.Row, 10, range.Start.Column, 10);
+                    picture.SetPosition(range.Start.Row - 1, ssMarginTop, range.Start.Column - 1, ssMarginLeft);
                     picture.SetSize(ssImageWidth, ssImageHeight);
                 }
             }
