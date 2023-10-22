@@ -53,7 +53,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRowEnd">End row of the address or zero</param>
         /// <param name="ssColEnd">End column of the address or zero</param>
         /// <param name="ssAddress">Text address, e.g. AB47 or C11:AB47</param>
-        public void MssAddress_From_RowCol(int ssRowStart, int ssColStart, int ssRowEnd, int ssColEnd, out string ssAddress, string ssParameter1)
+        public void MssAddress_From_RowCol(int ssRowStart, int ssColStart, int ssRowEnd, int ssColEnd, out string ssAddress)
         {
             ssAddress = "";
             if (ssRowStart < 1 || ssColStart < 1)
@@ -65,7 +65,7 @@ namespace OutSystems.NssAdvanced_Excel
                 ssRowEnd = ssRowStart;
                 ssColEnd = ssColStart;
             }
-            ssAddress = (new ExcelAddress(ssRowStart , ssColStart, ssRowEnd, ssColEnd)).Address;
+            ssAddress = (new ExcelAddress(ssRowStart, ssColStart, ssRowEnd, ssColEnd)).Address;
         } // MssAddress_From_RowCol
 
         /// <summary>
@@ -119,7 +119,6 @@ namespace OutSystems.NssAdvanced_Excel
 
         } // MssWorksheet_AddDropdown
 
-
         /// <summary>
         /// Set the active sheet
         /// </summary>
@@ -139,7 +138,6 @@ namespace OutSystems.NssAdvanced_Excel
 
             }
         } // MssWorksheet_SetActive
-
 
         /// <summary>
         /// Write a converted value to a cell, defined by its index.
@@ -374,7 +372,6 @@ namespace OutSystems.NssAdvanced_Excel
             ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
             ws.Row(ssRowNumber).Height = (double)ssDesiredHeight;
         } // MssRow_SetHeight
-
 
         /// <summary>
         /// Calculates the formula of a cell, defined by its name.
@@ -681,7 +678,6 @@ namespace OutSystems.NssAdvanced_Excel
             MssWorkbook_Open("", ssBinaryData, out ssWorkbook);
         } // MssWorkbook_Open_BinaryData
 
-
         /// <summary>
         /// Creates a new excel workbook, optionally specifying the name of the fiirst sheet.
         /// </summary>
@@ -723,7 +719,6 @@ namespace OutSystems.NssAdvanced_Excel
             }
             ssWorkbook = p;
         } // MssWorkbook_Create
-
 
         /// <summary>
         /// Set protection on the workbook level
@@ -791,8 +786,6 @@ namespace OutSystems.NssAdvanced_Excel
             }
         } // MssWorksheet_Protect
 
-
-
         /// <summary>
         /// Insert an image into a Worksheet
         /// </summary>
@@ -840,7 +833,6 @@ namespace OutSystems.NssAdvanced_Excel
             range.Dispose();
         } // MssImage_Insert
 
-
         /// <summary>
         /// Add the automatic filter option of Excel to the specified range of cells.
         /// </summary>
@@ -873,8 +865,6 @@ namespace OutSystems.NssAdvanced_Excel
             }
         } // MssWorksheet_AddAutoFilter
 
-
-
         /// <summary>
         /// Apply the column autofit action to the specified range of cells specified in the given worksheet
         /// </summary>
@@ -884,9 +874,6 @@ namespace OutSystems.NssAdvanced_Excel
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
             ws.Cells.AutoFitColumns();
         } // MssWorksheet_AutofitColumns
-
-
-
 
         /// <summary>
         /// Delete a specified Conditional Formatting rule on a worksheet
@@ -914,7 +901,6 @@ namespace OutSystems.NssAdvanced_Excel
             ws.ConditionalFormatting.RemoveAll();
         } // MssConditionalFormatting_DeleteAllRules
 
-
         /// <summary>
         /// Add a comment to a cell
         /// </summary>
@@ -925,12 +911,12 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssAuthor">The author of the comment.</param>
         /// <param name="ssAutofit"></param>
         /// <param name="ssIsRichText"></param>
-        public void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor, bool ssAutofit, bool ssIsRichText)
+        public void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor, bool ssAutofit)
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
-            ws.Comments.Add(ws.Cells[ssRowNumber, ssColumnNumber], ssText, ssAuthor);
+            ExcelComment comment = ws.Comments.Add(ws.Cells[ssRowNumber, ssColumnNumber], ssText, ssAuthor);
+            comment.AutoFit = ssAutofit;
         } // MssComment_Add
-
 
         /// <summary>
         /// Delete column(s) from a worksheet
@@ -996,7 +982,6 @@ namespace OutSystems.NssAdvanced_Excel
             ws.InsertColumn(ssInsertAt, ssNumberOfColumns, ssCopyStylesFrom);
         } // MssColumn_Insert
 
-
         /// <summary>
         /// Delete row(s) from a worksheet
         /// </summary>
@@ -1026,7 +1011,6 @@ namespace OutSystems.NssAdvanced_Excel
             ws.DeleteRow(ssStartRowNumber, ssNumberOfRows);
         } // MssRow_Delete
 
-
         /// <summary>
         /// Un-Merge cells in the range provided
         /// </summary>
@@ -1039,7 +1023,6 @@ namespace OutSystems.NssAdvanced_Excel
             ws.Cells[ssRangeToUnmerge.ssSTRange.ssStartRow, ssRangeToUnmerge.ssSTRange.ssStartCol, ssRangeToUnmerge.ssSTRange.ssEndRow, ssRangeToUnmerge.ssSTRange.ssEndCol].Merge = false;
         } // MssCell_UnMerge
 
-
         /// <summary>
         /// Merge cells in the range provided
         /// </summary>
@@ -1051,7 +1034,6 @@ namespace OutSystems.NssAdvanced_Excel
 
             ws.Cells[ssRangeToMerge.ssSTRange.ssStartRow, ssRangeToMerge.ssSTRange.ssStartCol, ssRangeToMerge.ssSTRange.ssEndRow, ssRangeToMerge.ssSTRange.ssEndCol].Merge = true;
         } // MssCell_Merge
-
 
         /// <summary>
         /// Find all cells that contain the specified value in the given worksheet
@@ -1520,7 +1502,6 @@ namespace OutSystems.NssAdvanced_Excel
             ws.Hidden = (eWorkSheetHidden)ssHidden;
         } // MssWorksheet_Hide_Show
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -1922,7 +1903,6 @@ namespace OutSystems.NssAdvanced_Excel
             p = null;
         } // MssWorkbook_Close
 
-
         /// <summary>
         /// Rename a worksheet
         /// </summary>
@@ -2070,7 +2050,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
 
-            var chart = ws.Drawings.AddChart(ssChartName, Util.stringToChartType(ssChartType));
+            var chart = ws.Drawings.AddChart(ssChartName, Util.StringToChartType(ssChartType));
             chart.SetPosition(ssRowPos, 0, ssColPos, 0);
             chart.SetSize(ssWidth, ssHeight);
 
@@ -2095,7 +2075,6 @@ namespace OutSystems.NssAdvanced_Excel
                 ssDataSeries_List.Advance();
             }
         } // MssChart_Create
-
 
         /// <summary>
         /// Calculates the formula of a cell, defined by its index.
@@ -2279,7 +2258,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet">Worksheet on which the cell resides</param>
         /// <param name="ssRow">Row Number</param>
         /// <param name="ssColumn">Column Number</param>
-        /// <param name="ssCellValue">The value in the cell, as text</param>
+        /// <param name="ssFormula">The value in the cell, as text</param>
         public void MssCell_ReadFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFormula)
         {
             // Select the worksheet
@@ -2292,7 +2271,6 @@ namespace OutSystems.NssAdvanced_Excel
             // Get the value of the cell containing the formula
             ssFormula = cell.Formula;
         } // MssCell_ReadFormulaByIndex
-
 
     } // CssAdvanced_Excel
 

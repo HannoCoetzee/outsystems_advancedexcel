@@ -141,7 +141,6 @@ namespace OutSystems.NssAdvanced_Excel
                 return;
             }
 
-
             if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssFontName))
             {
                 range.Style.Font.Name = format.ssSTCellFormat.ssFontName;
@@ -165,10 +164,7 @@ namespace OutSystems.NssAdvanced_Excel
                 range.Style.Font.Color.SetColor(color);
             }
 
-            if (format.ssSTCellFormat.ssBold)
-            {
-                range.Style.Font.Bold = true;
-            }
+            range.Style.Font.Bold = format.ssSTCellFormat.ssBold;
 
             /*
              * Deprecated, must use specific styles for BorderBottom,BorderTop,BorderLeft,BorderRight
@@ -183,7 +179,6 @@ namespace OutSystems.NssAdvanced_Excel
                 ExcelBorderStyle borderStyle = (ExcelBorderStyle)format.ssSTCellFormat.ssBorderStyle;
                 range.Style.Border.BorderAround(borderStyle, borderColor);
             }
-
 
             /*
              * Border styling. BorderBottom,BorderTop,BorderLeft,BorderRight
@@ -228,7 +223,6 @@ namespace OutSystems.NssAdvanced_Excel
                 range.Style.Border.Right.Color.SetColor(borderColor);
             }
 
-
             if (format.ssSTCellFormat.ssAutofitColumn)
             {
                 range.AutoFitColumns();
@@ -249,45 +243,14 @@ namespace OutSystems.NssAdvanced_Excel
                 range.Style.VerticalAlignment = (ExcelVerticalAlignment)format.ssSTCellFormat.ssVerticalAlignment;
             }
 
-            if (format.ssSTCellFormat.ssWrapText)
-            {
-                range.Style.WrapText = format.ssSTCellFormat.ssWrapText;
-            }
-
-            if (format.ssSTCellFormat.ssTextRotation > 0)
-            {
-                range.Style.TextRotation = format.ssSTCellFormat.ssTextRotation;
-            }
-
-            if (format.ssSTCellFormat.ssShrinkToFit)
-            {
-                range.Style.ShrinkToFit = format.ssSTCellFormat.ssShrinkToFit;
-            }
-
-            if (format.ssSTCellFormat.ssReadingOrder > 0)
-            {
-                range.Style.ReadingOrder = (ExcelReadingOrder)format.ssSTCellFormat.ssReadingOrder;
-            }
-
-            if (format.ssSTCellFormat.ssQuotePrefix)
-            {
-                range.Style.QuotePrefix = format.ssSTCellFormat.ssQuotePrefix;
-            }
-
-            if (format.ssSTCellFormat.ssLocked)
-            {
-                range.Style.Locked = format.ssSTCellFormat.ssLocked;
-            }
-
-            if (format.ssSTCellFormat.ssIndent > 0)
-            {
-                range.Style.Indent = format.ssSTCellFormat.ssIndent;
-            }
-
-            if (format.ssSTCellFormat.ssHidden)
-            {
-                range.Style.Hidden = format.ssSTCellFormat.ssHidden;
-            }
+            range.Style.WrapText = format.ssSTCellFormat.ssWrapText;
+            range.Style.TextRotation = format.ssSTCellFormat.ssTextRotation;
+            range.Style.ShrinkToFit = format.ssSTCellFormat.ssShrinkToFit;
+            range.Style.ReadingOrder = (ExcelReadingOrder)format.ssSTCellFormat.ssReadingOrder;
+            range.Style.QuotePrefix = format.ssSTCellFormat.ssQuotePrefix;
+            range.Style.Locked = format.ssSTCellFormat.ssLocked;
+            range.Style.Indent = format.ssSTCellFormat.ssIndent;
+            range.Style.Hidden = format.ssSTCellFormat.ssHidden;
         }
 
         /// <summary>
@@ -343,7 +306,6 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             style.Fill.PatternType = patternType;
-
             style.Font.Bold = ssStyle.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssBold;
             style.Font.Italic = ssStyle.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssItalic;
 
@@ -423,13 +385,12 @@ namespace OutSystems.NssAdvanced_Excel
             GenericExtendedActions.LogMessage(AppInfo.GetAppInfo().OsContext, message.ToString(), "AdvXL");
         }
 
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="chartType"></param>
         /// <returns></returns>
-        internal static eChartType stringToChartType(string chartType)
+        internal static eChartType StringToChartType(string chartType)
         {
             switch (chartType)
             {
@@ -509,7 +470,6 @@ namespace OutSystems.NssAdvanced_Excel
             }
             return eChartType.Column3D;
         }
-
 
     }
 }

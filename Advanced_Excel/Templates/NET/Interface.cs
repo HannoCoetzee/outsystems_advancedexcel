@@ -374,8 +374,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssText">The comment.</param>
 		/// <param name="ssAuthor">The author of the comment.</param>
 		/// <param name="ssAutofit">True to autofit the comment window to the comment text</param>
-		/// <param name="ssIsRichText">Is the comment rich text</param>
-		void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor, bool ssAutofit, bool ssIsRichText);
+		void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor, bool ssAutofit);
 
 		/// <summary>
 		/// Inserts a new column into the spreadsheet.  Existing columns to the right of the insert index will be shifted right.  All formula are updated to take account of the new column.
@@ -896,8 +895,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssRowEnd">End row of the address or zero</param>
 		/// <param name="ssColEnd">End column of the address or zero</param>
 		/// <param name="ssAddress">Text address, e.g. AB47 or C11:AB47</param>
-		/// <param name="ssParameter1"></param>
-		void MssAddress_From_RowCol(int ssRowStart, int ssColStart, int ssRowEnd, int ssColEnd, out string ssAddress, string ssParameter1);
+		void MssAddress_From_RowCol(int ssRowStart, int ssColStart, int ssRowEnd, int ssColEnd, out string ssAddress);
 
 	} // IssAdvanced_Excel
 

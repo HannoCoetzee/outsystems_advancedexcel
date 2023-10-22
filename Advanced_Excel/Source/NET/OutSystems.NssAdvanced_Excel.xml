@@ -14,7 +14,7 @@
             <param name="ssRowEnd">Range end row</param>
             <param name="ssColEnd">Range end column</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssAddress_From_RowCol(System.Int32,System.Int32,System.Int32,System.Int32,System.String@,System.String)">
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssAddress_From_RowCol(System.Int32,System.Int32,System.Int32,System.Int32,System.String@)">
             <summary>
             Input Row/Col values and get the text address
             </summary>
@@ -446,7 +446,7 @@
             </summary>
             <param name="ssWorksheet">The worksheet to work with.</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssComment_Add(System.Object,System.Int32,System.Int32,System.String,System.String,System.Boolean,System.Boolean)">
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssComment_Add(System.Object,System.Int32,System.Int32,System.String,System.String,System.Boolean)">
             <summary>
             Add a comment to a cell
             </summary>
@@ -894,7 +894,7 @@
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
             <param name="ssRow">Row Number</param>
             <param name="ssColumn">Column Number</param>
-            <param name="ssCellValue">The value in the cell, as text</param>
+            <param name="ssFormula">The value in the cell, as text</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_Open(System.String,System.Byte[],System.Object@)">
             <summary>
@@ -1254,7 +1254,7 @@
             <param name="ssWorksheet">The worksheet to work with.</param>
             <param name="ssRange">Range to delete comments from.</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssComment_Add(System.Object,System.Int32,System.Int32,System.String,System.String,System.Boolean,System.Boolean)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssComment_Add(System.Object,System.Int32,System.Int32,System.String,System.String,System.Boolean)">
             <summary>
             Add a comment to a cell
             </summary>
@@ -1264,7 +1264,6 @@
             <param name="ssText">The comment.</param>
             <param name="ssAuthor">The author of the comment.</param>
             <param name="ssAutofit">True to autofit the comment window to the comment text</param>
-            <param name="ssIsRichText">Is the comment rich text</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssColumn_Insert(System.Object,System.Int32,System.Int32,System.Int32)">
             <summary>
@@ -1777,7 +1776,7 @@
             <param name="ssRowEnd">Range end row</param>
             <param name="ssColEnd">Range end column</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssAddress_From_RowCol(System.Int32,System.Int32,System.Int32,System.Int32,System.String@,System.String)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssAddress_From_RowCol(System.Int32,System.Int32,System.Int32,System.Int32,System.String@)">
             <summary>
             Input Row/Col values and get the text address
             </summary>
@@ -1786,7 +1785,6 @@
             <param name="ssRowEnd">End row of the address or zero</param>
             <param name="ssColEnd">End column of the address or zero</param>
             <param name="ssAddress">Text address, e.g. AB47 or C11:AB47</param>
-            <param name="ssParameter1"></param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
@@ -3372,7 +3370,7 @@
             </summary>
             <param name="message">What to log</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.Util.stringToChartType(System.String)">
+        <member name="M:OutSystems.NssAdvanced_Excel.Util.StringToChartType(System.String)">
             <summary>
             
             </summary>

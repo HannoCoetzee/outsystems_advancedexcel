@@ -454,8 +454,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssText">The comment.</param>
 		/// <param name="ssAuthor">The author of the comment.</param>
 		/// <param name="ssAutofit">True to autofit the comment window to the comment text</param>
-		/// <param name="ssIsRichText">Is the comment rich text</param>
-		public void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor, bool ssAutofit, bool ssIsRichText) {
+		public void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor, bool ssAutofit) {
 			// TODO: Write implementation for action
 		} // MssComment_Add
 
@@ -1087,8 +1086,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssRowEnd">End row of the address or zero</param>
 		/// <param name="ssColEnd">End column of the address or zero</param>
 		/// <param name="ssAddress">Text address, e.g. AB47 or C11:AB47</param>
-		/// <param name="ssParameter1"></param>
-		public void MssAddress_From_RowCol(int ssRowStart, int ssColStart, int ssRowEnd, int ssColEnd, out string ssAddress, string ssParameter1) {
+		public void MssAddress_From_RowCol(int ssRowStart, int ssColStart, int ssRowEnd, int ssColEnd, out string ssAddress) {
 			ssAddress = "";
 			// TODO: Write implementation for action
 		} // MssAddress_From_RowCol
