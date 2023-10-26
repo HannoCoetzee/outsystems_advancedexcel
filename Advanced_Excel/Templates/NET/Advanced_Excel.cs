@@ -118,7 +118,8 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssCellColumn">Column number of the cell to write to. Required if CellName not set.</param>
 		/// <param name="ssCellValue">The value to write to the cell</param>
 		/// <param name="ssCellType">Type can be:
-		/// text (default),
+		/// general (default if empty)
+		/// text,
 		/// datetime,
 		/// integer,
 		/// decimal,
@@ -812,7 +813,14 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssRow">Row Number</param>
 		/// <param name="ssColumn">Column Number</param>
 		/// <param name="ssCellValue">Text Value</param>
-		/// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+		/// <param name="ssCellType">Type can be:
+		/// general (default if empty)
+		/// text,
+		/// datetime,
+		/// integer,
+		/// decimal,
+		/// boolean,
+		/// formula</param>
 		public void MssCell_WriteByIndex(object ssWorksheet, int ssRow, int ssColumn, string ssCellValue, string ssCellType) {
 			// TODO: Write implementation for action
 		} // MssCell_WriteByIndex
@@ -825,7 +833,14 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssRow">Row Number</param>
 		/// <param name="ssColumn">Column Number</param>
 		/// <param name="ssCellValue">Text Value</param>
-		/// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+		/// <param name="ssCellType">Type can be:
+		/// general (default if empty)
+		/// text,
+		/// datetime,
+		/// integer,
+		/// decimal,
+		/// boolean,
+		/// formula</param>
 		/// <param name="ssCellFormat">CellFormat for the target cell</param>
 		public void MssCell_WriteByIndexWithFormat(object ssWorksheet, int ssRow, int ssColumn, string ssCellValue, string ssCellType, RCCellFormatRecord ssCellFormat) {
 			// TODO: Write implementation for action
@@ -837,7 +852,14 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssWorksheet">Worksheet in which the cell resides</param>
 		/// <param name="ssCellName">Cell-name (eg A4)</param>
 		/// <param name="ssCellValue">Value to write</param>
-		/// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+		/// <param name="ssCellType">Type can be:
+		/// general (default if empty)
+		/// text,
+		/// datetime,
+		/// integer,
+		/// decimal,
+		/// boolean,
+		/// formula</param>
 		public void MssCell_WriteByName(object ssWorksheet, string ssCellName, string ssCellValue, string ssCellType) {
 			// TODO: Write implementation for action
 		} // MssCell_WriteByName

@@ -147,7 +147,14 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRow">Row Number</param>
         /// <param name="ssColumn">Column Number</param>
         /// <param name="ssCellValue">Text Value</param>
-        /// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+        /// <param name="ssCellType">Type can be:
+        /// general (default if empty)
+        /// text,
+        /// datetime,
+        /// integer,
+        /// decimal,
+        /// boolean,
+        /// formula</param>
         public void MssCell_WriteByIndex(object ssWorksheet, int ssRow, int ssColumn, string ssCellValue, string ssCellType)
         {
             RCCellFormatRecord format = new RCCellFormatRecord();
@@ -163,23 +170,18 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRow">Row Number</param>
         /// <param name="ssColumn">Column Number</param>
         /// <param name="ssCellValue">Text Value</param>
-        /// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+        /// <param name="ssCellType">Type can be:
+        /// general (default if empty)
+        /// text,
+        /// datetime,
+        /// integer,
+        /// decimal,
+        /// boolean,
+        /// formula</param>
         /// <param name="ssCellFormat">CellFormat for the target cell</param>
         public void MssCell_WriteByIndexWithFormat(object ssWorksheet, int ssRow, int ssColumn, string ssCellValue, string ssCellType, RCCellFormatRecord ssCellFormat)
         {
-            ExcelWorksheet ws;
-            ws = (ExcelWorksheet)ssWorksheet;
-            //ws.SetValue(ssRow, ssColumn, ssCellValue);
-
-            switch (ssCellType.ToLower())
-            {
-                case "integer": ws.SetValue(ssRow, ssColumn, Convert.ToInt32(ssCellValue)); break;
-                case "datetime": ws.SetValue(ssRow, ssColumn, Convert.ToDateTime(ssCellValue)); break;
-                case "decimal": ws.SetValue(ssRow, ssColumn, Convert.ToDecimal(ssCellValue)); break;
-                case "boolean": ws.SetValue(ssRow, ssColumn, Convert.ToBoolean(ssCellValue)); break;
-                default: ws.SetValue(ssRow, ssColumn, ssCellValue); break;
-            }
-            Util.ApplyFormatToRange(ws.Cells[ssRow, ssColumn], ssCellFormat);
+            MssCell_Write(ssWorksheet, null, ssRow, ssColumn, ssCellValue, ssCellType, ssCellFormat);
         } // MssCell_WriteByIndexWithFormat
 
         /// <summary>
@@ -189,7 +191,14 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet">Worksheet in which the cell resides</param>
         /// <param name="ssCellName">Cell-name (eg A4)</param>
         /// <param name="ssCellValue">Value to write</param>
-        /// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+        /// <param name="ssCellType">Type can be:
+        /// general (default if empty)
+        /// text,
+        /// datetime,
+        /// integer,
+        /// decimal,
+        /// boolean,
+        /// formula</param>
         public void MssCell_WriteByName(object ssWorksheet, string ssCellName, string ssCellValue, string ssCellType)
         {
             RCCellFormatRecord format = new RCCellFormatRecord();
@@ -204,23 +213,18 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet">Worksheet in which the cell resides</param>
         /// <param name="ssCellName">Cell-name (eg A4)</param>
         /// <param name="ssCellValue">Value to write</param>
-        /// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+        /// <param name="ssCellType">Type can be:
+        /// general (default if empty)
+        /// text,
+        /// datetime,
+        /// integer,
+        /// decimal,
+        /// boolean,
+        /// formula</param>
         /// <param name="ssCellFormat">CellFormat for the target cell</param>
         public void MssCell_WriteByNameWithFormat(object ssWorksheet, string ssCellName, string ssCellValue, string ssCellType, RCCellFormatRecord ssCellFormat)
         {
-            ExcelWorksheet ws;
-            ws = (ExcelWorksheet)ssWorksheet;
-
-            switch (ssCellType.ToLower())
-            {
-                case "integer": ws.SetValue(ssCellName, Convert.ToInt32(ssCellValue)); break;
-                case "datetime": ws.SetValue(ssCellName, Convert.ToDateTime(ssCellValue)); break;
-                case "decimal": ws.SetValue(ssCellName, Convert.ToDecimal(ssCellValue)); break;
-                case "boolean": ws.SetValue(ssCellName, Convert.ToBoolean(ssCellValue)); break;
-                default: ws.SetValue(ssCellName, ssCellValue); break;
-            }
-
-            Util.ApplyFormatToRange(ws.Cells[ssCellName], ssCellFormat);
+            MssCell_Write(ssWorksheet, ssCellName, 0, 0, ssCellValue, ssCellType, ssCellFormat);
         } // MssCell_WriteByNameWithFormat
 
         /// <summary>
@@ -230,7 +234,14 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRow"></param>
         /// <param name="ssColumnStart"></param>
         /// <param name="ssValueList"></param>
-        /// <param name="ssCellType"></param>
+        /// <param name="ssCellType">Type can be:
+        /// general (default if empty)
+        /// text,
+        /// datetime,
+        /// integer,
+        /// decimal,
+        /// boolean,
+        /// formula</param>
         public void MssCell_WriteColumnRange(object ssWorksheet, int ssRow, int ssColumnStart, RLValueRecordList ssValueList, string ssCellType)
         {
             RCCellFormatRecord format = new RCCellFormatRecord();
@@ -245,7 +256,14 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRow">rownumber</param>
         /// <param name="ssColumnStart">Start column (integer)</param>
         /// <param name="ssValueList">Values to write to columns</param>
-        /// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+        /// <param name="ssCellType">Type can be:
+        /// general (default if empty)
+        /// text,
+        /// datetime,
+        /// integer,
+        /// decimal,
+        /// boolean,
+        /// formula</param>
         /// <param name="ssCellFormat">CellFormat for the target cells</param>
         public void MssCell_WriteColumnRangeWithFormat(object ssWorksheet, int ssRow, int ssColumnStart, RLValueRecordList ssValueList, string ssCellType, RCCellFormatRecord ssCellFormat)
         {
@@ -1635,7 +1653,14 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCellRow">Row number of the cell to write to</param>
         /// <param name="ssCellColumn">Column number of the cell to write to</param>
         /// <param name="ssCellValue">The value to write to the cell</param>
-        /// <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+        /// <param name="ssCellType">Type can be:
+        /// general (default if empty)
+        /// text,
+        /// datetime,
+        /// integer,
+        /// decimal,
+        /// boolean,
+        /// formula</param>
         /// <param name="ssCellFormat">CellFormat for the target cell</param>
         public void MssCell_Write(object ssWorksheet, string ssCellName, int ssCellRow, int ssCellColumn, string ssCellValue, string ssCellType, RCCellFormatRecord ssCellFormat)
         {
@@ -1645,36 +1670,38 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelAddress address = null;
 
             if (!string.IsNullOrEmpty(ssCellName))
             {
-                switch (ssCellType.ToLower())
-                {
-                    case "integer": ws.SetValue(ssCellName, Convert.ToInt32(ssCellValue)); break;
-                    case "datetime": ws.SetValue(ssCellName, Convert.ToDateTime(ssCellValue)); break;
-                    case "decimal": ws.SetValue(ssCellName, Convert.ToDecimal(ssCellValue)); break;
-                    case "boolean": ws.SetValue(ssCellName, Convert.ToBoolean(ssCellValue)); break;
-                    case "formula": ws.Cells[ssCellName].Formula = ssCellValue.StartsWith("=") ? ssCellValue.TrimStart('=') : ssCellValue; break;
-                    default: ws.SetValue(ssCellName, ssCellValue); break;
-                }
-
-                Util.ApplyFormatToRange(ws.Cells[ssCellName], ssCellFormat);
-                return;
+                address = new ExcelAddress(ssCellName);
             }
             if (ssCellColumn >= 1 && ssCellRow >= 1)
             {
-                switch (ssCellType.ToLower())
-                {
-                    case "integer": ws.SetValue(ssCellRow, ssCellColumn, Convert.ToInt32(ssCellValue)); break;
-                    case "datetime": ws.SetValue(ssCellRow, ssCellColumn, Convert.ToDateTime(ssCellValue)); break;
-                    case "decimal": ws.SetValue(ssCellRow, ssCellColumn, Convert.ToDecimal(ssCellValue)); break;
-                    case "boolean": ws.SetValue(ssCellRow, ssCellColumn, Convert.ToBoolean(ssCellValue)); break;
-                    case "formula": ws.Cells[ssCellRow, ssCellColumn].Formula = ssCellValue.StartsWith("=") ? ssCellValue.TrimStart('=') : ssCellValue; break;
-                    default: ws.SetValue(ssCellRow, ssCellColumn, ssCellValue); break;
-                }
-
-                Util.ApplyFormatToRange(ws.Cells[ssCellRow, ssCellColumn], ssCellFormat);
+                address = new ExcelAddress(ssCellRow, ssCellColumn, ssCellRow, ssCellColumn);
             }
+
+            if (address == null)
+            {
+                throw new Exception("Invalid address");
+            }
+
+            switch (ssCellType.ToLower())
+            {
+                case "integer": ws.SetValue(address.Address, Convert.ToInt32(ssCellValue)); break;
+                case "datetime": ws.SetValue(address.Address, Convert.ToDateTime(ssCellValue)); break;
+                case "decimal": ws.SetValue(address.Address, Convert.ToDecimal(ssCellValue)); break;
+                case "boolean": ws.SetValue(address.Address, Convert.ToBoolean(ssCellValue)); break;
+                case "formula": ws.Cells[address.Address].Formula = ssCellValue.TrimStart('='); break;
+                case "text":
+                    ssCellFormat.ssSTCellFormat.ssNumberFormat = "@"; /// Formats the cell as text. Ref: https://stackoverflow.com/a/30095442
+                    ws.SetValue(address.Address, ssCellValue);
+                    break;
+                default: ws.SetValue(address.Address, ssCellValue); break;
+            }
+
+            Util.ApplyFormatToRange(ws.Cells[address.Address], ssCellFormat);
+
         } // MssCell_Write
 
         /// <summary>

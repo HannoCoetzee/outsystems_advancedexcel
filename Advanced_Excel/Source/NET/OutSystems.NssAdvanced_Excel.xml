@@ -55,7 +55,14 @@
             <param name="ssRow">Row Number</param>
             <param name="ssColumn">Column Number</param>
             <param name="ssCellValue">Text Value</param>
-            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellType">Type can be:
+            general (default if empty)
+            text,
+            datetime,
+            integer,
+            decimal,
+            boolean,
+            formula</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteByIndexWithFormat(System.Object,System.Int32,System.Int32,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
             <summary>
@@ -67,7 +74,14 @@
             <param name="ssRow">Row Number</param>
             <param name="ssColumn">Column Number</param>
             <param name="ssCellValue">Text Value</param>
-            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellType">Type can be:
+            general (default if empty)
+            text,
+            datetime,
+            integer,
+            decimal,
+            boolean,
+            formula</param>
             <param name="ssCellFormat">CellFormat for the target cell</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteByName(System.Object,System.String,System.String,System.String)">
@@ -78,7 +92,14 @@
             <param name="ssWorksheet">Worksheet in which the cell resides</param>
             <param name="ssCellName">Cell-name (eg A4)</param>
             <param name="ssCellValue">Value to write</param>
-            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellType">Type can be:
+            general (default if empty)
+            text,
+            datetime,
+            integer,
+            decimal,
+            boolean,
+            formula</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteByNameWithFormat(System.Object,System.String,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
             <summary>
@@ -89,7 +110,14 @@
             <param name="ssWorksheet">Worksheet in which the cell resides</param>
             <param name="ssCellName">Cell-name (eg A4)</param>
             <param name="ssCellValue">Value to write</param>
-            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellType">Type can be:
+            general (default if empty)
+            text,
+            datetime,
+            integer,
+            decimal,
+            boolean,
+            formula</param>
             <param name="ssCellFormat">CellFormat for the target cell</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteColumnRange(System.Object,System.Int32,System.Int32,OutSystems.NssAdvanced_Excel.RLValueRecordList,System.String)">
@@ -100,7 +128,14 @@
             <param name="ssRow"></param>
             <param name="ssColumnStart"></param>
             <param name="ssValueList"></param>
-            <param name="ssCellType"></param>
+            <param name="ssCellType">Type can be:
+            general (default if empty)
+            text,
+            datetime,
+            integer,
+            decimal,
+            boolean,
+            formula</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteColumnRangeWithFormat(System.Object,System.Int32,System.Int32,OutSystems.NssAdvanced_Excel.RLValueRecordList,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
             <summary>
@@ -111,7 +146,14 @@
             <param name="ssRow">rownumber</param>
             <param name="ssColumnStart">Start column (integer)</param>
             <param name="ssValueList">Values to write to columns</param>
-            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellType">Type can be:
+            general (default if empty)
+            text,
+            datetime,
+            integer,
+            decimal,
+            boolean,
+            formula</param>
             <param name="ssCellFormat">CellFormat for the target cells</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_WriteImageByIndex(System.Object,System.Int32,System.Int32,System.String,System.Byte[])">
@@ -615,7 +657,14 @@
             <param name="ssCellRow">Row number of the cell to write to</param>
             <param name="ssCellColumn">Column number of the cell to write to</param>
             <param name="ssCellValue">The value to write to the cell</param>
-            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellType">Type can be:
+            general (default if empty)
+            text,
+            datetime,
+            integer,
+            decimal,
+            boolean,
+            formula</param>
             <param name="ssCellFormat">CellFormat for the target cell</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_ChangeSheetIndex(System.Object,System.Int32,System.Int32)">
@@ -984,7 +1033,8 @@
             <param name="ssCellColumn">Column number of the cell to write to. Required if CellName not set.</param>
             <param name="ssCellValue">The value to write to the cell</param>
             <param name="ssCellType">Type can be:
-            text (default),
+            general (default if empty)
+            text,
             datetime,
             integer,
             decimal,
@@ -1563,7 +1613,14 @@
             <param name="ssRow">Row Number</param>
             <param name="ssColumn">Column Number</param>
             <param name="ssCellValue">Text Value</param>
-            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellType">Type can be:
+            general (default if empty)
+            text,
+            datetime,
+            integer,
+            decimal,
+            boolean,
+            formula</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteByIndexWithFormat(System.Object,System.Int32,System.Int32,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
             <summary>
@@ -1574,7 +1631,14 @@
             <param name="ssRow">Row Number</param>
             <param name="ssColumn">Column Number</param>
             <param name="ssCellValue">Text Value</param>
-            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellType">Type can be:
+            general (default if empty)
+            text,
+            datetime,
+            integer,
+            decimal,
+            boolean,
+            formula</param>
             <param name="ssCellFormat">CellFormat for the target cell</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteByName(System.Object,System.String,System.String,System.String)">
@@ -1584,7 +1648,14 @@
             <param name="ssWorksheet">Worksheet in which the cell resides</param>
             <param name="ssCellName">Cell-name (eg A4)</param>
             <param name="ssCellValue">Value to write</param>
-            <param name="ssCellType">Type can by text (default), datetime, integer, decimal, boolean</param>
+            <param name="ssCellType">Type can be:
+            general (default if empty)
+            text,
+            datetime,
+            integer,
+            decimal,
+            boolean,
+            formula</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteByNameWithFormat(System.Object,System.String,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
             <summary>
