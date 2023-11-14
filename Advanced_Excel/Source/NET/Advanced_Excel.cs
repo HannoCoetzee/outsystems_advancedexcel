@@ -50,16 +50,16 @@ namespace OutSystems.NssAdvanced_Excel
             var wb = ssWorkbook as ExcelWorkbook;
             var props = wb.Properties;
             var inProps = ssProperties.ssSTOfficeProperties;
-            if (!string.IsNullOrEmpty(inProps.ssAuthor)) { props.Author = inProps.ssAuthor; }
-            if (!string.IsNullOrEmpty(inProps.ssCategory)) { props.Category = inProps.ssCategory; }
-            if (!string.IsNullOrEmpty(inProps.ssComments)) { props.Comments = inProps.ssComments; }
-            if (!string.IsNullOrEmpty(inProps.ssCompany)) { props.Company = inProps.ssCompany; }
-            if (!string.IsNullOrEmpty(inProps.ssKeywords)) { props.Keywords = inProps.ssKeywords; }
-            if (!string.IsNullOrEmpty(inProps.ssLastModifiedBy)) { props.LastModifiedBy = inProps.ssLastModifiedBy; }
-            if (!string.IsNullOrEmpty(inProps.ssManager)) { props.Manager = inProps.ssManager; }
-            if (!string.IsNullOrEmpty(inProps.ssStatus)) { props.Status = inProps.ssStatus; }
-            if (!string.IsNullOrEmpty(inProps.ssSubject)) { props.Subject = inProps.ssSubject; }
-            if (!string.IsNullOrEmpty(inProps.ssTitle)) { props.Title = inProps.ssTitle; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssAuthor))) { props.Author = inProps.ssAuthor; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssCategory))) { props.Category = inProps.ssCategory; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssComments))) { props.Comments = inProps.ssComments; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssCompany))) { props.Company = inProps.ssCompany; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssKeywords))) { props.Keywords = inProps.ssKeywords; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssLastModifiedBy))) { props.LastModifiedBy = inProps.ssLastModifiedBy; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssManager))) { props.Manager = inProps.ssManager; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssStatus))) { props.Status = inProps.ssStatus; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssSubject))) { props.Subject = inProps.ssSubject; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssTitle))) { props.Title = inProps.ssTitle; }
 		} // MssExcel_SetProperties
 
         /// <summary>
