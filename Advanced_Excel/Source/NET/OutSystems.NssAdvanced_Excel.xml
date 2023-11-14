@@ -4,6 +4,37 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssExcel_GetProperties(System.Object,OutSystems.NssAdvanced_Excel.RCOfficePropertiesRecord@)">
+            <summary>
+            Get the Microsoft Office properties of the Excel document.
+            </summary>
+            <param name="ssWorkbook">The workbook</param>
+            <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssExcel_SetProperties(System.Object,OutSystems.NssAdvanced_Excel.RCOfficePropertiesRecord,System.Boolean)">
+            <summary>
+            Set the Microsoft Office properties of the Excel document.
+            </summary>
+            <param name="ssWorkbook">The workbook</param>
+            <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
+            <param name="ssIgnoreBlank">If True, any blank properties in the Properties structure provided will be left with their existing values. If False, any blank properties in the Properties structure provided will be set to blank.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssExcel_ClearProperties(System.Object,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Clear all Microsoft Office properties of the Excel document. To only clear some properties, set the associated &quot;Clear&quot; attribute to True for the properties to clear, and the remaining ones false. The default behaviour is to clear all properties.
+            </summary>
+            <param name="ssWorkbook">The workbook.</param>
+            <param name="ssClearTitle">If True, clears the Title property.</param>
+            <param name="ssClearSubject">If True, clears the Subject property.</param>
+            <param name="ssClearAuthor">If True, clears the Author property.</param>
+            <param name="ssClearComments">If True, clears the Comments property.</param>
+            <param name="ssClearKeywords">If True, clears the Keywords property.</param>
+            <param name="ssClearLastModifiedBy">If True, clears the LastModifiedBy  property.</param>
+            <param name="ssClearCategory">If True, clears the Category property.</param>
+            <param name="ssClearStatus">If True, clears the Status property.</param>
+            <param name="ssClearCompany">If True, clears the Company property.</param>
+            <param name="ssClearManager">If True, clears the Manager property.</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssAddress_From_Text(System.String,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
             <summary>
             Input text address and get back the Row/Col values
@@ -1857,6 +1888,37 @@
             <param name="ssColEnd">End column of the address or zero</param>
             <param name="ssAddress">Text address, e.g. AB47 or C11:AB47</param>
         </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssExcel_GetProperties(System.Object,OutSystems.NssAdvanced_Excel.RCOfficePropertiesRecord@)">
+            <summary>
+            Get the Microsoft Office properties of the Excel document.
+            </summary>
+            <param name="ssWorkbook">The workbook</param>
+            <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssExcel_SetProperties(System.Object,OutSystems.NssAdvanced_Excel.RCOfficePropertiesRecord,System.Boolean)">
+            <summary>
+            Set the Microsoft Office properties of the Excel document.
+            </summary>
+            <param name="ssWorkbook">The workbook</param>
+            <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
+            <param name="ssIgnoreBlank">If True, any blank properties in the Properties structure provided will be left with their existing values. If False, any blank properties in the Properties structure provided will be set to blank.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssExcel_ClearProperties(System.Object,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Clear all Microsoft Office properties of the Excel document. To only clear some properties, set the associated &quot;Clear&quot; attribute to True for the properties to clear, and the remaining ones false. The default behaviour is to clear all properties.
+            </summary>
+            <param name="ssWorkbook">The workbook.</param>
+            <param name="ssClearTitle">If True, clears the Title property.</param>
+            <param name="ssClearSubject">If True, clears the Subject property.</param>
+            <param name="ssClearAuthor">If True, clears the Author property.</param>
+            <param name="ssClearComments">If True, clears the Comments property.</param>
+            <param name="ssClearKeywords">If True, clears the Keywords property.</param>
+            <param name="ssClearLastModifiedBy">If True, clears the LastModifiedBy  property.</param>
+            <param name="ssClearCategory">If True, clears the Category property.</param>
+            <param name="ssClearStatus">If True, clears the Status property.</param>
+            <param name="ssClearCompany">If True, clears the Company property.</param>
+            <param name="ssClearManager">If True, clears the Manager property.</param>
+        </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
             Structure <code>STCellFormatStructure</code> that represents the Service Studio structure
@@ -2309,6 +2371,31 @@
             <param name="r"> Data reader</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.STItemsStructure.ReadIM(OutSystems.NssAdvanced_Excel.STItemsStructure)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.STOfficePropertiesStructure">
+            <summary>
+            Structure <code>STOfficePropertiesStructure</code> that represents the Service Studio structure
+             <code>OfficeProperties</code> <p> Description: Office properties for an excel document</p>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STOfficePropertiesStructure.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STOfficePropertiesStructure.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.STOfficePropertiesStructure.ReadIM(OutSystems.NssAdvanced_Excel.STOfficePropertiesStructure)">
             <summary>
             Read from record
             </summary>
@@ -2975,6 +3062,43 @@
             </summary>
             <returns>The new record list</returns>
         </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RLOfficePropertiesRecordList">
+            <summary>
+            RecordList type <code>RLOfficePropertiesRecordList</code> that represents a record list of
+             <code>OfficeProperties</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLOfficePropertiesRecordList.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLOfficePropertiesRecordList.#ctor(System.Data.IDbTransaction)">
+            <summary>
+            Constructor with transaction parameter
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLOfficePropertiesRecordList.#ctor(System.Data.IDbTransaction,OutSystems.HubEdition.RuntimePlatform.Db.OSList{OutSystems.NssAdvanced_Excel.RCOfficePropertiesRecord}.ReadDBMethodDelegate)">
+            <summary>
+            Constructor with transaction parameter and alternate read method
+            </summary>
+            <param name="trans"> IDbTransaction Parameter</param>
+            <param name="alternateReadDBMethod"> Alternate Read Method</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLOfficePropertiesRecordList.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor declaration for serialization
+            </summary>
+            <param name="info"> SerializationInfo</param>
+            <param name="context"> StreamingContext</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RLOfficePropertiesRecordList.NewList">
+            <summary>
+            Create as new list
+            </summary>
+            <returns>The new record list</returns>
+        </member>
         <member name="T:OutSystems.NssAdvanced_Excel.RCCellFormatRecord">
             <summary>
             Structure <code>RCCellFormatRecord</code>
@@ -3402,6 +3526,30 @@
             <param name="r"> Data reader</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.RCItemsRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCItemsRecord)">
+            <summary>
+            Read from record
+            </summary>
+            <param name="r"> Record</param>
+        </member>
+        <member name="T:OutSystems.NssAdvanced_Excel.RCOfficePropertiesRecord">
+            <summary>
+            Structure <code>RCOfficePropertiesRecord</code>
+            </summary>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCOfficePropertiesRecord.Read(System.Data.IDataReader,System.Int32@)">
+            <summary>
+            Read a record from database
+            </summary>
+            <param name="r"> Data base reader</param>
+            <param name="index"> index</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCOfficePropertiesRecord.ReadDB(System.Data.IDataReader)">
+            <summary>
+            Read from database
+            </summary>
+            <param name="r"> Data reader</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.RCOfficePropertiesRecord.ReadIM(OutSystems.NssAdvanced_Excel.RCOfficePropertiesRecord)">
             <summary>
             Read from record
             </summary>

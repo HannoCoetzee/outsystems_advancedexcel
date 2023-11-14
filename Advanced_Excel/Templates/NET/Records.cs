@@ -3449,4 +3449,195 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // RCItemsRecord
+
+	/// <summary>
+	/// Structure <code>RCOfficePropertiesRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCOfficePropertiesRecord: ISerializable, ITypedRecord<RCOfficePropertiesRecord> {
+		internal static readonly GlobalObjectKey IdOfficeProperties = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*0iivqHDyEM20ADl23jYJXA");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("OfficeProperties")]
+		public STOfficePropertiesStructure ssSTOfficeProperties;
+
+
+		public static implicit operator STOfficePropertiesStructure(RCOfficePropertiesRecord r) {
+			return r.ssSTOfficeProperties;
+		}
+
+		public static implicit operator RCOfficePropertiesRecord(STOfficePropertiesStructure r) {
+			RCOfficePropertiesRecord res = new RCOfficePropertiesRecord(null);
+			res.ssSTOfficeProperties = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCOfficePropertiesRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTOfficeProperties = new STOfficePropertiesStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTOfficeProperties.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTOfficeProperties.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCOfficePropertiesRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCOfficePropertiesRecord a, RCOfficePropertiesRecord b) {
+			if (a.ssSTOfficeProperties != b.ssSTOfficeProperties) return false;
+			return true;
+		}
+
+		public static bool operator != (RCOfficePropertiesRecord a, RCOfficePropertiesRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCOfficePropertiesRecord)) return false;
+			return (this == (RCOfficePropertiesRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTOfficeProperties.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCOfficePropertiesRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTOfficeProperties = new STOfficePropertiesStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTOfficeProperties", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTOfficeProperties' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTOfficeProperties = (STOfficePropertiesStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTOfficeProperties.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTOfficeProperties.InternalRecursiveSave();
+		}
+
+
+		public RCOfficePropertiesRecord Duplicate() {
+			RCOfficePropertiesRecord t;
+			t.ssSTOfficeProperties = (STOfficePropertiesStructure) this.ssSTOfficeProperties.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTOfficeProperties.ToXml(this, recordElem, "OfficeProperties", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "officeproperties") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".OfficeProperties")) variable.Value = ssSTOfficeProperties; else variable.Optimized = true;
+				variable.SetFieldName("officeproperties");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdOfficeProperties) {
+				return ssSTOfficeProperties;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTOfficeProperties.FillFromOther((IRecord) other.AttributeGet(IdOfficeProperties));
+		}
+		public bool IsDefault() {
+			RCOfficePropertiesRecord defaultStruct = new RCOfficePropertiesRecord(null);
+			if (this.ssSTOfficeProperties != defaultStruct.ssSTOfficeProperties) return false;
+			return true;
+		}
+	} // RCOfficePropertiesRecord
 }

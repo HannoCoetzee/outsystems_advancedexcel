@@ -919,6 +919,37 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssAddress">Text address, e.g. AB47 or C11:AB47</param>
 		void MssAddress_From_RowCol(int ssRowStart, int ssColStart, int ssRowEnd, int ssColEnd, out string ssAddress);
 
+		/// <summary>
+		/// Get the Microsoft Office properties of the Excel document.
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook</param>
+		/// <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
+		void MssExcel_GetProperties(object ssWorkbook, out RCOfficePropertiesRecord ssProperties);
+
+		/// <summary>
+		/// Set the Microsoft Office properties of the Excel document.
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook</param>
+		/// <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
+		/// <param name="ssIgnoreBlank">If True, any blank properties in the Properties structure provided will be left with their existing values. If False, any blank properties in the Properties structure provided will be set to blank.</param>
+		void MssExcel_SetProperties(object ssWorkbook, RCOfficePropertiesRecord ssProperties, bool ssIgnoreBlank);
+
+		/// <summary>
+		/// Clear all Microsoft Office properties of the Excel document. To only clear some properties, set the associated &quot;Clear&quot; attribute to True for the properties to clear, and the remaining ones false. The default behaviour is to clear all properties.
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook.</param>
+		/// <param name="ssClearTitle">If True, clears the Title property.</param>
+		/// <param name="ssClearSubject">If True, clears the Subject property.</param>
+		/// <param name="ssClearAuthor">If True, clears the Author property.</param>
+		/// <param name="ssClearComments">If True, clears the Comments property.</param>
+		/// <param name="ssClearKeywords">If True, clears the Keywords property.</param>
+		/// <param name="ssClearLastModifiedBy">If True, clears the LastModifiedBy  property.</param>
+		/// <param name="ssClearCategory">If True, clears the Category property.</param>
+		/// <param name="ssClearStatus">If True, clears the Status property.</param>
+		/// <param name="ssClearCompany">If True, clears the Company property.</param>
+		/// <param name="ssClearManager">If True, clears the Manager property.</param>
+		void MssExcel_ClearProperties(object ssWorkbook, bool ssClearTitle, bool ssClearSubject, bool ssClearAuthor, bool ssClearComments, bool ssClearKeywords, bool ssClearLastModifiedBy, bool ssClearCategory, bool ssClearStatus, bool ssClearCompany, bool ssClearManager);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
