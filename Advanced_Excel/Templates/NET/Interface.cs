@@ -124,11 +124,11 @@ namespace OutSystems.NssAdvanced_Excel {
 		void MssWorksheet_GetName(object ssWorksheet, out string ssWorksheetName);
 
 		/// <summary>
-		/// Get all properties of the workbook
+		/// Get the properties of all of the worksheets in the workbook
 		/// </summary>
 		/// <param name="ssWorkbook">The workbook</param>
 		/// <param name="ssProperties"></param>
-		void MssWorkbook_GetProperties(object ssWorkbook, out RCWorkbookRecord ssProperties);
+		void MssWorksheet_GetPropertiesAll(object ssWorkbook, out RCWorkbookRecord ssProperties);
 
 		/// <summary>
 		/// Get the properties of the given worksheet
@@ -924,7 +924,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// </summary>
 		/// <param name="ssWorkbook">The workbook</param>
 		/// <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
-		void MssExcel_GetProperties(object ssWorkbook, out RCOfficePropertiesRecord ssProperties);
+		void MssWorkbook_GetProperties(object ssWorkbook, out RCOfficePropertiesRecord ssProperties);
 
 		/// <summary>
 		/// Set the Microsoft Office properties of the Excel document.
@@ -932,7 +932,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssWorkbook">The workbook</param>
 		/// <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
 		/// <param name="ssIgnoreBlank">If True, any blank properties in the Properties structure provided will be left with their existing values. If False, any blank properties in the Properties structure provided will be set to blank.</param>
-		void MssExcel_SetProperties(object ssWorkbook, RCOfficePropertiesRecord ssProperties, bool ssIgnoreBlank);
+		void MssWorkbook_SetProperties(object ssWorkbook, RCOfficePropertiesRecord ssProperties, bool ssIgnoreBlank);
 
 		/// <summary>
 		/// Clear all Microsoft Office properties of the Excel document. To only clear some properties, set the associated &quot;Clear&quot; attribute to True for the properties to clear, and the remaining ones false. The default behaviour is to clear all properties.
@@ -948,7 +948,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssClearStatus">If True, clears the Status property.</param>
 		/// <param name="ssClearCompany">If True, clears the Company property.</param>
 		/// <param name="ssClearManager">If True, clears the Manager property.</param>
-		void MssExcel_ClearProperties(object ssWorkbook, bool ssClearTitle, bool ssClearSubject, bool ssClearAuthor, bool ssClearComments, bool ssClearKeywords, bool ssClearLastModifiedBy, bool ssClearCategory, bool ssClearStatus, bool ssClearCompany, bool ssClearManager);
+		void MssWorkbook_ClearProperties(object ssWorkbook, bool ssClearTitle, bool ssClearSubject, bool ssClearAuthor, bool ssClearComments, bool ssClearKeywords, bool ssClearLastModifiedBy, bool ssClearCategory, bool ssClearStatus, bool ssClearCompany, bool ssClearManager);
 
 	} // IssAdvanced_Excel
 
