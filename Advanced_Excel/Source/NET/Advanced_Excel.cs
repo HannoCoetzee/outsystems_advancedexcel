@@ -20,6 +20,83 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
         /// <summary>
+        /// Get the Microsoft Office properties of the Excel document.
+        /// </summary>
+        /// <param name="ssWorkbook">The workbook</param>
+        /// <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
+        public void MssWorkbook_GetProperties(object ssWorkbook, out RCOfficePropertiesRecord ssProperties)
+        {
+            var excel = ssWorkbook as ExcelPackage;
+            var wb = excel.Workbook;
+            var props = wb.Properties;
+            ssProperties = new RCOfficePropertiesRecord(null);
+            ssProperties.ssSTOfficeProperties.ssAuthor = props.Author;
+            ssProperties.ssSTOfficeProperties.ssCategory = props.Category;
+            ssProperties.ssSTOfficeProperties.ssComments = props.Comments;
+            ssProperties.ssSTOfficeProperties.ssCompany = props.Company;
+            ssProperties.ssSTOfficeProperties.ssKeywords = props.Keywords;
+            ssProperties.ssSTOfficeProperties.ssLastModifiedBy = props.LastModifiedBy;
+            ssProperties.ssSTOfficeProperties.ssManager = props.Manager;
+            ssProperties.ssSTOfficeProperties.ssStatus = props.Status;
+            ssProperties.ssSTOfficeProperties.ssSubject = props.Subject;
+            ssProperties.ssSTOfficeProperties.ssTitle = props.Title;
+        } // MssWorkbook_GetProperties
+
+        /// <summary>
+        /// Set the Microsoft Office properties of the Excel document.
+        /// </summary>
+        /// <param name="ssWorkbook">The workbook</param>
+        /// <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
+        /// <param name="ssIgnoreBlank">If True, any blank properties in the Properties structure provided will be left with their existing values. If False, any blank properties in the Properties structure provided will be set to blank.</param>
+        public void MssWorkbook_SetProperties(object ssWorkbook, RCOfficePropertiesRecord ssProperties, bool ssIgnoreBlank) {
+            var excel = ssWorkbook as ExcelPackage;
+            var wb = excel.Workbook;
+            var props = wb.Properties;
+            var inProps = ssProperties.ssSTOfficeProperties;
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssAuthor))) { props.Author = inProps.ssAuthor; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssCategory))) { props.Category = inProps.ssCategory; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssComments))) { props.Comments = inProps.ssComments; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssCompany))) { props.Company = inProps.ssCompany; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssKeywords))) { props.Keywords = inProps.ssKeywords; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssLastModifiedBy))) { props.LastModifiedBy = inProps.ssLastModifiedBy; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssManager))) { props.Manager = inProps.ssManager; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssStatus))) { props.Status = inProps.ssStatus; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssSubject))) { props.Subject = inProps.ssSubject; }
+            if (!(ssIgnoreBlank && string.IsNullOrEmpty(inProps.ssTitle))) { props.Title = inProps.ssTitle; }
+
+        } // MssWorkbook_SetProperties
+
+        /// <summary>
+        /// Clear all Microsoft Office properties of the Excel document. To only clear some properties, set the associated &quot;Clear&quot; attribute to True for the properties to clear, and the remaining ones false. The default behaviour is to clear all properties.
+        /// </summary>
+        /// <param name="ssWorkbook">The workbook.</param>
+        /// <param name="ssClearTitle">If True, clears the Title property.</param>
+        /// <param name="ssClearSubject">If True, clears the Subject property.</param>
+        /// <param name="ssClearAuthor">If True, clears the Author property.</param>
+        /// <param name="ssClearComments">If True, clears the Comments property.</param>
+        /// <param name="ssClearKeywords">If True, clears the Keywords property.</param>
+        /// <param name="ssClearLastModifiedBy">If True, clears the LastModifiedBy  property.</param>
+        /// <param name="ssClearCategory">If True, clears the Category property.</param>
+        /// <param name="ssClearStatus">If True, clears the Status property.</param>
+        /// <param name="ssClearCompany">If True, clears the Company property.</param>
+        /// <param name="ssClearManager">If True, clears the Manager property.</param>
+        public void MssWorkbook_ClearProperties(object ssWorkbook, bool ssClearTitle, bool ssClearSubject, bool ssClearAuthor, bool ssClearComments, bool ssClearKeywords, bool ssClearLastModifiedBy, bool ssClearCategory, bool ssClearStatus, bool ssClearCompany, bool ssClearManager) {
+            var excel = ssWorkbook as ExcelPackage;
+            var wb = excel.Workbook;
+            var props = wb.Properties;
+            if (ssClearAuthor) { props.Author = string.Empty; }
+            if (ssClearCategory) { props.Category = string.Empty; }
+            if (ssClearComments) { props.Comments = string.Empty; }
+            if (ssClearCompany) { props.Company = string.Empty; }
+            if (ssClearKeywords) { props.Keywords = string.Empty; }
+            if (ssClearLastModifiedBy) { props.LastModifiedBy = string.Empty; }
+            if (ssClearManager) { props.Manager = string.Empty; }
+            if (ssClearStatus) { props.Status = string.Empty; }
+            if (ssClearSubject) { props.Subject = string.Empty; }
+            if (ssClearTitle) { props.Title = string.Empty; }
+		} // MssWorkbook_ClearProperties
+
+        /// <summary>
         /// Input text address and get back the Row/Col values
         /// </summary>
         /// <param name="ssAddress">Text address, e.g. AB47 or A11:AB47</param>
@@ -1816,11 +1893,11 @@ namespace OutSystems.NssAdvanced_Excel
         } // MssWorkBook_AddSheet
 
         /// <summary>
-        /// 
+        /// Get the properties of all of the worksheets in the workbook
         /// </summary>
-        /// <param name="ssWorkbook"></param>
+        /// <param name="ssWorkbook">The workbook</param>
         /// <param name="ssProperties"></param>
-        public void MssWorkbook_GetProperties(object ssWorkbook, out RCWorkbookRecord ssProperties)
+        public void MssWorksheet_GetPropertiesAll(object ssWorkbook, out RCWorkbookRecord ssProperties)
         {
             ssProperties = new RCWorkbookRecord();
             ssProperties.ssSTWorkbook.ssWorksheets = new RLWorksheetRecordList();
@@ -1835,7 +1912,7 @@ namespace OutSystems.NssAdvanced_Excel
 
                 ssProperties.ssSTWorkbook.ssWorksheets.Add(newSheet);
             }
-        } // MssWorkbook_GetProperties
+        } // MssWorksheet_GetPropertiesAll
 
         /// <summary>
         /// 

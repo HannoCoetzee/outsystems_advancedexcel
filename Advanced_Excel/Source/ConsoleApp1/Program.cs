@@ -86,6 +86,26 @@ namespace ConsoleApp1
 
             excel.MssWorksheet_SetFooter(workSheet, "The filename &F", "The center footer section", @"Page &P of &N");
 
+            // Excel Properties
+            excel.MssExcel_SetProperties(workBook, new RCOfficePropertiesRecord()
+            {
+                ssSTOfficeProperties = new STOfficePropertiesStructure()
+                {
+                    ssAuthor = "The author",
+                    ssCategory = "The category",
+                    ssComments = "Some comments",
+                    ssCompany = "The company",
+                    ssKeywords = "The keywords",
+                    ssLastModifiedBy = "Fred Modifier",
+                    ssManager = "The Manager!",
+                    ssStatus = "Pending",
+                    ssSubject = "The Subject",
+                    ssTitle = "The Title"
+                }
+            }, true);
+
+            excel.MssExcel_ClearProperties(workBook, true, false, false, false, false, false, false, false, false, false);
+
             excel.MssWorkbook_GetBinaryData(workBook, out byte[] content);
 
             Console.WriteLine($"Writing Excel file to {path}...");

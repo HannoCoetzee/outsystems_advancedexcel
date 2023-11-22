@@ -5293,4 +5293,397 @@ namespace OutSystems.NssAdvanced_Excel {
 		}
 	} // STItemsStructure
 
+	/// <summary>
+	/// Structure <code>STOfficePropertiesStructure</code> that represents the Service Studio structure
+	///  <code>OfficeProperties</code> <p> Description: Office properties for an excel document</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STOfficePropertiesStructure: ISerializable, ITypedRecord<STOfficePropertiesStructure>, ISimpleRecord {
+		internal static readonly GlobalObjectKey IdTitle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*C3CNRvpPuUCNXwLfpZWDzw");
+		internal static readonly GlobalObjectKey IdSubject = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*mHRaEJmaQUe+Z8LitAmPRw");
+		internal static readonly GlobalObjectKey IdAuthor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*I36e7GtaX0ySKpf2Mnr+eg");
+		internal static readonly GlobalObjectKey IdComments = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*17pPPR1IPEeEaRWGrgDc+w");
+		internal static readonly GlobalObjectKey IdKeywords = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*L9BfBm7tF0qjuPe8qTOANQ");
+		internal static readonly GlobalObjectKey IdLastModifiedBy = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ps0ln4Fyf0m2RkOfqAD0Dg");
+		internal static readonly GlobalObjectKey IdCategory = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*_UriAPkeBUe2IZ12KsQcsw");
+		internal static readonly GlobalObjectKey IdStatus = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*S5W+JK70d0CB_Bzo_NsEsg");
+		internal static readonly GlobalObjectKey IdCompany = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*rTmbNHtTcUun7Tgt1r79Dg");
+		internal static readonly GlobalObjectKey IdManager = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*79w8Ki_IFkSCVXUqYFOJnw");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Title")]
+		public string ssTitle;
+
+		[System.Xml.Serialization.XmlElement("Subject")]
+		public string ssSubject;
+
+		[System.Xml.Serialization.XmlElement("Author")]
+		public string ssAuthor;
+
+		[System.Xml.Serialization.XmlElement("Comments")]
+		public string ssComments;
+
+		[System.Xml.Serialization.XmlElement("Keywords")]
+		public string ssKeywords;
+
+		[System.Xml.Serialization.XmlElement("LastModifiedBy")]
+		public string ssLastModifiedBy;
+
+		[System.Xml.Serialization.XmlElement("Category")]
+		public string ssCategory;
+
+		[System.Xml.Serialization.XmlElement("Status")]
+		public string ssStatus;
+
+		[System.Xml.Serialization.XmlElement("Company")]
+		public string ssCompany;
+
+		[System.Xml.Serialization.XmlElement("Manager")]
+		public string ssManager;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STOfficePropertiesStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssTitle = "";
+			ssSubject = "";
+			ssAuthor = "";
+			ssComments = "";
+			ssKeywords = "";
+			ssLastModifiedBy = "";
+			ssCategory = "";
+			ssStatus = "";
+			ssCompany = "";
+			ssManager = "";
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssTitle = r.ReadText(index++, "OfficeProperties.Title", "");
+			ssSubject = r.ReadText(index++, "OfficeProperties.Subject", "");
+			ssAuthor = r.ReadText(index++, "OfficeProperties.Author", "");
+			ssComments = r.ReadText(index++, "OfficeProperties.Comments", "");
+			ssKeywords = r.ReadText(index++, "OfficeProperties.Keywords", "");
+			ssLastModifiedBy = r.ReadText(index++, "OfficeProperties.LastModifiedBy", "");
+			ssCategory = r.ReadText(index++, "OfficeProperties.Category", "");
+			ssStatus = r.ReadText(index++, "OfficeProperties.Status", "");
+			ssCompany = r.ReadText(index++, "OfficeProperties.Company", "");
+			ssManager = r.ReadText(index++, "OfficeProperties.Manager", "");
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STOfficePropertiesStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STOfficePropertiesStructure a, STOfficePropertiesStructure b) {
+			if (a.ssTitle != b.ssTitle) return false;
+			if (a.ssSubject != b.ssSubject) return false;
+			if (a.ssAuthor != b.ssAuthor) return false;
+			if (a.ssComments != b.ssComments) return false;
+			if (a.ssKeywords != b.ssKeywords) return false;
+			if (a.ssLastModifiedBy != b.ssLastModifiedBy) return false;
+			if (a.ssCategory != b.ssCategory) return false;
+			if (a.ssStatus != b.ssStatus) return false;
+			if (a.ssCompany != b.ssCompany) return false;
+			if (a.ssManager != b.ssManager) return false;
+			return true;
+		}
+
+		public static bool operator != (STOfficePropertiesStructure a, STOfficePropertiesStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STOfficePropertiesStructure)) return false;
+			return (this == (STOfficePropertiesStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssTitle.GetHashCode()
+				^ ssSubject.GetHashCode()
+				^ ssAuthor.GetHashCode()
+				^ ssComments.GetHashCode()
+				^ ssKeywords.GetHashCode()
+				^ ssLastModifiedBy.GetHashCode()
+				^ ssCategory.GetHashCode()
+				^ ssStatus.GetHashCode()
+				^ ssCompany.GetHashCode()
+				^ ssManager.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STOfficePropertiesStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssTitle = "";
+			ssSubject = "";
+			ssAuthor = "";
+			ssComments = "";
+			ssKeywords = "";
+			ssLastModifiedBy = "";
+			ssCategory = "";
+			ssStatus = "";
+			ssCompany = "";
+			ssManager = "";
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssTitle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssTitle' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssTitle = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssSubject", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSubject' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSubject = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAuthor", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAuthor' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAuthor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssComments", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssComments' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssComments = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssKeywords", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssKeywords' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssKeywords = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssLastModifiedBy", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssLastModifiedBy' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssLastModifiedBy = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssCategory", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssCategory' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssCategory = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssStatus", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssStatus' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssStatus = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssCompany", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssCompany' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssCompany = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssManager", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssManager' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssManager = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STOfficePropertiesStructure Duplicate() {
+			STOfficePropertiesStructure t;
+			t.ssTitle = this.ssTitle;
+			t.ssSubject = this.ssSubject;
+			t.ssAuthor = this.ssAuthor;
+			t.ssComments = this.ssComments;
+			t.ssKeywords = this.ssKeywords;
+			t.ssLastModifiedBy = this.ssLastModifiedBy;
+			t.ssCategory = this.ssCategory;
+			t.ssStatus = this.ssStatus;
+			t.ssCompany = this.ssCompany;
+			t.ssManager = this.ssManager;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Title")) VarValue.AppendAttribute(recordElem, "Title", ssTitle, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Title");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Subject")) VarValue.AppendAttribute(recordElem, "Subject", ssSubject, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Subject");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Author")) VarValue.AppendAttribute(recordElem, "Author", ssAuthor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Author");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Comments")) VarValue.AppendAttribute(recordElem, "Comments", ssComments, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Comments");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Keywords")) VarValue.AppendAttribute(recordElem, "Keywords", ssKeywords, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Keywords");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".LastModifiedBy")) VarValue.AppendAttribute(recordElem, "LastModifiedBy", ssLastModifiedBy, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "LastModifiedBy");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Category")) VarValue.AppendAttribute(recordElem, "Category", ssCategory, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Category");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Status")) VarValue.AppendAttribute(recordElem, "Status", ssStatus, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Status");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Company")) VarValue.AppendAttribute(recordElem, "Company", ssCompany, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Company");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Manager")) VarValue.AppendAttribute(recordElem, "Manager", ssManager, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Manager");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "title") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Title")) variable.Value = ssTitle; else variable.Optimized = true;
+			} else if (head == "subject") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Subject")) variable.Value = ssSubject; else variable.Optimized = true;
+			} else if (head == "author") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Author")) variable.Value = ssAuthor; else variable.Optimized = true;
+			} else if (head == "comments") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Comments")) variable.Value = ssComments; else variable.Optimized = true;
+			} else if (head == "keywords") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Keywords")) variable.Value = ssKeywords; else variable.Optimized = true;
+			} else if (head == "lastmodifiedby") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".LastModifiedBy")) variable.Value = ssLastModifiedBy; else variable.Optimized = true;
+			} else if (head == "category") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Category")) variable.Value = ssCategory; else variable.Optimized = true;
+			} else if (head == "status") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Status")) variable.Value = ssStatus; else variable.Optimized = true;
+			} else if (head == "company") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Company")) variable.Value = ssCompany; else variable.Optimized = true;
+			} else if (head == "manager") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Manager")) variable.Value = ssManager; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdTitle) {
+				return ssTitle;
+			} else if (key == IdSubject) {
+				return ssSubject;
+			} else if (key == IdAuthor) {
+				return ssAuthor;
+			} else if (key == IdComments) {
+				return ssComments;
+			} else if (key == IdKeywords) {
+				return ssKeywords;
+			} else if (key == IdLastModifiedBy) {
+				return ssLastModifiedBy;
+			} else if (key == IdCategory) {
+				return ssCategory;
+			} else if (key == IdStatus) {
+				return ssStatus;
+			} else if (key == IdCompany) {
+				return ssCompany;
+			} else if (key == IdManager) {
+				return ssManager;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssTitle = (string) other.AttributeGet(IdTitle);
+			ssSubject = (string) other.AttributeGet(IdSubject);
+			ssAuthor = (string) other.AttributeGet(IdAuthor);
+			ssComments = (string) other.AttributeGet(IdComments);
+			ssKeywords = (string) other.AttributeGet(IdKeywords);
+			ssLastModifiedBy = (string) other.AttributeGet(IdLastModifiedBy);
+			ssCategory = (string) other.AttributeGet(IdCategory);
+			ssStatus = (string) other.AttributeGet(IdStatus);
+			ssCompany = (string) other.AttributeGet(IdCompany);
+			ssManager = (string) other.AttributeGet(IdManager);
+		}
+		public bool IsDefault() {
+			STOfficePropertiesStructure defaultStruct = new STOfficePropertiesStructure(null);
+			if (this.ssTitle != defaultStruct.ssTitle) return false;
+			if (this.ssSubject != defaultStruct.ssSubject) return false;
+			if (this.ssAuthor != defaultStruct.ssAuthor) return false;
+			if (this.ssComments != defaultStruct.ssComments) return false;
+			if (this.ssKeywords != defaultStruct.ssKeywords) return false;
+			if (this.ssLastModifiedBy != defaultStruct.ssLastModifiedBy) return false;
+			if (this.ssCategory != defaultStruct.ssCategory) return false;
+			if (this.ssStatus != defaultStruct.ssStatus) return false;
+			if (this.ssCompany != defaultStruct.ssCompany) return false;
+			if (this.ssManager != defaultStruct.ssManager) return false;
+			return true;
+		}
+	} // STOfficePropertiesStructure
+
 } // OutSystems.NssAdvanced_Excel
