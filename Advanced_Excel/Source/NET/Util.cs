@@ -233,12 +233,12 @@ namespace OutSystems.NssAdvanced_Excel
                 range.Style.Numberformat.Format = format.ssSTCellFormat.ssNumberFormat;
             }
 
-            if (format.ssSTCellFormat.ssHorizontalAlignment > 0)
+            if (format.ssSTCellFormat.ssHorizontalAlignment >= 0)
             {
                 range.Style.HorizontalAlignment = (ExcelHorizontalAlignment)format.ssSTCellFormat.ssHorizontalAlignment;
             }
 
-            if (format.ssSTCellFormat.ssVerticalAlignment > 0)
+            if (format.ssSTCellFormat.ssVerticalAlignment >= 0)
             {
                 range.Style.VerticalAlignment = (ExcelVerticalAlignment)format.ssSTCellFormat.ssVerticalAlignment;
             }
