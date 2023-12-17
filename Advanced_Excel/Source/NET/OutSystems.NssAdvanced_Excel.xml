@@ -677,7 +677,7 @@
             <param name="ssCellValue">The value in the cell, as text.</param>
             <param name="ssReadText">If true always reads the cell value as text</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_Write(System.Object,System.String,System.Int32,System.Int32,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_Write(System.Object,System.String,System.Int32,System.Int32,System.String,System.String,System.Boolean,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
             <summary>
             Write a converted value to a cell, defined by its index.
             Input is a worksheet-object.
@@ -696,6 +696,7 @@
             decimal,
             boolean,
             formula</param>
+            <param name="ssPreserveFormat">Default value is False. If set to True, the CellFormat parameter is ignored.</param>
             <param name="ssCellFormat">CellFormat for the target cell</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_ChangeSheetIndex(System.Object,System.Int32,System.Int32)">
@@ -1054,7 +1055,7 @@
             </param>
             <param name="ssProtectionOptions">Options to set when protecting the worksheet</param>
         </member>
-        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_Write(System.Object,System.String,System.Int32,System.Int32,System.String,System.String,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_Write(System.Object,System.String,System.Int32,System.Int32,System.String,System.String,System.Boolean,OutSystems.NssAdvanced_Excel.RCCellFormatRecord)">
             <summary>
             Write a converted value to a cell.
             </summary>
@@ -1071,6 +1072,8 @@
             decimal,
             boolean,
             formula</param>
+            <param name="ssPreserveFormat">Default value is False. If set to True, the CellFormat parameter is ignored.
+            </param>
             <param name="ssCellFormat">CellFormat for the target cell</param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_WriteRange(System.Object,System.Int32,System.Int32,System.Object,OutSystems.NssAdvanced_Excel.RCCellFormatRecord,System.Boolean)">
