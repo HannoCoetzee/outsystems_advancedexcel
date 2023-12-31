@@ -55,7 +55,8 @@ namespace OutSystems.NssAdvanced_Excel
 		/// <param name="ssClearManager">If True, clears the Manager property.</param>
 		public void MssExcel_ClearProperties(object ssWorkbook, bool ssClearTitle, bool ssClearSubject, bool ssClearAuthor, bool ssClearComments, bool ssClearKeywords, bool ssClearLastModifiedBy, bool ssClearCategory, bool ssClearStatus, bool ssClearCompany, bool ssClearManager) {
 			// TODO: Write implementation for action
-		} // MssExcel_ClearProperties
+		} // MssExcel_ClearProperties
+
 
         /// <summary>
         /// Input text address and get back the Row/Col values
@@ -2336,6 +2337,89 @@ namespace OutSystems.NssAdvanced_Excel
             // Get the value of the cell containing the formula
             ssFormula = cell.Formula;
         } // MssCell_ReadFormulaByIndex
+
+	/// <summary>
+	/// Action to convert Hex code of color to RGB value
+	/// </summary>
+	/// <param name="ssHexCode">Color hex code (eg. #FFFFFF)</param>
+	/// <param name="ssRGB">Color RGB value (eg. RGB(255, 255, 255))</param>
+	public void MssCell_ConvertHexCodeToRGB(string ssHexCode, out string ssRGB) 
+ 	{
+            // Remove the '#' if present
+            //if (ssHexCode.StartsWith("#"))
+            //ssHexCode = ssHexCode.Substring(1);
+
+            // Convert the hexadecimal color code to RGB format and assign it to output RGB
+            if (!string.IsNullOrEmpty(ssHexCode) && ssHexCode != "No Fill Color")
+            { Color rgbColor = ColorTranslator.FromHtml(ssHexCode);
+              ssRGB = $"RGB({rgbColor.R}, {rgbColor.G}, {rgbColor.B})";
+            }
+            else
+            {
+                ssRGB = "No Fill Color";
+            }            
+            
+        } // MssCell_ConvertHexCodeToRGB
+
+
+	/// <summary>
+	/// Get fill color of a cell, defined by its index.
+	/// </summary>
+	/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+	/// <param name="ssRow">Row Number</param>
+	/// <param name="ssColumn">Column Number</param>
+	/// <param name="ssFillColor">Fill color of the cell</param>
+	public void MssCell_GetFillColorByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFillColor) 
+ 	{
+            // Select the worksheet
+            ExcelWorksheet ws;
+            ws = (ExcelWorksheet)ssWorksheet;
+
+            // Get the cell
+            ExcelRange cell = ws.Cells[ssRow, ssColumn];
+
+            // Get the fill color of the cell 
+            var fillColor = cell.Style.Fill.BackgroundColor.Rgb;
+
+            // Assign the hex color code to the output parameter
+            if (string.IsNullOrEmpty(fillColor))
+            {
+                ssFillColor = "No Fill Color";
+            }
+            else
+            {
+                ssFillColor = "#" + fillColor.Substring(fillColor.Length - 6);
+            }
+        } // MssCell_GetFillColorByIndex
+
+	/// <summary>
+	/// Get fill color of a cell, defined by its name.
+	/// </summary>
+	/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+	/// <param name="ssCellName">Cell name (eg. A1)</param>
+	/// <param name="ssFillColor">Fill color of the cell</param>
+	public void MssCell_GetFillColorByName(object ssWorksheet, string ssCellName, out string ssFillColor) 
+ 	{
+            // Select the worksheet
+            ExcelWorksheet ws;
+            ws = (ExcelWorksheet)ssWorksheet;
+
+            // Get the cell
+            ExcelRange cell = ws.Cells[ssCellName];
+
+            // Get the background color of the cell 
+            var fillColor = cell.Style.Fill.BackgroundColor.Rgb;
+
+            // Assign the hex color code to the output parameter
+            if (string.IsNullOrEmpty(fillColor))
+            {
+                ssFillColor = "No Fill Color";
+            }
+            else
+            {
+                ssFillColor = "#" + fillColor.Substring(fillColor.Length - 6);
+            }
+        } // MssCell_GetFillColorByName
 
     } // CssAdvanced_Excel
 
