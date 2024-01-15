@@ -125,8 +125,10 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// decimal,
 		/// boolean,
 		/// formula</param>
+		/// <param name="ssPreserveFormat">Default value is False. If set to True, the CellFormat parameter is ignored.
+		/// </param>
 		/// <param name="ssCellFormat">CellFormat for the target cell</param>
-		public void MssCell_Write(object ssWorksheet, string ssCellName, int ssCellRow, int ssCellColumn, string ssCellValue, string ssCellType, RCCellFormatRecord ssCellFormat) {
+		public void MssCell_Write(object ssWorksheet, string ssCellName, int ssCellRow, int ssCellColumn, string ssCellValue, string ssCellType, bool ssPreserveFormat, RCCellFormatRecord ssCellFormat) {
 			// TODO: Write implementation for action
 		} // MssCell_Write
 
