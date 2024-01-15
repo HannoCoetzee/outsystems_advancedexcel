@@ -26,8 +26,19 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
         public void MssExcel_GetProperties(object ssWorkbook, out RCOfficePropertiesRecord ssProperties)
         {
+            var wb = ssWorkbook as ExcelWorkbook;
+            var props = wb.Properties;
             ssProperties = new RCOfficePropertiesRecord(null);
-            // TODO: Write implementation for action
+            ssProperties.ssSTOfficeProperties.ssAuthor = props.Author;
+            ssProperties.ssSTOfficeProperties.ssCategory = props.Category;
+            ssProperties.ssSTOfficeProperties.ssComments = props.Comments;
+            ssProperties.ssSTOfficeProperties.ssCompany = props.Company;
+            ssProperties.ssSTOfficeProperties.ssKeywords = props.Keywords;
+            ssProperties.ssSTOfficeProperties.ssLastModifiedBy = props.LastModifiedBy;
+            ssProperties.ssSTOfficeProperties.ssManager = props.Manager;
+            ssProperties.ssSTOfficeProperties.ssStatus = props.Status;
+            ssProperties.ssSTOfficeProperties.ssSubject = props.Subject;
+            ssProperties.ssSTOfficeProperties.ssTitle = props.Title;
         } // MssExcel_GetProperties
 
         /// <summary>
@@ -38,7 +49,19 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssIgnoreBlank">If True, any blank properties in the Properties structure provided will be left with their existing values. If False, any blank properties in the Properties structure provided will be set to blank.</param>
         public void MssExcel_SetProperties(object ssWorkbook, RCOfficePropertiesRecord ssProperties, bool ssIgnoreBlank)
         {
-            // TODO: Write implementation for action
+            var wb = ssWorkbook as ExcelWorkbook;
+            var props = wb.Properties;
+            var inProps = ssProperties.ssSTOfficeProperties;
+            if (!string.IsNullOrEmpty(inProps.ssAuthor)) { props.Author = inProps.ssAuthor; }
+            if (!string.IsNullOrEmpty(inProps.ssCategory)) { props.Category = inProps.ssCategory; }
+            if (!string.IsNullOrEmpty(inProps.ssComments)) { props.Comments = inProps.ssComments; }
+            if (!string.IsNullOrEmpty(inProps.ssCompany)) { props.Company = inProps.ssCompany; }
+            if (!string.IsNullOrEmpty(inProps.ssKeywords)) { props.Keywords = inProps.ssKeywords; }
+            if (!string.IsNullOrEmpty(inProps.ssLastModifiedBy)) { props.LastModifiedBy = inProps.ssLastModifiedBy; }
+            if (!string.IsNullOrEmpty(inProps.ssManager)) { props.Manager = inProps.ssManager; }
+            if (!string.IsNullOrEmpty(inProps.ssStatus)) { props.Status = inProps.ssStatus; }
+            if (!string.IsNullOrEmpty(inProps.ssSubject)) { props.Subject = inProps.ssSubject; }
+            if (!string.IsNullOrEmpty(inProps.ssTitle)) { props.Title = inProps.ssTitle; }
         } // MssExcel_SetProperties
 
         /// <summary>
@@ -57,7 +80,18 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssClearManager">If True, clears the Manager property.</param>
         public void MssExcel_ClearProperties(object ssWorkbook, bool ssClearTitle, bool ssClearSubject, bool ssClearAuthor, bool ssClearComments, bool ssClearKeywords, bool ssClearLastModifiedBy, bool ssClearCategory, bool ssClearStatus, bool ssClearCompany, bool ssClearManager)
         {
-            // TODO: Write implementation for action
+            var wb = ssWorkbook as ExcelWorkbook;
+            var props = wb.Properties;
+            if (ssClearAuthor) { props.Author = string.Empty; }
+            if (ssClearCategory) { props.Category = string.Empty; }
+            if (ssClearComments) { props.Comments = string.Empty; }
+            if (ssClearCompany) { props.Company = string.Empty; }
+            if (ssClearKeywords) { props.Keywords = string.Empty; }
+            if (ssClearLastModifiedBy) { props.LastModifiedBy = string.Empty; }
+            if (ssClearManager) { props.Manager = string.Empty; }
+            if (ssClearStatus) { props.Status = string.Empty; }
+            if (ssClearSubject) { props.Subject = string.Empty; }
+            if (ssClearTitle) { props.Title = string.Empty; }
         } // MssExcel_ClearProperties
 
         /// <summary>
