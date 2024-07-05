@@ -1153,6 +1153,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			// TODO: Write implementation for action
 		} // MssExcel_ClearProperties
 
+		/// <summary>
+		/// Copy a range of rows
+		/// </summary>
+		/// <param name="ssWorksheet"></param>
+		/// <param name="ssRangeStart">Example: A1:B5</param>
+		/// <param name="ssRangeEnd">Example: G1:H5</param>
+		public void MssWorksheet_CopyRows(object ssWorksheet, string ssRangeStart, string ssRangeEnd) {
+			// TODO: Write implementation for action
+		} // MssWorksheet_CopyRows
+
 	} // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
