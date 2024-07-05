@@ -54,7 +54,7 @@ namespace ConsoleApp1
             excel.MssWorksheet_Select(workBook, 0, "Test", out object workSheet);
 
             // Write a cell
-            excel.MssCell_Write(workSheet, "A4", 0, 0, "8000", "", new RCCellFormatRecord());
+            //excel.MssCell_Write(workSheet, "A4", 0, 0, "8000", "", new RCCellFormatRecord());
 
             RCConditionalFormatItemRecord r1 = new RCConditionalFormatItemRecord
             {
@@ -87,24 +87,26 @@ namespace ConsoleApp1
             excel.MssWorksheet_SetFooter(workSheet, "The filename &F", "The center footer section", @"Page &P of &N");
 
             // Excel Properties
-            excel.MssExcel_SetProperties(workBook, new RCOfficePropertiesRecord()
-            {
-                ssSTOfficeProperties = new STOfficePropertiesStructure()
-                {
-                    ssAuthor = "The author",
-                    ssCategory = "The category",
-                    ssComments = "Some comments",
-                    ssCompany = "The company",
-                    ssKeywords = "The keywords",
-                    ssLastModifiedBy = "Fred Modifier",
-                    ssManager = "The Manager!",
-                    ssStatus = "Pending",
-                    ssSubject = "The Subject",
-                    ssTitle = "The Title"
-                }
-            }, true);
+            //excel.MssExcel_SetProperties(workBook, new RCOfficePropertiesRecord()
+            //{
+            //    ssSTOfficeProperties = new STOfficePropertiesStructure()
+            //    {
+            //        ssAuthor = "The author",
+            //        ssCategory = "The category",
+            //        ssComments = "Some comments",
+            //        ssCompany = "The company",
+            //        ssKeywords = "The keywords",
+            //        ssLastModifiedBy = "Fred Modifier",
+            //        ssManager = "The Manager!",
+            //        ssStatus = "Pending",
+            //        ssSubject = "The Subject",
+            //        ssTitle = "The Title"
+            //    }
+            //}, true);
 
-            excel.MssExcel_ClearProperties(workBook, true, false, false, false, false, false, false, false, false, false);
+            //excel.MssExcel_ClearProperties(workBook, true, false, false, false, false, false, false, false, false, false);
+
+            excel.MssWorksheet_CopyRows(workSheet, "A1:B2", "D1:E2");
 
             excel.MssWorkbook_GetBinaryData(workBook, out byte[] content);
 

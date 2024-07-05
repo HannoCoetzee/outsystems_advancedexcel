@@ -4,6 +4,14 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_CopyRows(System.Object,System.String,System.String)">
+            <summary>
+            Copy a range of rows
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssRangeStart">Example: A1:B5</param>
+            <param name="ssRangeEnd">Example: G1:H5</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssExcel_GetProperties(System.Object,OutSystems.NssAdvanced_Excel.RCOfficePropertiesRecord@)">
             <summary>
             Get the Microsoft Office properties of the Excel document.
@@ -1921,6 +1929,14 @@
             <param name="ssClearStatus">If True, clears the Status property.</param>
             <param name="ssClearCompany">If True, clears the Company property.</param>
             <param name="ssClearManager">If True, clears the Manager property.</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_CopyRows(System.Object,System.String,System.String)">
+            <summary>
+            Copy a range of rows
+            </summary>
+            <param name="ssWorksheet"></param>
+            <param name="ssRangeStart">Example: A1:B5</param>
+            <param name="ssRangeEnd">Example: G1:H5</param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>

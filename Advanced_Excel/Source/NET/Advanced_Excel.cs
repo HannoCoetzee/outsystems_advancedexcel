@@ -19,6 +19,17 @@ namespace OutSystems.NssAdvanced_Excel
     public class CssAdvanced_Excel : IssAdvanced_Excel
     {
 
+		/// <summary>
+		/// Copy a range of rows
+		/// </summary>
+		/// <param name="ssWorksheet"></param>
+		/// <param name="ssRangeStart">Example: A1:B5</param>
+		/// <param name="ssRangeEnd">Example: G1:H5</param>
+		public void MssWorksheet_CopyRows(object ssWorksheet, string ssRangeStart, string ssRangeEnd) {
+			var ws = ssWorksheet as ExcelWorksheet;
+            ws.Cells[ssRangeStart].Copy(ws.Cells[ssRangeEnd]);
+		} // MssWorksheet_CopyRows
+
         /// <summary>
         /// Get the Microsoft Office properties of the Excel document.
         /// </summary>

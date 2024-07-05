@@ -952,6 +952,14 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssClearManager">If True, clears the Manager property.</param>
 		void MssExcel_ClearProperties(object ssWorkbook, bool ssClearTitle, bool ssClearSubject, bool ssClearAuthor, bool ssClearComments, bool ssClearKeywords, bool ssClearLastModifiedBy, bool ssClearCategory, bool ssClearStatus, bool ssClearCompany, bool ssClearManager);
 
+		/// <summary>
+		/// Copy a range of rows
+		/// </summary>
+		/// <param name="ssWorksheet"></param>
+		/// <param name="ssRangeStart">Example: A1:B5</param>
+		/// <param name="ssRangeEnd">Example: G1:H5</param>
+		void MssWorksheet_CopyRows(object ssWorksheet, string ssRangeStart, string ssRangeEnd);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
