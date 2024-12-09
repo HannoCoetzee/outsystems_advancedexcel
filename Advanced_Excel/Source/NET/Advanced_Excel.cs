@@ -20,6 +20,85 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
 		/// <summary>
+		/// Action to convert Hex code of color to RGB value
+		/// </summary>
+		/// <param name="ssHexCode">Color hex code (eg. #FFFFFF)</param>
+		/// <param name="ssRGB">Color RGB value (eg. RGB(255, 255, 255))</param>
+		public void MssUtil_ConvertHexCodeToRGB(string ssHexCode, out string ssRGB) {
+            // Remove the '#' if present
+            //if (ssHexCode.StartsWith("#"))
+            //ssHexCode = ssHexCode.Substring(1);
+
+            // Convert the hexadecimal color code to RGB format and assign it to output RGB
+            if (!string.IsNullOrEmpty(ssHexCode) && ssHexCode != "No Fill Color")
+            {
+                Color rgbColor = ColorTranslator.FromHtml(ssHexCode);
+                ssRGB = $"RGB({rgbColor.R}, {rgbColor.G}, {rgbColor.B})";
+            }
+            else
+            {
+                ssRGB = "No Fill Color";
+            }
+        } // MssUtil_ConvertHexCodeToRGB
+
+		/// <summary>
+		/// Get fill color of a cell, defined by its index.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row number</param>
+		/// <param name="ssColumn">Column number</param>
+		/// <param name="ssFillColor">Fill color of the cell</param>
+		public void MssCell_GetFillColorByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFillColor) {
+            // Select the worksheet
+            ExcelWorksheet ws;
+            ws = (ExcelWorksheet)ssWorksheet;
+
+            // Get the cell
+            ExcelRange cell = ws.Cells[ssRow, ssColumn];
+
+            // Get the fill color of the cell 
+            var fillColor = cell.Style.Fill.BackgroundColor.Rgb;
+
+            // Assign the hex color code to the output parameter
+            if (string.IsNullOrEmpty(fillColor))
+            {
+                ssFillColor = "No Fill Color";
+            }
+            else
+            {
+                ssFillColor = "#" + fillColor.Substring(fillColor.Length - 6);
+            }
+        } // MssCell_GetFillColorByIndex
+
+		/// <summary>
+		/// Get fill color of a cell, defined by its name.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell name (eg. A1)</param>
+		/// <param name="ssFillColor">Fill color of the cell</param>
+		public void MssCell_GetFillColorByName(object ssWorksheet, string ssCellName, out string ssFillColor) {
+            // Select the worksheet
+            ExcelWorksheet ws;
+            ws = (ExcelWorksheet)ssWorksheet;
+
+            // Get the cell
+            ExcelRange cell = ws.Cells[ssCellName];
+
+            // Get the background color of the cell 
+            var fillColor = cell.Style.Fill.BackgroundColor.Rgb;
+
+            // Assign the hex color code to the output parameter
+            if (string.IsNullOrEmpty(fillColor))
+            {
+                ssFillColor = "No Fill Color";
+            }
+            else
+            {
+                ssFillColor = "#" + fillColor.Substring(fillColor.Length - 6);
+            }
+        } // MssCell_GetFillColorByName
+
+		/// <summary>
 		/// Copy a range of rows
 		/// </summary>
 		/// <param name="ssWorksheet"></param>
@@ -28,7 +107,8 @@ namespace OutSystems.NssAdvanced_Excel
 		public void MssWorksheet_CopyRows(object ssWorksheet, string ssRangeStart, string ssRangeEnd) {
 			var ws = ssWorksheet as ExcelWorksheet;
             ws.Cells[ssRangeStart].Copy(ws.Cells[ssRangeEnd]);
-		} // MssWorksheet_CopyRows
+		} // MssWorksheet_CopyRows
+
 
         /// <summary>
         /// Get the Microsoft Office properties of the Excel document.
@@ -103,7 +183,8 @@ namespace OutSystems.NssAdvanced_Excel
             if (ssClearStatus) { props.Status = string.Empty; }
             if (ssClearSubject) { props.Subject = string.Empty; }
             if (ssClearTitle) { props.Title = string.Empty; }
-        } // MssExcel_ClearProperties
+        } // MssExcel_ClearProperties
+
 
         /// <summary>
         /// Input text address and get back the Row/Col values

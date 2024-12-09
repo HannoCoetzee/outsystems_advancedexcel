@@ -1163,6 +1163,40 @@ namespace OutSystems.NssAdvanced_Excel {
 			// TODO: Write implementation for action
 		} // MssWorksheet_CopyRows
 
+		/// <summary>
+		/// Action to convert Hex code of color to RGB value
+		/// </summary>
+		/// <param name="ssHexCode">Color hex code (eg. #FFFFFF)</param>
+		/// <param name="ssRGB">Color RGB value (eg. RGB(255, 255, 255))</param>
+		public void MssUtil_ConvertHexCodeToRGB(string ssHexCode, out string ssRGB) {
+			ssRGB = "";
+			// TODO: Write implementation for action
+		} // MssUtil_ConvertHexCodeToRGB
+
+		/// <summary>
+		/// Get fill color of a cell, defined by its index.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row number
+		/// </param>
+		/// <param name="ssColumn">Column number</param>
+		/// <param name="ssFillColor">Fill color of the cell</param>
+		public void MssCell_GetFillColorByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFillColor) {
+			ssFillColor = "";
+			// TODO: Write implementation for action
+		} // MssCell_GetFillColorByIndex
+
+		/// <summary>
+		/// Get fill color of a cell, defined by its name.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell name (eg. A1)</param>
+		/// <param name="ssFillColor">Fill color of the cell</param>
+		public void MssCell_GetFillColorByName(object ssWorksheet, string ssCellName, out string ssFillColor) {
+			ssFillColor = "";
+			// TODO: Write implementation for action
+		} // MssCell_GetFillColorByName
+
 	} // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

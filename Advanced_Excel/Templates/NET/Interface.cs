@@ -960,6 +960,31 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssRangeEnd">Example: G1:H5</param>
 		void MssWorksheet_CopyRows(object ssWorksheet, string ssRangeStart, string ssRangeEnd);
 
+		/// <summary>
+		/// Action to convert Hex code of color to RGB value
+		/// </summary>
+		/// <param name="ssHexCode">Color hex code (eg. #FFFFFF)</param>
+		/// <param name="ssRGB">Color RGB value (eg. RGB(255, 255, 255))</param>
+		void MssUtil_ConvertHexCodeToRGB(string ssHexCode, out string ssRGB);
+
+		/// <summary>
+		/// Get fill color of a cell, defined by its index.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row number
+		/// </param>
+		/// <param name="ssColumn">Column number</param>
+		/// <param name="ssFillColor">Fill color of the cell</param>
+		void MssCell_GetFillColorByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFillColor);
+
+		/// <summary>
+		/// Get fill color of a cell, defined by its name.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssCellName">Cell name (eg. A1)</param>
+		/// <param name="ssFillColor">Fill color of the cell</param>
+		void MssCell_GetFillColorByName(object ssWorksheet, string ssCellName, out string ssFillColor);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
