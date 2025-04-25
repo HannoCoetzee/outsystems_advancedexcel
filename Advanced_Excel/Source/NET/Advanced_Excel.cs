@@ -19,11 +19,48 @@ namespace OutSystems.NssAdvanced_Excel
     public class CssAdvanced_Excel : IssAdvanced_Excel
     {
 		/// <summary>
+		/// Get all merged cell ranges in the selected workbook.
+		/// E.g., Worksheet: Sheet1
+		/// A1:B2; D4:E4
+		/// Worksheet: Sheet2
+		/// C3:D5
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook to work with</param>
+		/// <param name="ssMergedRange">Ranges of the merged cells</param>
+		public void MssWorkbook_GetMergedCellRanges(object ssWorkbook, out string ssMergedRange) {
+            ssMergedRange = "";
+            bool anyMergedCells = false;
+            ExcelPackage p = ssWorkbook as ExcelPackage;
+
+            foreach (var worksheet in p.Workbook.Worksheets)
+            {
+                if (worksheet.MergedCells.Count > 0)
+                {
+                    anyMergedCells = true;
+                    ssMergedRange += $"Worksheet: {worksheet.Name}\n";
+
+                    foreach (var mergedRange in worksheet.MergedCells)
+                    {
+                        ssMergedRange += $"{mergedRange}; ";
+                    }
+
+                    ssMergedRange = ssMergedRange.TrimEnd(new char[] { ';', ' ' });
+                    ssMergedRange += "\n\n";
+                }
+            }
+
+            if (!anyMergedCells)
+            {
+                ssMergedRange = "No merged cells found in any worksheet.";
+            }
+        } // MssWorkbook_GetMergedCellRanges
+  
+  		/// <summary>
 		/// Get all merged cell ranges in the selected worksheet. E.g., A1:A3; B1:C2.
 		/// </summary>
-		/// <param name="ssWorksheet"></param>
-		/// <param name="ssMergedRange"></param>
-		public void MssCell_GetMergedRange(object ssWorksheet, out string ssMergedRange) {
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssMergedRange">Ranges of the merged cells</param>
+		public void MssWorksheet_GetMergedCellRanges(object ssWorksheet, out string ssMergedRange) {
             ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
 
             ssMergedRange = "";
@@ -41,7 +78,7 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 ssMergedRange = "No merged cells found.";
             }
-        } // MssCell_GetMergedRange
+        } // MssWorksheet_GetMergedCellRanges
 
   		/// <summary>
 		/// Gets the binary data of the workbook, setting worksheets to right-to-left view.
