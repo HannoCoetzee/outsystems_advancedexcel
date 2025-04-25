@@ -19,6 +19,53 @@ namespace OutSystems.NssAdvanced_Excel
     public class CssAdvanced_Excel : IssAdvanced_Excel
     {
 		/// <summary>
+		/// Get all merged cell ranges in the selected worksheet. E.g., A1:A3; B1:C2.
+		/// </summary>
+		/// <param name="ssWorksheet"></param>
+		/// <param name="ssMergedRange"></param>
+		public void MssCell_GetMergedRange(object ssWorksheet, out string ssMergedRange) {
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+
+            ssMergedRange = "";
+
+            if (ws.MergedCells.Count > 0)
+            {
+                foreach (var mergedRange in ws.MergedCells)
+                {
+                    ssMergedRange += mergedRange + "; ";
+                }
+
+                ssMergedRange = ssMergedRange.TrimEnd(new char[] { ';', ' ' });
+            }
+            else
+            {
+                ssMergedRange = "No merged cells found.";
+            }
+        } // MssCell_GetMergedRange
+
+  		/// <summary>
+		/// Gets the binary data of the workbook, setting worksheets to right-to-left view.
+		/// </summary>
+		/// <param name="ssWorkbook"></param>
+		/// <param name="ssBinaryData"></param>
+		public void MssWorkbook_SaveRightToLeft(object ssWorkbook, out byte[] ssBinaryData) {
+            ExcelPackage p = ssWorkbook as ExcelPackage;
+       
+            if (p == null)
+            {
+                ssBinaryData = null;
+                return;
+            }
+
+            foreach (var worksheet in p.Workbook.Worksheets)
+            {
+                worksheet.View.RightToLeft = true;
+            }
+
+            ssBinaryData = p.GetAsByteArray();
+        } // MssWorkbook_SaveRightToLeft
+
+  		/// <summary>
 		/// Freeze cells, defined by row and column numbers.
 		/// Example:
 		/// - Choosing row = 2, column = 1 will freeze the first row.
