@@ -778,19 +778,23 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorksheet_GetImages(object ssWorksheet, out RLImageRecordList ssImages)
         {
             ssImages = new RLImageRecordList();
-            RCImageRecord Img = new RCImageRecord();
-            ExcelPicture picture = null;
 
             ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
 
             var pics = ws.Drawings;
             for (int i = 0; i < pics.Count; i++)
             {
-                Img.ssSTImage.ssName = pics[i].Name;
-                picture = pics[i] as ExcelPicture;
+                ExcelPicture picture = pics[i] as ExcelPicture;
+                if (picture == null)
+                {
+                    continue;
+                }
+
+                RCImageRecord Img = new RCImageRecord();
+                Img.ssSTImage.ssName = picture.Name;
                 Img.ssSTImage.ssContent = Util.ImageToByteArray(picture.Image);
-                Img.ssSTImage.ssColumn = pics[i].From.Column;
-                Img.ssSTImage.ssRow = pics[i].From.Row;
+                Img.ssSTImage.ssColumn = picture.From.Column;
+                Img.ssSTImage.ssRow = picture.From.Row;
                 ssImages.Append(Img);
             }
         } // MssWorksheet_GetImages
@@ -1068,7 +1072,7 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 if (ssProtectionOptions != null && !string.IsNullOrEmpty(ssProtectionOptions.ssSTProtection.ssPassword))
                 {
-                    ws.Protection.SetPassword(ssPassword);
+                    ws.Protection.SetPassword(ssProtectionOptions.ssSTProtection.ssPassword);
                 }
             }
         } // MssWorksheet_Protect
@@ -1197,7 +1201,6 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssText">The comment.</param>
         /// <param name="ssAuthor">The author of the comment.</param>
         /// <param name="ssAutofit"></param>
-        /// <param name="ssIsRichText"></param>
         public void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor, bool ssAutofit)
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
@@ -1221,7 +1224,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             for (int row = 1; row <= nrRows; row++)
             {
-                for (int col = ssStartColumnNumber; col <= ssStartColumnNumber + ssNumberOfColumns; col++)
+                for (int col = ssStartColumnNumber; col < ssStartColumnNumber + ssNumberOfColumns; col++)
                 {
                     if (ws.Cells[row, col].Comment == null)
                     {
@@ -1285,7 +1288,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             for (int col = 1; col <= nrColumns; col++)
             {
-                for (int row = ssStartRowNumber; row <= ssStartRowNumber + ssNumberOfRows; row++)
+                for (int row = ssStartRowNumber; row < ssStartRowNumber + ssNumberOfRows; row++)
                 {
                     if (ws.Cells[row, col].Comment == null)
                     {
@@ -1603,7 +1606,7 @@ namespace OutSystems.NssAdvanced_Excel
                     Util.ApplyConditionalFormattingStyle(t.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.TopPercent:
-                    var tp = ws.ConditionalFormatting.AddBottomPercent(address);
+                    var tp = ws.ConditionalFormatting.AddTopPercent(address);
                     tp.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
                     tp.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
                     Util.ApplyConditionalFormattingStyle(tp.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
@@ -2186,10 +2189,10 @@ namespace OutSystems.NssAdvanced_Excel
                     }
                 }
 
-                ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, ssExportHeaders);
-            }
+                ExcelRange range = (ExcelRange)ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, ssExportHeaders);
 
-            Util.ApplyFormatToRange(ws.Cells[ssRowStart, ssColumnStart], ssCellFormat);
+                Util.ApplyFormatToRange(range, ssCellFormat);
+            }
         } // MssCell_WriteRangeWithFormat
 
         /// <summary>
@@ -2233,7 +2236,9 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorkbook">The workbook that you want to work with.</param>
         public void MssWorkbook_Open(string ssFileName, byte[] ssBinary_Data, out object ssWorkbook)
         {
-            if (ssBinary_Data.LongLength <= 0 && string.IsNullOrEmpty(ssFileName))
+            bool hasBinaryData = ssBinary_Data != null && ssBinary_Data.LongLength > 0;
+
+            if (!hasBinaryData && string.IsNullOrEmpty(ssFileName))
             {
                 throw new Exception("You need to specify at least one of FileName or Binary_Data");
             }
@@ -2242,14 +2247,17 @@ namespace OutSystems.NssAdvanced_Excel
             if (ssFileName.ToLower().StartsWith("http:") || ssFileName.ToLower().StartsWith("https:"))
             {
                 System.Net.HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ssFileName);
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                p.Load(response.GetResponseStream());
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    p.Load(responseStream);
+                }
             }
             else if (!string.IsNullOrEmpty(ssFileName))
             {
                 p.Load(System.IO.File.Open(ssFileName, System.IO.FileMode.OpenOrCreate));
             }
-            else if (ssBinary_Data.LongLength > 0)
+            else if (hasBinaryData)
             {
                 Stream s = new MemoryStream(ssBinary_Data);
                 p.Load(s);

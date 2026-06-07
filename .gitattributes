@@ -1,0 +1,11 @@
+* text=auto eol=lf
+*.cs text eol=lf
+*.csproj text eol=lf
+*.sln text eol=lf
+*.config text eol=lf
+*.bat text eol=crlf
+*.xlsx binary
+*.xls binary
+*.oap binary
+*.xif binary
+*.ico binary
