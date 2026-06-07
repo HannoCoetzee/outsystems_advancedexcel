@@ -1099,7 +1099,6 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssText">The comment.</param>
         /// <param name="ssAuthor">The author of the comment.</param>
         /// <param name="ssAutofit"></param>
-        /// <param name="ssIsRichText"></param>
         public void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor, bool ssAutofit)
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;

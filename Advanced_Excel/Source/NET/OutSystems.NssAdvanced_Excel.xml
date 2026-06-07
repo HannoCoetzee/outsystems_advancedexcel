@@ -561,7 +561,6 @@
             <param name="ssText">The comment.</param>
             <param name="ssAuthor">The author of the comment.</param>
             <param name="ssAutofit"></param>
-            <param name="ssIsRichText"></param>
         </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssColumn_Delete(System.Object,System.Int32,System.Int32)">
             <summary>
