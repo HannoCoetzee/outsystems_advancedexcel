@@ -1197,6 +1197,56 @@ namespace OutSystems.NssAdvanced_Excel {
 			// TODO: Write implementation for action
 		} // MssCell_GetFillColorByName
 
+		/// <summary>
+		/// Get all merged cell ranges in the selected workbook.
+		/// 
+		/// E.g., Worksheet: Sheet1
+		/// A1:B2; D4:E4
+		/// Worksheet: Sheet2
+		/// C3:D5
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook to work with</param>
+		/// <param name="ssMergedRange">Ranges of the merged cells</param>
+		public void MssWorkbook_GetMergedCellRanges(object ssWorkbook, out string ssMergedRange) {
+			ssMergedRange = "";
+			// TODO: Write implementation for action
+		} // MssWorkbook_GetMergedCellRanges
+
+		/// <summary>
+		/// Get all merged cell ranges in the selected worksheet. E.g., A1:A3; B1:C2.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssMergedRange">Ranges of the merged cells</param>
+		public void MssWorksheet_GetMergedCellRanges(object ssWorksheet, out string ssMergedRange) {
+			ssMergedRange = "";
+			// TODO: Write implementation for action
+		} // MssWorksheet_GetMergedCellRanges
+
+		/// <summary>
+		/// Gets the binary data of the workbook, setting worksheets to right-to-left view.
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook to work with</param>
+		/// <param name="ssBinaryData"></param>
+		public void MssWorkbook_SaveRightToLeft(object ssWorkbook, out byte[] ssBinaryData) {
+			ssBinaryData = new byte[] {};
+			// TODO: Write implementation for action
+		} // MssWorkbook_SaveRightToLeft
+
+		/// <summary>
+		/// Freeze cells, defined by row and column numbers.
+		/// 
+		/// Example:
+		/// 
+		/// - Choosing row = 2, column = 1 will freeze the first row.
+		/// - Choosing row = 1, column = 2 will freeze the first column.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row Number</param>
+		/// <param name="ssColumn">Column Number</param>
+		public void MssCell_Freeze(object ssWorksheet, int ssRow, int ssColumn) {
+			// TODO: Write implementation for action
+		} // MssCell_Freeze
+
 	} // CssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

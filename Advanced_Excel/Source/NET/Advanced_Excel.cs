@@ -18,13 +18,120 @@ namespace OutSystems.NssAdvanced_Excel
 
     public class CssAdvanced_Excel : IssAdvanced_Excel
     {
+        /// <summary>
+        /// Get all merged cell ranges in the selected workbook.
+        /// E.g., Worksheet: Sheet1
+        /// A1:B2; D4:E4
+        /// Worksheet: Sheet2
+        /// C3:D5
+        /// </summary>
+        /// <param name="ssWorkbook">The workbook to work with</param>
+        /// <param name="ssMergedRange">Ranges of the merged cells</param>
+        public void MssWorkbook_GetMergedCellRanges(object ssWorkbook, out string ssMergedRange)
+        {
+            ssMergedRange = "";
+            bool anyMergedCells = false;
+            ExcelPackage p = ssWorkbook as ExcelPackage;
 
-		/// <summary>
-		/// Action to convert Hex code of color to RGB value
-		/// </summary>
-		/// <param name="ssHexCode">Color hex code (eg. #FFFFFF)</param>
-		/// <param name="ssRGB">Color RGB value (eg. RGB(255, 255, 255))</param>
-		public void MssUtil_ConvertHexCodeToRGB(string ssHexCode, out string ssRGB) {
+            foreach (var worksheet in p.Workbook.Worksheets)
+            {
+                if (worksheet.MergedCells.Count > 0)
+                {
+                    anyMergedCells = true;
+                    ssMergedRange += $"Worksheet: {worksheet.Name}\n";
+
+                    foreach (var mergedRange in worksheet.MergedCells)
+                    {
+                        ssMergedRange += $"{mergedRange}; ";
+                    }
+
+                    ssMergedRange = ssMergedRange.TrimEnd(new char[] { ';', ' ' });
+                    ssMergedRange += "\n\n";
+                }
+            }
+
+            if (!anyMergedCells)
+            {
+                ssMergedRange = "No merged cells found in any worksheet.";
+            }
+        } // MssWorkbook_GetMergedCellRanges
+
+        /// <summary>
+        /// Get all merged cell ranges in the selected worksheet. E.g., A1:A3; B1:C2.
+        /// </summary>
+        /// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+        /// <param name="ssMergedRange">Ranges of the merged cells</param>
+        public void MssWorksheet_GetMergedCellRanges(object ssWorksheet, out string ssMergedRange)
+        {
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+
+            ssMergedRange = "";
+
+            if (ws.MergedCells.Count > 0)
+            {
+                foreach (var mergedRange in ws.MergedCells)
+                {
+                    ssMergedRange += mergedRange + "; ";
+                }
+
+                ssMergedRange = ssMergedRange.TrimEnd(new char[] { ';', ' ' });
+            }
+            else
+            {
+                ssMergedRange = "No merged cells found.";
+            }
+        } // MssWorksheet_GetMergedCellRanges
+
+        /// <summary>
+        /// Gets the binary data of the workbook, setting worksheets to right-to-left view.
+        /// </summary>
+        /// <param name="ssWorkbook"></param>
+        /// <param name="ssBinaryData"></param>
+        public void MssWorkbook_SaveRightToLeft(object ssWorkbook, out byte[] ssBinaryData)
+        {
+            ExcelPackage p = ssWorkbook as ExcelPackage;
+
+            if (p == null)
+            {
+                ssBinaryData = null;
+                return;
+            }
+
+            foreach (var worksheet in p.Workbook.Worksheets)
+            {
+                worksheet.View.RightToLeft = true;
+            }
+
+            ssBinaryData = p.GetAsByteArray();
+        } // MssWorkbook_SaveRightToLeft
+
+        /// <summary>
+        /// Freeze cells, defined by row and column numbers.
+        /// Example:
+        /// - Choosing row = 2, column = 1 will freeze the first row.
+        /// - Choosing row = 1, column = 2 will freeze the first column.
+        /// </summary>
+        /// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+        /// <param name="ssRow">Row Number</param>
+        /// <param name="ssColumn">Column Number</param>
+        public void MssCell_Freeze(object ssWorksheet, int ssRow, int ssColumn)
+        {
+
+            // Select the worksheet
+            ExcelWorksheet ws;
+            ws = (ExcelWorksheet)ssWorksheet;
+
+            // Freeze selected rows and columns
+            ws.View.FreezePanes(ssRow, ssColumn);
+        } // MssCell_Freeze
+
+        /// <summary>
+        /// Action to convert Hex code of color to RGB value
+        /// </summary>
+        /// <param name="ssHexCode">Color hex code (eg. #FFFFFF)</param>
+        /// <param name="ssRGB">Color RGB value (eg. RGB(255, 255, 255))</param>
+        public void MssUtil_ConvertHexCodeToRGB(string ssHexCode, out string ssRGB)
+        {
             // Remove the '#' if present
             //if (ssHexCode.StartsWith("#"))
             //ssHexCode = ssHexCode.Substring(1);
@@ -41,14 +148,15 @@ namespace OutSystems.NssAdvanced_Excel
             }
         } // MssUtil_ConvertHexCodeToRGB
 
-		/// <summary>
-		/// Get fill color of a cell, defined by its index.
-		/// </summary>
-		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
-		/// <param name="ssRow">Row number</param>
-		/// <param name="ssColumn">Column number</param>
-		/// <param name="ssFillColor">Fill color of the cell</param>
-		public void MssCell_GetFillColorByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFillColor) {
+        /// <summary>
+        /// Get fill color of a cell, defined by its index.
+        /// </summary>
+        /// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+        /// <param name="ssRow">Row number</param>
+        /// <param name="ssColumn">Column number</param>
+        /// <param name="ssFillColor">Fill color of the cell</param>
+        public void MssCell_GetFillColorByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFillColor)
+        {
             // Select the worksheet
             ExcelWorksheet ws;
             ws = (ExcelWorksheet)ssWorksheet;
@@ -70,13 +178,14 @@ namespace OutSystems.NssAdvanced_Excel
             }
         } // MssCell_GetFillColorByIndex
 
-		/// <summary>
-		/// Get fill color of a cell, defined by its name.
-		/// </summary>
-		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
-		/// <param name="ssCellName">Cell name (eg. A1)</param>
-		/// <param name="ssFillColor">Fill color of the cell</param>
-		public void MssCell_GetFillColorByName(object ssWorksheet, string ssCellName, out string ssFillColor) {
+        /// <summary>
+        /// Get fill color of a cell, defined by its name.
+        /// </summary>
+        /// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+        /// <param name="ssCellName">Cell name (eg. A1)</param>
+        /// <param name="ssFillColor">Fill color of the cell</param>
+        public void MssCell_GetFillColorByName(object ssWorksheet, string ssCellName, out string ssFillColor)
+        {
             // Select the worksheet
             ExcelWorksheet ws;
             ws = (ExcelWorksheet)ssWorksheet;
@@ -98,16 +207,17 @@ namespace OutSystems.NssAdvanced_Excel
             }
         } // MssCell_GetFillColorByName
 
-		/// <summary>
-		/// Copy a range of rows
-		/// </summary>
-		/// <param name="ssWorksheet"></param>
-		/// <param name="ssRangeStart">Example: A1:B5</param>
-		/// <param name="ssRangeEnd">Example: G1:H5</param>
-		public void MssWorksheet_CopyRows(object ssWorksheet, string ssRangeStart, string ssRangeEnd) {
-			var ws = ssWorksheet as ExcelWorksheet;
+        /// <summary>
+        /// Copy a range of rows
+        /// </summary>
+        /// <param name="ssWorksheet"></param>
+        /// <param name="ssRangeStart">Example: A1:B5</param>
+        /// <param name="ssRangeEnd">Example: G1:H5</param>
+        public void MssWorksheet_CopyRows(object ssWorksheet, string ssRangeStart, string ssRangeEnd)
+        {
+            var ws = ssWorksheet as ExcelWorksheet;
             ws.Cells[ssRangeStart].Copy(ws.Cells[ssRangeEnd]);
-		} // MssWorksheet_CopyRows
+        } // MssWorksheet_CopyRows
 
 
         /// <summary>

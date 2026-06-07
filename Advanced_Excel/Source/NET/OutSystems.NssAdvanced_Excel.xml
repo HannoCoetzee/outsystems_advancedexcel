@@ -4,6 +4,42 @@
         <name>OutSystems.NssAdvanced_Excel</name>
     </assembly>
     <members>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_GetMergedCellRanges(System.Object,System.String@)">
+            <summary>
+            Get all merged cell ranges in the selected workbook.
+            E.g., Worksheet: Sheet1
+            A1:B2; D4:E4
+            Worksheet: Sheet2
+            C3:D5
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+            <param name="ssMergedRange">Ranges of the merged cells</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorksheet_GetMergedCellRanges(System.Object,System.String@)">
+            <summary>
+            Get all merged cell ranges in the selected worksheet. E.g., A1:A3; B1:C2.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssMergedRange">Ranges of the merged cells</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssWorkbook_SaveRightToLeft(System.Object,System.Byte[]@)">
+            <summary>
+            Gets the binary data of the workbook, setting worksheets to right-to-left view.
+            </summary>
+            <param name="ssWorkbook"></param>
+            <param name="ssBinaryData"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssCell_Freeze(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Freeze cells, defined by row and column numbers.
+            Example:
+            - Choosing row = 2, column = 1 will freeze the first row.
+            - Choosing row = 1, column = 2 will freeze the first column.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssRow">Row Number</param>
+            <param name="ssColumn">Column Number</param>
+        </member>
         <member name="M:OutSystems.NssAdvanced_Excel.CssAdvanced_Excel.MssUtil_ConvertHexCodeToRGB(System.String,System.String@)">
             <summary>
             Action to convert Hex code of color to RGB value
@@ -1985,6 +2021,45 @@
             <param name="ssWorksheet">Worksheet on which the cell resides</param>
             <param name="ssCellName">Cell name (eg. A1)</param>
             <param name="ssFillColor">Fill color of the cell</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_GetMergedCellRanges(System.Object,System.String@)">
+            <summary>
+            Get all merged cell ranges in the selected workbook.
+            
+            E.g., Worksheet: Sheet1
+            A1:B2; D4:E4
+            Worksheet: Sheet2
+            C3:D5
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+            <param name="ssMergedRange">Ranges of the merged cells</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorksheet_GetMergedCellRanges(System.Object,System.String@)">
+            <summary>
+            Get all merged cell ranges in the selected worksheet. E.g., A1:A3; B1:C2.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssMergedRange">Ranges of the merged cells</param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssWorkbook_SaveRightToLeft(System.Object,System.Byte[]@)">
+            <summary>
+            Gets the binary data of the workbook, setting worksheets to right-to-left view.
+            </summary>
+            <param name="ssWorkbook">The workbook to work with</param>
+            <param name="ssBinaryData"></param>
+        </member>
+        <member name="M:OutSystems.NssAdvanced_Excel.IssAdvanced_Excel.MssCell_Freeze(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Freeze cells, defined by row and column numbers.
+            
+            Example:
+            
+            - Choosing row = 2, column = 1 will freeze the first row.
+            - Choosing row = 1, column = 2 will freeze the first column.
+            </summary>
+            <param name="ssWorksheet">Worksheet on which the cell resides</param>
+            <param name="ssRow">Row Number</param>
+            <param name="ssColumn">Column Number</param>
         </member>
         <member name="T:OutSystems.NssAdvanced_Excel.STCellFormatStructure">
             <summary>
