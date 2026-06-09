@@ -59,7 +59,12 @@ namespace OutSystems.NssAdvanced_Excel
         {
             using (var ms = new MemoryStream())
             {
-                imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+                System.Drawing.Imaging.ImageFormat format = imageIn.RawFormat;
+                if (format == null || format.Guid == System.Drawing.Imaging.ImageFormat.MemoryBmp.Guid)
+                {
+                    format = System.Drawing.Imaging.ImageFormat.Png;
+                }
+                imageIn.Save(ms, format);
                 return ms.ToArray();
             }
         }

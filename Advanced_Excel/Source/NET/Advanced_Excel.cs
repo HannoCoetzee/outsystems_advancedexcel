@@ -468,9 +468,12 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
 
-            Image i = Image.FromStream(new MemoryStream(ssImage));
-            ExcelPicture pic = ws.Drawings.AddPicture(ssImageName, i);
-            pic.SetPosition(ssRow, 0, ssColumn, 0);
+            using (MemoryStream ms = new MemoryStream(ssImage))
+            using (Image i = Image.FromStream(ms))
+            {
+                ExcelPicture pic = ws.Drawings.AddPicture(ssImageName, i);
+                pic.SetPosition(ssRow, 0, ssColumn, 0);
+            }
         } // MssCell_WriteImageByIndex
 
         /// <summary>
