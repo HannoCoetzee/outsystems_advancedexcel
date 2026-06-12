@@ -582,7 +582,7 @@ namespace OutSystems.NssAdvanced_Excel
             using (Image i = Image.FromStream(ms))
             {
                 ExcelPicture pic = ws.Drawings.AddPicture(ssImageName, i);
-                pic.SetPosition(ssRow, 0, ssColumn, 0);
+                pic.SetPosition(ssRow - 1, 0, ssColumn - 1, 0);
             }
         } // MssCell_WriteImageByIndex
 
@@ -1190,7 +1190,7 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
-            ws.ConditionalFormatting.RemoveAt(ssRuleToDeleteIndex);
+            ws.ConditionalFormatting.RemoveAt(ssRuleToDeleteIndex - 1);
         } // MssConditionalFormatting_DeleteRule
 
         /// <summary>
@@ -1875,7 +1875,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssHidden">A Boolean value, set to True to hide the column, and to False to show the column.</param>
         public void MssColumn_Hide_Show(object ssWorksheet, int ssColumn, bool ssHidden)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet; ;
+            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
 
             ws.Column(ssColumn).Hidden = ssHidden;
 
@@ -2266,7 +2266,10 @@ namespace OutSystems.NssAdvanced_Excel
             }
             else if (!string.IsNullOrEmpty(ssFileName))
             {
-                p.Load(System.IO.File.Open(ssFileName, System.IO.FileMode.OpenOrCreate));
+                using (FileStream fs = System.IO.File.Open(ssFileName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read))
+                {
+                    p.Load(fs);
+                }
             }
             else if (hasBinaryData)
             {
@@ -2373,7 +2376,6 @@ namespace OutSystems.NssAdvanced_Excel
             chart.SetPosition(ssRowPos, 0, ssColPos, 0);
             chart.SetSize(ssWidth, ssHeight);
 
-            STDataSeriesStructure curr_series = ssDataSeries_List.CurrentRec;
             for (int i = 0; i < ssDataSeries_List.Count; i++)
             {
                 STRangeStructure valuerange = ssDataSeries_List.CurrentRec.ssSTDataSeries.ssValueRange.ssSTRange;
