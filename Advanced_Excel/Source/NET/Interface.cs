@@ -958,7 +958,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssWorksheet"></param>
 		/// <param name="ssRangeStart">Example: A1:B5</param>
 		/// <param name="ssRangeEnd">Example: G1:H5</param>
-		void MssWorksheet_CopyRows(object ssWorksheet, string ssRangeStart, string ssRangeEnd);
+		void MssWorksheet_CopyRange(object ssWorksheet, string ssRangeStart, string ssRangeEnd);
 
 		/// <summary>
 		/// Action to convert Hex code of color to RGB value
@@ -986,8 +986,19 @@ namespace OutSystems.NssAdvanced_Excel {
 		void MssCell_GetFillColorByName(object ssWorksheet, string ssCellName, out string ssFillColor);
 
 		/// <summary>
-		/// Get all merged cell ranges in the selected workbook.
+		/// Freeze cells, defined by row and column numbers.
 		/// 
+		/// Example:
+		/// - Choosing row = 2, column = 1 will freeze the first row.
+		/// - Choosing row = 1, column = 2 will freeze the first column.
+		/// </summary>
+		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
+		/// <param name="ssRow">Row Number</param>
+		/// <param name="ssColumn">Column Number</param>
+		void MssCell_Freeze(object ssWorksheet, int ssRow, int ssColumn);
+
+		/// <summary>
+		/// Get all merged cell ranges in the selected workbook.
 		/// E.g., Worksheet: Sheet1
 		/// A1:B2; D4:E4
 		/// Worksheet: Sheet2
@@ -998,31 +1009,18 @@ namespace OutSystems.NssAdvanced_Excel {
 		void MssWorkbook_GetMergedCellRanges(object ssWorkbook, out string ssMergedRange);
 
 		/// <summary>
+		/// Gets the binary data of the workbook, setting worksheets to right-to-left view.
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook to work with</param>
+		/// <param name="ssBinaryData">The binary data of the file</param>
+		void MssWorkbook_SaveRightToLeft(object ssWorkbook, out byte[] ssBinaryData);
+
+		/// <summary>
 		/// Get all merged cell ranges in the selected worksheet. E.g., A1:A3; B1:C2.
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
 		/// <param name="ssMergedRange">Ranges of the merged cells</param>
 		void MssWorksheet_GetMergedCellRanges(object ssWorksheet, out string ssMergedRange);
-
-		/// <summary>
-		/// Gets the binary data of the workbook, setting worksheets to right-to-left view.
-		/// </summary>
-		/// <param name="ssWorkbook">The workbook to work with</param>
-		/// <param name="ssBinaryData"></param>
-		void MssWorkbook_SaveRightToLeft(object ssWorkbook, out byte[] ssBinaryData);
-
-		/// <summary>
-		/// Freeze cells, defined by row and column numbers.
-		/// 
-		/// Example:
-		/// 
-		/// - Choosing row = 2, column = 1 will freeze the first row.
-		/// - Choosing row = 1, column = 2 will freeze the first column.
-		/// </summary>
-		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
-		/// <param name="ssRow">Row Number</param>
-		/// <param name="ssColumn">Column Number</param>
-		void MssCell_Freeze(object ssWorksheet, int ssRow, int ssColumn);
 
 	} // IssAdvanced_Excel
 
