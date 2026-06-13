@@ -1465,22 +1465,43 @@ namespace OutSystems.NssAdvanced_Excel
                         newItem.ssSTConditionalFormatItem.ssRuleType = (int)yesterday.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.BeginsWith:
+                        var beginsWith = item as IExcelConditionalFormattingBeginsWith;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)beginsWith.Type;
+                        newItem.ssSTConditionalFormatItem.ssFormula = beginsWith.Text;
                         break;
                     case eExcelConditionalFormattingRuleType.Between:
                         break;
                     case eExcelConditionalFormattingRuleType.ContainsBlanks:
+                        var containsBlanks = item as IExcelConditionalFormattingContainsBlanks;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)containsBlanks.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.ContainsErrors:
+                        var containsErrors = item as IExcelConditionalFormattingContainsErrors;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)containsErrors.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.ContainsText:
+                        var containsText = item as IExcelConditionalFormattingContainsText;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)containsText.Type;
+                        newItem.ssSTConditionalFormatItem.ssFormula = containsText.Text;
                         break;
                     case eExcelConditionalFormattingRuleType.DuplicateValues:
+                        var duplicateValues = item as IExcelConditionalFormattingDuplicateValues;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)duplicateValues.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.EndsWith:
+                        var endsWith = item as IExcelConditionalFormattingEndsWith;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)endsWith.Type;
+                        newItem.ssSTConditionalFormatItem.ssFormula = endsWith.Text;
                         break;
                     case eExcelConditionalFormattingRuleType.Equal:
+                        var equal = item as IExcelConditionalFormattingEqual;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)equal.Type;
+                        newItem.ssSTConditionalFormatItem.ssFormula = equal.Formula;
                         break;
                     case eExcelConditionalFormattingRuleType.Expression:
+                        var expression = item as IExcelConditionalFormattingExpression;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)expression.Type;
+                        newItem.ssSTConditionalFormatItem.ssFormula = expression.Formula;
                         break;
                     case eExcelConditionalFormattingRuleType.GreaterThan:
                         var gt = item as IExcelConditionalFormattingGreaterThan;
@@ -1507,14 +1528,26 @@ namespace OutSystems.NssAdvanced_Excel
                     case eExcelConditionalFormattingRuleType.NotContains:
                         break;
                     case eExcelConditionalFormattingRuleType.NotContainsBlanks:
+                        var notContainsBlanks = item as IExcelConditionalFormattingNotContainsBlanks;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)notContainsBlanks.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.NotContainsErrors:
+                        var notContainsErrors = item as IExcelConditionalFormattingNotContainsErrors;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)notContainsErrors.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.NotContainsText:
+                        var notContainsText = item as IExcelConditionalFormattingNotContainsText;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)notContainsText.Type;
+                        newItem.ssSTConditionalFormatItem.ssFormula = notContainsText.Text;
                         break;
                     case eExcelConditionalFormattingRuleType.NotEqual:
+                        var notEqual = item as IExcelConditionalFormattingNotEqual;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)notEqual.Type;
+                        newItem.ssSTConditionalFormatItem.ssFormula = notEqual.Formula;
                         break;
                     case eExcelConditionalFormattingRuleType.UniqueValues:
+                        var uniqueValues = item as IExcelConditionalFormattingUniqueValues;
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)uniqueValues.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.ThreeColorScale:
                         break;
@@ -1683,22 +1716,59 @@ namespace OutSystems.NssAdvanced_Excel
                     Util.ApplyConditionalFormattingStyle(yesterday.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.BeginsWith:
+                    var beginsWith = ws.ConditionalFormatting.AddBeginsWith(address);
+                    beginsWith.Text = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    beginsWith.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    beginsWith.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(beginsWith.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.Between:
-                    break;
+                    throw new NotSupportedException("ConditionalFormatting rule type 'Between' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.ContainsBlanks:
+                    var containsBlanks = ws.ConditionalFormatting.AddContainsBlanks(address);
+                    containsBlanks.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    containsBlanks.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(containsBlanks.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.ContainsErrors:
+                    var containsErrors = ws.ConditionalFormatting.AddContainsErrors(address);
+                    containsErrors.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    containsErrors.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(containsErrors.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.ContainsText:
+                    var containsText = ws.ConditionalFormatting.AddContainsText(address);
+                    containsText.Text = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    containsText.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    containsText.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(containsText.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.DuplicateValues:
+                    var duplicateValues = ws.ConditionalFormatting.AddDuplicateValues(address);
+                    duplicateValues.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    duplicateValues.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(duplicateValues.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.EndsWith:
+                    var endsWith = ws.ConditionalFormatting.AddEndsWith(address);
+                    endsWith.Text = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    endsWith.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    endsWith.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(endsWith.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.Equal:
+                    var equal = ws.ConditionalFormatting.AddEqual(address);
+                    equal.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    equal.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    equal.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(equal.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.Expression:
+                    var expression = ws.ConditionalFormatting.AddExpression(address);
+                    expression.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    expression.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    expression.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(expression.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.GreaterThan:
                     var gt = ws.ConditionalFormatting.AddGreaterThan(address);
@@ -1729,31 +1799,53 @@ namespace OutSystems.NssAdvanced_Excel
                     Util.ApplyConditionalFormattingStyle(lte.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.NotBetween:
-                    break;
+                    throw new NotSupportedException("ConditionalFormatting rule type 'NotBetween' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.NotContains:
-                    break;
+                    throw new NotSupportedException("ConditionalFormatting rule type 'NotContains' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.NotContainsBlanks:
+                    var notContainsBlanks = ws.ConditionalFormatting.AddNotContainsBlanks(address);
+                    notContainsBlanks.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    notContainsBlanks.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(notContainsBlanks.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.NotContainsErrors:
+                    var notContainsErrors = ws.ConditionalFormatting.AddNotContainsErrors(address);
+                    notContainsErrors.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    notContainsErrors.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(notContainsErrors.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.NotContainsText:
+                    var notContainsText = ws.ConditionalFormatting.AddNotContainsText(address);
+                    notContainsText.Text = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    notContainsText.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    notContainsText.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(notContainsText.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.NotEqual:
+                    var notEqual = ws.ConditionalFormatting.AddNotEqual(address);
+                    notEqual.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    notEqual.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    notEqual.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(notEqual.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.UniqueValues:
+                    var uniqueValues = ws.ConditionalFormatting.AddUniqueValues(address);
+                    uniqueValues.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    uniqueValues.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    Util.ApplyConditionalFormattingStyle(uniqueValues.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
                     break;
                 case eExcelConditionalFormattingRuleType.ThreeColorScale:
-                    break;
+                    throw new NotSupportedException("ConditionalFormatting rule type 'ThreeColorScale' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.TwoColorScale:
-                    break;
+                    throw new NotSupportedException("ConditionalFormatting rule type 'TwoColorScale' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.ThreeIconSet:
-                    break;
+                    throw new NotSupportedException("ConditionalFormatting rule type 'ThreeIconSet' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.FourIconSet:
-                    break;
+                    throw new NotSupportedException("ConditionalFormatting rule type 'FourIconSet' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.FiveIconSet:
-                    break;
+                    throw new NotSupportedException("ConditionalFormatting rule type 'FiveIconSet' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.DataBar:
-                    break;
+                    throw new NotSupportedException("ConditionalFormatting rule type 'DataBar' is not yet supported by this extension.");
                 default:
                     throw new Exception("Invalid Rule Type: " + ssConditionalFormatRecord.ssSTConditionalFormatItem.ssRuleType);
             }
