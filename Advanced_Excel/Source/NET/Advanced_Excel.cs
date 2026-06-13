@@ -103,6 +103,8 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             ssBinaryData = p.GetAsByteArray();
+            // GetAsByteArray closes the package; reload so the workbook stays usable.
+            p.Load(new System.IO.MemoryStream(ssBinaryData));
         } // MssWorkbook_SaveRightToLeft
 
         /// <summary>
@@ -405,15 +407,25 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorksheet_SetActive(object ssWorkbook, string ssWorksheetName, int ssWorksheetIndex)
         {
             ExcelPackage ee = ssWorkbook as ExcelPackage;
-            if (ssWorksheetName != "")
+            ExcelWorksheet target = null;
+
+            if (!string.IsNullOrEmpty(ssWorksheetName))
             {
-                ee.Workbook.Worksheets[ssWorksheetName].Select();
+                target = ee.Workbook.Worksheets[ssWorksheetName];
             }
             if (ssWorksheetIndex > 0)
             {
-                ee.Workbook.Worksheets[ssWorksheetIndex].Select();
-
+                target = ee.Workbook.Worksheets[ssWorksheetIndex];
             }
+
+            if (target == null) return;
+
+            foreach (var sheet in ee.Workbook.Worksheets)
+            {
+                sheet.View.TabSelected = false;
+            }
+            target.View.TabSelected = true;
+            ee.Workbook.View.ActiveTab = target.Index;
         } // MssWorksheet_SetActive
 
         /// <summary>
@@ -1005,9 +1017,13 @@ namespace OutSystems.NssAdvanced_Excel
                 wb.Worksheets.Add(ssFirstSheetName);
                 if (ssNumberOfSheets > 1)
                 {
+                    // Strip trailing "1" so "Sheet1" produces Sheet1/Sheet2/Sheet3, not Sheet1/Sheet12/Sheet13.
+                    string baseName = (ssFirstSheetName.Length > 1 && ssFirstSheetName.EndsWith("1"))
+                        ? ssFirstSheetName.Substring(0, ssFirstSheetName.Length - 1)
+                        : ssFirstSheetName;
                     for (int i = 2; i <= ssNumberOfSheets; i++)
                     {
-                        wb.Worksheets.Add(string.Concat(ssFirstSheetName, i));
+                        wb.Worksheets.Add(baseName + i);
                     }
                 }
             }
@@ -1033,10 +1049,12 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorkbook_Protect(object ssWorkbook, string ssPassword, bool ssLockStructure, bool ssLockWindows, bool ssLockRevision)
         {
             ExcelPackage p = ssWorkbook as ExcelPackage;
-
-            p.Encryption.Password = ssPassword;
-
             ExcelWorkbook wb = p.Workbook;
+
+            if (!string.IsNullOrEmpty(ssPassword))
+            {
+                wb.Protection.SetPassword(ssPassword);
+            }
 
             wb.Protection.LockRevision = ssLockRevision;
             wb.Protection.LockStructure = ssLockStructure;
@@ -2329,6 +2347,8 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ExcelPackage p = ssWorkbook as ExcelPackage;
             ssBinaryData = p.GetAsByteArray();
+            // GetAsByteArray closes the package; reload so the workbook stays usable.
+            p.Load(new System.IO.MemoryStream(ssBinaryData));
         } // MssWorkbook_GetBinaryData
 
         /// <summary>
