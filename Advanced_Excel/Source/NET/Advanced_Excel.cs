@@ -174,7 +174,7 @@ namespace OutSystems.NssAdvanced_Excel
             }
             else
             {
-                ssFillColor = "#" + fillColor.Substring(fillColor.Length - 6);
+                ssFillColor = "#" + (fillColor.Length >= 6 ? fillColor.Substring(fillColor.Length - 6) : fillColor.PadLeft(6, '0'));
             }
         } // MssCell_GetFillColorByIndex
 
@@ -203,7 +203,7 @@ namespace OutSystems.NssAdvanced_Excel
             }
             else
             {
-                ssFillColor = "#" + fillColor.Substring(fillColor.Length - 6);
+                ssFillColor = "#" + (fillColor.Length >= 6 ? fillColor.Substring(fillColor.Length - 6) : fillColor.PadLeft(6, '0'));
             }
         } // MssCell_GetFillColorByName
 
@@ -227,7 +227,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssProperties">The Microsoft Office properties of the Excel document.</param>
         public void MssExcel_GetProperties(object ssWorkbook, out RCOfficePropertiesRecord ssProperties)
         {
-            var wb = ssWorkbook as ExcelWorkbook;
+            var wb = ssWorkbook as ExcelWorkbook ?? (ssWorkbook as ExcelPackage)?.Workbook;
             var props = wb.Properties;
             ssProperties = new RCOfficePropertiesRecord(null);
             ssProperties.ssSTOfficeProperties.ssAuthor = props.Author;
@@ -250,7 +250,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssIgnoreBlank">If True, any blank properties in the Properties structure provided will be left with their existing values. If False, any blank properties in the Properties structure provided will be set to blank.</param>
         public void MssExcel_SetProperties(object ssWorkbook, RCOfficePropertiesRecord ssProperties, bool ssIgnoreBlank)
         {
-            var wb = ssWorkbook as ExcelWorkbook;
+            var wb = ssWorkbook as ExcelWorkbook ?? (ssWorkbook as ExcelPackage)?.Workbook;
             var props = wb.Properties;
             var inProps = ssProperties.ssSTOfficeProperties;
             if (!string.IsNullOrEmpty(inProps.ssAuthor)) { props.Author = inProps.ssAuthor; }
@@ -281,7 +281,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssClearManager">If True, clears the Manager property.</param>
         public void MssExcel_ClearProperties(object ssWorkbook, bool ssClearTitle, bool ssClearSubject, bool ssClearAuthor, bool ssClearComments, bool ssClearKeywords, bool ssClearLastModifiedBy, bool ssClearCategory, bool ssClearStatus, bool ssClearCompany, bool ssClearManager)
         {
-            var wb = ssWorkbook as ExcelWorkbook;
+            var wb = ssWorkbook as ExcelWorkbook ?? (ssWorkbook as ExcelPackage)?.Workbook;
             var props = wb.Properties;
             if (ssClearAuthor) { props.Author = string.Empty; }
             if (ssClearCategory) { props.Category = string.Empty; }
@@ -1972,10 +1972,10 @@ namespace OutSystems.NssAdvanced_Excel
 
             switch (ssCellType.ToLower())
             {
-                case "integer": ws.SetValue(address.Address, Convert.ToInt32(ssCellValue)); break;
-                case "datetime": ws.SetValue(address.Address, Convert.ToDateTime(ssCellValue)); break;
-                case "decimal": ws.SetValue(address.Address, Convert.ToDecimal(ssCellValue)); break;
-                case "boolean": ws.SetValue(address.Address, Convert.ToBoolean(ssCellValue)); break;
+                case "integer": ws.SetValue(address.Address, Convert.ToInt32(ssCellValue, System.Globalization.CultureInfo.InvariantCulture)); break;
+                case "datetime": ws.SetValue(address.Address, Convert.ToDateTime(ssCellValue, System.Globalization.CultureInfo.InvariantCulture)); break;
+                case "decimal": ws.SetValue(address.Address, Convert.ToDecimal(ssCellValue, System.Globalization.CultureInfo.InvariantCulture)); break;
+                case "boolean": ws.SetValue(address.Address, Convert.ToBoolean(ssCellValue, System.Globalization.CultureInfo.InvariantCulture)); break;
                 case "formula": ws.Cells[address.Address].Formula = ssCellValue.TrimStart('='); break;
                 case "text":
                     ssCellFormat.ssSTCellFormat.ssNumberFormat = "@"; /// Formats the cell as text. Ref: https://stackoverflow.com/a/30095442
