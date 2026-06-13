@@ -40,10 +40,6 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EPPlus, Version=0.0.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\EPPlus\EPPlus\bin\Release\EPPlus.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System">
       <Name>System</Name>
@@ -65,11 +61,6 @@
     <Reference Include="OutSystems.HubEdition.RuntimePlatform">
       <Name>OutSystems.HubEdition.RuntimePlatform</Name>
       <HintPath>bin\OutSystems.HubEdition.RuntimePlatform.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="OutSystems.HubEdition.SMS">
-      <Name>OutSystems.HubEdition.SMS</Name>
-      <HintPath>bin\OutSystems.HubEdition.SMS.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="OutSystems.RuntimeCommon">
