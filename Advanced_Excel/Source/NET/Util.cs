@@ -112,6 +112,24 @@ namespace OutSystems.NssAdvanced_Excel
             return dt;
         }
 
+        /// <summary>
+        /// Reset the record list, convert it to a DataTable and drop the platform-generated
+        /// columns (OptimizedAttributes / OriginalKey). Returns null when the list is empty.
+        /// </summary>
+        public static DataTable RecordListToDataTable(RecordList rl)
+        {
+            rl.Reset();
+            if (rl.Data.Count == 0)
+            {
+                return null;
+            }
+
+            DataTable dt = ConvertArrayListToDataTable(rl.Data);
+            if (dt.Columns.Contains("OptimizedAttributes")) dt.Columns.Remove("OptimizedAttributes");
+            if (dt.Columns.Contains("OriginalKey")) dt.Columns.Remove("OriginalKey");
+            return dt;
+        }
+
         public static DataTable ConvertObjectToDataTableSchema(Object o)
         {
             DataTable dt = new DataTable();
@@ -207,6 +225,9 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             range.Style.Font.Bold = format.ssSTCellFormat.ssBold;
+            range.Style.Font.Italic = format.ssSTCellFormat.ssItalic;
+            range.Style.Font.UnderLine = format.ssSTCellFormat.ssUnderline;
+            range.Style.Font.Strike = format.ssSTCellFormat.ssStrikethrough;
 
             /*
              * Deprecated, must use specific styles for BorderBottom,BorderTop,BorderLeft,BorderRight

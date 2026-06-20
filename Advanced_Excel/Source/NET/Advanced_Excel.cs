@@ -146,10 +146,6 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRGB">Color RGB value (eg. RGB(255, 255, 255))</param>
         public void MssUtil_ConvertHexCodeToRGB(string ssHexCode, out string ssRGB)
         {
-            // Remove the '#' if present
-            //if (ssHexCode.StartsWith("#"))
-            //ssHexCode = ssHexCode.Substring(1);
-
             // Convert the hexadecimal color code to RGB format and assign it to output RGB
             if (!string.IsNullOrEmpty(ssHexCode) && ssHexCode != "No Fill Color")
             {
@@ -171,26 +167,22 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssFillColor">Fill color of the cell</param>
         public void MssCell_GetFillColorByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFillColor)
         {
-            // Select the worksheet
-            ExcelWorksheet ws;
-            ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ssFillColor = ReadFillColorHex(ws.Cells[ssRow, ssColumn]);
+        } // MssCell_GetFillColorByIndex
 
-            // Get the cell
-            ExcelRange cell = ws.Cells[ssRow, ssColumn];
-
-            // Get the fill color of the cell 
+        /// <summary>
+        /// Read a cell's fill color as a #RRGGBB hex string, or "No Fill Color" when unset.
+        /// </summary>
+        private static string ReadFillColorHex(ExcelRange cell)
+        {
             var fillColor = cell.Style.Fill.BackgroundColor.Rgb;
-
-            // Assign the hex color code to the output parameter
             if (string.IsNullOrEmpty(fillColor))
             {
-                ssFillColor = "No Fill Color";
+                return "No Fill Color";
             }
-            else
-            {
-                ssFillColor = "#" + (fillColor.Length >= 6 ? fillColor.Substring(fillColor.Length - 6) : fillColor.PadLeft(6, '0'));
-            }
-        } // MssCell_GetFillColorByIndex
+            return "#" + (fillColor.Length >= 6 ? fillColor.Substring(fillColor.Length - 6) : fillColor.PadLeft(6, '0'));
+        }
 
         /// <summary>
         /// Get fill color of a cell, defined by its name.
@@ -200,25 +192,8 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssFillColor">Fill color of the cell</param>
         public void MssCell_GetFillColorByName(object ssWorksheet, string ssCellName, out string ssFillColor)
         {
-            // Select the worksheet
-            ExcelWorksheet ws;
-            ws = (ExcelWorksheet)ssWorksheet;
-
-            // Get the cell
-            ExcelRange cell = ws.Cells[ssCellName];
-
-            // Get the background color of the cell 
-            var fillColor = cell.Style.Fill.BackgroundColor.Rgb;
-
-            // Assign the hex color code to the output parameter
-            if (string.IsNullOrEmpty(fillColor))
-            {
-                ssFillColor = "No Fill Color";
-            }
-            else
-            {
-                ssFillColor = "#" + (fillColor.Length >= 6 ? fillColor.Substring(fillColor.Length - 6) : fillColor.PadLeft(6, '0'));
-            }
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ssFillColor = ReadFillColorHex(ws.Cells[ssCellName]);
         } // MssCell_GetFillColorByName
 
         /// <summary>
@@ -555,21 +530,11 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCellFormat">CellFormat for the target cells</param>
         public void MssCell_WriteColumnRangeWithFormat(object ssWorksheet, int ssRow, int ssColumnStart, RLValueRecordList ssValueList, string ssCellType, RCCellFormatRecord ssCellFormat)
         {
-            ExcelWorksheet ws;
-            DataTable dt;
-            RecordList rl;
-            ws = (ExcelWorksheet)ssWorksheet;
-            rl = (RecordList)ssValueList;
-            rl.Reset();
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            DataTable dt = Util.RecordListToDataTable((RecordList)ssValueList);
 
-            if (ssValueList.Data.Count > 0)
+            if (dt != null)
             {
-                dt = Util.ConvertArrayListToDataTable(rl.Data);
-
-                //exclude platform generated fields 
-                if (dt.Columns.Contains("OptimizedAttributes")) dt.Columns.Remove("OptimizedAttributes");
-                if (dt.Columns.Contains("OriginalKey")) dt.Columns.Remove("OriginalKey");
-
                 ExcelRange range = (ExcelRange)ws.Cells[ssRow, ssColumnStart].LoadFromDataTable(Util.Transpose(dt, ssCellType), false);
 
                 Util.ApplyFormatToRange(range, ssCellFormat);
@@ -622,21 +587,11 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCellFormat">CellFormat for the target cells</param>
         public void MssCell_WriteRangeWithFormat(object ssWorksheet, int ssRowStart, int ssColumnStart, object ssDataSet, RCCellFormatRecord ssCellFormat)
         {
-            ExcelWorksheet ws;
-            DataTable dt;
-            RecordList rl;
-            ws = (ExcelWorksheet)ssWorksheet;
-            rl = (RecordList)ssDataSet;
-            rl.Reset();
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            DataTable dt = Util.RecordListToDataTable((RecordList)ssDataSet);
 
-            if (rl.Data.Count > 0)
+            if (dt != null)
             {
-                dt = Util.ConvertArrayListToDataTable(rl.Data);
-
-                //exclude platform generated fields 
-                if (dt.Columns.Contains("OptimizedAttributes")) dt.Columns.Remove("OptimizedAttributes");
-                if (dt.Columns.Contains("OriginalKey")) dt.Columns.Remove("OriginalKey");
-
                 ExcelRange range = (ExcelRange)ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, false);
 
                 Util.ApplyFormatToRange(range, ssCellFormat);
@@ -1071,37 +1026,31 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
 
-            if (ssProtectionOptions != null)
-            {
-                ws.Protection.IsProtected = ssProtectionOptions.ssSTProtection.ssIsProtected;
+            ws.Protection.IsProtected = ssProtectionOptions.ssSTProtection.ssIsProtected;
 
-                ws.Protection.AllowAutoFilter = ssProtectionOptions.ssSTProtection.ssAllowAutoFilter;
-                ws.Protection.AllowDeleteColumns = ssProtectionOptions.ssSTProtection.ssAllowDeleteColumns;
-                ws.Protection.AllowDeleteRows = ssProtectionOptions.ssSTProtection.ssAllowDeleteRows;
-                ws.Protection.AllowEditObject = ssProtectionOptions.ssSTProtection.ssAllowEditObject;
-                ws.Protection.AllowEditScenarios = ssProtectionOptions.ssSTProtection.ssAllowEditScenarios;
-                ws.Protection.AllowFormatCells = ssProtectionOptions.ssSTProtection.ssAllowFormatCells;
-                ws.Protection.AllowFormatColumns = ssProtectionOptions.ssSTProtection.ssAllowFormatColumns;
-                ws.Protection.AllowFormatRows = ssProtectionOptions.ssSTProtection.ssAllowFormatRows;
-                ws.Protection.AllowInsertColumns = ssProtectionOptions.ssSTProtection.ssAllowInsertColumns;
-                ws.Protection.AllowInsertHyperlinks = ssProtectionOptions.ssSTProtection.ssAllowInsertHyperlinks;
-                ws.Protection.AllowInsertRows = ssProtectionOptions.ssSTProtection.ssAllowInsertRows;
-                ws.Protection.AllowPivotTables = ssProtectionOptions.ssSTProtection.ssAllowPivotTables;
-                ws.Protection.AllowSelectLockedCells = ssProtectionOptions.ssSTProtection.ssAllowSelectLockedCells;
-                ws.Protection.AllowSelectUnlockedCells = ssProtectionOptions.ssSTProtection.ssAllowSelectUnlockedCells;
-                ws.Protection.AllowSort = ssProtectionOptions.ssSTProtection.ssAllowSort;
-            }
+            ws.Protection.AllowAutoFilter = ssProtectionOptions.ssSTProtection.ssAllowAutoFilter;
+            ws.Protection.AllowDeleteColumns = ssProtectionOptions.ssSTProtection.ssAllowDeleteColumns;
+            ws.Protection.AllowDeleteRows = ssProtectionOptions.ssSTProtection.ssAllowDeleteRows;
+            ws.Protection.AllowEditObject = ssProtectionOptions.ssSTProtection.ssAllowEditObject;
+            ws.Protection.AllowEditScenarios = ssProtectionOptions.ssSTProtection.ssAllowEditScenarios;
+            ws.Protection.AllowFormatCells = ssProtectionOptions.ssSTProtection.ssAllowFormatCells;
+            ws.Protection.AllowFormatColumns = ssProtectionOptions.ssSTProtection.ssAllowFormatColumns;
+            ws.Protection.AllowFormatRows = ssProtectionOptions.ssSTProtection.ssAllowFormatRows;
+            ws.Protection.AllowInsertColumns = ssProtectionOptions.ssSTProtection.ssAllowInsertColumns;
+            ws.Protection.AllowInsertHyperlinks = ssProtectionOptions.ssSTProtection.ssAllowInsertHyperlinks;
+            ws.Protection.AllowInsertRows = ssProtectionOptions.ssSTProtection.ssAllowInsertRows;
+            ws.Protection.AllowPivotTables = ssProtectionOptions.ssSTProtection.ssAllowPivotTables;
+            ws.Protection.AllowSelectLockedCells = ssProtectionOptions.ssSTProtection.ssAllowSelectLockedCells;
+            ws.Protection.AllowSelectUnlockedCells = ssProtectionOptions.ssSTProtection.ssAllowSelectUnlockedCells;
+            ws.Protection.AllowSort = ssProtectionOptions.ssSTProtection.ssAllowSort;
 
             if (!string.IsNullOrEmpty(ssPassword))
             {
                 ws.Protection.SetPassword(ssPassword);
             }
-            else
+            else if (!string.IsNullOrEmpty(ssProtectionOptions.ssSTProtection.ssPassword))
             {
-                if (ssProtectionOptions != null && !string.IsNullOrEmpty(ssProtectionOptions.ssSTProtection.ssPassword))
-                {
-                    ws.Protection.SetPassword(ssProtectionOptions.ssSTProtection.ssPassword);
-                }
+                ws.Protection.SetPassword(ssProtectionOptions.ssSTProtection.ssPassword);
             }
         } // MssWorksheet_Protect
 
@@ -1163,7 +1112,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             int startRow, startCol, endRow, endCol;
 
-            if (ssRangeToFilter == null || (ssRangeToFilter.ssSTRange.ssStartRow == 0 && ssRangeToFilter.ssSTRange.ssStartCol == 0 && ssRangeToFilter.ssSTRange.ssEndRow == 0 && ssRangeToFilter.ssSTRange.ssEndCol == 0))
+            if (ssRangeToFilter.ssSTRange.ssStartRow == 0 && ssRangeToFilter.ssSTRange.ssStartCol == 0 && ssRangeToFilter.ssSTRange.ssEndRow == 0 && ssRangeToFilter.ssSTRange.ssEndCol == 0)
             {
                 if (ws.Dimension == null)
                 {
@@ -1253,18 +1202,7 @@ namespace OutSystems.NssAdvanced_Excel
             // Delete all comments from cells in column(s) before deleting the column(s).
             // Considers the rows in the dimension of the worksheet to prevent unnecessary processing.
             int nrRows = ws.Dimension?.Rows ?? 0;
-
-            for (int row = 1; row <= nrRows; row++)
-            {
-                for (int col = ssStartColumnNumber; col < ssStartColumnNumber + ssNumberOfColumns; col++)
-                {
-                    if (ws.Cells[row, col].Comment == null)
-                    {
-                        continue;
-                    }
-                    ws.Comments.Remove(ws.Cells[row, col].Comment);
-                }
-            }
+            RemoveCommentsInRange(ws, 1, nrRows, ssStartColumnNumber, ssStartColumnNumber + ssNumberOfColumns - 1);
 
             ws.DeleteColumn(ssStartColumnNumber, ssNumberOfColumns);
         } // MssColumn_Delete
@@ -1278,9 +1216,19 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
 
-            for (int row = ssRange.ssSTRange.ssStartRow; row <= ssRange.ssSTRange.ssEndRow; row++)
+            RemoveCommentsInRange(ws, ssRange.ssSTRange.ssStartRow, ssRange.ssSTRange.ssEndRow,
+                                      ssRange.ssSTRange.ssStartCol, ssRange.ssSTRange.ssEndCol);
+        } // MssComment_Delete
+
+        /// <summary>
+        /// Remove every comment within the given 1-based cell rectangle. A zero/empty range
+        /// (start &gt; end) simply iterates nothing.
+        /// </summary>
+        private static void RemoveCommentsInRange(ExcelWorksheet ws, int startRow, int endRow, int startCol, int endCol)
+        {
+            for (int row = startRow; row <= endRow; row++)
             {
-                for (int col = ssRange.ssSTRange.ssStartCol; col <= ssRange.ssSTRange.ssEndCol; col++)
+                for (int col = startCol; col <= endCol; col++)
                 {
                     if (ws.Cells[row, col].Comment == null)
                     {
@@ -1289,7 +1237,7 @@ namespace OutSystems.NssAdvanced_Excel
                     ws.Comments.Remove(ws.Cells[row, col].Comment);
                 }
             }
-        } // MssComment_Delete
+        }
 
         /// <summary>
         /// Inserts a new column into the spreadsheet.  Existing columns to the right of the insert index will be shifted right.  All formula are updated to take account of the new column.
@@ -1317,18 +1265,7 @@ namespace OutSystems.NssAdvanced_Excel
             // Delete all comments from cells in row(s) before deleting the row(s).
             // Considers the columns in the dimension of the worksheet to prevent unnecessary processing.
             int nrColumns = ws.Dimension?.Columns ?? 0;
-
-            for (int col = 1; col <= nrColumns; col++)
-            {
-                for (int row = ssStartRowNumber; row < ssStartRowNumber + ssNumberOfRows; row++)
-                {
-                    if (ws.Cells[row, col].Comment == null)
-                    {
-                        continue;
-                    }
-                    ws.Comments.Remove(ws.Cells[row, col].Comment);
-                }
-            }
+            RemoveCommentsInRange(ws, ssStartRowNumber, ssStartRowNumber + ssNumberOfRows - 1, 1, nrColumns);
 
             ws.DeleteRow(ssStartRowNumber, ssNumberOfRows);
         } // MssRow_Delete
@@ -1860,11 +1797,32 @@ namespace OutSystems.NssAdvanced_Excel
                 case eExcelConditionalFormattingRuleType.TwoColorScale:
                     throw new NotSupportedException("ConditionalFormatting rule type 'TwoColorScale' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.ThreeIconSet:
-                    throw new NotSupportedException("ConditionalFormatting rule type 'ThreeIconSet' is not yet supported by this extension.");
+                    var i3 = ws.ConditionalFormatting.AddThreeIconSet(address,
+                        ParseEnum(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssIconSetStyle,
+                                  eExcelconditionalFormatting3IconsSetType.TrafficLights1));
+                    i3.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    i3.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    i3.Reverse = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssReverse;
+                    i3.ShowValue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssShowValue;
+                    break;
                 case eExcelConditionalFormattingRuleType.FourIconSet:
-                    throw new NotSupportedException("ConditionalFormatting rule type 'FourIconSet' is not yet supported by this extension.");
+                    var i4 = ws.ConditionalFormatting.AddFourIconSet(address,
+                        ParseEnum(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssIconSetStyle,
+                                  eExcelconditionalFormatting4IconsSetType.Arrows));
+                    i4.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    i4.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    i4.Reverse = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssReverse;
+                    i4.ShowValue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssShowValue;
+                    break;
                 case eExcelConditionalFormattingRuleType.FiveIconSet:
-                    throw new NotSupportedException("ConditionalFormatting rule type 'FiveIconSet' is not yet supported by this extension.");
+                    var i5 = ws.ConditionalFormatting.AddFiveIconSet(address,
+                        ParseEnum(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssIconSetStyle,
+                                  eExcelconditionalFormatting5IconsSetType.Arrows));
+                    i5.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    i5.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    i5.Reverse = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssReverse;
+                    i5.ShowValue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssShowValue;
+                    break;
                 case eExcelConditionalFormattingRuleType.DataBar:
                     throw new NotSupportedException("ConditionalFormatting rule type 'DataBar' is not yet supported by this extension.");
                 default:
@@ -2291,20 +2249,11 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssCell_WriteRange(object ssWorksheet, int ssRowStart, int ssColumnStart, object ssDataSet, RCCellFormatRecord ssCellFormat, bool ssExportHeaders)
         {
             ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
-            DataTable dt;
-            RecordList rl = (RecordList)ssDataSet;
-            rl.Reset();
+            DataTable dt = Util.RecordListToDataTable((RecordList)ssDataSet);
 
-            if (rl.Data.Count > 0)
+            if (dt != null)
             {
-                dt = Util.ConvertArrayListToDataTable(rl.Data);
-
-                //exclude platform generated fields 
-                if (dt.Columns.Contains("OptimizedAttributes")) dt.Columns.Remove("OptimizedAttributes");
-
-                //if (dt.Columns.Contains("ChangedAttributes")) dt.Columns.Remove("ChangedAttributes");
-                if (dt.Columns.Contains("OriginalKey")) dt.Columns.Remove("OriginalKey");
-
+                // Strip the OutSystems "ss" attribute-name prefix so exported headers read cleanly.
                 for (int i = 0; i < dt.Columns.Count; i++)
                 {
                     if (dt.Columns[i].ColumnName.StartsWith("ss", StringComparison.CurrentCulture))
@@ -2327,7 +2276,6 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ExcelPackage p = ssWorkbook as ExcelPackage;
             p.Dispose();
-            p = null;
         } // MssWorkbook_Close
 
         /// <summary>
@@ -2707,6 +2655,92 @@ namespace OutSystems.NssAdvanced_Excel
             // Get the value of the cell containing the formula
             ssFormula = cell.Formula;
         } // MssCell_ReadFormulaByIndex
+
+        /// <summary>
+        /// Group a contiguous range of rows into a collapsible outline.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssStartRow">First row of the group (1-based)</param>
+        /// <param name="ssEndRow">Last row of the group (1-based)</param>
+        /// <param name="ssOutlineLevel">Outline level for the group. Defaults to 1 when &lt;= 0. Use higher values for nested groups.</param>
+        /// <param name="ssCollapsed">If True, the group is created collapsed (its rows are hidden).</param>
+        public void MssRow_Group(object ssWorksheet, int ssStartRow, int ssEndRow, int ssOutlineLevel, bool ssCollapsed)
+        {
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            int level = ssOutlineLevel <= 0 ? 1 : ssOutlineLevel;
+
+            for (int r = ssStartRow; r <= ssEndRow; r++)
+            {
+                ws.Row(r).OutlineLevel = level;
+                ws.Row(r).Collapsed = ssCollapsed;
+                ws.Row(r).Hidden = ssCollapsed;
+            }
+        } // MssRow_Group
+
+        /// <summary>
+        /// Remove outline grouping from a range of rows.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssStartRow">First row to ungroup (1-based)</param>
+        /// <param name="ssEndRow">Last row to ungroup (1-based)</param>
+        public void MssRow_Ungroup(object ssWorksheet, int ssStartRow, int ssEndRow)
+        {
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            for (int r = ssStartRow; r <= ssEndRow; r++)
+            {
+                ws.Row(r).OutlineLevel = 0;
+                ws.Row(r).Collapsed = false;
+                ws.Row(r).Hidden = false;
+            }
+        } // MssRow_Ungroup
+
+        /// <summary>
+        /// Group a contiguous range of columns into a collapsible outline.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssStartColumn">First column of the group (1-based)</param>
+        /// <param name="ssEndColumn">Last column of the group (1-based)</param>
+        /// <param name="ssOutlineLevel">Outline level for the group. Defaults to 1 when &lt;= 0. Use higher values for nested groups.</param>
+        /// <param name="ssCollapsed">If True, the group is created collapsed (its columns are hidden).</param>
+        public void MssColumn_Group(object ssWorksheet, int ssStartColumn, int ssEndColumn, int ssOutlineLevel, bool ssCollapsed)
+        {
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            int level = ssOutlineLevel <= 0 ? 1 : ssOutlineLevel;
+
+            for (int c = ssStartColumn; c <= ssEndColumn; c++)
+            {
+                ws.Column(c).OutlineLevel = level;
+                ws.Column(c).Collapsed = ssCollapsed;
+                ws.Column(c).Hidden = ssCollapsed;
+            }
+        } // MssColumn_Group
+
+        /// <summary>
+        /// Remove outline grouping from a range of columns.
+        /// </summary>
+        /// <param name="ssWorksheet">The worksheet to work with</param>
+        /// <param name="ssStartColumn">First column to ungroup (1-based)</param>
+        /// <param name="ssEndColumn">Last column to ungroup (1-based)</param>
+        public void MssColumn_Ungroup(object ssWorksheet, int ssStartColumn, int ssEndColumn)
+        {
+            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            for (int c = ssStartColumn; c <= ssEndColumn; c++)
+            {
+                ws.Column(c).OutlineLevel = 0;
+                ws.Column(c).Collapsed = false;
+                ws.Column(c).Hidden = false;
+            }
+        } // MssColumn_Ungroup
+
+        /// <summary>
+        /// Parse a string into an enum value (case-insensitive), returning a fallback when
+        /// the value is empty or not a recognised member.
+        /// </summary>
+        private static T ParseEnum<T>(string value, T fallback) where T : struct
+        {
+            return (!string.IsNullOrEmpty(value) && Enum.TryParse<T>(value, true, out var parsed))
+                ? parsed : fallback;
+        }
 
     } // CssAdvanced_Excel
 

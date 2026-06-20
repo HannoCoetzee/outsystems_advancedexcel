@@ -1022,6 +1022,42 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssMergedRange">Ranges of the merged cells</param>
 		void MssWorksheet_GetMergedCellRanges(object ssWorksheet, out string ssMergedRange);
 
+		/// <summary>
+		/// Group a contiguous range of columns into a collapsible/expandable outline. Excel shows an outline bracket with a +/- toggle; the group can optionally be created already collapsed.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssStartColumn">The first column of the group (1-based; A = 1).</param>
+		/// <param name="ssEndColumn">The last column of the group (1-based; A = 1).</param>
+		/// <param name="ssOutlineLevel">Outline (nesting) level. 1 for a top-level group; higher for nested groups. 0 or empty is treated as 1.</param>
+		/// <param name="ssCollapsed">If True, the group is created collapsed and its rows are hidden; if False, expanded (rows visible).</param>
+		void MssColumn_Group(object ssWorksheet, int ssStartColumn, int ssEndColumn, int ssOutlineLevel, bool ssCollapsed);
+
+		/// <summary>
+		/// Remove outline grouping from a range of rows — clears the outline level and makes the rows visible again.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssStartRow">The first row to ungroup (1-based).</param>
+		/// <param name="ssEndRow">The last row to ungroup (1-based).</param>
+		void MssRow_Ungroup(object ssWorksheet, int ssStartRow, int ssEndRow);
+
+		/// <summary>
+		/// Group a contiguous range of columns into a collapsible/expandable outline. Excel shows an outline bracket with a +/- toggle; the group can optionally be created already collapsed.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssStartRow">The first column of the group (1-based; A = 1).</param>
+		/// <param name="ssEndRow">The last column of the group (1-based; A = 1).</param>
+		/// <param name="ssOutlineLevel">Outline (nesting) level. 1 for a top-level group; higher for nested groups. 0 or empty is treated as 1.</param>
+		/// <param name="ssCollapsed">If True, the group is created collapsed and its rows are hidden; if False, expanded (rows visible).</param>
+		void MssRow_Group(object ssWorksheet, int ssStartRow, int ssEndRow, int ssOutlineLevel, bool ssCollapsed);
+
+		/// <summary>
+		/// Remove outline grouping from a range of columns — clears the outline level and makes the columns visible again.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssStartColumn">The first column to ungroup (1-based; A = 1).</param>
+		/// <param name="ssEndColumn">The last column to ungroup (1-based; A = 1).</param>
+		void MssColumn_Ungroup(object ssWorksheet, int ssStartColumn, int ssEndColumn);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
