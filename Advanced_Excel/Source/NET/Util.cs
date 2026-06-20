@@ -57,14 +57,43 @@ namespace OutSystems.NssAdvanced_Excel
 
         public static byte[] ImageToByteArray(Image imageIn)
         {
+            if (imageIn == null)
+            {
+                return new byte[0];
+            }
+
             using (var ms = new MemoryStream())
             {
-                System.Drawing.Imaging.ImageFormat format = imageIn.RawFormat;
-                if (format == null || format.Guid == System.Drawing.Imaging.ImageFormat.MemoryBmp.Guid)
+                System.Drawing.Imaging.ImageFormat format = System.Drawing.Imaging.ImageFormat.Png;
+                try
                 {
-                    format = System.Drawing.Imaging.ImageFormat.Png;
+                    var raw = imageIn.RawFormat;
+                    if (raw != null && raw.Guid != System.Drawing.Imaging.ImageFormat.MemoryBmp.Guid)
+                    {
+                        format = raw;
+                    }
                 }
-                imageIn.Save(ms, format);
+                catch
+                {
+                }
+
+                try
+                {
+                    imageIn.Save(ms, format);
+                }
+                catch
+                {
+                    try
+                    {
+                        ms.SetLength(0);
+                        imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    }
+                    catch
+                    {
+                        return new byte[0];
+                    }
+                }
+
                 return ms.ToArray();
             }
         }
@@ -125,7 +154,15 @@ namespace OutSystems.NssAdvanced_Excel
         {
             try
             {
-                return Color.FromArgb(Int32.Parse(colorCode.Replace("#", ""), NumberStyles.HexNumber));
+                string hex = colorCode.Replace("#", "");
+                int argb = unchecked((int)long.Parse(hex, NumberStyles.HexNumber, CultureInfo.InvariantCulture));
+
+                if (hex.Length <= 6)
+                {
+                    argb = unchecked((int)((uint)argb | 0xFF000000));
+                }
+
+                return Color.FromArgb(argb);
             }
             catch
             {

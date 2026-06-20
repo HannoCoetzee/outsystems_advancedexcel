@@ -1165,6 +1165,10 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (ssRangeToFilter == null || (ssRangeToFilter.ssSTRange.ssStartRow == 0 && ssRangeToFilter.ssSTRange.ssStartCol == 0 && ssRangeToFilter.ssSTRange.ssEndRow == 0 && ssRangeToFilter.ssSTRange.ssEndCol == 0))
             {
+                if (ws.Dimension == null)
+                {
+                    return;
+                }
                 startRow = ws.Dimension.Start.Row;
                 startCol = ws.Dimension.Start.Column;
                 endRow = ws.Dimension.End.Row;
@@ -1248,7 +1252,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             // Delete all comments from cells in column(s) before deleting the column(s).
             // Considers the rows in the dimension of the worksheet to prevent unnecessary processing.
-            int nrRows = ws.Dimension.Rows;
+            int nrRows = ws.Dimension?.Rows ?? 0;
 
             for (int row = 1; row <= nrRows; row++)
             {
@@ -1312,7 +1316,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             // Delete all comments from cells in row(s) before deleting the row(s).
             // Considers the columns in the dimension of the worksheet to prevent unnecessary processing.
-            int nrColumns = ws.Dimension.Columns;
+            int nrColumns = ws.Dimension?.Columns ?? 0;
 
             for (int col = 1; col <= nrColumns; col++)
             {
