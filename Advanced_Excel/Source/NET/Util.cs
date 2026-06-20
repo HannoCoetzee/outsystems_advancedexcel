@@ -26,10 +26,10 @@ namespace OutSystems.NssAdvanced_Excel
                 DataColumn c = dtNew.Columns.Add(i.ToString());
                 switch (ssCellType.ToLower())
                 {
-                    case "integer": c.DataType = Type.GetType("System.Int32"); break;
-                    case "datetime": c.DataType = Type.GetType("System.DateTime"); break;
-                    case "decimal": c.DataType = Type.GetType("System.Decimal"); break;
-                    case "boolean": c.DataType = Type.GetType("System.Boolean"); break;
+                    case "integer": c.DataType = typeof(int); break;
+                    case "datetime": c.DataType = typeof(DateTime); break;
+                    case "decimal": c.DataType = typeof(decimal); break;
+                    case "boolean": c.DataType = typeof(bool); break;
                 }
             }
 
@@ -41,10 +41,10 @@ namespace OutSystems.NssAdvanced_Excel
                 {
                     switch (ssCellType.ToLower())
                     {
-                        case "integer": r[j] = Convert.ToInt32(dt.Rows[j][k]); break;
-                        case "datetime": r[j] = Convert.ToDateTime(dt.Rows[j][k]); break;
-                        case "decimal": r[j] = Convert.ToDecimal(dt.Rows[j][k]); break;
-                        case "boolean": r[j] = Convert.ToBoolean(dt.Rows[j][k]); break;
+                        case "integer": r[j] = Convert.ToInt32(dt.Rows[j][k], CultureInfo.InvariantCulture); break;
+                        case "datetime": r[j] = Convert.ToDateTime(dt.Rows[j][k], CultureInfo.InvariantCulture); break;
+                        case "decimal": r[j] = Convert.ToDecimal(dt.Rows[j][k], CultureInfo.InvariantCulture); break;
+                        case "boolean": r[j] = Convert.ToBoolean(dt.Rows[j][k], CultureInfo.InvariantCulture); break;
                         default: r[j] = dt.Rows[j][k]; break;
                     }
                 }
@@ -445,7 +445,14 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="message">What to log</param>
         internal static void LogMessage(object message)
         {
-            GenericExtendedActions.LogMessage(AppInfo.GetAppInfo().OsContext, message.ToString(), "AdvXL");
+            try
+            {
+                GenericExtendedActions.LogMessage(AppInfo.GetAppInfo().OsContext, message?.ToString() ?? "", "AdvXL");
+            }
+            catch
+            {
+                // Logging must never throw (e.g. when no OutSystems runtime context is available).
+            }
         }
 
         /// <summary>

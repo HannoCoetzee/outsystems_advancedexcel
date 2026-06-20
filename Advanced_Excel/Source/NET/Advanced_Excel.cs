@@ -26,7 +26,7 @@ namespace OutSystems.NssAdvanced_Excel
 		/// <param name="ssRangeStart">Example: A1:B5</param>
 		/// <param name="ssRangeEnd">Example: G1:H5</param>
 		public void MssWorksheet_CopyRange(object ssWorksheet, string ssRangeStart, string ssRangeEnd) {
-			var ws = ssWorksheet as ExcelWorksheet;
+			var ws = AsWorksheet(ssWorksheet);
 			ws.Cells[ssRangeStart].Copy(ws.Cells[ssRangeEnd]);
 		} // MssWorksheet_CopyRange
 
@@ -75,7 +75,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssMergedRange">Ranges of the merged cells</param>
         public void MssWorksheet_GetMergedCellRanges(object ssWorksheet, out string ssMergedRange)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             ssMergedRange = "";
 
@@ -133,7 +133,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             // Select the worksheet
             ExcelWorksheet ws;
-            ws = (ExcelWorksheet)ssWorksheet;
+            ws = AsWorksheet(ssWorksheet);
 
             // Freeze selected rows and columns
             ws.View.FreezePanes(ssRow, ssColumn);
@@ -167,7 +167,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssFillColor">Fill color of the cell</param>
         public void MssCell_GetFillColorByIndex(object ssWorksheet, int ssRow, int ssColumn, out string ssFillColor)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ssFillColor = ReadFillColorHex(ws.Cells[ssRow, ssColumn]);
         } // MssCell_GetFillColorByIndex
 
@@ -192,7 +192,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssFillColor">Fill color of the cell</param>
         public void MssCell_GetFillColorByName(object ssWorksheet, string ssCellName, out string ssFillColor)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ssFillColor = ReadFillColorHex(ws.Cells[ssCellName]);
         } // MssCell_GetFillColorByName
 
@@ -289,7 +289,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (string.IsNullOrEmpty(ssAddress))
             {
-                throw new Exception("Address cannot be empty");
+                throw new ArgumentException("Address cannot be empty");
             }
             ExcelAddress address = new ExcelAddress(ssAddress);
             ssRowStart = address.Start.Row;
@@ -311,7 +311,7 @@ namespace OutSystems.NssAdvanced_Excel
             ssAddress = "";
             if (ssRowStart < 1 || ssColStart < 1)
             {
-                throw new Exception("RowStart and ColStart need to be greater than 0");
+                throw new ArgumentException("RowStart and ColStart need to be greater than 0");
             }
             if (ssRowEnd <= 0 || ssColEnd <= 0)
             {
@@ -342,7 +342,7 @@ namespace OutSystems.NssAdvanced_Excel
              * 
              */
 
-            var ws = (ExcelWorksheet)ssWorksheet;
+            var ws = AsWorksheet(ssWorksheet);
             var unitMeasure = ws.DataValidations.AddListValidation(ssCellRange);
 
             if (String.IsNullOrEmpty(ssItemsAddress)) //Check if address string is empty, proceed to fill list with items.
@@ -530,7 +530,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCellFormat">CellFormat for the target cells</param>
         public void MssCell_WriteColumnRangeWithFormat(object ssWorksheet, int ssRow, int ssColumnStart, RLValueRecordList ssValueList, string ssCellType, RCCellFormatRecord ssCellFormat)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             DataTable dt = Util.RecordListToDataTable((RecordList)ssValueList);
 
             if (dt != null)
@@ -552,7 +552,12 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssImage">The image to write.</param>
         public void MssCell_WriteImageByIndex(object ssWorksheet, int ssRow, int ssColumn, string ssImageName, byte[] ssImage)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+
+            if (ssImage == null || ssImage.Length == 0)
+            {
+                throw new ArgumentException("No image data supplied.", nameof(ssImage));
+            }
 
             using (MemoryStream ms = new MemoryStream(ssImage))
             using (Image i = Image.FromStream(ms))
@@ -587,7 +592,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCellFormat">CellFormat for the target cells</param>
         public void MssCell_WriteRangeWithFormat(object ssWorksheet, int ssRowStart, int ssColumnStart, object ssDataSet, RCCellFormatRecord ssCellFormat)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             DataTable dt = Util.RecordListToDataTable((RecordList)ssDataSet);
 
             if (dt != null)
@@ -620,7 +625,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssDesiredWidth">The pixel width you desire for the column.</param>
         public void MssColumn_SetWidth(object ssWorksheet, int ssColumnNumber, decimal ssDesiredWidth)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.Column(ssColumnNumber).Width = (double)ssDesiredWidth;
         } // MssColumn_SetWidth
 
@@ -633,7 +638,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssDesiredHeight">The desired pixel height for the row</param>
         public void MssRow_SetHeight(object ssWorksheet, int ssRowNumber, decimal ssDesiredHeight)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.Row(ssRowNumber).Height = (double)ssDesiredHeight;
         } // MssRow_SetHeight
 
@@ -660,7 +665,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCellFormat">CellFormat for the target cells</param>
         public void MssCell_FormatRange(object ssWorksheet, int ssRowStart, int ssColumnStart, int ssRowEnd, int ssColumnEnd, RCCellFormatRecord ssCellFormat)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             Util.ApplyFormatToRange(ws.Cells[ssRowStart, ssColumnStart, ssRowEnd, ssColumnEnd], ssCellFormat);
         } // MssCell_FormatRange
 
@@ -675,7 +680,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCellValue">text-value</param>
         public void MssCell_ReadByIndex(object ssWorksheet, int ssRow, int ssColumn, bool ssReadText, out string ssCellValue)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             try
             {
@@ -684,8 +689,9 @@ namespace OutSystems.NssAdvanced_Excel
                 else
                     ssCellValue = Convert.ToString(ws.GetValue(ssRow, ssColumn));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Util.LogMessage("MssCell_ReadByIndex failed at [" + ssRow + "," + ssColumn + "]: " + ex.Message);
                 ssCellValue = String.Empty;
             }
         } // MssCell_ReadByIndex
@@ -714,7 +720,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssFormula">Formula</param>
         public void MssCell_SetFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, string ssFormula)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.Cells[ssRow, ssColumn].Formula = ssFormula;
         } // MssCell_SetFormulaByIndex
 
@@ -741,7 +747,7 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorkbook_AddCopyWorksheet(object ssWorkbook, string ssWorksheetName, object ssWorksheetToCopy, out object ssWorksheet)
         {
             ExcelPackage p = (ExcelPackage)ssWorkbook;
-            ExcelWorksheet wsToCopy = (ExcelWorksheet)ssWorksheetToCopy;
+            ExcelWorksheet wsToCopy = AsWorksheet(ssWorksheetToCopy);
             ExcelWorksheet ws;
             ws = p.Workbook.Worksheets.Add(ssWorksheetName, wsToCopy);
             ssWorksheet = ws;
@@ -756,7 +762,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ssImages = new RLImageRecordList();
 
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             var pics = ws.Drawings;
             for (int i = 0; i < pics.Count; i++)
@@ -927,7 +933,7 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorksheet_AddName(object ssWorksheet, string ssName, object ssDataSet, int ssRowStart, int ssColumnStart)
         {
             ExcelWorksheet ws;
-            ws = (ExcelWorksheet)ssWorksheet;
+            ws = AsWorksheet(ssWorksheet);
 
             if (!ws.Names.ContainsKey(ssName))
             {
@@ -1024,7 +1030,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssProtectionOptions"></param>
         public void MssWorksheet_Protect(object ssWorksheet, string ssPassword, RCProtectionRecord ssProtectionOptions)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             ws.Protection.IsProtected = ssProtectionOptions.ssSTProtection.ssIsProtected;
 
@@ -1072,10 +1078,15 @@ namespace OutSystems.NssAdvanced_Excel
         {
             if (string.IsNullOrEmpty(ssCellName) && ssColumnNumber <= 0 && ssRowNumber <= 0)
             {
-                throw new Exception("You need to specify a valid cell name (i.e. A4) or cell index (row/column combination)");
+                throw new ArgumentException("You need to specify a valid cell name (i.e. A4) or cell index (row/column combination)");
             }
 
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+
+            if (ssImageFile == null || ssImageFile.Length == 0)
+            {
+                throw new ArgumentException("No image data supplied.", nameof(ssImageFile));
+            }
 
             ExcelRange range = ws.Cells["A1"];
 
@@ -1088,15 +1099,12 @@ namespace OutSystems.NssAdvanced_Excel
                 range = ws.Cells[ssRowNumber, ssColumnNumber];
             }
 
-            MemoryStream ms = new MemoryStream(ssImageFile);
-
+            using (MemoryStream ms = new MemoryStream(ssImageFile))
             using (Bitmap bitmap = new Bitmap(ms))
+            using (ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, bitmap))
             {
-                using (ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, bitmap))
-                {
-                    picture.SetPosition(range.Start.Row - 1, ssMarginTop, range.Start.Column - 1, ssMarginLeft);
-                    picture.SetSize(ssImageWidth, ssImageHeight);
-                }
+                picture.SetPosition(range.Start.Row - 1, ssMarginTop, range.Start.Column - 1, ssMarginLeft);
+                picture.SetSize(ssImageWidth, ssImageHeight);
             }
             range.Dispose();
         } // MssImage_Insert
@@ -1108,7 +1116,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRangeToFilter">The range where to add the filter. If not supplied, the dimension of the worksheet will be used.</param>
         public void MssWorksheet_AddAutoFilter(object ssWorksheet, RCRangeRecord ssRangeToFilter)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             int startRow, startCol, endRow, endCol;
 
@@ -1143,7 +1151,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet">The worksheet to work with</param>
         public void MssWorksheet_AutofitColumns(object ssWorksheet)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.Cells.AutoFitColumns();
         } // MssWorksheet_AutofitColumns
 
@@ -1159,7 +1167,7 @@ namespace OutSystems.NssAdvanced_Excel
                 throw new IndexOutOfRangeException("Index needs to be >= 1.");
             }
 
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.ConditionalFormatting.RemoveAt(ssRuleToDeleteIndex - 1);
         } // MssConditionalFormatting_DeleteRule
 
@@ -1169,7 +1177,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet">The worksheet to work with.</param>
         public void MssConditionalFormatting_DeleteAllRules(object ssWorksheet)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.ConditionalFormatting.RemoveAll();
         } // MssConditionalFormatting_DeleteAllRules
 
@@ -1184,7 +1192,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssAutofit"></param>
         public void MssComment_Add(object ssWorksheet, int ssRowNumber, int ssColumnNumber, string ssText, string ssAuthor, bool ssAutofit)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ExcelComment comment = ws.Comments.Add(ws.Cells[ssRowNumber, ssColumnNumber], ssText, ssAuthor);
             comment.AutoFit = ssAutofit;
         } // MssComment_Add
@@ -1197,7 +1205,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssNumberOfColumns">The number of rows to delete. Default = 1.</param>
         public void MssColumn_Delete(object ssWorksheet, int ssStartColumnNumber, int ssNumberOfColumns)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             // Delete all comments from cells in column(s) before deleting the column(s).
             // Considers the rows in the dimension of the worksheet to prevent unnecessary processing.
@@ -1214,7 +1222,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRange">Range to delete comments from.</param>
         public void MssComment_Delete(object ssWorksheet, RCRangeRecord ssRange)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             RemoveCommentsInRange(ws, ssRange.ssSTRange.ssStartRow, ssRange.ssSTRange.ssEndRow,
                                       ssRange.ssSTRange.ssStartCol, ssRange.ssSTRange.ssEndCol);
@@ -1248,7 +1256,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCopyStylesFrom">Copy Styles from this column. Applied to all inserted columns. 0 (default) will not copy any styles</param>
         public void MssColumn_Insert(object ssWorksheet, int ssInsertAt, int ssNumberOfColumns, int ssCopyStylesFrom)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.InsertColumn(ssInsertAt, ssNumberOfColumns, ssCopyStylesFrom);
         } // MssColumn_Insert
 
@@ -1260,7 +1268,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssNumberOfRows">The number of rows to delete. Default = 1.</param>
         public void MssRow_Delete(object ssWorksheet, int ssStartRowNumber, int ssNumberOfRows)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             // Delete all comments from cells in row(s) before deleting the row(s).
             // Considers the columns in the dimension of the worksheet to prevent unnecessary processing.
@@ -1277,7 +1285,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRangeToUnmerge">The range of cell to un-merge</param>
         public void MssCell_UnMerge(object ssWorksheet, RCRangeRecord ssRangeToUnmerge)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             ws.Cells[ssRangeToUnmerge.ssSTRange.ssStartRow, ssRangeToUnmerge.ssSTRange.ssStartCol, ssRangeToUnmerge.ssSTRange.ssEndRow, ssRangeToUnmerge.ssSTRange.ssEndCol].Merge = false;
         } // MssCell_UnMerge
@@ -1289,7 +1297,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRangeToMerge">The range of the cells to merge</param>
         public void MssCell_Merge(object ssWorksheet, RCRangeRecord ssRangeToMerge)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             ws.Cells[ssRangeToMerge.ssSTRange.ssStartRow, ssRangeToMerge.ssSTRange.ssStartCol, ssRangeToMerge.ssSTRange.ssEndRow, ssRangeToMerge.ssSTRange.ssEndCol].Merge = true;
         } // MssCell_Merge
@@ -1304,12 +1312,12 @@ namespace OutSystems.NssAdvanced_Excel
         {
             if (string.IsNullOrEmpty(ssValueToFind))
             {
-                throw new Exception("Cannot search for an undefined value!");
+                throw new ArgumentException("Cannot search for an undefined value!");
             }
 
             ssListOfCells = new RLRangeRecordList();
 
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             List<ExcelRangeBase> result = ws.Cells.Where(c => c.Value?.ToString() == ssValueToFind).ToList();
 
@@ -1332,7 +1340,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ssListOfRule = new RLConditionalFormatItemRecordList();
 
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             foreach (var item in ws.ConditionalFormatting)
             {
@@ -1512,10 +1520,34 @@ namespace OutSystems.NssAdvanced_Excel
                     case eExcelConditionalFormattingRuleType.TwoColorScale:
                         break;
                     case eExcelConditionalFormattingRuleType.ThreeIconSet:
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
+                        var icon3 = item as IExcelConditionalFormattingIconSetGroup<eExcelconditionalFormatting3IconsSetType>;
+                        if (icon3 != null)
+                        {
+                            newItem.ssSTConditionalFormatItem.ssIconSetStyle = icon3.IconSet.ToString();
+                            newItem.ssSTConditionalFormatItem.ssReverse = icon3.Reverse;
+                            newItem.ssSTConditionalFormatItem.ssShowValue = icon3.ShowValue;
+                        }
                         break;
                     case eExcelConditionalFormattingRuleType.FourIconSet:
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
+                        var icon4 = item as IExcelConditionalFormattingIconSetGroup<eExcelconditionalFormatting4IconsSetType>;
+                        if (icon4 != null)
+                        {
+                            newItem.ssSTConditionalFormatItem.ssIconSetStyle = icon4.IconSet.ToString();
+                            newItem.ssSTConditionalFormatItem.ssReverse = icon4.Reverse;
+                            newItem.ssSTConditionalFormatItem.ssShowValue = icon4.ShowValue;
+                        }
                         break;
                     case eExcelConditionalFormattingRuleType.FiveIconSet:
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
+                        var icon5 = item as IExcelConditionalFormattingIconSetGroup<eExcelconditionalFormatting5IconsSetType>;
+                        if (icon5 != null)
+                        {
+                            newItem.ssSTConditionalFormatItem.ssIconSetStyle = icon5.IconSet.ToString();
+                            newItem.ssSTConditionalFormatItem.ssReverse = icon5.Reverse;
+                            newItem.ssSTConditionalFormatItem.ssShowValue = icon5.ShowValue;
+                        }
                         break;
                     case eExcelConditionalFormattingRuleType.DataBar:
                         break;
@@ -1535,7 +1567,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssConditionalFormatRecord">The conditional formatting to apply to the Address Range</param>        
         public void MssConditionalFormatting_AddRule(object ssWorksheet, RCConditionalFormatItemRecord ssConditionalFormatRecord)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ExcelAddress address;
             if (string.IsNullOrEmpty(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssAddress))
             {
@@ -1554,243 +1586,143 @@ namespace OutSystems.NssAdvanced_Excel
             switch (ruleType)
             {
                 case eExcelConditionalFormattingRuleType.AboveAverage:
-                    var aa = ws.ConditionalFormatting.AddAboveAverage(address);
-                    aa.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    aa.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(aa.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddAboveAverage(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.AboveOrEqualAverage:
-                    var aea = ws.ConditionalFormatting.AddAboveOrEqualAverage(address);
-                    aea.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    aea.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(aea.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddAboveOrEqualAverage(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.BelowAverage:
-                    var ba = ws.ConditionalFormatting.AddBelowAverage(address);
-                    ba.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    ba.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(ba.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddBelowAverage(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.BelowOrEqualAverage:
-                    var bea = ws.ConditionalFormatting.AddBelowOrEqualAverage(address);
-                    bea.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    bea.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(bea.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddBelowOrEqualAverage(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.AboveStdDev:
-                    var astdev = ws.ConditionalFormatting.AddAboveStdDev(address);
-                    astdev.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    astdev.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(astdev.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddAboveStdDev(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.BelowStdDev:
-                    var bstdev = ws.ConditionalFormatting.AddBelowStdDev(address);
-                    bstdev.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    bstdev.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(bstdev.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddBelowStdDev(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.Bottom:
-                    var b = ws.ConditionalFormatting.AddBottom(address);
-                    b.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    b.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(b.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddBottom(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.BottomPercent:
-                    var bp = ws.ConditionalFormatting.AddBottomPercent(address);
-                    bp.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    bp.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(bp.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddBottomPercent(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.Top:
-                    var t = ws.ConditionalFormatting.AddTop(address);
-                    t.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    t.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(t.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddTop(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.TopPercent:
-                    var tp = ws.ConditionalFormatting.AddTopPercent(address);
-                    tp.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    tp.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(tp.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddTopPercent(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.Last7Days:
-                    var last7Days = ws.ConditionalFormatting.AddLast7Days(address);
-                    last7Days.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    last7Days.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(last7Days.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddLast7Days(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.LastMonth:
-                    var lastMonth = ws.ConditionalFormatting.AddLastMonth(address);
-                    lastMonth.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    lastMonth.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(lastMonth.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddLastMonth(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.LastWeek:
-                    var lastWeek = ws.ConditionalFormatting.AddLastWeek(address);
-                    lastWeek.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    lastWeek.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(lastWeek.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddLastWeek(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.NextMonth:
-                    var nextMonth = ws.ConditionalFormatting.AddNextMonth(address);
-                    nextMonth.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    nextMonth.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(nextMonth.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddNextMonth(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.NextWeek:
-                    var nextWeek = ws.ConditionalFormatting.AddNextWeek(address);
-                    nextWeek.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    nextWeek.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(nextWeek.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddNextWeek(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.ThisMonth:
-                    var thisMonth = ws.ConditionalFormatting.AddThisMonth(address);
-                    thisMonth.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    thisMonth.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(thisMonth.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddThisMonth(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.ThisWeek:
-                    var thisWeek = ws.ConditionalFormatting.AddThisWeek(address);
-                    thisWeek.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    thisWeek.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(thisWeek.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddThisWeek(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.Today:
-                    var today = ws.ConditionalFormatting.AddToday(address);
-                    today.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    today.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(today.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddToday(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.Tomorrow:
-                    var tomorrow = ws.ConditionalFormatting.AddTomorrow(address);
-                    tomorrow.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    tomorrow.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(tomorrow.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddTomorrow(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.Yesterday:
-                    var yesterday = ws.ConditionalFormatting.AddYesterday(address);
-                    yesterday.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    yesterday.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(yesterday.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddYesterday(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.BeginsWith:
                     var beginsWith = ws.ConditionalFormatting.AddBeginsWith(address);
                     beginsWith.Text = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
-                    beginsWith.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    beginsWith.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(beginsWith.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(beginsWith, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.Between:
                     throw new NotSupportedException("ConditionalFormatting rule type 'Between' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.ContainsBlanks:
-                    var containsBlanks = ws.ConditionalFormatting.AddContainsBlanks(address);
-                    containsBlanks.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    containsBlanks.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(containsBlanks.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddContainsBlanks(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.ContainsErrors:
-                    var containsErrors = ws.ConditionalFormatting.AddContainsErrors(address);
-                    containsErrors.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    containsErrors.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(containsErrors.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddContainsErrors(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.ContainsText:
                     var containsText = ws.ConditionalFormatting.AddContainsText(address);
                     containsText.Text = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
-                    containsText.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    containsText.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(containsText.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(containsText, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.DuplicateValues:
-                    var duplicateValues = ws.ConditionalFormatting.AddDuplicateValues(address);
-                    duplicateValues.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    duplicateValues.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(duplicateValues.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddDuplicateValues(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.EndsWith:
                     var endsWith = ws.ConditionalFormatting.AddEndsWith(address);
                     endsWith.Text = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
-                    endsWith.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    endsWith.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(endsWith.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(endsWith, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.Equal:
                     var equal = ws.ConditionalFormatting.AddEqual(address);
                     equal.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
-                    equal.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    equal.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(equal.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(equal, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.Expression:
                     var expression = ws.ConditionalFormatting.AddExpression(address);
                     expression.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
-                    expression.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    expression.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(expression.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(expression, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.GreaterThan:
                     var gt = ws.ConditionalFormatting.AddGreaterThan(address);
                     gt.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
-                    gt.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    gt.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(gt.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(gt, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.GreaterThanOrEqual:
                     var gte = ws.ConditionalFormatting.AddGreaterThanOrEqual(address);
                     gte.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
-                    gte.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    gte.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(gte.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(gte, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.LessThan:
                     var lt = ws.ConditionalFormatting.AddLessThan(address);
                     lt.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
-                    lt.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    lt.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(lt.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(lt, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.LessThanOrEqual:
                     var lte = ws.ConditionalFormatting.AddLessThanOrEqual(address);
                     lte.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
-                    lte.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    lte.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(lte.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(lte, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.NotBetween:
                     throw new NotSupportedException("ConditionalFormatting rule type 'NotBetween' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.NotContains:
                     throw new NotSupportedException("ConditionalFormatting rule type 'NotContains' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.NotContainsBlanks:
-                    var notContainsBlanks = ws.ConditionalFormatting.AddNotContainsBlanks(address);
-                    notContainsBlanks.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    notContainsBlanks.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(notContainsBlanks.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddNotContainsBlanks(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.NotContainsErrors:
-                    var notContainsErrors = ws.ConditionalFormatting.AddNotContainsErrors(address);
-                    notContainsErrors.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    notContainsErrors.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(notContainsErrors.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddNotContainsErrors(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.NotContainsText:
                     var notContainsText = ws.ConditionalFormatting.AddNotContainsText(address);
                     notContainsText.Text = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
-                    notContainsText.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    notContainsText.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(notContainsText.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(notContainsText, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.NotEqual:
                     var notEqual = ws.ConditionalFormatting.AddNotEqual(address);
                     notEqual.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
-                    notEqual.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    notEqual.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(notEqual.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(notEqual, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.UniqueValues:
-                    var uniqueValues = ws.ConditionalFormatting.AddUniqueValues(address);
-                    uniqueValues.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
-                    uniqueValues.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
-                    Util.ApplyConditionalFormattingStyle(uniqueValues.Style, ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStyle);
+                    ApplyRuleCommon(ws.ConditionalFormatting.AddUniqueValues(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.ThreeColorScale:
                     throw new NotSupportedException("ConditionalFormatting rule type 'ThreeColorScale' is not yet supported by this extension.");
@@ -1826,7 +1758,7 @@ namespace OutSystems.NssAdvanced_Excel
                 case eExcelConditionalFormattingRuleType.DataBar:
                     throw new NotSupportedException("ConditionalFormatting rule type 'DataBar' is not yet supported by this extension.");
                 default:
-                    throw new Exception("Invalid Rule Type: " + ssConditionalFormatRecord.ssSTConditionalFormatItem.ssRuleType);
+                    throw new ArgumentException("Invalid Rule Type: " + ssConditionalFormatRecord.ssSTConditionalFormatItem.ssRuleType);
             }
 
         } // MssConditionalFormatting_AddRule
@@ -1841,7 +1773,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCopyStyleFromRow">Copy Styles from this row. Applied to all inserted rows. 0 will not copy any styles</param>
         public void MssRow_Insert(object ssWorksheet, int ssInsertAt, int ssNrRows, int ssCopyStyleFromRow)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             ws.InsertRow(ssInsertAt, ssNrRows, ssCopyStyleFromRow);
         } // MssRow_Insert
@@ -1854,7 +1786,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRange">Range that CellFormat is to be applied to</param>
         public void MssCellFormat_ApplyToRange(object ssWorksheet, RCCellFormatRecord ssCellFormat, RCRangeRecord ssRange)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             ExcelRange er = ws.Cells[ssRange.ssSTRange.ssStartRow, ssRange.ssSTRange.ssStartCol, ssRange.ssSTRange.ssEndRow, ssRange.ssSTRange.ssEndCol];
 
@@ -1870,7 +1802,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// VeryHidden = 2 - The worksheet is hidden and cannot be shown by the user via the user interface</param>
         public void MssWorksheet_Hide_Show(object ssWorksheet, int ssHidden)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.Hidden = (eWorkSheetHidden)ssHidden;
         } // MssWorksheet_Hide_Show
 
@@ -1889,7 +1821,7 @@ namespace OutSystems.NssAdvanced_Excel
             ssFound = false;
             ssRowIndex = 0;
             ssColumnIndex = 0;
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             foreach (var item in ws.Cells[ssRange])
             {
@@ -1912,7 +1844,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssHidden">True = Hide, False = Show</param>
         public void MssRow_Hide_Show(object ssWorksheet, int ssRowIndex, bool ssHidden)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.Row(ssRowIndex).Hidden = ssHidden;
         } // MssRow_Hide_Show
 
@@ -1934,7 +1866,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet">The worksheet to work with</param>
         public void MssWorksheet_Calculate(object ssWorksheet)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.Calculate();
         } // MssWorksheet_Calculate
 
@@ -1946,7 +1878,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssHidden">A Boolean value, set to True to hide the column, and to False to show the column.</param>
         public void MssColumn_Hide_Show(object ssWorksheet, int ssColumn, bool ssHidden)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             ws.Column(ssColumn).Hidden = ssHidden;
 
@@ -1971,10 +1903,10 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (string.IsNullOrEmpty(ssCellName) && ssCellColumn <= 0 && ssCellRow <= 0)
             {
-                throw new Exception("You need to specify a valid cell name (i.e. A4) or cell index (row/column combination)");
+                throw new ArgumentException("You need to specify a valid cell name (i.e. A4) or cell index (row/column combination)");
             }
 
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             try
             {
@@ -1991,8 +1923,9 @@ namespace OutSystems.NssAdvanced_Excel
 
                 ssCellValue = ssReadText ? cell.Text : Convert.ToString(cell.Value);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Util.LogMessage("MssCell_Read failed (name='" + ssCellName + "', row=" + ssCellRow + ", col=" + ssCellColumn + "): " + ex.Message);
                 ssCellValue = String.Empty;
             }
         } // MssCell_Read
@@ -2021,10 +1954,10 @@ namespace OutSystems.NssAdvanced_Excel
         {
             if (string.IsNullOrEmpty(ssCellName) && ssCellRow < 1 && ssCellColumn < 1)
             {
-                throw new Exception("You need to specify a valid cell name (i.e. A4) or cell index (row/column combination)");
+                throw new ArgumentException("You need to specify a valid cell name (i.e. A4) or cell index (row/column combination)");
             }
 
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ExcelAddress address = null;
 
             if (!string.IsNullOrEmpty(ssCellName))
@@ -2038,7 +1971,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (address == null)
             {
-                throw new Exception("Invalid address");
+                throw new ArgumentException("Invalid address");
             }
 
             switch (ssCellType.ToLower())
@@ -2051,6 +1984,12 @@ namespace OutSystems.NssAdvanced_Excel
                 case "text":
                     ssCellFormat.ssSTCellFormat.ssNumberFormat = "@"; /// Formats the cell as text. Ref: https://stackoverflow.com/a/30095442
                     ws.SetValue(address.Address, ssCellValue);
+                    if (ssPreserveFormat)
+                    {
+                        // ApplyFormatToRange is skipped below when preserving formatting,
+                        // so apply the text number format directly to the cell.
+                        ws.Cells[address.Address].Style.Numberformat.Format = "@";
+                    }
                     break;
                 default: ws.SetValue(address.Address, ssCellValue); break;
             }
@@ -2072,7 +2011,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             if (ssCurrentIndex <= 0 || ssNewIndex <= 0)
             {
-                throw new Exception("Current and New index values must be >= 1.");
+                throw new ArgumentException("Current and New index values must be >= 1.");
             }
 
             ExcelPackage ee = ssWorkbook as ExcelPackage;
@@ -2096,7 +2035,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             if (ssWorksheetIndex <= 0 && string.IsNullOrEmpty(ssWorksheetName))
             {
-                throw new Exception("You need to specify at least one of WorksheetIndex or WorksheetName");
+                throw new ArgumentException("You need to specify at least one of WorksheetIndex or WorksheetName");
             }
 
             ssWorksheet = null;
@@ -2127,7 +2066,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             if (ssIndexToDelete <= 0 && string.IsNullOrEmpty(ssNameToDelete))
             {
-                throw new Exception("You need to specify at least one of WorksheetIndex or WorksheetName");
+                throw new ArgumentException("You need to specify at least one of WorksheetIndex or WorksheetName");
             }
 
             ExcelPackage ee = ssWorkbook as ExcelPackage;
@@ -2157,7 +2096,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (ssWorksheet != null)
             {
-                ws = ssWorksheet as ExcelWorksheet;
+                ws = AsWorksheet(ssWorksheet);
                 newSheet = ee.Workbook.Worksheets.Add(string.IsNullOrEmpty(ssWorksheetName) ? "Copy_" + ws.Name : ssWorksheetName, ws);
                 if (ssIndexWhereToAdd > 0)
                 {
@@ -2204,7 +2143,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ssProperties = new RCWorksheetRecord();
 
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             ssProperties.ssSTWorksheet.ssIndex = ws.Index;
             ssProperties.ssSTWorksheet.ssName = ws.Name;
@@ -2233,7 +2172,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheetName"></param>
         public void MssWorksheet_GetName(object ssWorksheet, out string ssWorksheetName)
         {
-            ssWorksheetName = (ssWorksheet as ExcelWorksheet).Name;
+            ssWorksheetName = (AsWorksheet(ssWorksheet)).Name;
         } // MssWorksheet_GetName
 
         /// <summary>
@@ -2248,7 +2187,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssExportHeaders">True if headers should be included in export</param>
         public void MssCell_WriteRange(object ssWorksheet, int ssRowStart, int ssColumnStart, object ssDataSet, RCCellFormatRecord ssCellFormat, bool ssExportHeaders)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             DataTable dt = Util.RecordListToDataTable((RecordList)ssDataSet);
 
             if (dt != null)
@@ -2285,7 +2224,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssName"></param>
         public void MssWorksheet_Rename(object ssWorksheet, string ssName)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.Name = ssName;
         } // MssWorksheet_Rename
 
@@ -2314,17 +2253,45 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (!hasBinaryData && string.IsNullOrEmpty(ssFileName))
             {
-                throw new Exception("You need to specify at least one of FileName or Binary_Data");
+                throw new ArgumentException("You need to specify at least one of FileName or Binary_Data");
             }
 
             ExcelPackage p = new ExcelPackage();
             if (ssFileName.ToLower().StartsWith("http:") || ssFileName.ToLower().StartsWith("https:"))
             {
-                System.Net.HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ssFileName);
+                const int timeoutMs = 30000;                 // fail fast instead of hanging on a slow/dead host
+                const long maxDownloadBytes = 100L * 1024 * 1024; // cap the download to guard against runaway responses
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ssFileName);
+                request.Timeout = timeoutMs;
+                request.ReadWriteTimeout = timeoutMs;
+
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                using (Stream responseStream = response.GetResponseStream())
                 {
-                    p.Load(responseStream);
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        throw new IOException("Failed to download workbook from '" + ssFileName + "': HTTP " + (int)response.StatusCode + " " + response.StatusCode + ".");
+                    }
+
+                    using (Stream responseStream = response.GetResponseStream())
+                    using (MemoryStream buffer = new MemoryStream())
+                    {
+                        byte[] chunk = new byte[81920];
+                        long total = 0;
+                        int read;
+                        while ((read = responseStream.Read(chunk, 0, chunk.Length)) > 0)
+                        {
+                            total += read;
+                            if (total > maxDownloadBytes)
+                            {
+                                throw new IOException("The downloaded workbook exceeds the maximum allowed size (100 MB).");
+                            }
+                            buffer.Write(chunk, 0, read);
+                        }
+
+                        buffer.Position = 0;
+                        p.Load(buffer);
+                    }
                 }
             }
             else if (!string.IsNullOrEmpty(ssFileName))
@@ -2433,7 +2400,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssColPos">Column position to place the upper left corner graph</param>
         public void MssChart_Create(object ssWorksheet, string ssChartType, string ssChartName, RLDataSeriesRecordList ssDataSeries_List, int ssHeight, int ssWidth, int ssRowPos, int ssColPos)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
             var chart = ws.Drawings.AddChart(ssChartName, Util.StringToChartType(ssChartType));
             chart.SetPosition(ssRowPos, 0, ssColPos, 0);
@@ -2441,8 +2408,9 @@ namespace OutSystems.NssAdvanced_Excel
 
             for (int i = 0; i < ssDataSeries_List.Count; i++)
             {
-                STRangeStructure valuerange = ssDataSeries_List.CurrentRec.ssSTDataSeries.ssValueRange.ssSTRange;
-                STRangeStructure labelrange = ssDataSeries_List.CurrentRec.ssSTDataSeries.ssLabelRange.ssSTRange;
+                RCDataSeriesRecord dataSeries = ssDataSeries_List[i];
+                STRangeStructure valuerange = dataSeries.ssSTDataSeries.ssValueRange.ssSTRange;
+                STRangeStructure labelrange = dataSeries.ssSTDataSeries.ssLabelRange.ssSTRange;
 
                 int val_startRow = valuerange.ssStartRow;
                 int val_startCol = valuerange.ssStartCol;
@@ -2455,8 +2423,7 @@ namespace OutSystems.NssAdvanced_Excel
 
                 var series = chart.Series.Add(ExcelRange.GetAddress(val_startRow, val_startCol, val_endRow, val_endCol),
                     ExcelRange.GetAddress(lbl_startRow, lbl_startCol, lbl_endRow, lbl_endCol));
-                series.Header = ssDataSeries_List.CurrentRec.ssSTDataSeries.ssName;
-                ssDataSeries_List.Advance();
+                series.Header = dataSeries.ssSTDataSeries.ssName;
             }
         } // MssChart_Create
 
@@ -2469,7 +2436,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssColumn">column number</param>
         public void MssCell_CalculateByIndex(object ssWorksheet, int ssRow, int ssColumn)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.Cells[ssRow, ssColumn].Calculate();
         } // MssCell_CalculateByIndex 
 
@@ -2492,7 +2459,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRightSection">The content for the right section.</param>
         public void MssWorksheet_SetFooter(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.HeaderFooter.OddFooter.LeftAlignedText = ssLeftSection;
             ws.HeaderFooter.OddFooter.CenteredText = ssCenterSection;
             ws.HeaderFooter.OddFooter.RightAlignedText = ssRightSection;
@@ -2520,7 +2487,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRightSection">The content for the right section.</param>
         public void MssWorksheet_SetHeader(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ws.HeaderFooter.OddHeader.LeftAlignedText = ssLeftSection;
             ws.HeaderFooter.OddHeader.CenteredText = ssCenterSection;
             ws.HeaderFooter.OddHeader.RightAlignedText = ssRightSection;
@@ -2539,7 +2506,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRightSection">The right section of the header.</param>
         public void MssWorksheet_GetHeader(object ssWorksheet, bool ssIsEven, out string ssLeftSection, out string ssCenterSection, out string ssRightSection)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ssLeftSection = (ssIsEven ? ws.HeaderFooter.EvenHeader.LeftAlignedText : ws.HeaderFooter.OddHeader.LeftAlignedText);
             ssCenterSection = (ssIsEven ? ws.HeaderFooter.EvenHeader.CenteredText : ws.HeaderFooter.OddHeader.CenteredText);
             ssRightSection = (ssIsEven ? ws.HeaderFooter.EvenHeader.RightAlignedText : ws.HeaderFooter.OddHeader.RightAlignedText);
@@ -2555,7 +2522,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRightSection">The right section of the footer.</param>
         public void MssWorksheet_GetFooter(object ssWorksheet, bool ssIsEven, out string ssLeftSection, out string ssCenterSection, out string ssRightSection)
         {
-            ExcelWorksheet ws = ssWorksheet as ExcelWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             ssLeftSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.LeftAlignedText : ws.HeaderFooter.OddFooter.LeftAlignedText);
             ssCenterSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.CenteredText : ws.HeaderFooter.OddFooter.CenteredText);
             ssRightSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.RightAlignedText : ws.HeaderFooter.OddFooter.RightAlignedText);
@@ -2574,14 +2541,14 @@ namespace OutSystems.NssAdvanced_Excel
         {
             // Select the worksheet
             ExcelWorksheet ws;
-            ws = (ExcelWorksheet)ssWorksheet;
+            ws = AsWorksheet(ssWorksheet);
 
             // Check if the specified cell is part of a merged range
             if (ssIsMerged)
             {
                 if (ssEndColumn <= 0)
                 {
-                    throw new Exception("You need to specify a valid cell column for End Column");
+                    throw new ArgumentException("You need to specify a valid cell column for End Column");
                 }
 
                 // Select the range of merged cells to clear
@@ -2614,7 +2581,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             // Select the worksheet
             ExcelWorksheet ws;
-            ws = (ExcelWorksheet)ssWorksheet;
+            ws = AsWorksheet(ssWorksheet);
 
             if (ssIsMerged)
             {   // Select the range of merged cells to clear
@@ -2647,7 +2614,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             // Select the worksheet
             ExcelWorksheet ws;
-            ws = (ExcelWorksheet)ssWorksheet;
+            ws = AsWorksheet(ssWorksheet);
 
             // Get the cell
             ExcelRange cell = ws.Cells[ssRow, ssColumn];
@@ -2666,7 +2633,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCollapsed">If True, the group is created collapsed (its rows are hidden).</param>
         public void MssRow_Group(object ssWorksheet, int ssStartRow, int ssEndRow, int ssOutlineLevel, bool ssCollapsed)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             int level = ssOutlineLevel <= 0 ? 1 : ssOutlineLevel;
 
             for (int r = ssStartRow; r <= ssEndRow; r++)
@@ -2685,7 +2652,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssEndRow">Last row to ungroup (1-based)</param>
         public void MssRow_Ungroup(object ssWorksheet, int ssStartRow, int ssEndRow)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             for (int r = ssStartRow; r <= ssEndRow; r++)
             {
                 ws.Row(r).OutlineLevel = 0;
@@ -2704,7 +2671,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCollapsed">If True, the group is created collapsed (its columns are hidden).</param>
         public void MssColumn_Group(object ssWorksheet, int ssStartColumn, int ssEndColumn, int ssOutlineLevel, bool ssCollapsed)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             int level = ssOutlineLevel <= 0 ? 1 : ssOutlineLevel;
 
             for (int c = ssStartColumn; c <= ssEndColumn; c++)
@@ -2723,7 +2690,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssEndColumn">Last column to ungroup (1-based)</param>
         public void MssColumn_Ungroup(object ssWorksheet, int ssStartColumn, int ssEndColumn)
         {
-            ExcelWorksheet ws = (ExcelWorksheet)ssWorksheet;
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             for (int c = ssStartColumn; c <= ssEndColumn; c++)
             {
                 ws.Column(c).OutlineLevel = 0;
@@ -2740,6 +2707,31 @@ namespace OutSystems.NssAdvanced_Excel
         {
             return (!string.IsNullOrEmpty(value) && Enum.TryParse<T>(value, true, out var parsed))
                 ? parsed : fallback;
+        }
+
+        /// <summary>
+        /// Cast the worksheet handle to an ExcelWorksheet, throwing a clear error instead of
+        /// the cryptic NullReferenceException that a failed "as" cast would surface later.
+        /// </summary>
+        private static ExcelWorksheet AsWorksheet(object ssWorksheet)
+        {
+            if (ssWorksheet is ExcelWorksheet ws)
+            {
+                return ws;
+            }
+            throw new ArgumentException("Expected a Worksheet object (e.g. from Worksheet_Select, Worksheet_SelectByName/Index, or Workbook_AddName).", nameof(ssWorksheet));
+        }
+
+        /// <summary>
+        /// Apply the priority, stop-if-true and dxf style shared by every style-based
+        /// conditional-formatting rule, so each case in MssConditionalFormatting_AddRule
+        /// doesn't repeat the same three lines.
+        /// </summary>
+        private static void ApplyRuleCommon(IExcelConditionalFormattingRule rule, RCConditionalFormatItemRecord rec)
+        {
+            rule.Priority = rec.ssSTConditionalFormatItem.ssPriority;
+            rule.StopIfTrue = rec.ssSTConditionalFormatItem.ssStopIfTrue;
+            Util.ApplyConditionalFormattingStyle(rule.Style, rec.ssSTConditionalFormatItem.ssStyle);
         }
 
     } // CssAdvanced_Excel
