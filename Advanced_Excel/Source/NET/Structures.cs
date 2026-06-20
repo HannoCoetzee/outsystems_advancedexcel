@@ -23,6 +23,9 @@ namespace OutSystems.NssAdvanced_Excel {
 		internal static readonly GlobalObjectKey IdBackgroundColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*3oXRIbtWvkKxhz4Cx7wIRg");
 		internal static readonly GlobalObjectKey IdAutofitColumn = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*fH82ZL_ULky72619BBkR+w");
 		internal static readonly GlobalObjectKey IdBold = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*GU0F2kjUe0W09TXtoXF07g");
+		internal static readonly GlobalObjectKey IdItalic = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*dC2GbHe27E21HsfPgVfi8A");
+		internal static readonly GlobalObjectKey IdUnderline = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*Wn0oRSTxGEqTMSOVcTb5Kw");
+		internal static readonly GlobalObjectKey IdStrikethrough = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*5bm3eVinCEKikW2v_MfDUg");
 		internal static readonly GlobalObjectKey IdNumberFormat = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*T9IMXF6dHkeMjRsrROBwig");
 		internal static readonly GlobalObjectKey IdBorderStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*4nZdbtDhvk+RtDYUBpdevA");
 		internal static readonly GlobalObjectKey IdBorderColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ZTYcPbwyLEuVyw+rm2CbRg");
@@ -57,6 +60,15 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		[System.Xml.Serialization.XmlElement("Bold")]
 		public bool ssBold;
+
+		[System.Xml.Serialization.XmlElement("Italic")]
+		public bool ssItalic;
+
+		[System.Xml.Serialization.XmlElement("Underline")]
+		public bool ssUnderline;
+
+		[System.Xml.Serialization.XmlElement("Strikethrough")]
+		public bool ssStrikethrough;
 
 		[System.Xml.Serialization.XmlElement("NumberFormat")]
 		public string ssNumberFormat;
@@ -122,6 +134,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssBackgroundColor = "";
 			ssAutofitColumn = false;
 			ssBold = false;
+			ssItalic = false;
+			ssUnderline = false;
+			ssStrikethrough = false;
 			ssNumberFormat = "";
 			ssBorderStyle = 0;
 			ssBorderColor = "";
@@ -182,6 +197,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssBackgroundColor = r.ReadText(index++, "CellFormat.BackgroundColor", "");
 			ssAutofitColumn = r.ReadBoolean(index++, "CellFormat.AutofitColumn", false);
 			ssBold = r.ReadBoolean(index++, "CellFormat.Bold", false);
+			ssItalic = r.ReadBoolean(index++, "CellFormat.Italic", false);
+			ssUnderline = r.ReadBoolean(index++, "CellFormat.Underline", false);
+			ssStrikethrough = r.ReadBoolean(index++, "CellFormat.Strikethrough", false);
 			ssNumberFormat = r.ReadText(index++, "CellFormat.NumberFormat", "");
 			ssBorderStyle = r.ReadInteger(index++, "CellFormat.BorderStyle", 0);
 			ssBorderColor = r.ReadText(index++, "CellFormat.BorderColor", "");
@@ -221,6 +239,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (a.ssBackgroundColor != b.ssBackgroundColor) return false;
 			if (a.ssAutofitColumn != b.ssAutofitColumn) return false;
 			if (a.ssBold != b.ssBold) return false;
+			if (a.ssItalic != b.ssItalic) return false;
+			if (a.ssUnderline != b.ssUnderline) return false;
+			if (a.ssStrikethrough != b.ssStrikethrough) return false;
 			if (a.ssNumberFormat != b.ssNumberFormat) return false;
 			if (a.ssBorderStyle != b.ssBorderStyle) return false;
 			if (a.ssBorderColor != b.ssBorderColor) return false;
@@ -259,6 +280,9 @@ namespace OutSystems.NssAdvanced_Excel {
 				^ ssBackgroundColor.GetHashCode()
 				^ ssAutofitColumn.GetHashCode()
 				^ ssBold.GetHashCode()
+				^ ssItalic.GetHashCode()
+				^ ssUnderline.GetHashCode()
+				^ ssStrikethrough.GetHashCode()
 				^ ssNumberFormat.GetHashCode()
 				^ ssBorderStyle.GetHashCode()
 				^ ssBorderColor.GetHashCode()
@@ -299,6 +323,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssBackgroundColor = "";
 			ssAutofitColumn = false;
 			ssBold = false;
+			ssItalic = false;
+			ssUnderline = false;
+			ssStrikethrough = false;
 			ssNumberFormat = "";
 			ssBorderStyle = 0;
 			ssBorderColor = "";
@@ -353,6 +380,27 @@ namespace OutSystems.NssAdvanced_Excel {
 			}
 			if (fieldInfo.FieldType.IsSerializable) {
 				ssBold = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssItalic", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssItalic' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssItalic = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssUnderline", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssUnderline' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssUnderline = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssStrikethrough", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssStrikethrough' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssStrikethrough = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
 			}
 			fieldInfo = objInfo.GetField("ssNumberFormat", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
 			if (fieldInfo == null) {
@@ -504,6 +552,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			t.ssBackgroundColor = this.ssBackgroundColor;
 			t.ssAutofitColumn = this.ssAutofitColumn;
 			t.ssBold = this.ssBold;
+			t.ssItalic = this.ssItalic;
+			t.ssUnderline = this.ssUnderline;
+			t.ssStrikethrough = this.ssStrikethrough;
 			t.ssNumberFormat = this.ssNumberFormat;
 			t.ssBorderStyle = this.ssBorderStyle;
 			t.ssBorderColor = this.ssBorderColor;
@@ -542,6 +593,9 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".BackgroundColor")) VarValue.AppendAttribute(recordElem, "BackgroundColor", ssBackgroundColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "BackgroundColor");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AutofitColumn")) VarValue.AppendAttribute(recordElem, "AutofitColumn", ssAutofitColumn, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AutofitColumn");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Bold")) VarValue.AppendAttribute(recordElem, "Bold", ssBold, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Bold");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Italic")) VarValue.AppendAttribute(recordElem, "Italic", ssItalic, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Italic");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Underline")) VarValue.AppendAttribute(recordElem, "Underline", ssUnderline, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Underline");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Strikethrough")) VarValue.AppendAttribute(recordElem, "Strikethrough", ssStrikethrough, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Strikethrough");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".NumberFormat")) VarValue.AppendAttribute(recordElem, "NumberFormat", ssNumberFormat, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "NumberFormat");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".BorderStyle")) VarValue.AppendAttribute(recordElem, "BorderStyle", ssBorderStyle, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "BorderStyle");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".BorderColor")) VarValue.AppendAttribute(recordElem, "BorderColor", ssBorderColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "BorderColor");
@@ -579,6 +633,12 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".AutofitColumn")) variable.Value = ssAutofitColumn; else variable.Optimized = true;
 			} else if (head == "bold") {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".Bold")) variable.Value = ssBold; else variable.Optimized = true;
+			} else if (head == "italic") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Italic")) variable.Value = ssItalic; else variable.Optimized = true;
+			} else if (head == "underline") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Underline")) variable.Value = ssUnderline; else variable.Optimized = true;
+			} else if (head == "strikethrough") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Strikethrough")) variable.Value = ssStrikethrough; else variable.Optimized = true;
 			} else if (head == "numberformat") {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".NumberFormat")) variable.Value = ssNumberFormat; else variable.Optimized = true;
 			} else if (head == "borderstyle") {
@@ -642,6 +702,12 @@ namespace OutSystems.NssAdvanced_Excel {
 				return ssAutofitColumn;
 			} else if (key == IdBold) {
 				return ssBold;
+			} else if (key == IdItalic) {
+				return ssItalic;
+			} else if (key == IdUnderline) {
+				return ssUnderline;
+			} else if (key == IdStrikethrough) {
+				return ssStrikethrough;
 			} else if (key == IdNumberFormat) {
 				return ssNumberFormat;
 			} else if (key == IdBorderStyle) {
@@ -689,6 +755,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssBackgroundColor = (string) other.AttributeGet(IdBackgroundColor);
 			ssAutofitColumn = (bool) other.AttributeGet(IdAutofitColumn);
 			ssBold = (bool) other.AttributeGet(IdBold);
+			ssItalic = (bool) other.AttributeGet(IdItalic);
+			ssUnderline = (bool) other.AttributeGet(IdUnderline);
+			ssStrikethrough = (bool) other.AttributeGet(IdStrikethrough);
 			ssNumberFormat = (string) other.AttributeGet(IdNumberFormat);
 			ssBorderStyle = (int) other.AttributeGet(IdBorderStyle);
 			ssBorderColor = (string) other.AttributeGet(IdBorderColor);
@@ -715,6 +784,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (this.ssBackgroundColor != defaultStruct.ssBackgroundColor) return false;
 			if (this.ssAutofitColumn != defaultStruct.ssAutofitColumn) return false;
 			if (this.ssBold != defaultStruct.ssBold) return false;
+			if (this.ssItalic != defaultStruct.ssItalic) return false;
+			if (this.ssUnderline != defaultStruct.ssUnderline) return false;
+			if (this.ssStrikethrough != defaultStruct.ssStrikethrough) return false;
 			if (this.ssNumberFormat != defaultStruct.ssNumberFormat) return false;
 			if (this.ssBorderStyle != defaultStruct.ssBorderStyle) return false;
 			if (this.ssBorderColor != defaultStruct.ssBorderColor) return false;
@@ -2553,6 +2625,9 @@ namespace OutSystems.NssAdvanced_Excel {
 		internal static readonly GlobalObjectKey IdFormula = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*bvwikWuyc0CFIjUukGNxMw");
 		internal static readonly GlobalObjectKey IdRuleType = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*kAiJT_QaJEaD40wTFCo+pw");
 		internal static readonly GlobalObjectKey IdStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*CVx5EPnKoka3xe7InYEb7Q");
+		internal static readonly GlobalObjectKey IdIconSetStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*N3bqpxHDf0upltyn1bTukw");
+		internal static readonly GlobalObjectKey IdReverse = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*waeePRmFYk+YN2FHlmdsMQ");
+		internal static readonly GlobalObjectKey IdShowValue = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*rPsD2Od9OkyWp7w0wEBNVQ");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Address")]
@@ -2573,6 +2648,15 @@ namespace OutSystems.NssAdvanced_Excel {
 		[System.Xml.Serialization.XmlElement("Style")]
 		public RCConditionalFormatStyleRecord ssStyle;
 
+		[System.Xml.Serialization.XmlElement("IconSetStyle")]
+		public string ssIconSetStyle;
+
+		[System.Xml.Serialization.XmlElement("Reverse")]
+		public bool ssReverse;
+
+		[System.Xml.Serialization.XmlElement("ShowValue")]
+		public bool ssShowValue;
+
 
 		public BitArray OptimizedAttributes;
 
@@ -2584,6 +2668,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssFormula = "";
 			ssRuleType = 0;
 			ssStyle = new RCConditionalFormatStyleRecord(null);
+			ssIconSetStyle = "";
+			ssReverse = false;
+			ssShowValue = true;
 		}
 
 		public BitArray[] GetDefaultOptimizedValues() {
@@ -2619,6 +2706,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssStopIfTrue = r.ReadBoolean(index++, "ConditionalFormatItem.StopIfTrue", false);
 			ssFormula = r.ReadText(index++, "ConditionalFormatItem.Formula", "");
 			ssRuleType = r.ReadInteger(index++, "ConditionalFormatItem.RuleType", 0);
+			ssIconSetStyle = r.ReadText(index++, "ConditionalFormatItem.IconSetStyle", "");
+			ssReverse = r.ReadBoolean(index++, "ConditionalFormatItem.Reverse", false);
+			ssShowValue = r.ReadBoolean(index++, "ConditionalFormatItem.ShowValue", false);
 		}
 		/// <summary>
 		/// Read from database
@@ -2645,6 +2735,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (a.ssFormula != b.ssFormula) return false;
 			if (a.ssRuleType != b.ssRuleType) return false;
 			if (a.ssStyle != b.ssStyle) return false;
+			if (a.ssIconSetStyle != b.ssIconSetStyle) return false;
+			if (a.ssReverse != b.ssReverse) return false;
+			if (a.ssShowValue != b.ssShowValue) return false;
 			return true;
 		}
 
@@ -2666,6 +2759,9 @@ namespace OutSystems.NssAdvanced_Excel {
 				^ ssFormula.GetHashCode()
 				^ ssRuleType.GetHashCode()
 				^ ssStyle.GetHashCode()
+				^ ssIconSetStyle.GetHashCode()
+				^ ssReverse.GetHashCode()
+				^ ssShowValue.GetHashCode()
 				;
 			} catch {
 				return base.GetHashCode();
@@ -2689,6 +2785,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssFormula = "";
 			ssRuleType = 0;
 			ssStyle = new RCConditionalFormatStyleRecord(null);
+			ssIconSetStyle = "";
+			ssReverse = false;
+			ssShowValue = true;
 			Type objInfo = this.GetType();
 			FieldInfo fieldInfo = null;
 			fieldInfo = objInfo.GetField("ssAddress", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
@@ -2733,6 +2832,27 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (fieldInfo.FieldType.IsSerializable) {
 				ssStyle = (RCConditionalFormatStyleRecord) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
 			}
+			fieldInfo = objInfo.GetField("ssIconSetStyle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssIconSetStyle' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssIconSetStyle = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssReverse", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssReverse' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssReverse = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssShowValue", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssShowValue' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssShowValue = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
 		}
 
 		public void RecursiveReset() {
@@ -2754,6 +2874,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			t.ssFormula = this.ssFormula;
 			t.ssRuleType = this.ssRuleType;
 			t.ssStyle = (RCConditionalFormatStyleRecord) this.ssStyle.Duplicate();
+			t.ssIconSetStyle = this.ssIconSetStyle;
+			t.ssReverse = this.ssReverse;
+			t.ssShowValue = this.ssShowValue;
 			t.OptimizedAttributes = null;
 			return t;
 		}
@@ -2775,6 +2898,9 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Formula")) VarValue.AppendAttribute(recordElem, "Formula", ssFormula, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Formula");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".RuleType")) VarValue.AppendAttribute(recordElem, "RuleType", ssRuleType, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "RuleType");
 				ssStyle.ToXml(this, recordElem, "Style", detailLevel - 1);
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".IconSetStyle")) VarValue.AppendAttribute(recordElem, "IconSetStyle", ssIconSetStyle, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "IconSetStyle");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Reverse")) VarValue.AppendAttribute(recordElem, "Reverse", ssReverse, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Reverse");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ShowValue")) VarValue.AppendAttribute(recordElem, "ShowValue", ssShowValue, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "ShowValue");
 			} else {
 				VarValue.AppendDeferredEvaluationElement(recordElem);
 			}
@@ -2798,6 +2924,12 @@ namespace OutSystems.NssAdvanced_Excel {
 			} else if (head == "style") {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".Style")) variable.Value = ssStyle; else variable.Optimized = true;
 				variable.SetFieldName("style");
+			} else if (head == "iconsetstyle") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".IconSetStyle")) variable.Value = ssIconSetStyle; else variable.Optimized = true;
+			} else if (head == "reverse") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Reverse")) variable.Value = ssReverse; else variable.Optimized = true;
+			} else if (head == "showvalue") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".ShowValue")) variable.Value = ssShowValue; else variable.Optimized = true;
 			}
 			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
 		}
@@ -2823,6 +2955,12 @@ namespace OutSystems.NssAdvanced_Excel {
 				return ssRuleType;
 			} else if (key == IdStyle) {
 				return ssStyle;
+			} else if (key == IdIconSetStyle) {
+				return ssIconSetStyle;
+			} else if (key == IdReverse) {
+				return ssReverse;
+			} else if (key == IdShowValue) {
+				return ssShowValue;
 			} else {
 				throw new Exception("Invalid key");
 			}
@@ -2835,6 +2973,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssFormula = (string) other.AttributeGet(IdFormula);
 			ssRuleType = (int) other.AttributeGet(IdRuleType);
 			ssStyle.FillFromOther((IRecord) other.AttributeGet(IdStyle));
+			ssIconSetStyle = (string) other.AttributeGet(IdIconSetStyle);
+			ssReverse = (bool) other.AttributeGet(IdReverse);
+			ssShowValue = (bool) other.AttributeGet(IdShowValue);
 		}
 		public bool IsDefault() {
 			STConditionalFormatItemStructure defaultStruct = new STConditionalFormatItemStructure(null);
@@ -2844,6 +2985,9 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (this.ssFormula != defaultStruct.ssFormula) return false;
 			if (this.ssRuleType != defaultStruct.ssRuleType) return false;
 			if (this.ssStyle != defaultStruct.ssStyle) return false;
+			if (this.ssIconSetStyle != defaultStruct.ssIconSetStyle) return false;
+			if (this.ssReverse != defaultStruct.ssReverse) return false;
+			if (this.ssShowValue != defaultStruct.ssShowValue) return false;
 			return true;
 		}
 	} // STConditionalFormatItemStructure
