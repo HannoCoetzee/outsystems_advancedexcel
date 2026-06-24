@@ -20,6 +20,121 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
 		/// <summary>
+		/// Define the cell range that will be printed for this worksheet (the print area saved in the file, used by Excel when printing). Pass an empty range to clear it and print the whole sheet.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRange">Print area in A1 notation, e.g. A1:H50. Empty clears it.</param>
+		public void MssWorksheet_SetPrintArea(object ssWorksheet, string ssRange) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			if (string.IsNullOrEmpty(ssRange))
+				ws.PrinterSettings.PrintArea = null;
+			else
+				ws.PrinterSettings.PrintArea = ws.Cells[ssRange];
+		} // MssWorksheet_SetPrintArea
+
+		/// <summary>
+		/// Configure how the worksheet prints when opened in Excel: page orientation, paper size, and optional fit-to-page scaling (fit to a number of pages wide/tall).
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssOrientation">Portrait or Landscape.</param>
+		/// <param name="ssPaperSize">Paper-size code; 0 = leave unchanged. Common: 9 = A4, 1 = Letter, 8 = A3, 5 = Legal.</param>
+		/// <param name="ssFitToPage">Scale the sheet to fit the page(s).</param>
+		/// <param name="ssFitToWidth">Pages wide (when FitToPage).</param>
+		/// <param name="ssFitToHeight">Pages tall (0 = automatic).</param>
+		public void MssWorksheet_SetPageLayout(object ssWorksheet, string ssOrientation, int ssPaperSize, bool ssFitToPage, int ssFitToWidth, int ssFitToHeight) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			ws.PrinterSettings.Orientation = ParseEnum(ssOrientation, eOrientation.Portrait);
+			if (ssPaperSize > 0)
+				ws.PrinterSettings.PaperSize = (ePaperSize)ssPaperSize;
+			ws.PrinterSettings.FitToPage = ssFitToPage;
+			if (ssFitToPage)
+			{
+				if (ssFitToWidth > 0) ws.PrinterSettings.FitToWidth = ssFitToWidth;
+				ws.PrinterSettings.FitToHeight = ssFitToHeight;
+			}
+		} // MssWorksheet_SetPageLayout
+
+		/// <summary>
+		/// Set the rows and/or columns that repeat on every printed page (e.g. a header row that should appear at the top of each page).
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRepeatRows">Rows repeated on every printed page, e.g. 1:1 or 1:2. Empty = none.</param>
+		/// <param name="ssRepeatColumns">Columns repeated on every page, e.g. A:A. Empty = none.</param>
+		public void MssWorksheet_SetPrintTitles(object ssWorksheet, string ssRepeatRows, string ssRepeatColumns) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			if (!string.IsNullOrEmpty(ssRepeatRows))
+				ws.PrinterSettings.RepeatRows = new ExcelAddress(ssRepeatRows);
+			if (!string.IsNullOrEmpty(ssRepeatColumns))
+				ws.PrinterSettings.RepeatColumns = new ExcelAddress(ssRepeatColumns);
+		} // MssWorksheet_SetPrintTitles
+
+		/// <summary>
+		/// Set the page margins (top, bottom, left, right, header, footer) in inches, used by Excel when the worksheet is printed.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssTop">Margin between the top edge of the page and the start of the content, in inches.</param>
+		/// <param name="ssBottom">Margin between the bottom edge of the page and the end of the content, in inches.</param>
+		/// <param name="ssLeft">Margin between the left edge of the page and the content, in inches.</param>
+		/// <param name="ssRight">Margin between the right edge of the page and the content, in inches.</param>
+		/// <param name="ssHeader">Distance from the top edge of the page to the page header, in inches. Should be smaller than the Top margin so the header sits above the content.</param>
+		/// <param name="ssFooter">Distance from the bottom edge of the page to the page footer, in inches. Should be smaller than the Bottom margin so the footer sits below the content.</param>
+		public void MssWorksheet_SetMargins(object ssWorksheet, decimal ssTop, decimal ssBottom, decimal ssLeft, decimal ssRight, decimal ssHeader, decimal ssFooter) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			ws.PrinterSettings.TopMargin = ssTop;
+			ws.PrinterSettings.BottomMargin = ssBottom;
+			ws.PrinterSettings.LeftMargin = ssLeft;
+			ws.PrinterSettings.RightMargin = ssRight;
+			ws.PrinterSettings.HeaderMargin = ssHeader;
+			ws.PrinterSettings.FooterMargin = ssFooter;
+		} // MssWorksheet_SetMargins
+
+		/// <summary>
+		/// Turn a cell range into a native Excel Table (ListObject) with a built-in style, banded rows, header, and auto-filter — giving structured, filterable data instead of plain cells.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRange">Range incl. header row, e.g. A1:D20.</param>
+		/// <param name="ssTableName">Unique table name.</param>
+		/// <param name="ssTableStyle">e.g. None, Light1, Medium9, Dark1.</param>
+		/// <param name="ssShowHeader">Show the header row.</param>
+		/// <param name="ssShowFilter">Show auto-filter dropdowns.</param>
+		/// <param name="ssShowTotal">Show the totals row.</param>
+		public void MssWorksheet_AddTable(object ssWorksheet, string ssRange, string ssTableName, string ssTableStyle, bool ssShowHeader, bool ssShowFilter, bool ssShowTotal) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			var table = ws.Tables.Add(ws.Cells[ssRange], ssTableName);
+			table.TableStyle = ParseEnum(ssTableStyle, OfficeOpenXml.Table.TableStyles.Medium2);
+			table.ShowHeader = ssShowHeader;
+			table.ShowFilter = ssShowFilter;
+			table.ShowTotal = ssShowTotal;
+		} // MssWorksheet_AddTable
+
+		/// <summary>
+		/// Add a clickable hyperlink to a cell, pointing to a URL, with optional display text shown in place of the raw link.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssCellName">Cell, e.g. A1.</param>
+		/// <param name="ssUrl">Full URL incl. scheme, e.g. https://example.com.</param>
+		/// <param name="ssDisplayText">Text shown in the cell; defaults to the URL.</param>
+		public void MssCell_AddHyperlink(object ssWorksheet, string ssCellName, string ssUrl, string ssDisplayText) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			string display = string.IsNullOrEmpty(ssDisplayText) ? ssUrl : ssDisplayText;
+			ExcelRange cell = ws.Cells[ssCellName];
+			cell.Hyperlink = new ExcelHyperLink(ssUrl) { Display = display };
+			cell.Value = display;
+			cell.Style.Font.UnderLine = true;
+			cell.Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+		} // MssCell_AddHyperlink
+
+		/// <summary>
+		/// Set the color of the worksheet&apos;s sheet tab using a hex color code (e.g. #FF0000).
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssHexColor">Hex color, e.g. #FF0000.</param>
+		public void MssWorksheet_SetTabColor(object ssWorksheet, string ssHexColor) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			ws.TabColor = Util.ConvertFromColorCode(ssHexColor);
+		} // MssWorksheet_SetTabColor
+
+		/// <summary>
 		/// Copy a range of rows
 		/// </summary>
 		/// <param name="ssWorksheet"></param>
