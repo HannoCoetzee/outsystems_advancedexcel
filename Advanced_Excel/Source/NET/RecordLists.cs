@@ -1603,4 +1603,172 @@ namespace OutSystems.NssAdvanced_Excel {
 
 
 	} // RLOfficePropertiesRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLDataValidationRecordList</code> that represents a record list of
+	///  <code>DataValidation</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLDataValidationRecordList: GenericRecordList<RCDataValidationRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCDataValidationRecord GetElementDefaultValue() {
+			return new RCDataValidationRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCDataValidationRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLDataValidationRecordList recordlist, Func<RCDataValidationRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLDataValidationRecordList(RCDataValidationRecord[] array) {
+			RLDataValidationRecordList result = new RLDataValidationRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLDataValidationRecordList ToList<T>(T[] array, Func <T, RCDataValidationRecord> converter) {
+			RLDataValidationRecordList result = new RLDataValidationRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLDataValidationRecordList FromRestList<T>(RestList<T> restList, Func <T, RCDataValidationRecord> converter) {
+			RLDataValidationRecordList result = new RLDataValidationRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLDataValidationRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLDataValidationRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLDataValidationRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLDataValidationRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCDataValidationRecord> NewList() {
+			return new RLDataValidationRecordList();
+		}
+
+
+	} // RLDataValidationRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLCellDataRecordList</code> that represents a record list of
+	///  <code>CellData</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLCellDataRecordList: GenericRecordList<RCCellDataRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCCellDataRecord GetElementDefaultValue() {
+			return new RCCellDataRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCCellDataRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLCellDataRecordList recordlist, Func<RCCellDataRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLCellDataRecordList(RCCellDataRecord[] array) {
+			RLCellDataRecordList result = new RLCellDataRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLCellDataRecordList ToList<T>(T[] array, Func <T, RCCellDataRecord> converter) {
+			RLCellDataRecordList result = new RLCellDataRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLCellDataRecordList FromRestList<T>(RestList<T> restList, Func <T, RCCellDataRecord> converter) {
+			RLCellDataRecordList result = new RLCellDataRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLCellDataRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLCellDataRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLCellDataRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLCellDataRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCCellDataRecord> NewList() {
+			return new RLCellDataRecordList();
+		}
+
+
+	} // RLCellDataRecordList
 }

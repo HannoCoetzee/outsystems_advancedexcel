@@ -1124,6 +1124,32 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssHexColor">Hex color, e.g. #FF0000.</param>
 		void MssWorksheet_SetTabColor(object ssWorksheet, string ssHexColor);
 
+		/// <summary>
+		/// Add a data-validation rule to a cell range using a DataValidation configuration (whole-number, decimal, date, text-length, or custom formula), with optional input prompt and error message.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssCellRange">Range to validate, e.g. B2:B100.</param>
+		/// <param name="ssValidation">The validation rule configuration.</param>
+		void MssWorksheet_AddDataValidation(object ssWorksheet, string ssCellRange, RCDataValidationRecord ssValidation);
+
+		/// <summary>
+		/// Read every populated cell in a range into a list of {Row, Column, Value}, so the data can be processed in your logic.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to read from.</param>
+		/// <param name="ssCellRange">Range to read, e.g. A1:E100.</param>
+		/// <param name="ssCells">One record per populated cell.</param>
+		void MssWorksheet_ReadRange(object ssWorksheet, string ssCellRange, out RLCellDataRecordList ssCells);
+
+		/// <summary>
+		/// Add in-cell sparkline mini-charts (line, column, or stacked) for a data range, placed in a location range.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssLocationRange">Where the sparklines go (one per cell), e.g. F2:F10.</param>
+		/// <param name="ssDataRange">The source data, e.g. A2:E10 (one row of data per sparkline).</param>
+		/// <param name="ssSparklineType">Line, Column, or Stacked.</param>
+		/// <param name="ssColor">Series color as hex, e.g. #638EC6. Blank = EPPlus default.</param>
+		void MssWorksheet_AddSparkline(object ssWorksheet, string ssLocationRange, string ssDataRange, string ssSparklineType, string ssColor);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

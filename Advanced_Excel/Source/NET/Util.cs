@@ -190,6 +190,67 @@ namespace OutSystems.NssAdvanced_Excel
         }
 
         /// <summary>
+        /// Worksheets saved with sheetFormatPr/@zeroHeight="1" hide every row by default and rely on
+        /// explicit row records to mark the visible ones. EPPlus's save prunes empty row records, which
+        /// turns those visible blank rows hidden (content ends up squashed). For such sheets, pin a real
+        /// record on each visible row in the used range so it survives the save. Other sheets are untouched.
+        /// </summary>
+        internal static void PreserveVisibleRowsForZeroHeightSheets(ExcelPackage package)
+        {
+            if (package == null)
+            {
+                return;
+            }
+
+            foreach (var ws in package.Workbook.Worksheets)
+            {
+                if (ws.Dimension == null || !WorksheetUsesZeroHeight(ws))
+                {
+                    continue;
+                }
+
+                int end = ws.Dimension.End.Row;
+                for (int r = 1; r <= end; r++)
+                {
+                    if (!ws.Row(r).Hidden)
+                    {
+                        ws.Row(r).CustomHeight = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// True when the worksheet's sheetFormatPr has zeroHeight set (all rows hidden by default).
+        /// </summary>
+        private static bool WorksheetUsesZeroHeight(ExcelWorksheet ws)
+        {
+            try
+            {
+                var xml = ws.WorksheetXml;
+                if (xml == null || xml.DocumentElement == null)
+                {
+                    return false;
+                }
+
+                var nsmgr = new System.Xml.XmlNamespaceManager(xml.NameTable);
+                nsmgr.AddNamespace("d", xml.DocumentElement.NamespaceURI);
+                var node = xml.SelectSingleNode("//d:sheetFormatPr", nsmgr) as System.Xml.XmlElement;
+                if (node == null)
+                {
+                    return false;
+                }
+
+                string z = node.GetAttribute("zeroHeight");
+                return z == "1" || string.Equals(z, "true", System.StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Apply the specified format to a range of cells
         /// </summary>
         /// <param name="range">The range of cells to apply the formatting to</param>
