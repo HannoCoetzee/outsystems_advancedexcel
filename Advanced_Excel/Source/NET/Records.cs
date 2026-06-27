@@ -3640,4 +3640,386 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // RCOfficePropertiesRecord
+
+	/// <summary>
+	/// Structure <code>RCDataValidationRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCDataValidationRecord: ISerializable, ITypedRecord<RCDataValidationRecord> {
+		internal static readonly GlobalObjectKey IdDataValidation = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*GTFk6PBwvgXJPpBEQ5Q0KA");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("DataValidation")]
+		public STDataValidationStructure ssSTDataValidation;
+
+
+		public static implicit operator STDataValidationStructure(RCDataValidationRecord r) {
+			return r.ssSTDataValidation;
+		}
+
+		public static implicit operator RCDataValidationRecord(STDataValidationStructure r) {
+			RCDataValidationRecord res = new RCDataValidationRecord(null);
+			res.ssSTDataValidation = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCDataValidationRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTDataValidation = new STDataValidationStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTDataValidation.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTDataValidation.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCDataValidationRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCDataValidationRecord a, RCDataValidationRecord b) {
+			if (a.ssSTDataValidation != b.ssSTDataValidation) return false;
+			return true;
+		}
+
+		public static bool operator != (RCDataValidationRecord a, RCDataValidationRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCDataValidationRecord)) return false;
+			return (this == (RCDataValidationRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTDataValidation.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCDataValidationRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTDataValidation = new STDataValidationStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTDataValidation", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTDataValidation' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTDataValidation = (STDataValidationStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTDataValidation.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTDataValidation.InternalRecursiveSave();
+		}
+
+
+		public RCDataValidationRecord Duplicate() {
+			RCDataValidationRecord t;
+			t.ssSTDataValidation = (STDataValidationStructure) this.ssSTDataValidation.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTDataValidation.ToXml(this, recordElem, "DataValidation", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "datavalidation") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".DataValidation")) variable.Value = ssSTDataValidation; else variable.Optimized = true;
+				variable.SetFieldName("datavalidation");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdDataValidation) {
+				return ssSTDataValidation;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTDataValidation.FillFromOther((IRecord) other.AttributeGet(IdDataValidation));
+		}
+		public bool IsDefault() {
+			RCDataValidationRecord defaultStruct = new RCDataValidationRecord(null);
+			if (this.ssSTDataValidation != defaultStruct.ssSTDataValidation) return false;
+			return true;
+		}
+	} // RCDataValidationRecord
+
+	/// <summary>
+	/// Structure <code>RCCellDataRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCCellDataRecord: ISerializable, ITypedRecord<RCCellDataRecord> {
+		internal static readonly GlobalObjectKey IdCellData = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*qR0S38l0y_pVmilxLqrEuw");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("CellData")]
+		public STCellDataStructure ssSTCellData;
+
+
+		public static implicit operator STCellDataStructure(RCCellDataRecord r) {
+			return r.ssSTCellData;
+		}
+
+		public static implicit operator RCCellDataRecord(STCellDataStructure r) {
+			RCCellDataRecord res = new RCCellDataRecord(null);
+			res.ssSTCellData = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCCellDataRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTCellData = new STCellDataStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTCellData.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTCellData.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCCellDataRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCCellDataRecord a, RCCellDataRecord b) {
+			if (a.ssSTCellData != b.ssSTCellData) return false;
+			return true;
+		}
+
+		public static bool operator != (RCCellDataRecord a, RCCellDataRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCCellDataRecord)) return false;
+			return (this == (RCCellDataRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTCellData.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCCellDataRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTCellData = new STCellDataStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTCellData", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTCellData' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTCellData = (STCellDataStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTCellData.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTCellData.InternalRecursiveSave();
+		}
+
+
+		public RCCellDataRecord Duplicate() {
+			RCCellDataRecord t;
+			t.ssSTCellData = (STCellDataStructure) this.ssSTCellData.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTCellData.ToXml(this, recordElem, "CellData", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "celldata") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".CellData")) variable.Value = ssSTCellData; else variable.Optimized = true;
+				variable.SetFieldName("celldata");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdCellData) {
+				return ssSTCellData;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTCellData.FillFromOther((IRecord) other.AttributeGet(IdCellData));
+		}
+		public bool IsDefault() {
+			RCCellDataRecord defaultStruct = new RCCellDataRecord(null);
+			if (this.ssSTCellData != defaultStruct.ssSTCellData) return false;
+			return true;
+		}
+	} // RCCellDataRecord
 }

@@ -5950,4 +5950,673 @@ namespace OutSystems.NssAdvanced_Excel {
 		}
 	} // STOfficePropertiesStructure
 
+	/// <summary>
+	/// Structure <code>STDataValidationStructure</code> that represents the Service Studio structure
+	///  <code>DataValidation</code> <p> Description: Configuration for a cell data-validation rul
+	/// e (whole-number, decimal, date, text-length, or custom formula), including the comparison operator,
+	///  bound values, and the optional input prompt and error message shown to the user.</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STDataValidationStructure: ISerializable, ITypedRecord<STDataValidationStructure>, ISimpleRecord {
+		internal static readonly GlobalObjectKey IdValidationType = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*kQWJoPXaM0e0mIthPIXvjQ");
+		internal static readonly GlobalObjectKey IdOperator = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*JO9ufzr_xU6A+HYWdbugRg");
+		internal static readonly GlobalObjectKey IdFormula1 = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*5g1QsoRu+Ei1RotRnCE2RQ");
+		internal static readonly GlobalObjectKey IdFormula2 = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*gB5fsOdBDkCDpqhNOl9a2g");
+		internal static readonly GlobalObjectKey IdAllowBlank = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*dk5ULRKAMUiurItLBLOA8w");
+		internal static readonly GlobalObjectKey IdShowErrorMessage = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*YDeB7TjKBkiMAKW2_Nghpw");
+		internal static readonly GlobalObjectKey IdErrorStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*33oLroGYTEOzqT_tELyHbQ");
+		internal static readonly GlobalObjectKey IdErrorTitle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*NldiarDwYk+Vm6mT+7gvuw");
+		internal static readonly GlobalObjectKey IdErrorMessage = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ig6dqqPGa0ukoBb3mICHVg");
+		internal static readonly GlobalObjectKey IdShowPrompt = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*o+vseJS_AU+fUoliKgN2+Q");
+		internal static readonly GlobalObjectKey IdPromptTitle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*VGrNLmbehEiStHsNQgVGYA");
+		internal static readonly GlobalObjectKey IdPromptMessage = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*RudkfdCCy0ehhfN0nqOmbw");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("ValidationType")]
+		public string ssValidationType;
+
+		[System.Xml.Serialization.XmlElement("Operator")]
+		public string ssOperator;
+
+		[System.Xml.Serialization.XmlElement("Formula1")]
+		public string ssFormula1;
+
+		[System.Xml.Serialization.XmlElement("Formula2")]
+		public string ssFormula2;
+
+		[System.Xml.Serialization.XmlElement("AllowBlank")]
+		public bool ssAllowBlank;
+
+		[System.Xml.Serialization.XmlElement("ShowErrorMessage")]
+		public bool ssShowErrorMessage;
+
+		[System.Xml.Serialization.XmlElement("ErrorStyle")]
+		public string ssErrorStyle;
+
+		[System.Xml.Serialization.XmlElement("ErrorTitle")]
+		public string ssErrorTitle;
+
+		[System.Xml.Serialization.XmlElement("ErrorMessage")]
+		public string ssErrorMessage;
+
+		[System.Xml.Serialization.XmlElement("ShowPrompt")]
+		public bool ssShowPrompt;
+
+		[System.Xml.Serialization.XmlElement("PromptTitle")]
+		public string ssPromptTitle;
+
+		[System.Xml.Serialization.XmlElement("PromptMessage")]
+		public string ssPromptMessage;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STDataValidationStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssValidationType = "";
+			ssOperator = "between";
+			ssFormula1 = "";
+			ssFormula2 = "";
+			ssAllowBlank = true;
+			ssShowErrorMessage = true;
+			ssErrorStyle = "stop";
+			ssErrorTitle = "";
+			ssErrorMessage = "";
+			ssShowPrompt = false;
+			ssPromptTitle = "";
+			ssPromptMessage = "";
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssValidationType = r.ReadText(index++, "DataValidation.ValidationType", "");
+			ssOperator = r.ReadText(index++, "DataValidation.Operator", "");
+			ssFormula1 = r.ReadText(index++, "DataValidation.Formula1", "");
+			ssFormula2 = r.ReadText(index++, "DataValidation.Formula2", "");
+			ssAllowBlank = r.ReadBoolean(index++, "DataValidation.AllowBlank", false);
+			ssShowErrorMessage = r.ReadBoolean(index++, "DataValidation.ShowErrorMessage", false);
+			ssErrorStyle = r.ReadText(index++, "DataValidation.ErrorStyle", "");
+			ssErrorTitle = r.ReadText(index++, "DataValidation.ErrorTitle", "");
+			ssErrorMessage = r.ReadText(index++, "DataValidation.ErrorMessage", "");
+			ssShowPrompt = r.ReadBoolean(index++, "DataValidation.ShowPrompt", false);
+			ssPromptTitle = r.ReadText(index++, "DataValidation.PromptTitle", "");
+			ssPromptMessage = r.ReadText(index++, "DataValidation.PromptMessage", "");
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STDataValidationStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STDataValidationStructure a, STDataValidationStructure b) {
+			if (a.ssValidationType != b.ssValidationType) return false;
+			if (a.ssOperator != b.ssOperator) return false;
+			if (a.ssFormula1 != b.ssFormula1) return false;
+			if (a.ssFormula2 != b.ssFormula2) return false;
+			if (a.ssAllowBlank != b.ssAllowBlank) return false;
+			if (a.ssShowErrorMessage != b.ssShowErrorMessage) return false;
+			if (a.ssErrorStyle != b.ssErrorStyle) return false;
+			if (a.ssErrorTitle != b.ssErrorTitle) return false;
+			if (a.ssErrorMessage != b.ssErrorMessage) return false;
+			if (a.ssShowPrompt != b.ssShowPrompt) return false;
+			if (a.ssPromptTitle != b.ssPromptTitle) return false;
+			if (a.ssPromptMessage != b.ssPromptMessage) return false;
+			return true;
+		}
+
+		public static bool operator != (STDataValidationStructure a, STDataValidationStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STDataValidationStructure)) return false;
+			return (this == (STDataValidationStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssValidationType.GetHashCode()
+				^ ssOperator.GetHashCode()
+				^ ssFormula1.GetHashCode()
+				^ ssFormula2.GetHashCode()
+				^ ssAllowBlank.GetHashCode()
+				^ ssShowErrorMessage.GetHashCode()
+				^ ssErrorStyle.GetHashCode()
+				^ ssErrorTitle.GetHashCode()
+				^ ssErrorMessage.GetHashCode()
+				^ ssShowPrompt.GetHashCode()
+				^ ssPromptTitle.GetHashCode()
+				^ ssPromptMessage.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STDataValidationStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssValidationType = "";
+			ssOperator = "between";
+			ssFormula1 = "";
+			ssFormula2 = "";
+			ssAllowBlank = true;
+			ssShowErrorMessage = true;
+			ssErrorStyle = "stop";
+			ssErrorTitle = "";
+			ssErrorMessage = "";
+			ssShowPrompt = false;
+			ssPromptTitle = "";
+			ssPromptMessage = "";
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssValidationType", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssValidationType' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssValidationType = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssOperator", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssOperator' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssOperator = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssFormula1", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssFormula1' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssFormula1 = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssFormula2", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssFormula2' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssFormula2 = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAllowBlank", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAllowBlank' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAllowBlank = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssShowErrorMessage", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssShowErrorMessage' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssShowErrorMessage = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssErrorStyle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssErrorStyle' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssErrorStyle = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssErrorTitle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssErrorTitle' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssErrorTitle = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssErrorMessage", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssErrorMessage' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssErrorMessage = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssShowPrompt", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssShowPrompt' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssShowPrompt = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssPromptTitle", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssPromptTitle' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssPromptTitle = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssPromptMessage", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssPromptMessage' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssPromptMessage = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STDataValidationStructure Duplicate() {
+			STDataValidationStructure t;
+			t.ssValidationType = this.ssValidationType;
+			t.ssOperator = this.ssOperator;
+			t.ssFormula1 = this.ssFormula1;
+			t.ssFormula2 = this.ssFormula2;
+			t.ssAllowBlank = this.ssAllowBlank;
+			t.ssShowErrorMessage = this.ssShowErrorMessage;
+			t.ssErrorStyle = this.ssErrorStyle;
+			t.ssErrorTitle = this.ssErrorTitle;
+			t.ssErrorMessage = this.ssErrorMessage;
+			t.ssShowPrompt = this.ssShowPrompt;
+			t.ssPromptTitle = this.ssPromptTitle;
+			t.ssPromptMessage = this.ssPromptMessage;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ValidationType")) VarValue.AppendAttribute(recordElem, "ValidationType", ssValidationType, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "ValidationType");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Operator")) VarValue.AppendAttribute(recordElem, "Operator", ssOperator, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Operator");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Formula1")) VarValue.AppendAttribute(recordElem, "Formula1", ssFormula1, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Formula1");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Formula2")) VarValue.AppendAttribute(recordElem, "Formula2", ssFormula2, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Formula2");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".AllowBlank")) VarValue.AppendAttribute(recordElem, "AllowBlank", ssAllowBlank, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "AllowBlank");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ShowErrorMessage")) VarValue.AppendAttribute(recordElem, "ShowErrorMessage", ssShowErrorMessage, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "ShowErrorMessage");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ErrorStyle")) VarValue.AppendAttribute(recordElem, "ErrorStyle", ssErrorStyle, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "ErrorStyle");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ErrorTitle")) VarValue.AppendAttribute(recordElem, "ErrorTitle", ssErrorTitle, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "ErrorTitle");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ErrorMessage")) VarValue.AppendAttribute(recordElem, "ErrorMessage", ssErrorMessage, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "ErrorMessage");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ShowPrompt")) VarValue.AppendAttribute(recordElem, "ShowPrompt", ssShowPrompt, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "ShowPrompt");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".PromptTitle")) VarValue.AppendAttribute(recordElem, "PromptTitle", ssPromptTitle, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "PromptTitle");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".PromptMessage")) VarValue.AppendAttribute(recordElem, "PromptMessage", ssPromptMessage, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "PromptMessage");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "validationtype") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".ValidationType")) variable.Value = ssValidationType; else variable.Optimized = true;
+			} else if (head == "operator") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Operator")) variable.Value = ssOperator; else variable.Optimized = true;
+			} else if (head == "formula1") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Formula1")) variable.Value = ssFormula1; else variable.Optimized = true;
+			} else if (head == "formula2") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Formula2")) variable.Value = ssFormula2; else variable.Optimized = true;
+			} else if (head == "allowblank") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".AllowBlank")) variable.Value = ssAllowBlank; else variable.Optimized = true;
+			} else if (head == "showerrormessage") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".ShowErrorMessage")) variable.Value = ssShowErrorMessage; else variable.Optimized = true;
+			} else if (head == "errorstyle") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".ErrorStyle")) variable.Value = ssErrorStyle; else variable.Optimized = true;
+			} else if (head == "errortitle") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".ErrorTitle")) variable.Value = ssErrorTitle; else variable.Optimized = true;
+			} else if (head == "errormessage") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".ErrorMessage")) variable.Value = ssErrorMessage; else variable.Optimized = true;
+			} else if (head == "showprompt") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".ShowPrompt")) variable.Value = ssShowPrompt; else variable.Optimized = true;
+			} else if (head == "prompttitle") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".PromptTitle")) variable.Value = ssPromptTitle; else variable.Optimized = true;
+			} else if (head == "promptmessage") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".PromptMessage")) variable.Value = ssPromptMessage; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdValidationType) {
+				return ssValidationType;
+			} else if (key == IdOperator) {
+				return ssOperator;
+			} else if (key == IdFormula1) {
+				return ssFormula1;
+			} else if (key == IdFormula2) {
+				return ssFormula2;
+			} else if (key == IdAllowBlank) {
+				return ssAllowBlank;
+			} else if (key == IdShowErrorMessage) {
+				return ssShowErrorMessage;
+			} else if (key == IdErrorStyle) {
+				return ssErrorStyle;
+			} else if (key == IdErrorTitle) {
+				return ssErrorTitle;
+			} else if (key == IdErrorMessage) {
+				return ssErrorMessage;
+			} else if (key == IdShowPrompt) {
+				return ssShowPrompt;
+			} else if (key == IdPromptTitle) {
+				return ssPromptTitle;
+			} else if (key == IdPromptMessage) {
+				return ssPromptMessage;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssValidationType = (string) other.AttributeGet(IdValidationType);
+			ssOperator = (string) other.AttributeGet(IdOperator);
+			ssFormula1 = (string) other.AttributeGet(IdFormula1);
+			ssFormula2 = (string) other.AttributeGet(IdFormula2);
+			ssAllowBlank = (bool) other.AttributeGet(IdAllowBlank);
+			ssShowErrorMessage = (bool) other.AttributeGet(IdShowErrorMessage);
+			ssErrorStyle = (string) other.AttributeGet(IdErrorStyle);
+			ssErrorTitle = (string) other.AttributeGet(IdErrorTitle);
+			ssErrorMessage = (string) other.AttributeGet(IdErrorMessage);
+			ssShowPrompt = (bool) other.AttributeGet(IdShowPrompt);
+			ssPromptTitle = (string) other.AttributeGet(IdPromptTitle);
+			ssPromptMessage = (string) other.AttributeGet(IdPromptMessage);
+		}
+		public bool IsDefault() {
+			STDataValidationStructure defaultStruct = new STDataValidationStructure(null);
+			if (this.ssValidationType != defaultStruct.ssValidationType) return false;
+			if (this.ssOperator != defaultStruct.ssOperator) return false;
+			if (this.ssFormula1 != defaultStruct.ssFormula1) return false;
+			if (this.ssFormula2 != defaultStruct.ssFormula2) return false;
+			if (this.ssAllowBlank != defaultStruct.ssAllowBlank) return false;
+			if (this.ssShowErrorMessage != defaultStruct.ssShowErrorMessage) return false;
+			if (this.ssErrorStyle != defaultStruct.ssErrorStyle) return false;
+			if (this.ssErrorTitle != defaultStruct.ssErrorTitle) return false;
+			if (this.ssErrorMessage != defaultStruct.ssErrorMessage) return false;
+			if (this.ssShowPrompt != defaultStruct.ssShowPrompt) return false;
+			if (this.ssPromptTitle != defaultStruct.ssPromptTitle) return false;
+			if (this.ssPromptMessage != defaultStruct.ssPromptMessage) return false;
+			return true;
+		}
+	} // STDataValidationStructure
+
+	/// <summary>
+	/// Structure <code>STCellDataStructure</code> that represents the Service Studio structure
+	///  <code>CellData</code> <p> Description: A single cell read from a worksheet — its row index, colum
+	/// n index, and value as text.</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STCellDataStructure: ISerializable, ITypedRecord<STCellDataStructure>, ISimpleRecord {
+		internal static readonly GlobalObjectKey IdRow = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*_0B+QqOCnECSYebNGoGHzw");
+		internal static readonly GlobalObjectKey IdColumn = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*QtbvsIEq0kq6EjDI8p3kWA");
+		internal static readonly GlobalObjectKey IdValue = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*eJjFIXMCrkK+YRE8BLxZFw");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Row")]
+		public int ssRow;
+
+		[System.Xml.Serialization.XmlElement("Column")]
+		public int ssColumn;
+
+		[System.Xml.Serialization.XmlElement("Value")]
+		public string ssValue;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STCellDataStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssRow = 0;
+			ssColumn = 0;
+			ssValue = "";
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssRow = r.ReadInteger(index++, "CellData.Row", 0);
+			ssColumn = r.ReadInteger(index++, "CellData.Column", 0);
+			ssValue = r.ReadText(index++, "CellData.Value", "");
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STCellDataStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STCellDataStructure a, STCellDataStructure b) {
+			if (a.ssRow != b.ssRow) return false;
+			if (a.ssColumn != b.ssColumn) return false;
+			if (a.ssValue != b.ssValue) return false;
+			return true;
+		}
+
+		public static bool operator != (STCellDataStructure a, STCellDataStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STCellDataStructure)) return false;
+			return (this == (STCellDataStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssRow.GetHashCode()
+				^ ssColumn.GetHashCode()
+				^ ssValue.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STCellDataStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssRow = 0;
+			ssColumn = 0;
+			ssValue = "";
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssRow", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssRow' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssRow = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssColumn", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssColumn' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssColumn = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssValue", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssValue' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssValue = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STCellDataStructure Duplicate() {
+			STCellDataStructure t;
+			t.ssRow = this.ssRow;
+			t.ssColumn = this.ssColumn;
+			t.ssValue = this.ssValue;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Row")) VarValue.AppendAttribute(recordElem, "Row", ssRow, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "Row");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Column")) VarValue.AppendAttribute(recordElem, "Column", ssColumn, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "Column");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Value")) VarValue.AppendAttribute(recordElem, "Value", ssValue, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Value");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "row") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Row")) variable.Value = ssRow; else variable.Optimized = true;
+			} else if (head == "column") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Column")) variable.Value = ssColumn; else variable.Optimized = true;
+			} else if (head == "value") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Value")) variable.Value = ssValue; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdRow) {
+				return ssRow;
+			} else if (key == IdColumn) {
+				return ssColumn;
+			} else if (key == IdValue) {
+				return ssValue;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssRow = (int) other.AttributeGet(IdRow);
+			ssColumn = (int) other.AttributeGet(IdColumn);
+			ssValue = (string) other.AttributeGet(IdValue);
+		}
+		public bool IsDefault() {
+			STCellDataStructure defaultStruct = new STCellDataStructure(null);
+			if (this.ssRow != defaultStruct.ssRow) return false;
+			if (this.ssColumn != defaultStruct.ssColumn) return false;
+			if (this.ssValue != defaultStruct.ssValue) return false;
+			return true;
+		}
+	} // STCellDataStructure
+
 } // OutSystems.NssAdvanced_Excel

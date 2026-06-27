@@ -20,6 +20,106 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
 		/// <summary>
+		/// Add a data-validation rule to a cell range using a DataValidation configuration (whole-number, decimal, date, text-length, or custom formula), with optional input prompt and error message.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssCellRange">Range to validate, e.g. B2:B100.</param>
+		/// <param name="ssValidation">The validation rule configuration.</param>
+		public void MssWorksheet_AddDataValidation(object ssWorksheet, string ssCellRange, RCDataValidationRecord ssValidation) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			STDataValidationStructure v = ssValidation.ssSTDataValidation;
+			string type = (v.ssValidationType ?? "").Trim().ToLowerInvariant();
+			OfficeOpenXml.DataValidation.ExcelDataValidationOperator op =
+				ParseEnum(v.ssOperator, OfficeOpenXml.DataValidation.ExcelDataValidationOperator.between);
+
+			switch (type)
+			{
+				case "integer":
+					var iv = ws.DataValidations.AddIntegerValidation(ssCellRange);
+					iv.Operator = op;
+					if (!string.IsNullOrEmpty(v.ssFormula1)) iv.Formula.Value = int.Parse(v.ssFormula1, System.Globalization.CultureInfo.InvariantCulture);
+					if (!string.IsNullOrEmpty(v.ssFormula2)) iv.Formula2.Value = int.Parse(v.ssFormula2, System.Globalization.CultureInfo.InvariantCulture);
+					ApplyValidationCommon(iv, v);
+					break;
+				case "decimal":
+					var dv = ws.DataValidations.AddDecimalValidation(ssCellRange);
+					dv.Operator = op;
+					if (!string.IsNullOrEmpty(v.ssFormula1)) dv.Formula.Value = double.Parse(v.ssFormula1, System.Globalization.CultureInfo.InvariantCulture);
+					if (!string.IsNullOrEmpty(v.ssFormula2)) dv.Formula2.Value = double.Parse(v.ssFormula2, System.Globalization.CultureInfo.InvariantCulture);
+					ApplyValidationCommon(dv, v);
+					break;
+				case "datetime":
+					var dtv = ws.DataValidations.AddDateTimeValidation(ssCellRange);
+					dtv.Operator = op;
+					if (!string.IsNullOrEmpty(v.ssFormula1)) dtv.Formula.Value = DateTime.Parse(v.ssFormula1, System.Globalization.CultureInfo.InvariantCulture);
+					if (!string.IsNullOrEmpty(v.ssFormula2)) dtv.Formula2.Value = DateTime.Parse(v.ssFormula2, System.Globalization.CultureInfo.InvariantCulture);
+					ApplyValidationCommon(dtv, v);
+					break;
+				case "textlength":
+					var tv = ws.DataValidations.AddTextLengthValidation(ssCellRange);
+					tv.Operator = op;
+					if (!string.IsNullOrEmpty(v.ssFormula1)) tv.Formula.Value = int.Parse(v.ssFormula1, System.Globalization.CultureInfo.InvariantCulture);
+					if (!string.IsNullOrEmpty(v.ssFormula2)) tv.Formula2.Value = int.Parse(v.ssFormula2, System.Globalization.CultureInfo.InvariantCulture);
+					ApplyValidationCommon(tv, v);
+					break;
+				case "custom":
+					var cv = ws.DataValidations.AddCustomValidation(ssCellRange);
+					if (!string.IsNullOrEmpty(v.ssFormula1)) cv.Formula.ExcelFormula = v.ssFormula1;
+					ApplyValidationCommon(cv, v);
+					break;
+				default:
+					throw new ArgumentException("Invalid or missing ValidationType. Use Integer, Decimal, DateTime, TextLength, or Custom.", "ssValidation");
+			}
+		} // MssWorksheet_AddDataValidation
+
+		/// <summary>
+		/// Read every populated cell in a range into a list of {Row, Column, Value}, so the data can be processed in your logic.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to read from.</param>
+		/// <param name="ssCellRange">Range to read, e.g. A1:E100.</param>
+		/// <param name="ssCells">One record per populated cell.</param>
+		public void MssWorksheet_ReadRange(object ssWorksheet, string ssCellRange, out RLCellDataRecordList ssCells) {
+			ssCells = new RLCellDataRecordList();
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			if (string.IsNullOrEmpty(ssCellRange))
+			{
+				return;
+			}
+
+			foreach (var cell in ws.Cells[ssCellRange])
+			{
+				if (cell.Value == null)
+				{
+					continue;
+				}
+				RCCellDataRecord rec = new RCCellDataRecord();
+				rec.ssSTCellData.ssRow = cell.Start.Row;
+				rec.ssSTCellData.ssColumn = cell.Start.Column;
+				rec.ssSTCellData.ssValue = Convert.ToString(cell.Value);
+				ssCells.Add(rec);
+			}
+		} // MssWorksheet_ReadRange
+
+		/// <summary>
+		/// Add in-cell sparkline mini-charts (line, column, or stacked) for a data range, placed in a location range.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssLocationRange">Where the sparklines go (one per cell), e.g. F2:F10.</param>
+		/// <param name="ssDataRange">The source data, e.g. A2:E10 (one row of data per sparkline).</param>
+		/// <param name="ssSparklineType">Line, Column, or Stacked.</param>
+		/// <param name="ssColor">Series color as hex, e.g. #638EC6. Blank = EPPlus default.</param>
+		public void MssWorksheet_AddSparkline(object ssWorksheet, string ssLocationRange, string ssDataRange, string ssSparklineType, string ssColor) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			OfficeOpenXml.Sparkline.eSparklineType type =
+				ParseEnum(ssSparklineType, OfficeOpenXml.Sparkline.eSparklineType.Line);
+			var group = ws.SparklineGroups.Add(type, new ExcelAddress(ssLocationRange), new ExcelAddress(ssDataRange));
+			if (!string.IsNullOrEmpty(ssColor))
+			{
+				group.ColorSeries.SetColor(Util.ConvertFromColorCode(ssColor));
+			}
+		} // MssWorksheet_AddSparkline
+
+		/// <summary>
 		/// Define the cell range that will be printed for this worksheet (the print area saved in the file, used by Excel when printing). Pass an empty range to clear it and print the whole sheet.
 		/// </summary>
 		/// <param name="ssWorksheet">The worksheet to work with.</param>
@@ -229,6 +329,7 @@ namespace OutSystems.NssAdvanced_Excel
                 worksheet.View.RightToLeft = true;
             }
 
+            Util.PreserveVisibleRowsForZeroHeightSheets(p);
             ssBinaryData = p.GetAsByteArray();
             // GetAsByteArray closes the package; reload so the workbook stays usable.
             p.Load(new System.IO.MemoryStream(ssBinaryData));
@@ -2412,6 +2513,7 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorkbook_GetBinaryData(object ssWorkbook, out byte[] ssBinaryData)
         {
             ExcelPackage p = ssWorkbook as ExcelPackage;
+            Util.PreserveVisibleRowsForZeroHeightSheets(p);
             ssBinaryData = p.GetAsByteArray();
             // GetAsByteArray closes the package; reload so the workbook stays usable.
             p.Load(new System.IO.MemoryStream(ssBinaryData));
@@ -2916,6 +3018,24 @@ namespace OutSystems.NssAdvanced_Excel
         private static string ToHexColor(System.Drawing.Color c)
         {
             return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+        }
+
+        /// <summary>
+        /// Apply the prompt/error-message and allow-blank settings shared by every data-validation type.
+        /// </summary>
+        private static void ApplyValidationCommon(OfficeOpenXml.DataValidation.Contracts.IExcelDataValidation val, STDataValidationStructure v)
+        {
+            val.AllowBlank = v.ssAllowBlank;
+            val.ShowErrorMessage = v.ssShowErrorMessage;
+            val.ShowInputMessage = v.ssShowPrompt;
+            if (!string.IsNullOrEmpty(v.ssErrorStyle))
+            {
+                val.ErrorStyle = ParseEnum(v.ssErrorStyle, OfficeOpenXml.DataValidation.ExcelDataValidationWarningStyle.stop);
+            }
+            if (!string.IsNullOrEmpty(v.ssErrorTitle)) val.ErrorTitle = v.ssErrorTitle;
+            if (!string.IsNullOrEmpty(v.ssErrorMessage)) val.Error = v.ssErrorMessage;
+            if (!string.IsNullOrEmpty(v.ssPromptTitle)) val.PromptTitle = v.ssPromptTitle;
+            if (!string.IsNullOrEmpty(v.ssPromptMessage)) val.Prompt = v.ssPromptMessage;
         }
 
     } // CssAdvanced_Excel
