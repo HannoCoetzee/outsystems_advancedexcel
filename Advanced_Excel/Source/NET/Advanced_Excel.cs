@@ -229,6 +229,7 @@ namespace OutSystems.NssAdvanced_Excel
                 worksheet.View.RightToLeft = true;
             }
 
+            Util.PreserveVisibleRowsForZeroHeightSheets(p);
             ssBinaryData = p.GetAsByteArray();
             // GetAsByteArray closes the package; reload so the workbook stays usable.
             p.Load(new System.IO.MemoryStream(ssBinaryData));
@@ -2412,6 +2413,7 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorkbook_GetBinaryData(object ssWorkbook, out byte[] ssBinaryData)
         {
             ExcelPackage p = ssWorkbook as ExcelPackage;
+            Util.PreserveVisibleRowsForZeroHeightSheets(p);
             ssBinaryData = p.GetAsByteArray();
             // GetAsByteArray closes the package; reload so the workbook stays usable.
             p.Load(new System.IO.MemoryStream(ssBinaryData));
