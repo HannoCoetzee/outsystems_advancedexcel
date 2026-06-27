@@ -2623,11 +2623,16 @@ namespace OutSystems.NssAdvanced_Excel {
 		internal static readonly GlobalObjectKey IdPriority = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*ZiyfnTaZTUSqZ9KxgazsJA");
 		internal static readonly GlobalObjectKey IdStopIfTrue = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*V+9zUV7vZE6ULG3ngGiKqw");
 		internal static readonly GlobalObjectKey IdFormula = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*bvwikWuyc0CFIjUukGNxMw");
+		internal static readonly GlobalObjectKey IdFormula2 = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*OPbYq3klIEGrVm6QZHtA5Q");
 		internal static readonly GlobalObjectKey IdRuleType = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*kAiJT_QaJEaD40wTFCo+pw");
 		internal static readonly GlobalObjectKey IdStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*CVx5EPnKoka3xe7InYEb7Q");
 		internal static readonly GlobalObjectKey IdIconSetStyle = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*N3bqpxHDf0upltyn1bTukw");
 		internal static readonly GlobalObjectKey IdReverse = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*waeePRmFYk+YN2FHlmdsMQ");
 		internal static readonly GlobalObjectKey IdShowValue = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*rPsD2Od9OkyWp7w0wEBNVQ");
+		internal static readonly GlobalObjectKey IdLowColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*iFtoaq+Y_EKRh7zRj_zlPQ");
+		internal static readonly GlobalObjectKey IdMidColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*DcCcv85GN0C1Md9OnB8K4Q");
+		internal static readonly GlobalObjectKey IdHighColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*QqfM2AOnfU6KHRb89x44sw");
+		internal static readonly GlobalObjectKey IdDataBarColor = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*dorYzUm8qEGZRtrgnh9VEA");
 
 		public static void EnsureInitialized() {}
 		[System.Xml.Serialization.XmlElement("Address")]
@@ -2641,6 +2646,9 @@ namespace OutSystems.NssAdvanced_Excel {
 
 		[System.Xml.Serialization.XmlElement("Formula")]
 		public string ssFormula;
+
+		[System.Xml.Serialization.XmlElement("Formula2")]
+		public string ssFormula2;
 
 		[System.Xml.Serialization.XmlElement("RuleType")]
 		public int ssRuleType;
@@ -2657,6 +2665,18 @@ namespace OutSystems.NssAdvanced_Excel {
 		[System.Xml.Serialization.XmlElement("ShowValue")]
 		public bool ssShowValue;
 
+		[System.Xml.Serialization.XmlElement("LowColor")]
+		public string ssLowColor;
+
+		[System.Xml.Serialization.XmlElement("MidColor")]
+		public string ssMidColor;
+
+		[System.Xml.Serialization.XmlElement("HighColor")]
+		public string ssHighColor;
+
+		[System.Xml.Serialization.XmlElement("DataBarColor")]
+		public string ssDataBarColor;
+
 
 		public BitArray OptimizedAttributes;
 
@@ -2666,11 +2686,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssPriority = 101;
 			ssStopIfTrue = false;
 			ssFormula = "";
+			ssFormula2 = "";
 			ssRuleType = 0;
 			ssStyle = new RCConditionalFormatStyleRecord(null);
 			ssIconSetStyle = "";
 			ssReverse = false;
 			ssShowValue = true;
+			ssLowColor = "";
+			ssMidColor = "";
+			ssHighColor = "";
+			ssDataBarColor = "";
 		}
 
 		public BitArray[] GetDefaultOptimizedValues() {
@@ -2705,10 +2730,15 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssPriority = r.ReadInteger(index++, "ConditionalFormatItem.Priority", 0);
 			ssStopIfTrue = r.ReadBoolean(index++, "ConditionalFormatItem.StopIfTrue", false);
 			ssFormula = r.ReadText(index++, "ConditionalFormatItem.Formula", "");
+			ssFormula2 = r.ReadText(index++, "ConditionalFormatItem.Formula2", "");
 			ssRuleType = r.ReadInteger(index++, "ConditionalFormatItem.RuleType", 0);
 			ssIconSetStyle = r.ReadText(index++, "ConditionalFormatItem.IconSetStyle", "");
 			ssReverse = r.ReadBoolean(index++, "ConditionalFormatItem.Reverse", false);
 			ssShowValue = r.ReadBoolean(index++, "ConditionalFormatItem.ShowValue", false);
+			ssLowColor = r.ReadText(index++, "ConditionalFormatItem.LowColor", "");
+			ssMidColor = r.ReadText(index++, "ConditionalFormatItem.MidColor", "");
+			ssHighColor = r.ReadText(index++, "ConditionalFormatItem.HighColor", "");
+			ssDataBarColor = r.ReadText(index++, "ConditionalFormatItem.DataBarColor", "");
 		}
 		/// <summary>
 		/// Read from database
@@ -2733,11 +2763,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (a.ssPriority != b.ssPriority) return false;
 			if (a.ssStopIfTrue != b.ssStopIfTrue) return false;
 			if (a.ssFormula != b.ssFormula) return false;
+			if (a.ssFormula2 != b.ssFormula2) return false;
 			if (a.ssRuleType != b.ssRuleType) return false;
 			if (a.ssStyle != b.ssStyle) return false;
 			if (a.ssIconSetStyle != b.ssIconSetStyle) return false;
 			if (a.ssReverse != b.ssReverse) return false;
 			if (a.ssShowValue != b.ssShowValue) return false;
+			if (a.ssLowColor != b.ssLowColor) return false;
+			if (a.ssMidColor != b.ssMidColor) return false;
+			if (a.ssHighColor != b.ssHighColor) return false;
+			if (a.ssDataBarColor != b.ssDataBarColor) return false;
 			return true;
 		}
 
@@ -2757,11 +2792,16 @@ namespace OutSystems.NssAdvanced_Excel {
 				^ ssPriority.GetHashCode()
 				^ ssStopIfTrue.GetHashCode()
 				^ ssFormula.GetHashCode()
+				^ ssFormula2.GetHashCode()
 				^ ssRuleType.GetHashCode()
 				^ ssStyle.GetHashCode()
 				^ ssIconSetStyle.GetHashCode()
 				^ ssReverse.GetHashCode()
 				^ ssShowValue.GetHashCode()
+				^ ssLowColor.GetHashCode()
+				^ ssMidColor.GetHashCode()
+				^ ssHighColor.GetHashCode()
+				^ ssDataBarColor.GetHashCode()
 				;
 			} catch {
 				return base.GetHashCode();
@@ -2783,11 +2823,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssPriority = 101;
 			ssStopIfTrue = false;
 			ssFormula = "";
+			ssFormula2 = "";
 			ssRuleType = 0;
 			ssStyle = new RCConditionalFormatStyleRecord(null);
 			ssIconSetStyle = "";
 			ssReverse = false;
 			ssShowValue = true;
+			ssLowColor = "";
+			ssMidColor = "";
+			ssHighColor = "";
+			ssDataBarColor = "";
 			Type objInfo = this.GetType();
 			FieldInfo fieldInfo = null;
 			fieldInfo = objInfo.GetField("ssAddress", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
@@ -2817,6 +2862,13 @@ namespace OutSystems.NssAdvanced_Excel {
 			}
 			if (fieldInfo.FieldType.IsSerializable) {
 				ssFormula = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssFormula2", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssFormula2' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssFormula2 = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
 			}
 			fieldInfo = objInfo.GetField("ssRuleType", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
 			if (fieldInfo == null) {
@@ -2853,6 +2905,34 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (fieldInfo.FieldType.IsSerializable) {
 				ssShowValue = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
 			}
+			fieldInfo = objInfo.GetField("ssLowColor", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssLowColor' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssLowColor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssMidColor", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssMidColor' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssMidColor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssHighColor", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssHighColor' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssHighColor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssDataBarColor", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssDataBarColor' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssDataBarColor = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
 		}
 
 		public void RecursiveReset() {
@@ -2872,11 +2952,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			t.ssPriority = this.ssPriority;
 			t.ssStopIfTrue = this.ssStopIfTrue;
 			t.ssFormula = this.ssFormula;
+			t.ssFormula2 = this.ssFormula2;
 			t.ssRuleType = this.ssRuleType;
 			t.ssStyle = (RCConditionalFormatStyleRecord) this.ssStyle.Duplicate();
 			t.ssIconSetStyle = this.ssIconSetStyle;
 			t.ssReverse = this.ssReverse;
 			t.ssShowValue = this.ssShowValue;
+			t.ssLowColor = this.ssLowColor;
+			t.ssMidColor = this.ssMidColor;
+			t.ssHighColor = this.ssHighColor;
+			t.ssDataBarColor = this.ssDataBarColor;
 			t.OptimizedAttributes = null;
 			return t;
 		}
@@ -2896,11 +2981,16 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Priority")) VarValue.AppendAttribute(recordElem, "Priority", ssPriority, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "Priority");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".StopIfTrue")) VarValue.AppendAttribute(recordElem, "StopIfTrue", ssStopIfTrue, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "StopIfTrue");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Formula")) VarValue.AppendAttribute(recordElem, "Formula", ssFormula, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Formula");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Formula2")) VarValue.AppendAttribute(recordElem, "Formula2", ssFormula2, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Formula2");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".RuleType")) VarValue.AppendAttribute(recordElem, "RuleType", ssRuleType, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "RuleType");
 				ssStyle.ToXml(this, recordElem, "Style", detailLevel - 1);
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".IconSetStyle")) VarValue.AppendAttribute(recordElem, "IconSetStyle", ssIconSetStyle, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "IconSetStyle");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Reverse")) VarValue.AppendAttribute(recordElem, "Reverse", ssReverse, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Reverse");
 				if (!VarValue.FieldIsOptimized(parent, fieldName + ".ShowValue")) VarValue.AppendAttribute(recordElem, "ShowValue", ssShowValue, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "ShowValue");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".LowColor")) VarValue.AppendAttribute(recordElem, "LowColor", ssLowColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "LowColor");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".MidColor")) VarValue.AppendAttribute(recordElem, "MidColor", ssMidColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "MidColor");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".HighColor")) VarValue.AppendAttribute(recordElem, "HighColor", ssHighColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "HighColor");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".DataBarColor")) VarValue.AppendAttribute(recordElem, "DataBarColor", ssDataBarColor, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "DataBarColor");
 			} else {
 				VarValue.AppendDeferredEvaluationElement(recordElem);
 			}
@@ -2919,6 +3009,8 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".StopIfTrue")) variable.Value = ssStopIfTrue; else variable.Optimized = true;
 			} else if (head == "formula") {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".Formula")) variable.Value = ssFormula; else variable.Optimized = true;
+			} else if (head == "formula2") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Formula2")) variable.Value = ssFormula2; else variable.Optimized = true;
 			} else if (head == "ruletype") {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".RuleType")) variable.Value = ssRuleType; else variable.Optimized = true;
 			} else if (head == "style") {
@@ -2930,6 +3022,14 @@ namespace OutSystems.NssAdvanced_Excel {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".Reverse")) variable.Value = ssReverse; else variable.Optimized = true;
 			} else if (head == "showvalue") {
 				if (!VarValue.FieldIsOptimized(parent, baseName + ".ShowValue")) variable.Value = ssShowValue; else variable.Optimized = true;
+			} else if (head == "lowcolor") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".LowColor")) variable.Value = ssLowColor; else variable.Optimized = true;
+			} else if (head == "midcolor") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".MidColor")) variable.Value = ssMidColor; else variable.Optimized = true;
+			} else if (head == "highcolor") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".HighColor")) variable.Value = ssHighColor; else variable.Optimized = true;
+			} else if (head == "databarcolor") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".DataBarColor")) variable.Value = ssDataBarColor; else variable.Optimized = true;
 			}
 			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
 		}
@@ -2951,6 +3051,8 @@ namespace OutSystems.NssAdvanced_Excel {
 				return ssStopIfTrue;
 			} else if (key == IdFormula) {
 				return ssFormula;
+			} else if (key == IdFormula2) {
+				return ssFormula2;
 			} else if (key == IdRuleType) {
 				return ssRuleType;
 			} else if (key == IdStyle) {
@@ -2961,6 +3063,14 @@ namespace OutSystems.NssAdvanced_Excel {
 				return ssReverse;
 			} else if (key == IdShowValue) {
 				return ssShowValue;
+			} else if (key == IdLowColor) {
+				return ssLowColor;
+			} else if (key == IdMidColor) {
+				return ssMidColor;
+			} else if (key == IdHighColor) {
+				return ssHighColor;
+			} else if (key == IdDataBarColor) {
+				return ssDataBarColor;
 			} else {
 				throw new Exception("Invalid key");
 			}
@@ -2971,11 +3081,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			ssPriority = (int) other.AttributeGet(IdPriority);
 			ssStopIfTrue = (bool) other.AttributeGet(IdStopIfTrue);
 			ssFormula = (string) other.AttributeGet(IdFormula);
+			ssFormula2 = (string) other.AttributeGet(IdFormula2);
 			ssRuleType = (int) other.AttributeGet(IdRuleType);
 			ssStyle.FillFromOther((IRecord) other.AttributeGet(IdStyle));
 			ssIconSetStyle = (string) other.AttributeGet(IdIconSetStyle);
 			ssReverse = (bool) other.AttributeGet(IdReverse);
 			ssShowValue = (bool) other.AttributeGet(IdShowValue);
+			ssLowColor = (string) other.AttributeGet(IdLowColor);
+			ssMidColor = (string) other.AttributeGet(IdMidColor);
+			ssHighColor = (string) other.AttributeGet(IdHighColor);
+			ssDataBarColor = (string) other.AttributeGet(IdDataBarColor);
 		}
 		public bool IsDefault() {
 			STConditionalFormatItemStructure defaultStruct = new STConditionalFormatItemStructure(null);
@@ -2983,11 +3098,16 @@ namespace OutSystems.NssAdvanced_Excel {
 			if (this.ssPriority != defaultStruct.ssPriority) return false;
 			if (this.ssStopIfTrue != defaultStruct.ssStopIfTrue) return false;
 			if (this.ssFormula != defaultStruct.ssFormula) return false;
+			if (this.ssFormula2 != defaultStruct.ssFormula2) return false;
 			if (this.ssRuleType != defaultStruct.ssRuleType) return false;
 			if (this.ssStyle != defaultStruct.ssStyle) return false;
 			if (this.ssIconSetStyle != defaultStruct.ssIconSetStyle) return false;
 			if (this.ssReverse != defaultStruct.ssReverse) return false;
 			if (this.ssShowValue != defaultStruct.ssShowValue) return false;
+			if (this.ssLowColor != defaultStruct.ssLowColor) return false;
+			if (this.ssMidColor != defaultStruct.ssMidColor) return false;
+			if (this.ssHighColor != defaultStruct.ssHighColor) return false;
+			if (this.ssDataBarColor != defaultStruct.ssDataBarColor) return false;
 			return true;
 		}
 	} // STConditionalFormatItemStructure

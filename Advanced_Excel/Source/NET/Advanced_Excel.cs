@@ -1551,6 +1551,13 @@ namespace OutSystems.NssAdvanced_Excel
                         newItem.ssSTConditionalFormatItem.ssFormula = beginsWith.Text;
                         break;
                     case eExcelConditionalFormattingRuleType.Between:
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
+                        var rBetween = item as IExcelConditionalFormattingBetween;
+                        if (rBetween != null)
+                        {
+                            newItem.ssSTConditionalFormatItem.ssFormula = rBetween.Formula;
+                            newItem.ssSTConditionalFormatItem.ssFormula2 = rBetween.Formula2;
+                        }
                         break;
                     case eExcelConditionalFormattingRuleType.ContainsBlanks:
                         var containsBlanks = item as IExcelConditionalFormattingContainsBlanks;
@@ -1605,6 +1612,13 @@ namespace OutSystems.NssAdvanced_Excel
                         newItem.ssSTConditionalFormatItem.ssRuleType = (int)lte.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.NotBetween:
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
+                        var rNotBetween = item as IExcelConditionalFormattingBetween;
+                        if (rNotBetween != null)
+                        {
+                            newItem.ssSTConditionalFormatItem.ssFormula = rNotBetween.Formula;
+                            newItem.ssSTConditionalFormatItem.ssFormula2 = rNotBetween.Formula2;
+                        }
                         break;
                     case eExcelConditionalFormattingRuleType.NotContains:
                         break;
@@ -1631,8 +1645,23 @@ namespace OutSystems.NssAdvanced_Excel
                         newItem.ssSTConditionalFormatItem.ssRuleType = (int)uniqueValues.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.ThreeColorScale:
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
+                        var rcs3 = item as IExcelConditionalFormattingThreeColorScale;
+                        if (rcs3 != null)
+                        {
+                            newItem.ssSTConditionalFormatItem.ssLowColor = ToHexColor(rcs3.LowValue.Color);
+                            newItem.ssSTConditionalFormatItem.ssMidColor = ToHexColor(rcs3.MiddleValue.Color);
+                            newItem.ssSTConditionalFormatItem.ssHighColor = ToHexColor(rcs3.HighValue.Color);
+                        }
                         break;
                     case eExcelConditionalFormattingRuleType.TwoColorScale:
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
+                        var rcs2 = item as IExcelConditionalFormattingTwoColorScale;
+                        if (rcs2 != null)
+                        {
+                            newItem.ssSTConditionalFormatItem.ssLowColor = ToHexColor(rcs2.LowValue.Color);
+                            newItem.ssSTConditionalFormatItem.ssHighColor = ToHexColor(rcs2.HighValue.Color);
+                        }
                         break;
                     case eExcelConditionalFormattingRuleType.ThreeIconSet:
                         newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
@@ -1665,6 +1694,7 @@ namespace OutSystems.NssAdvanced_Excel
                         }
                         break;
                     case eExcelConditionalFormattingRuleType.DataBar:
+                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
                         break;
                     default:
                         break;
@@ -1766,7 +1796,11 @@ namespace OutSystems.NssAdvanced_Excel
                     ApplyRuleCommon(beginsWith, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.Between:
-                    throw new NotSupportedException("ConditionalFormatting rule type 'Between' is not yet supported by this extension.");
+                    var between = ws.ConditionalFormatting.AddBetween(address);
+                    between.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    between.Formula2 = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula2;
+                    ApplyRuleCommon(between, ssConditionalFormatRecord);
+                    break;
                 case eExcelConditionalFormattingRuleType.ContainsBlanks:
                     ApplyRuleCommon(ws.ConditionalFormatting.AddContainsBlanks(address), ssConditionalFormatRecord);
                     break;
@@ -1817,7 +1851,11 @@ namespace OutSystems.NssAdvanced_Excel
                     ApplyRuleCommon(lte, ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.NotBetween:
-                    throw new NotSupportedException("ConditionalFormatting rule type 'NotBetween' is not yet supported by this extension.");
+                    var notBetween = ws.ConditionalFormatting.AddNotBetween(address);
+                    notBetween.Formula = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula;
+                    notBetween.Formula2 = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssFormula2;
+                    ApplyRuleCommon(notBetween, ssConditionalFormatRecord);
+                    break;
                 case eExcelConditionalFormattingRuleType.NotContains:
                     throw new NotSupportedException("ConditionalFormatting rule type 'NotContains' is not yet supported by this extension.");
                 case eExcelConditionalFormattingRuleType.NotContainsBlanks:
@@ -1840,9 +1878,25 @@ namespace OutSystems.NssAdvanced_Excel
                     ApplyRuleCommon(ws.ConditionalFormatting.AddUniqueValues(address), ssConditionalFormatRecord);
                     break;
                 case eExcelConditionalFormattingRuleType.ThreeColorScale:
-                    throw new NotSupportedException("ConditionalFormatting rule type 'ThreeColorScale' is not yet supported by this extension.");
+                    var cs3 = ws.ConditionalFormatting.AddThreeColorScale(address);
+                    if (!string.IsNullOrEmpty(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssLowColor))
+                        cs3.LowValue.Color = Util.ConvertFromColorCode(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssLowColor);
+                    if (!string.IsNullOrEmpty(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssMidColor))
+                        cs3.MiddleValue.Color = Util.ConvertFromColorCode(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssMidColor);
+                    if (!string.IsNullOrEmpty(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssHighColor))
+                        cs3.HighValue.Color = Util.ConvertFromColorCode(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssHighColor);
+                    cs3.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    cs3.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    break;
                 case eExcelConditionalFormattingRuleType.TwoColorScale:
-                    throw new NotSupportedException("ConditionalFormatting rule type 'TwoColorScale' is not yet supported by this extension.");
+                    var cs2 = ws.ConditionalFormatting.AddTwoColorScale(address);
+                    if (!string.IsNullOrEmpty(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssLowColor))
+                        cs2.LowValue.Color = Util.ConvertFromColorCode(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssLowColor);
+                    if (!string.IsNullOrEmpty(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssHighColor))
+                        cs2.HighValue.Color = Util.ConvertFromColorCode(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssHighColor);
+                    cs2.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    cs2.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    break;
                 case eExcelConditionalFormattingRuleType.ThreeIconSet:
                     var i3 = ws.ConditionalFormatting.AddThreeIconSet(address,
                         ParseEnum(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssIconSetStyle,
@@ -1871,7 +1925,14 @@ namespace OutSystems.NssAdvanced_Excel
                     i5.ShowValue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssShowValue;
                     break;
                 case eExcelConditionalFormattingRuleType.DataBar:
-                    throw new NotSupportedException("ConditionalFormatting rule type 'DataBar' is not yet supported by this extension.");
+                    System.Drawing.Color dataBarColor = string.IsNullOrEmpty(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssDataBarColor)
+                        ? System.Drawing.ColorTranslator.FromHtml("#638EC6")
+                        : Util.ConvertFromColorCode(ssConditionalFormatRecord.ssSTConditionalFormatItem.ssDataBarColor);
+                    var dataBar = ws.ConditionalFormatting.AddDatabar(address, dataBarColor);
+                    dataBar.Priority = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssPriority;
+                    dataBar.StopIfTrue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssStopIfTrue;
+                    dataBar.ShowValue = ssConditionalFormatRecord.ssSTConditionalFormatItem.ssShowValue;
+                    break;
                 default:
                     throw new ArgumentException("Invalid Rule Type: " + ssConditionalFormatRecord.ssSTConditionalFormatItem.ssRuleType);
             }
@@ -2847,6 +2908,14 @@ namespace OutSystems.NssAdvanced_Excel
             rule.Priority = rec.ssSTConditionalFormatItem.ssPriority;
             rule.StopIfTrue = rec.ssSTConditionalFormatItem.ssStopIfTrue;
             Util.ApplyConditionalFormattingStyle(rule.Style, rec.ssSTConditionalFormatItem.ssStyle);
+        }
+
+        /// <summary>
+        /// Format a colour as a #RRGGBB hex string (used when reading colour-scale stops back).
+        /// </summary>
+        private static string ToHexColor(System.Drawing.Color c)
+        {
+            return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
         }
 
     } // CssAdvanced_Excel
