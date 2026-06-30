@@ -1801,6 +1801,21 @@ namespace OutSystems.NssAdvanced_Excel
                         break;
                 }
 
+                // Read the rule's differential style back (skip the rule types that don't use one).
+                switch (item.Type)
+                {
+                    case eExcelConditionalFormattingRuleType.TwoColorScale:
+                    case eExcelConditionalFormattingRuleType.ThreeColorScale:
+                    case eExcelConditionalFormattingRuleType.ThreeIconSet:
+                    case eExcelConditionalFormattingRuleType.FourIconSet:
+                    case eExcelConditionalFormattingRuleType.FiveIconSet:
+                    case eExcelConditionalFormattingRuleType.DataBar:
+                        break;
+                    default:
+                        newItem.ssSTConditionalFormatItem.ssStyle = Util.ReadConditionalFormattingStyle(item.Style);
+                        break;
+                }
+
                 ssListOfRule.Add(newItem);
             }
 

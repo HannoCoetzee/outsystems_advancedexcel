@@ -456,6 +456,76 @@ namespace OutSystems.NssAdvanced_Excel
         }
 
         /// <summary>
+        /// Read a conditional-formatting rule's differential style (fill, font, borders, number
+        /// format) back into a record. Mirror of <see cref="ApplyConditionalFormattingStyle"/> so
+        /// GetAllRules returns the rule's actual style instead of defaults.
+        /// </summary>
+        internal static RCConditionalFormatStyleRecord ReadConditionalFormattingStyle(ExcelDxfStyleConditionalFormatting style)
+        {
+            var rec = new RCConditionalFormatStyleRecord(null);
+            if (style == null)
+            {
+                return rec;
+            }
+
+            // Fill
+            if (style.Fill != null)
+            {
+                if (style.Fill.PatternType.HasValue)
+                {
+                    rec.ssSTConditionalFormatStyle.ssFill.ssSTFillStyle.ssPatternType = (int)style.Fill.PatternType.Value;
+                }
+                if (style.Fill.BackgroundColor != null && style.Fill.BackgroundColor.Color.HasValue)
+                {
+                    rec.ssSTConditionalFormatStyle.ssFill.ssSTFillStyle.ssBackgroundColor = ToHexRgb(style.Fill.BackgroundColor.Color.Value);
+                }
+                if (style.Fill.PatternColor != null && style.Fill.PatternColor.Color.HasValue)
+                {
+                    rec.ssSTConditionalFormatStyle.ssFill.ssSTFillStyle.ssPatternColor = ToHexRgb(style.Fill.PatternColor.Color.Value);
+                }
+            }
+
+            // Font
+            if (style.Font != null)
+            {
+                if (style.Font.Bold.HasValue) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssBold = style.Font.Bold.Value;
+                if (style.Font.Italic.HasValue) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssItalic = style.Font.Italic.Value;
+                if (style.Font.Strike.HasValue) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssStrike = style.Font.Strike.Value;
+                if (style.Font.Underline.HasValue) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssUnderline = (int)style.Font.Underline.Value;
+                if (style.Font.Color != null && style.Font.Color.Color.HasValue) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssColor = ToHexRgb(style.Font.Color.Color.Value);
+            }
+
+            // Borders
+            if (style.Border != null)
+            {
+                if (style.Border.Top.Style.HasValue) rec.ssSTConditionalFormatStyle.ssBorderTop.ssSTBorderStyle.ssStyle = (int)style.Border.Top.Style.Value;
+                if (style.Border.Top.Color != null && style.Border.Top.Color.Color.HasValue) rec.ssSTConditionalFormatStyle.ssBorderTop.ssSTBorderStyle.ssColor = ToHexRgb(style.Border.Top.Color.Color.Value);
+
+                if (style.Border.Bottom.Style.HasValue) rec.ssSTConditionalFormatStyle.ssBorderBottom.ssSTBorderStyle.ssStyle = (int)style.Border.Bottom.Style.Value;
+                if (style.Border.Bottom.Color != null && style.Border.Bottom.Color.Color.HasValue) rec.ssSTConditionalFormatStyle.ssBorderBottom.ssSTBorderStyle.ssColor = ToHexRgb(style.Border.Bottom.Color.Color.Value);
+
+                if (style.Border.Left.Style.HasValue) rec.ssSTConditionalFormatStyle.ssBorderLeft.ssSTBorderStyle.ssStyle = (int)style.Border.Left.Style.Value;
+                if (style.Border.Left.Color != null && style.Border.Left.Color.Color.HasValue) rec.ssSTConditionalFormatStyle.ssBorderLeft.ssSTBorderStyle.ssColor = ToHexRgb(style.Border.Left.Color.Color.Value);
+
+                if (style.Border.Right.Style.HasValue) rec.ssSTConditionalFormatStyle.ssBorderRight.ssSTBorderStyle.ssStyle = (int)style.Border.Right.Style.Value;
+                if (style.Border.Right.Color != null && style.Border.Right.Color.Color.HasValue) rec.ssSTConditionalFormatStyle.ssBorderRight.ssSTBorderStyle.ssColor = ToHexRgb(style.Border.Right.Color.Color.Value);
+            }
+
+            // Number format
+            if (style.NumberFormat != null && !string.IsNullOrEmpty(style.NumberFormat.Format))
+            {
+                rec.ssSTConditionalFormatStyle.ssNumberFormat = style.NumberFormat.Format;
+            }
+
+            return rec;
+        }
+
+        private static string ToHexRgb(System.Drawing.Color c)
+        {
+            return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="dimension"></param>
