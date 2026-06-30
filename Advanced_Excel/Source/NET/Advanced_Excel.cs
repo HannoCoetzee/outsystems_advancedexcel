@@ -966,6 +966,7 @@ namespace OutSystems.NssAdvanced_Excel
             ExcelWorksheet wsToCopy = AsWorksheet(ssWorksheetToCopy);
             ExcelWorksheet ws;
             ws = p.Workbook.Worksheets.Add(ssWorksheetName, wsToCopy);
+            Util.PreserveConditionalFormattingStyles(wsToCopy, ws);
             ssWorksheet = ws;
         } // MssWorkbook_AddCopyWorksheet
 
@@ -2390,6 +2391,7 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 ws = AsWorksheet(ssWorksheet);
                 newSheet = ee.Workbook.Worksheets.Add(string.IsNullOrEmpty(ssWorksheetName) ? "Copy_" + ws.Name : ssWorksheetName, ws);
+                Util.PreserveConditionalFormattingStyles(ws, newSheet);
                 if (ssIndexWhereToAdd > 0)
                 {
                     MssWorkbook_ChangeSheetIndex((object)ee, newSheet.Index, ssIndexWhereToAdd);
@@ -2582,22 +2584,20 @@ namespace OutSystems.NssAdvanced_Excel
                             buffer.Write(chunk, 0, read);
                         }
 
-                        buffer.Position = 0;
-                        p.Load(buffer);
+                        byte[] data = Util.EnsureConditionalFormattingDxfs(buffer.ToArray());
+                        p.Load(new MemoryStream(data));
                     }
                 }
             }
             else if (!string.IsNullOrEmpty(ssFileName))
             {
-                using (FileStream fs = System.IO.File.Open(ssFileName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read))
-                {
-                    p.Load(fs);
-                }
+                byte[] data = Util.EnsureConditionalFormattingDxfs(System.IO.File.ReadAllBytes(ssFileName));
+                p.Load(new MemoryStream(data));
             }
             else if (hasBinaryData)
             {
-                Stream s = new MemoryStream(ssBinary_Data);
-                p.Load(s);
+                byte[] data = Util.EnsureConditionalFormattingDxfs(ssBinary_Data);
+                p.Load(new MemoryStream(data));
             }
             else
             {

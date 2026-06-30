@@ -190,6 +190,93 @@ namespace OutSystems.NssAdvanced_Excel
         }
 
         /// <summary>
+        /// Workbooks saved without a &lt;dxfs&gt; element (e.g. by some record-list-to-Excel generators) make
+        /// EPPlus throw a NullReferenceException in ExcelStyles.UpdateXml() when conditional formatting is
+        /// later added and the workbook is saved. Inject an empty &lt;dxfs/&gt; node (in schema order) so EPPlus
+        /// has a node to update. Returns the original bytes unchanged when the node already exists, the input
+        /// isn't an xlsx package, or anything goes wrong (opening must never be blocked by this).
+        /// </summary>
+        internal static byte[] EnsureConditionalFormattingDxfs(byte[] bytes)
+        {
+            if (bytes == null || bytes.Length < 4 || bytes[0] != 0x50 || bytes[1] != 0x4B)
+            {
+                return bytes;
+            }
+
+            try
+            {
+                using (var checkMs = new MemoryStream(bytes, false))
+                using (var zip = new System.IO.Compression.ZipArchive(checkMs, System.IO.Compression.ZipArchiveMode.Read))
+                {
+                    var entry = zip.GetEntry("xl/styles.xml");
+                    if (entry == null)
+                    {
+                        return bytes;
+                    }
+                    string xml;
+                    using (var r = new StreamReader(entry.Open()))
+                    {
+                        xml = r.ReadToEnd();
+                    }
+                    if (xml.IndexOf("dxfs", StringComparison.Ordinal) >= 0)
+                    {
+                        return bytes;
+                    }
+                }
+
+                var ms = new MemoryStream();
+                ms.Write(bytes, 0, bytes.Length);
+                ms.Position = 0;
+                using (var zip = new System.IO.Compression.ZipArchive(ms, System.IO.Compression.ZipArchiveMode.Update, true))
+                {
+                    var entry = zip.GetEntry("xl/styles.xml");
+                    string xml;
+                    using (var r = new StreamReader(entry.Open()))
+                    {
+                        xml = r.ReadToEnd();
+                    }
+
+                    string patched = InjectDxfsNode(xml);
+                    if (patched == xml)
+                    {
+                        return bytes;
+                    }
+
+                    entry.Delete();
+                    var newEntry = zip.CreateEntry("xl/styles.xml");
+                    using (var w = new StreamWriter(newEntry.Open(), new System.Text.UTF8Encoding(false)))
+                    {
+                        w.Write(patched);
+                    }
+                }
+                return ms.ToArray();
+            }
+            catch
+            {
+                return bytes;
+            }
+        }
+
+        /// <summary>
+        /// Insert an empty dxfs element before the first element that must follow it per the
+        /// CT_Stylesheet sequence (tableStyles, colors, extLst), or before the closing tag.
+        /// </summary>
+        private static string InjectDxfsNode(string stylesXml)
+        {
+            const string dxfs = "<dxfs count=\"0\"/>";
+            string[] anchors = { "<tableStyles", "<colors", "<extLst", "</styleSheet>" };
+            foreach (var a in anchors)
+            {
+                int i = stylesXml.IndexOf(a, StringComparison.Ordinal);
+                if (i >= 0)
+                {
+                    return stylesXml.Substring(0, i) + dxfs + stylesXml.Substring(i);
+                }
+            }
+            return stylesXml;
+        }
+
+        /// <summary>
         /// Worksheets saved with sheetFormatPr/@zeroHeight="1" hide every row by default and rely on
         /// explicit row records to mark the visible ones. EPPlus's save prunes empty row records, which
         /// turns those visible blank rows hidden (content ends up squashed). For such sheets, pin a real
@@ -523,6 +610,57 @@ namespace OutSystems.NssAdvanced_Excel
         private static string ToHexRgb(System.Drawing.Color c)
         {
             return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+        }
+
+        /// <summary>
+        /// Copying a worksheet into another workbook carries its conditional-formatting rules but not
+        /// the differential styles (dxfs) they reference, so the destination rules lose their format.
+        /// Re-read each source rule's style and re-apply it to the matching copied rule, which makes
+        /// EPPlus materialise a fresh dxf in the destination workbook. Colour-scale / icon-set / data-bar
+        /// rules don't use a dxf and are left alone (their colours travel in the rule itself).
+        /// </summary>
+        internal static void PreserveConditionalFormattingStyles(ExcelWorksheet source, ExcelWorksheet copy)
+        {
+            if (source == null || copy == null)
+            {
+                return;
+            }
+
+            try
+            {
+                int count = Math.Min(source.ConditionalFormatting.Count, copy.ConditionalFormatting.Count);
+                for (int i = 0; i < count; i++)
+                {
+                    var src = source.ConditionalFormatting[i];
+                    if (!RuleUsesDxfStyle(src.Type))
+                    {
+                        continue;
+                    }
+
+                    var styleRecord = ReadConditionalFormattingStyle(src.Style);
+                    ApplyConditionalFormattingStyle(copy.ConditionalFormatting[i].Style, styleRecord);
+                }
+            }
+            catch
+            {
+                // never block a worksheet copy because of this
+            }
+        }
+
+        private static bool RuleUsesDxfStyle(OfficeOpenXml.ConditionalFormatting.eExcelConditionalFormattingRuleType type)
+        {
+            switch (type)
+            {
+                case OfficeOpenXml.ConditionalFormatting.eExcelConditionalFormattingRuleType.TwoColorScale:
+                case OfficeOpenXml.ConditionalFormatting.eExcelConditionalFormattingRuleType.ThreeColorScale:
+                case OfficeOpenXml.ConditionalFormatting.eExcelConditionalFormattingRuleType.ThreeIconSet:
+                case OfficeOpenXml.ConditionalFormatting.eExcelConditionalFormattingRuleType.FourIconSet:
+                case OfficeOpenXml.ConditionalFormatting.eExcelConditionalFormattingRuleType.FiveIconSet:
+                case OfficeOpenXml.ConditionalFormatting.eExcelConditionalFormattingRuleType.DataBar:
+                    return false;
+                default:
+                    return true;
+            }
         }
 
         /// <summary>

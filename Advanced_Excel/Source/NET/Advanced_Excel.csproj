@@ -52,6 +52,7 @@
       <Name>System.Data</Name>
     </Reference>
     <Reference Include="System.Security" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
