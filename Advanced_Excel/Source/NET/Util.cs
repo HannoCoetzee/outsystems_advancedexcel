@@ -647,6 +647,33 @@ namespace OutSystems.NssAdvanced_Excel
             }
         }
 
+        /// <summary>
+        /// Copying a worksheet into another workbook keeps each cell's display text but drops its
+        /// hyperlink. Re-apply the hyperlinks from the source sheet's allocated cells onto the copy.
+        /// </summary>
+        internal static void PreserveHyperlinks(ExcelWorksheet source, ExcelWorksheet copy)
+        {
+            if (source == null || copy == null || source.Dimension == null)
+            {
+                return;
+            }
+
+            try
+            {
+                foreach (var cell in source.Cells[source.Dimension.Address])
+                {
+                    if (cell.Hyperlink != null && copy.Cells[cell.Address].Hyperlink == null)
+                    {
+                        copy.Cells[cell.Address].Hyperlink = cell.Hyperlink;
+                    }
+                }
+            }
+            catch
+            {
+                // never block a worksheet copy because of this
+            }
+        }
+
         private static bool RuleUsesDxfStyle(OfficeOpenXml.ConditionalFormatting.eExcelConditionalFormattingRuleType type)
         {
             switch (type)
