@@ -95,7 +95,8 @@ namespace OutSystems.NssAdvanced_Excel
 				RCCellDataRecord rec = new RCCellDataRecord();
 				rec.ssSTCellData.ssRow = cell.Start.Row;
 				rec.ssSTCellData.ssColumn = cell.Start.Column;
-				rec.ssSTCellData.ssValue = Convert.ToString(cell.Value);
+				// invariant culture so dates/decimals read back the same on any server locale
+				rec.ssSTCellData.ssValue = Convert.ToString(cell.Value, System.Globalization.CultureInfo.InvariantCulture);
 				ssCells.Add(rec);
 			}
 		} // MssWorksheet_ReadRange
@@ -262,17 +263,21 @@ namespace OutSystems.NssAdvanced_Excel
 
             foreach (var worksheet in p.Workbook.Worksheets)
             {
-                if (worksheet.MergedCells.Count > 0)
+                // EPPlus keeps a null placeholder in MergedCells for every unmerged range; skip them.
+                string sheetRanges = "";
+                foreach (var mergedRange in worksheet.MergedCells)
+                {
+                    if (!string.IsNullOrEmpty(mergedRange))
+                    {
+                        sheetRanges += $"{mergedRange}; ";
+                    }
+                }
+
+                if (sheetRanges.Length > 0)
                 {
                     anyMergedCells = true;
                     ssMergedRange += $"Worksheet: {worksheet.Name}\n";
-
-                    foreach (var mergedRange in worksheet.MergedCells)
-                    {
-                        ssMergedRange += $"{mergedRange}; ";
-                    }
-
-                    ssMergedRange = ssMergedRange.TrimEnd(new char[] { ';', ' ' });
+                    ssMergedRange += sheetRanges.TrimEnd(new char[] { ';', ' ' });
                     ssMergedRange += "\n\n";
                 }
             }
@@ -294,16 +299,18 @@ namespace OutSystems.NssAdvanced_Excel
 
             ssMergedRange = "";
 
-            if (ws.MergedCells.Count > 0)
+            // EPPlus keeps a null placeholder in MergedCells for every unmerged range; skip them.
+            foreach (var mergedRange in ws.MergedCells)
             {
-                foreach (var mergedRange in ws.MergedCells)
+                if (!string.IsNullOrEmpty(mergedRange))
                 {
                     ssMergedRange += mergedRange + "; ";
                 }
-
-                ssMergedRange = ssMergedRange.TrimEnd(new char[] { ';', ' ' });
             }
-            else
+
+            ssMergedRange = ssMergedRange.TrimEnd(new char[] { ';', ' ' });
+
+            if (ssMergedRange.Length == 0)
             {
                 ssMergedRange = "No merged cells found.";
             }
@@ -330,9 +337,7 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             Util.PreserveVisibleRowsForZeroHeightSheets(p);
-            ssBinaryData = p.GetAsByteArray();
-            // GetAsByteArray closes the package; reload so the workbook stays usable.
-            p.Load(new System.IO.MemoryStream(ssBinaryData));
+            ssBinaryData = SaveAndReload(p);
         } // MssWorkbook_SaveRightToLeft
 
         /// <summary>
@@ -563,6 +568,19 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (String.IsNullOrEmpty(ssItemsAddress)) //Check if address string is empty, proceed to fill list with items.
             {
+                // Excel limits an inline validation list to 255 characters in total (items plus
+                // separators). Beyond that Excel silently drops or repairs the dropdown, so fail
+                // clearly here instead.
+                int totalLength = 0;
+                for (int i = 0; i < ssItemsList.Count; i++)
+                {
+                    totalLength += (ssItemsList[i].ssSTItems.ssItemText ?? "").Length + 1;
+                }
+                if (totalLength > 256)
+                {
+                    throw new ArgumentException("The dropdown items exceed Excel's 255-character limit for inline validation lists. Write the items to a range of cells and pass that range in ItemsAddress instead.", nameof(ssItemsList));
+                }
+
                 for (int i = 0; i < ssItemsList.Count; i++)
                 {
                     unitMeasure.Formula.Values.Add(ssItemsList[i].ssSTItems.ssItemText);
@@ -903,7 +921,9 @@ namespace OutSystems.NssAdvanced_Excel
                 if (ssReadText)
                     ssCellValue = ws.Cells[ssRow, ssColumn].Text;
                 else
-                    ssCellValue = Convert.ToString(ws.GetValue(ssRow, ssColumn));
+                    // invariant culture so raw values read back the same on any server locale
+                    // (and round-trip with the write actions, which parse invariantly)
+                    ssCellValue = Convert.ToString(ws.GetValue(ssRow, ssColumn), System.Globalization.CultureInfo.InvariantCulture);
             }
             catch (Exception ex)
             {
@@ -967,6 +987,7 @@ namespace OutSystems.NssAdvanced_Excel
             ExcelWorksheet ws;
             ws = p.Workbook.Worksheets.Add(ssWorksheetName, wsToCopy);
             Util.PreserveConditionalFormattingStyles(wsToCopy, ws);
+            Util.PreserveHyperlinks(wsToCopy, ws);
             ssWorksheet = ws;
         } // MssWorkbook_AddCopyWorksheet
 
@@ -1797,6 +1818,12 @@ namespace OutSystems.NssAdvanced_Excel
                         break;
                     case eExcelConditionalFormattingRuleType.DataBar:
                         newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
+                        var dataBarRule = item as IExcelConditionalFormattingDataBarGroup;
+                        if (dataBarRule != null)
+                        {
+                            newItem.ssSTConditionalFormatItem.ssDataBarColor = ToHexColor(dataBarRule.Color);
+                            newItem.ssSTConditionalFormatItem.ssShowValue = dataBarRule.ShowValue;
+                        }
                         break;
                     default:
                         break;
@@ -2214,7 +2241,7 @@ namespace OutSystems.NssAdvanced_Excel
                     cell = ws.Cells[ssCellName];
                 }
 
-                ssCellValue = ssReadText ? cell.Text : Convert.ToString(cell.Value);
+                ssCellValue = ssReadText ? cell.Text : Convert.ToString(cell.Value, System.Globalization.CultureInfo.InvariantCulture);
             }
             catch (Exception ex)
             {
@@ -2392,6 +2419,7 @@ namespace OutSystems.NssAdvanced_Excel
                 ws = AsWorksheet(ssWorksheet);
                 newSheet = ee.Workbook.Worksheets.Add(string.IsNullOrEmpty(ssWorksheetName) ? "Copy_" + ws.Name : ssWorksheetName, ws);
                 Util.PreserveConditionalFormattingStyles(ws, newSheet);
+                Util.PreserveHyperlinks(ws, newSheet);
                 if (ssIndexWhereToAdd > 0)
                 {
                     MssWorkbook_ChangeSheetIndex((object)ee, newSheet.Index, ssIndexWhereToAdd);
@@ -2531,9 +2559,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ExcelPackage p = ssWorkbook as ExcelPackage;
             Util.PreserveVisibleRowsForZeroHeightSheets(p);
-            ssBinaryData = p.GetAsByteArray();
-            // GetAsByteArray closes the package; reload so the workbook stays usable.
-            p.Load(new System.IO.MemoryStream(ssBinaryData));
+            ssBinaryData = SaveAndReload(p);
         } // MssWorkbook_GetBinaryData
 
         /// <summary>
@@ -3010,9 +3036,63 @@ namespace OutSystems.NssAdvanced_Excel
         {
             if (ssWorksheet is ExcelWorksheet ws)
             {
-                return ws;
+                return FollowWorksheetRedirects(ws);
             }
             throw new ArgumentException("Expected a Worksheet object (e.g. from Worksheet_Select, Worksheet_SelectByName/Index, or Workbook_AddName).", nameof(ssWorksheet));
+        }
+
+        /*
+         * GetBinaryData/SaveRightToLeft have to reload the package after GetAsByteArray (EPPlus closes
+         * it on save), which rebuilds every worksheet object. A worksheet handle selected BEFORE that
+         * call would then point at the detached old object model: writes to it are silently lost and
+         * some operations crash inside EPPlus. Each reload therefore records old->new worksheet
+         * mappings here, and AsWorksheet transparently follows them so stale handles keep working.
+         */
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<ExcelWorksheet, ExcelWorksheet> _worksheetRedirects =
+            new System.Runtime.CompilerServices.ConditionalWeakTable<ExcelWorksheet, ExcelWorksheet>();
+
+        private static ExcelWorksheet FollowWorksheetRedirects(ExcelWorksheet ws)
+        {
+            // follow the chain (a workbook may be saved multiple times); guard against cycles
+            for (int hops = 0; hops < 64; hops++)
+            {
+                if (!_worksheetRedirects.TryGetValue(ws, out var next))
+                {
+                    return ws;
+                }
+                ws = next;
+            }
+            return ws;
+        }
+
+        /// <summary>
+        /// Save the package to a byte array and reload it so the workbook object stays usable,
+        /// recording old-to-new worksheet redirects so previously selected worksheet handles
+        /// keep pointing at live worksheets.
+        /// </summary>
+        private static byte[] SaveAndReload(ExcelPackage p)
+        {
+            var oldSheets = new List<ExcelWorksheet>();
+            foreach (var ws in p.Workbook.Worksheets)
+            {
+                oldSheets.Add(ws);
+            }
+
+            byte[] bytes = p.GetAsByteArray();
+            p.Load(new System.IO.MemoryStream(bytes));
+
+            foreach (var old in oldSheets)
+            {
+                ExcelWorksheet fresh = null;
+                try { fresh = p.Workbook.Worksheets[old.Name]; } catch { }
+                if (fresh != null && !ReferenceEquals(old, fresh))
+                {
+                    _worksheetRedirects.Remove(old);
+                    _worksheetRedirects.Add(old, fresh);
+                }
+            }
+
+            return bytes;
         }
 
         /// <summary>
