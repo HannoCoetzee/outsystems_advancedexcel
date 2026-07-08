@@ -20,6 +20,200 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
 		/// <summary>
+		/// Returns the bounds of the populated area of a worksheet, so you can read a file whose size you don&apos;t know in advance.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssHasData">False if the worksheet is empty</param>
+		/// <param name="ssStartRow">First used row (1-based); 0 if empty</param>
+		/// <param name="ssStartColumn">First used column; 0 if empty</param>
+		/// <param name="ssEndRow">Last used row; 0 if empty</param>
+		/// <param name="ssEndColumn">Last used column; 0 if empty</param>
+		/// <param name="ssAddress">A1-style range, e.g. A1:F20 (empty if no data)</param>
+		public void MssWorksheet_GetUsedRange(object ssWorksheet, out bool ssHasData, out int ssStartRow, out int ssStartColumn, out int ssEndRow, out int ssEndColumn, out string ssAddress) {
+			ssHasData = false;
+			ssStartRow = 0;
+			ssStartColumn = 0;
+			ssEndRow = 0;
+			ssEndColumn = 0;
+			ssAddress = "";
+
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			if (ws.Dimension == null)
+			{
+				return;
+			}
+
+			ssHasData = true;
+			ssStartRow = ws.Dimension.Start.Row;
+			ssStartColumn = ws.Dimension.Start.Column;
+			ssEndRow = ws.Dimension.End.Row;
+			ssEndColumn = ws.Dimension.End.Column;
+			ssAddress = ws.Dimension.Address;
+		} // MssWorksheet_GetUsedRange
+
+		/// <summary>
+		/// Writes many cells at once from a list of row/column/value records — the counterpart to Worksheet_ReadRange.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssCells">Cells to write (Row, Column, Value)</param>
+		/// <param name="ssParseValues">When True, values that look like numbers/dates are written as typed values; when False, everything is written as text</param>
+		/// <param name="ssCellsWritten">Number of cells written</param>
+		public void MssWorksheet_WriteCells(object ssWorksheet, RLCellDataRecordList ssCells, bool ssParseValues, out int ssCellsWritten) {
+			ssCellsWritten = 0;
+
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			if (ssCells == null)
+			{
+				return;
+			}
+
+			for (int i = 0; i < ssCells.Count; i++)
+			{
+				var cd = ssCells[i].ssSTCellData;
+				if (cd.ssRow < 1 || cd.ssColumn < 1)
+				{
+					continue; // skip records with invalid (1-based) coordinates
+				}
+
+				ws.Cells[cd.ssRow, cd.ssColumn].Value = ssParseValues ? ParseCellValue(cd.ssValue) : (object)(cd.ssValue ?? "");
+				ssCellsWritten++;
+			}
+		} // MssWorksheet_WriteCells
+
+		/// <summary>
+		/// Auto-detect a written value's type from its text: whole number, decimal, boolean, date,
+		/// otherwise the text itself. Parsing is invariant-culture so it matches how the other write
+		/// actions interpret typed values.
+		/// </summary>
+		private static object ParseCellValue(string value)
+		{
+			if (string.IsNullOrEmpty(value))
+			{
+				return value ?? "";
+			}
+
+			var ci = System.Globalization.CultureInfo.InvariantCulture;
+
+			long l;
+			if (long.TryParse(value, System.Globalization.NumberStyles.Integer, ci, out l))
+			{
+				return l;
+			}
+
+			double d;
+			if (double.TryParse(value, System.Globalization.NumberStyles.Float, ci, out d))
+			{
+				return d;
+			}
+
+			bool b;
+			if (bool.TryParse(value, out b))
+			{
+				return b;
+			}
+
+			DateTime dt;
+			if (DateTime.TryParse(value, ci, System.Globalization.DateTimeStyles.None, out dt))
+			{
+				return dt;
+			}
+
+			return value;
+		}
+
+		/// <summary>
+		/// Finds and replaces text across a range (or the whole used range), returning how many cells changed.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRange">Range to search; leave all fields 0 to search the whole used range</param>
+		/// <param name="ssFindText">Text to find</param>
+		/// <param name="ssReplaceText">Replacement text (empty removes the found text)</param>
+		/// <param name="ssMatchCase">Case-sensitive match</param>
+		/// <param name="ssMatchEntireCell">When True, only replace when the whole cell equals FindText</param>
+		/// <param name="ssReplacedCount">Number of cells changed</param>
+		public void MssCells_Replace(object ssWorksheet, RCRangeRecord ssRange, string ssFindText, string ssReplaceText, bool ssMatchCase, bool ssMatchEntireCell, out int ssReplacedCount) {
+			ssReplacedCount = 0;
+
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			if (string.IsNullOrEmpty(ssFindText))
+			{
+				throw new ArgumentException("FindText is required.", nameof(ssFindText));
+			}
+
+			ExcelRange range;
+			var r = ssRange.ssSTRange;
+			if (r.ssStartRow == 0 && r.ssStartCol == 0 && r.ssEndRow == 0 && r.ssEndCol == 0)
+			{
+				if (ws.Dimension == null)
+				{
+					return; // empty sheet, nothing to search
+				}
+				range = ws.Cells[ws.Dimension.Address];
+			}
+			else
+			{
+				range = ws.Cells[r.ssStartRow, r.ssStartCol, r.ssEndRow, r.ssEndCol];
+			}
+
+			string replaceWith = ssReplaceText ?? "";
+			StringComparison comparison = ssMatchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
+			foreach (var cell in range)
+			{
+				// only replace within text cells, so numeric/date values are never corrupted
+				string text = cell.Value as string;
+				if (text == null)
+				{
+					continue;
+				}
+
+				string newText;
+				if (ssMatchEntireCell)
+				{
+					newText = string.Equals(text, ssFindText, comparison) ? replaceWith : text;
+				}
+				else
+				{
+					newText = ReplaceAll(text, ssFindText, replaceWith, comparison);
+				}
+
+				if (newText != text)
+				{
+					cell.Value = newText;
+					ssReplacedCount++;
+				}
+			}
+		} // MssCells_Replace
+
+		/// <summary>
+		/// Replace every occurrence of <paramref name="find"/> in <paramref name="source"/> using the
+		/// given comparison (.NET Framework's string.Replace has no culture/case-insensitive overload).
+		/// </summary>
+		private static string ReplaceAll(string source, string find, string replace, StringComparison comparison)
+		{
+			if (string.IsNullOrEmpty(find))
+			{
+				return source;
+			}
+
+			var sb = new System.Text.StringBuilder();
+			int pos = 0;
+			while (true)
+			{
+				int idx = source.IndexOf(find, pos, comparison);
+				if (idx < 0)
+				{
+					sb.Append(source, pos, source.Length - pos);
+					break;
+				}
+				sb.Append(source, pos, idx - pos);
+				sb.Append(replace);
+				pos = idx + find.Length;
+			}
+			return sb.ToString();
+		}
+
+		/// <summary>
 		/// Add a data-validation rule to a cell range using a DataValidation configuration (whole-number, decimal, date, text-length, or custom formula), with optional input prompt and error message.
 		/// </summary>
 		/// <param name="ssWorksheet">The worksheet to work with.</param>
