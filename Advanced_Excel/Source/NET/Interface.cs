@@ -1150,6 +1150,39 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssColor">Series color as hex, e.g. #638EC6. Blank = EPPlus default.</param>
 		void MssWorksheet_AddSparkline(object ssWorksheet, string ssLocationRange, string ssDataRange, string ssSparklineType, string ssColor);
 
+		/// <summary>
+		/// Returns the bounds of the populated area of a worksheet, so you can read a file whose size you don&apos;t know in advance.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssHasData">False if the worksheet is empty</param>
+		/// <param name="ssStartRow">First used row (1-based); 0 if empty</param>
+		/// <param name="ssStartColumn">First used column; 0 if empty</param>
+		/// <param name="ssEndRow">Last used row; 0 if empty</param>
+		/// <param name="ssEndColumn">Last used column; 0 if empty</param>
+		/// <param name="ssAddress">A1-style range, e.g. A1:F20 (empty if no data)</param>
+		void MssWorksheet_GetUsedRange(object ssWorksheet, out bool ssHasData, out int ssStartRow, out int ssStartColumn, out int ssEndRow, out int ssEndColumn, out string ssAddress);
+
+		/// <summary>
+		/// Writes many cells at once from a list of row/column/value records — the counterpart to Worksheet_ReadRange.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssCells">Cells to write (Row, Column, Value)</param>
+		/// <param name="ssParseValues">When True, values that look like numbers/dates are written as typed values; when False, everything is written as text</param>
+		/// <param name="ssCellsWritten">Number of cells written</param>
+		void MssWorksheet_WriteCells(object ssWorksheet, RLCellDataRecordList ssCells, bool ssParseValues, out int ssCellsWritten);
+
+		/// <summary>
+		/// Finds and replaces text across a range (or the whole used range), returning how many cells changed.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRange">Range to search; leave all fields 0 to search the whole used range</param>
+		/// <param name="ssFindText">Text to find</param>
+		/// <param name="ssReplaceText">Replacement text (empty removes the found text)</param>
+		/// <param name="ssMatchCase">Case-sensitive match</param>
+		/// <param name="ssMatchEntireCell">When True, only replace when the whole cell equals FindText</param>
+		/// <param name="ssReplacedCount">Number of cells changed</param>
+		void MssCells_Replace(object ssWorksheet, RCRangeRecord ssRange, string ssFindText, string ssReplaceText, bool ssMatchCase, bool ssMatchEntireCell, out int ssReplacedCount);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
