@@ -4022,4 +4022,195 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // RCCellDataRecord
+
+	/// <summary>
+	/// Structure <code>RCPivotFieldRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCPivotFieldRecord: ISerializable, ITypedRecord<RCPivotFieldRecord> {
+		internal static readonly GlobalObjectKey IdPivotField = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*D2dEVypxWJ_Kw87tEUMKJA");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("PivotField")]
+		public STPivotFieldStructure ssSTPivotField;
+
+
+		public static implicit operator STPivotFieldStructure(RCPivotFieldRecord r) {
+			return r.ssSTPivotField;
+		}
+
+		public static implicit operator RCPivotFieldRecord(STPivotFieldStructure r) {
+			RCPivotFieldRecord res = new RCPivotFieldRecord(null);
+			res.ssSTPivotField = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCPivotFieldRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTPivotField = new STPivotFieldStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTPivotField.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTPivotField.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCPivotFieldRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCPivotFieldRecord a, RCPivotFieldRecord b) {
+			if (a.ssSTPivotField != b.ssSTPivotField) return false;
+			return true;
+		}
+
+		public static bool operator != (RCPivotFieldRecord a, RCPivotFieldRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCPivotFieldRecord)) return false;
+			return (this == (RCPivotFieldRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTPivotField.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCPivotFieldRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTPivotField = new STPivotFieldStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTPivotField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTPivotField' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTPivotField = (STPivotFieldStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTPivotField.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTPivotField.InternalRecursiveSave();
+		}
+
+
+		public RCPivotFieldRecord Duplicate() {
+			RCPivotFieldRecord t;
+			t.ssSTPivotField = (STPivotFieldStructure) this.ssSTPivotField.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTPivotField.ToXml(this, recordElem, "PivotField", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "pivotfield") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".PivotField")) variable.Value = ssSTPivotField; else variable.Optimized = true;
+				variable.SetFieldName("pivotfield");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdPivotField) {
+				return ssSTPivotField;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTPivotField.FillFromOther((IRecord) other.AttributeGet(IdPivotField));
+		}
+		public bool IsDefault() {
+			RCPivotFieldRecord defaultStruct = new RCPivotFieldRecord(null);
+			if (this.ssSTPivotField != defaultStruct.ssSTPivotField) return false;
+			return true;
+		}
+	} // RCPivotFieldRecord
 }

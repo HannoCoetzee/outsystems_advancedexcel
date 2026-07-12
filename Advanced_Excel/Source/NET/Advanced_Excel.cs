@@ -20,6 +20,82 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
 		/// <summary>
+		/// Creates a pivot table from a source range, placing row/column/value/filter fields as specified. The pivot recalculates when the file is opened in Excel.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet where the pivot table is placed</param>
+		/// <param name="ssLocation">Top-left anchor cell in Worksheet, e.g. A1</param>
+		/// <param name="ssSourceWorksheet">The worksheet holding the source data (same workbook)</param>
+		/// <param name="ssSourceRange">Data range including the header row, e.g. A1:D100</param>
+		/// <param name="ssPivotTableName">Unique name for the pivot table</param>
+		/// <param name="ssFields">Fields to place on the pivot</param>
+		/// <param name="ssRowGrandTotals">Show grand totals for rows</param>
+		/// <param name="ssColumnGrandTotals">Show grand totals for columns</param>
+		public void MssWorksheet_AddPivotTable(object ssWorksheet, string ssLocation, object ssSourceWorksheet, string ssSourceRange, string ssPivotTableName, RLPivotFieldRecordList ssFields, bool ssRowGrandTotals, bool ssColumnGrandTotals) {
+			ExcelWorksheet target = AsWorksheet(ssWorksheet);
+			ExcelWorksheet source = AsWorksheet(ssSourceWorksheet);
+
+			if (string.IsNullOrEmpty(ssLocation))
+			{
+				throw new ArgumentException("Location (the anchor cell for the pivot table) is required.", nameof(ssLocation));
+			}
+			if (string.IsNullOrEmpty(ssSourceRange))
+			{
+				throw new ArgumentException("SourceRange is required.", nameof(ssSourceRange));
+			}
+
+			var pivot = target.PivotTables.Add(target.Cells[ssLocation], source.Cells[ssSourceRange], ssPivotTableName);
+			pivot.RowGrandTotals = ssRowGrandTotals;
+			pivot.ColumnGrandTotals = ssColumnGrandTotals;
+
+			if (ssFields != null)
+			{
+				for (int i = 0; i < ssFields.Count; i++)
+				{
+					var f = ssFields[i].ssSTPivotField;
+					if (string.IsNullOrEmpty(f.ssFieldName))
+					{
+						continue;
+					}
+
+					OfficeOpenXml.Table.PivotTable.ExcelPivotTableField field = null;
+					try
+					{
+						field = pivot.Fields[f.ssFieldName];
+					}
+					catch
+					{
+						// fall through to the shared not-found error below
+					}
+					if (field == null)
+					{
+						throw new ArgumentException("Pivot field '" + f.ssFieldName + "' was not found in the source data's header row (" + ssSourceRange + ").", nameof(ssFields));
+					}
+
+					switch ((f.ssAxis ?? "").Trim().ToLowerInvariant())
+					{
+						case "row":
+							pivot.RowFields.Add(field);
+							break;
+						case "column":
+							pivot.ColumnFields.Add(field);
+							break;
+						case "filter":
+							pivot.PageFields.Add(field);
+							break;
+						case "data":
+							var dataField = pivot.DataFields.Add(field);
+							dataField.Function = ParseEnum(
+								string.IsNullOrEmpty(f.ssFunction) ? "Sum" : f.ssFunction,
+								OfficeOpenXml.Table.PivotTable.DataFieldFunctions.Sum);
+							break;
+						default:
+							throw new ArgumentException("Pivot field '" + f.ssFieldName + "' has an invalid Axis '" + f.ssAxis + "'. Use Row, Column, Data, or Filter.", nameof(ssFields));
+					}
+				}
+			}
+		} // MssWorksheet_AddPivotTable
+
+		/// <summary>
 		/// Returns the bounds of the populated area of a worksheet, so you can read a file whose size you don&apos;t know in advance.
 		/// </summary>
 		/// <param name="ssWorksheet">The worksheet to work with.</param>

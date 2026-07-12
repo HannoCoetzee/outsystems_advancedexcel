@@ -1183,6 +1183,19 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssReplacedCount">Number of cells changed</param>
 		void MssCells_Replace(object ssWorksheet, RCRangeRecord ssRange, string ssFindText, string ssReplaceText, bool ssMatchCase, bool ssMatchEntireCell, out int ssReplacedCount);
 
+		/// <summary>
+		/// Creates a pivot table from a source range, placing row/column/value/filter fields as specified. The pivot recalculates when the file is opened in Excel.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet where the pivot table is placed</param>
+		/// <param name="ssLocation">Top-left anchor cell in Worksheet, e.g. A1</param>
+		/// <param name="ssSourceWorksheet">The worksheet holding the source data (same workbook)</param>
+		/// <param name="ssSourceRange">Data range including the header row, e.g. A1:D100</param>
+		/// <param name="ssPivotTableName">Unique name for the pivot table</param>
+		/// <param name="ssFields">Fields to place on the pivot</param>
+		/// <param name="ssRowGrandTotals">Show grand totals for rows</param>
+		/// <param name="ssColumnGrandTotals">Show grand totals for columns</param>
+		void MssWorksheet_AddPivotTable(object ssWorksheet, string ssLocation, object ssSourceWorksheet, string ssSourceRange, string ssPivotTableName, RLPivotFieldRecordList ssFields, bool ssRowGrandTotals, bool ssColumnGrandTotals);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
