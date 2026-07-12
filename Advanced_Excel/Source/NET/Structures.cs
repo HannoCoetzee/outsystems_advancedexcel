@@ -6619,4 +6619,231 @@ namespace OutSystems.NssAdvanced_Excel {
 		}
 	} // STCellDataStructure
 
+	/// <summary>
+	/// Structure <code>STPivotFieldStructure</code> that represents the Service Studio structure
+	///  <code>PivotField</code> <p> Description: One field on a pivot table: FieldName (a source colum
+	/// n header), Axis (Row, Column, Data, or Filter), and Function (aggregation for Data fields, e.g.
+	///  Sum/Count/Average — ignored otherwise).</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STPivotFieldStructure: ISerializable, ITypedRecord<STPivotFieldStructure>, ISimpleRecord {
+		internal static readonly GlobalObjectKey IdFieldName = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*BeDj65oP9UOVbOW5uq0S3w");
+		internal static readonly GlobalObjectKey IdAxis = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*1maC9GZYBUm4JY1bWrMI+Q");
+		internal static readonly GlobalObjectKey IdFunction = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*QWwhRylhq0iSIL_ZDifnjA");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("FieldName")]
+		public string ssFieldName;
+
+		[System.Xml.Serialization.XmlElement("Axis")]
+		public string ssAxis;
+
+		[System.Xml.Serialization.XmlElement("Function")]
+		public string ssFunction;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STPivotFieldStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssFieldName = "";
+			ssAxis = "";
+			ssFunction = "";
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssFieldName = r.ReadText(index++, "PivotField.FieldName", "");
+			ssAxis = r.ReadText(index++, "PivotField.Axis", "");
+			ssFunction = r.ReadText(index++, "PivotField.Function", "");
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STPivotFieldStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STPivotFieldStructure a, STPivotFieldStructure b) {
+			if (a.ssFieldName != b.ssFieldName) return false;
+			if (a.ssAxis != b.ssAxis) return false;
+			if (a.ssFunction != b.ssFunction) return false;
+			return true;
+		}
+
+		public static bool operator != (STPivotFieldStructure a, STPivotFieldStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STPivotFieldStructure)) return false;
+			return (this == (STPivotFieldStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssFieldName.GetHashCode()
+				^ ssAxis.GetHashCode()
+				^ ssFunction.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STPivotFieldStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssFieldName = "";
+			ssAxis = "";
+			ssFunction = "";
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssFieldName", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssFieldName' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssFieldName = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssAxis", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssAxis' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssAxis = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssFunction", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssFunction' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssFunction = (string) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STPivotFieldStructure Duplicate() {
+			STPivotFieldStructure t;
+			t.ssFieldName = this.ssFieldName;
+			t.ssAxis = this.ssAxis;
+			t.ssFunction = this.ssFunction;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".FieldName")) VarValue.AppendAttribute(recordElem, "FieldName", ssFieldName, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "FieldName");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Axis")) VarValue.AppendAttribute(recordElem, "Axis", ssAxis, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Axis");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Function")) VarValue.AppendAttribute(recordElem, "Function", ssFunction, detailLevel, TypeKind.Text); else VarValue.AppendOptimizedAttribute(recordElem, "Function");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "fieldname") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".FieldName")) variable.Value = ssFieldName; else variable.Optimized = true;
+			} else if (head == "axis") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Axis")) variable.Value = ssAxis; else variable.Optimized = true;
+			} else if (head == "function") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Function")) variable.Value = ssFunction; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdFieldName) {
+				return ssFieldName;
+			} else if (key == IdAxis) {
+				return ssAxis;
+			} else if (key == IdFunction) {
+				return ssFunction;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssFieldName = (string) other.AttributeGet(IdFieldName);
+			ssAxis = (string) other.AttributeGet(IdAxis);
+			ssFunction = (string) other.AttributeGet(IdFunction);
+		}
+		public bool IsDefault() {
+			STPivotFieldStructure defaultStruct = new STPivotFieldStructure(null);
+			if (this.ssFieldName != defaultStruct.ssFieldName) return false;
+			if (this.ssAxis != defaultStruct.ssAxis) return false;
+			if (this.ssFunction != defaultStruct.ssFunction) return false;
+			return true;
+		}
+	} // STPivotFieldStructure
+
 } // OutSystems.NssAdvanced_Excel

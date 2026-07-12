@@ -1771,4 +1771,88 @@ namespace OutSystems.NssAdvanced_Excel {
 
 
 	} // RLCellDataRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLPivotFieldRecordList</code> that represents a record list of
+	///  <code>PivotField</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLPivotFieldRecordList: GenericRecordList<RCPivotFieldRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCPivotFieldRecord GetElementDefaultValue() {
+			return new RCPivotFieldRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCPivotFieldRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLPivotFieldRecordList recordlist, Func<RCPivotFieldRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLPivotFieldRecordList(RCPivotFieldRecord[] array) {
+			RLPivotFieldRecordList result = new RLPivotFieldRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLPivotFieldRecordList ToList<T>(T[] array, Func <T, RCPivotFieldRecord> converter) {
+			RLPivotFieldRecordList result = new RLPivotFieldRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLPivotFieldRecordList FromRestList<T>(RestList<T> restList, Func <T, RCPivotFieldRecord> converter) {
+			RLPivotFieldRecordList result = new RLPivotFieldRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLPivotFieldRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLPivotFieldRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLPivotFieldRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLPivotFieldRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCPivotFieldRecord> NewList() {
+			return new RLPivotFieldRecordList();
+		}
+
+
+	} // RLPivotFieldRecordList
 }
