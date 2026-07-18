@@ -20,6 +20,36 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
 		/// <summary>
+		/// Saves the workbook as an AES-encrypted, password-protected .xlsx. The password is required to open the file in Excel.
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook to save.</param>
+		/// <param name="ssPassword">Password required to open the resulting file.</param>
+		/// <param name="ssBinaryData">The encrypted .xlsx file</param>
+		public void MssWorkbook_SaveWithPassword(object ssWorkbook, string ssPassword, out byte[] ssBinaryData) {
+			ExcelPackage p = ssWorkbook as ExcelPackage;
+			if (p == null)
+			{
+				throw new ArgumentException("Expected a Workbook object (e.g. from Workbook_Create or Workbook_Open).", nameof(ssWorkbook));
+			}
+			if (string.IsNullOrEmpty(ssPassword))
+			{
+				throw new ArgumentException("Password is required to save an encrypted workbook.", nameof(ssPassword));
+			}
+
+			Util.PreserveVisibleRowsForZeroHeightSheets(p);
+
+			p.Encryption.IsEncrypted = true;
+			p.Encryption.Password = ssPassword;
+			ssBinaryData = p.GetAsByteArray();
+
+			// GetAsByteArray closes the package; reload from the encrypted bytes (with the password) so
+			// the workbook stays usable, then clear the encryption flag so a later plain save isn't
+			// unexpectedly encrypted too.
+			p.Load(new System.IO.MemoryStream(ssBinaryData), ssPassword);
+			p.Encryption.IsEncrypted = false;
+		} // MssWorkbook_SaveWithPassword
+
+		/// <summary>
 		/// Creates a pivot table from a source range, placing row/column/value/filter fields as specified. The pivot recalculates when the file is opened in Excel.
 		/// </summary>
 		/// <param name="ssWorksheet">The worksheet where the pivot table is placed</param>
@@ -1455,9 +1485,9 @@ namespace OutSystems.NssAdvanced_Excel
         /// </summary>
         /// <param name="ssBinaryData"></param>
         /// <param name="ssWorkbook"></param>
-        public void MssWorkbook_Open_BinaryData(byte[] ssBinaryData, out object ssWorkbook)
+        public void MssWorkbook_Open_BinaryData(byte[] ssBinaryData, string ssPassword, out object ssWorkbook)
         {
-            MssWorkbook_Open("", ssBinaryData, out ssWorkbook);
+            MssWorkbook_Open("", ssBinaryData, ssPassword, out ssWorkbook);
         } // MssWorkbook_Open_BinaryData
 
         /// <summary>
@@ -2838,7 +2868,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssFileName">Location of the file that you want to open. Set to empty string "" when using binary data</param>
         /// <param name="ssBinary_Data">Binary data of the file that you want to open. Set to nullbinary() if using FileName</param>
         /// <param name="ssWorkbook">The workbook that you want to work with.</param>
-        public void MssWorkbook_Open(string ssFileName, byte[] ssBinary_Data, out object ssWorkbook)
+        public void MssWorkbook_Open(string ssFileName, byte[] ssBinary_Data, string ssPassword, out object ssWorkbook)
         {
             bool hasBinaryData = ssBinary_Data != null && ssBinary_Data.LongLength > 0;
 
@@ -2881,19 +2911,19 @@ namespace OutSystems.NssAdvanced_Excel
                         }
 
                         byte[] data = Util.EnsureConditionalFormattingDxfs(buffer.ToArray());
-                        p.Load(new MemoryStream(data));
+                        LoadPackage(p, data, ssPassword);
                     }
                 }
             }
             else if (!string.IsNullOrEmpty(ssFileName))
             {
                 byte[] data = Util.EnsureConditionalFormattingDxfs(System.IO.File.ReadAllBytes(ssFileName));
-                p.Load(new MemoryStream(data));
+                LoadPackage(p, data, ssPassword);
             }
             else if (hasBinaryData)
             {
                 byte[] data = Util.EnsureConditionalFormattingDxfs(ssBinary_Data);
-                p.Load(new MemoryStream(data));
+                LoadPackage(p, data, ssPassword);
             }
             else
             {
@@ -2902,6 +2932,38 @@ namespace OutSystems.NssAdvanced_Excel
 
             ssWorkbook = p;
         } // MssWorkbook_Open
+
+        /// <summary>
+        /// Load workbook bytes into the package, decrypting with the password when one is supplied.
+        /// A missing/incorrect password on an encrypted file is surfaced as a clear error.
+        /// </summary>
+        private static void LoadPackage(ExcelPackage p, byte[] data, string password)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(password))
+                {
+                    p.Load(new MemoryStream(data));
+                }
+                else
+                {
+                    p.Load(new MemoryStream(data), password);
+                }
+            }
+            catch (System.Security.SecurityException)
+            {
+                throw new ArgumentException("The workbook is password-protected and the supplied password is incorrect.");
+            }
+            catch (InvalidDataException)
+            {
+                // an encrypted (OLE compound) file opened without a password lands here
+                if (string.IsNullOrEmpty(password) && data != null && data.Length > 1 && data[0] == 0xD0 && data[1] == 0xCF)
+                {
+                    throw new ArgumentException("The workbook is password-protected. Supply the Password to open it.");
+                }
+                throw;
+            }
+        }
 
         /// <summary>
         /// 
