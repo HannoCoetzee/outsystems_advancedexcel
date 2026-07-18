@@ -12,8 +12,9 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// </summary>
 		/// <param name="ssFileName">Location of the file that you want to open. Set to empty string &quot;&quot; when using binary data</param>
 		/// <param name="ssBinary_Data">Binary data of the file that you want to open. Set to nullbinary() if using FileName</param>
+		/// <param name="ssPassword">Password for an encrypted/protected file. Leave empty for normal files.</param>
 		/// <param name="ssWorkbook">The workbook that you want to work with.</param>
-		void MssWorkbook_Open(string ssFileName, byte[] ssBinary_Data, out object ssWorkbook);
+		void MssWorkbook_Open(string ssFileName, byte[] ssBinary_Data, string ssPassword, out object ssWorkbook);
 
 		/// <summary>
 		/// Select a worksheet by its index or by its name
@@ -649,8 +650,9 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// Opens an existing workbook for editing and keeps it in memory
 		/// </summary>
 		/// <param name="ssBinaryData"></param>
+		/// <param name="ssPassword">Password for an encrypted/protected file. Leave empty for normal files.</param>
 		/// <param name="ssWorkbook"></param>
-		void MssWorkbook_Open_BinaryData(byte[] ssBinaryData, out object ssWorkbook);
+		void MssWorkbook_Open_BinaryData(byte[] ssBinaryData, string ssPassword, out object ssWorkbook);
 
 		/// <summary>
 		/// Set the pixel width of a column on a specific worksheet
@@ -1195,6 +1197,14 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssRowGrandTotals">Show grand totals for rows</param>
 		/// <param name="ssColumnGrandTotals">Show grand totals for columns</param>
 		void MssWorksheet_AddPivotTable(object ssWorksheet, string ssLocation, object ssSourceWorksheet, string ssSourceRange, string ssPivotTableName, RLPivotFieldRecordList ssFields, bool ssRowGrandTotals, bool ssColumnGrandTotals);
+
+		/// <summary>
+		/// Saves the workbook as an AES-encrypted, password-protected .xlsx. The password is required to open the file in Excel.
+		/// </summary>
+		/// <param name="ssWorkbook">The workbook to save.</param>
+		/// <param name="ssPassword">Password required to open the resulting file.</param>
+		/// <param name="ssBinaryData">The encrypted .xlsx file</param>
+		void MssWorkbook_SaveWithPassword(object ssWorkbook, string ssPassword, out byte[] ssBinaryData);
 
 	} // IssAdvanced_Excel
 
