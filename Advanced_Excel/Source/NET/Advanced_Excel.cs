@@ -40,12 +40,8 @@ namespace OutSystems.NssAdvanced_Excel
 
 			p.Encryption.IsEncrypted = true;
 			p.Encryption.Password = ssPassword;
-			ssBinaryData = p.GetAsByteArray();
-
-			// GetAsByteArray closes the package; reload from the encrypted bytes (with the password) so
-			// the workbook stays usable, then clear the encryption flag so a later plain save isn't
-			// unexpectedly encrypted too.
-			p.Load(new System.IO.MemoryStream(ssBinaryData), ssPassword);
+			ssBinaryData = SaveAndReload(p, ssPassword);
+			// clear the flag so a later plain save isn't encrypted too
 			p.Encryption.IsEncrypted = false;
 		} // MssWorkbook_SaveWithPassword
 
@@ -63,6 +59,11 @@ namespace OutSystems.NssAdvanced_Excel
 		public void MssWorksheet_AddPivotTable(object ssWorksheet, string ssLocation, object ssSourceWorksheet, string ssSourceRange, string ssPivotTableName, RLPivotFieldRecordList ssFields, bool ssRowGrandTotals, bool ssColumnGrandTotals) {
 			ExcelWorksheet target = AsWorksheet(ssWorksheet);
 			ExcelWorksheet source = AsWorksheet(ssSourceWorksheet);
+
+			if (!ReferenceEquals(target.Workbook, source.Workbook))
+			{
+				throw new ArgumentException("SourceWorksheet must belong to the same workbook as Worksheet.", nameof(ssSourceWorksheet));
+			}
 
 			if (string.IsNullOrEmpty(ssLocation))
 			{
@@ -3402,7 +3403,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// recording old-to-new worksheet redirects so previously selected worksheet handles
         /// keep pointing at live worksheets.
         /// </summary>
-        private static byte[] SaveAndReload(ExcelPackage p)
+        private static byte[] SaveAndReload(ExcelPackage p, string password = null)
         {
             var oldSheets = new List<ExcelWorksheet>();
             foreach (var ws in p.Workbook.Worksheets)
@@ -3411,7 +3412,14 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             byte[] bytes = p.GetAsByteArray();
-            p.Load(new System.IO.MemoryStream(bytes));
+            if (string.IsNullOrEmpty(password))
+            {
+                p.Load(new System.IO.MemoryStream(bytes));
+            }
+            else
+            {
+                p.Load(new System.IO.MemoryStream(bytes), password);
+            }
 
             foreach (var old in oldSheets)
             {
