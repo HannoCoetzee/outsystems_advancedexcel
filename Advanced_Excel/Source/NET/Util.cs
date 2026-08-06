@@ -529,7 +529,14 @@ namespace OutSystems.NssAdvanced_Excel
                 style.Font.Strike = null;
             }
 
-            style.Font.Underline = underline;
+            if (underline != ExcelUnderLineType.None)
+            {
+                style.Font.Underline = underline;
+            }
+            else
+            {
+                style.Font.Underline = null;
+            }
 
             if (!string.IsNullOrEmpty(ssStyle.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssColor))
             {
