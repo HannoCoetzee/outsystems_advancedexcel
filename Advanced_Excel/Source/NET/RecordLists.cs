@@ -1855,4 +1855,88 @@ namespace OutSystems.NssAdvanced_Excel {
 
 
 	} // RLPivotFieldRecordList
+
+	/// <summary>
+	/// RecordList type <code>RLSortFieldRecordList</code> that represents a record list of
+	///  <code>SortField</code>
+	/// </summary>
+	[Serializable()]
+	public partial class RLSortFieldRecordList: GenericRecordList<RCSortFieldRecord>, IEnumerable, IEnumerator, ISerializable {
+		public static void EnsureInitialized() {}
+
+		protected override RCSortFieldRecord GetElementDefaultValue() {
+			return new RCSortFieldRecord("");
+		}
+
+		public T[] ToArray<T>(Func<RCSortFieldRecord, T> converter) {
+			return ToArray(this, converter);
+		}
+
+		public static T[] ToArray<T>(RLSortFieldRecordList recordlist, Func<RCSortFieldRecord, T> converter) {
+			return InnerToArray(recordlist, converter);
+		}
+		public static implicit operator RLSortFieldRecordList(RCSortFieldRecord[] array) {
+			RLSortFieldRecordList result = new RLSortFieldRecordList();
+			result.InnerFromArray(array);
+			return result;
+		}
+
+		public static RLSortFieldRecordList ToList<T>(T[] array, Func <T, RCSortFieldRecord> converter) {
+			RLSortFieldRecordList result = new RLSortFieldRecordList();
+			result.InnerFromArray(array, converter);
+			return result;
+		}
+
+		public static RLSortFieldRecordList FromRestList<T>(RestList<T> restList, Func <T, RCSortFieldRecord> converter) {
+			RLSortFieldRecordList result = new RLSortFieldRecordList();
+			result.InnerFromRestList(restList, converter);
+			return result;
+		}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		public RLSortFieldRecordList(): base() {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLSortFieldRecordList(IDbTransaction trans): base(trans) {
+		}
+
+		/// <summary>
+		/// Constructor with transaction parameter and alternate read method
+		/// </summary>
+		/// <param name="trans"> IDbTransaction Parameter</param>
+		/// <param name="alternateReadDBMethod"> Alternate Read Method</param>
+		[Obsolete("Use the Default Constructor and set the Transaction afterwards.")]
+		public RLSortFieldRecordList(IDbTransaction trans, ReadDBMethodDelegate alternateReadDBMethod): this(trans) {
+			this.alternateReadDBMethod = alternateReadDBMethod;
+		}
+
+		/// <summary>
+		/// Constructor declaration for serialization
+		/// </summary>
+		/// <param name="info"> SerializationInfo</param>
+		/// <param name="context"> StreamingContext</param>
+		public RLSortFieldRecordList(SerializationInfo info, StreamingContext context): base(info, context) {
+		}
+
+		public override BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] def = new BitArray[1];
+			def[0] = null;
+			return def;
+		}
+		/// <summary>
+		/// Create as new list
+		/// </summary>
+		/// <returns>The new record list</returns>
+		protected override OSList<RCSortFieldRecord> NewList() {
+			return new RLSortFieldRecordList();
+		}
+
+
+	} // RLSortFieldRecordList
 }

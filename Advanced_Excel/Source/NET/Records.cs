@@ -4213,4 +4213,195 @@ namespace OutSystems.NssAdvanced_Excel {
 			return true;
 		}
 	} // RCPivotFieldRecord
+
+	/// <summary>
+	/// Structure <code>RCSortFieldRecord</code>
+	/// </summary>
+	[Serializable()]
+	public partial struct RCSortFieldRecord: ISerializable, ITypedRecord<RCSortFieldRecord> {
+		internal static readonly GlobalObjectKey IdSortField = GlobalObjectKey.Parse("2UmDmepsh0WSfJ_D1JexCA*BxTvSacv4sVNfQOEvF8K6A");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("SortField")]
+		public STSortFieldStructure ssSTSortField;
+
+
+		public static implicit operator STSortFieldStructure(RCSortFieldRecord r) {
+			return r.ssSTSortField;
+		}
+
+		public static implicit operator RCSortFieldRecord(STSortFieldStructure r) {
+			RCSortFieldRecord res = new RCSortFieldRecord(null);
+			res.ssSTSortField = r;
+			return res;
+		}
+
+		public BitArray OptimizedAttributes;
+
+		public RCSortFieldRecord(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssSTSortField = new STSortFieldStructure(null);
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[1];
+			all[0] = null;
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+					ssSTSortField.OptimizedAttributes = value[0];
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[1];
+				all[0] = null;
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssSTSortField.Read(r, ref index);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(RCSortFieldRecord r) {
+			this = r;
+		}
+
+
+		public static bool operator == (RCSortFieldRecord a, RCSortFieldRecord b) {
+			if (a.ssSTSortField != b.ssSTSortField) return false;
+			return true;
+		}
+
+		public static bool operator != (RCSortFieldRecord a, RCSortFieldRecord b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(RCSortFieldRecord)) return false;
+			return (this == (RCSortFieldRecord) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssSTSortField.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public RCSortFieldRecord(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssSTSortField = new STSortFieldStructure(null);
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssSTSortField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssSTSortField' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssSTSortField = (STSortFieldStructure) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+			ssSTSortField.RecursiveReset();
+		}
+
+		public void InternalRecursiveSave() {
+			ssSTSortField.InternalRecursiveSave();
+		}
+
+
+		public RCSortFieldRecord Duplicate() {
+			RCSortFieldRecord t;
+			t.ssSTSortField = (STSortFieldStructure) this.ssSTSortField.Duplicate();
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Record");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+			}
+			if (detailLevel > 0) {
+				ssSTSortField.ToXml(this, recordElem, "SortField", detailLevel - 1);
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "sortfield") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".SortField")) variable.Value = ssSTSortField; else variable.Optimized = true;
+				variable.SetFieldName("sortfield");
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdSortField) {
+				return ssSTSortField;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssSTSortField.FillFromOther((IRecord) other.AttributeGet(IdSortField));
+		}
+		public bool IsDefault() {
+			RCSortFieldRecord defaultStruct = new RCSortFieldRecord(null);
+			if (this.ssSTSortField != defaultStruct.ssSTSortField) return false;
+			return true;
+		}
+	} // RCSortFieldRecord
 }

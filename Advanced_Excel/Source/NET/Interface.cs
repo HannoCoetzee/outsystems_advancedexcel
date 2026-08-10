@@ -1206,6 +1206,15 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssBinaryData">The encrypted .xlsx file</param>
 		void MssWorkbook_SaveWithPassword(object ssWorkbook, string ssPassword, out byte[] ssBinaryData);
 
+		/// <summary>
+		/// Sorts the rows of a range by one or more columns. Cell values and formatting move together with their row.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRange">A1 range, e.g. A1:D100.</param>
+		/// <param name="ssHasHeader">Keeps the first row in place instead of sorting it into the data.</param>
+		/// <param name="ssSortFields">Applied in order (first field is the primary sort).</param>
+		void MssWorksheet_SortRange(object ssWorksheet, string ssRange, bool ssHasHeader, RLSortFieldRecordList ssSortFields);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel

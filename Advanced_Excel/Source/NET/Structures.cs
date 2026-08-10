@@ -6846,4 +6846,207 @@ namespace OutSystems.NssAdvanced_Excel {
 		}
 	} // STPivotFieldStructure
 
+	/// <summary>
+	/// Structure <code>STSortFieldStructure</code> that represents the Service Studio structure
+	///  <code>SortField</code> <p> Description: One column to sort by within Worksheet_SortRange. Column i
+	/// s the 1-based position of the column inside the sorted range, not the worksheet. Descending sorts
+	///  Z→A / high to low.</p>
+	/// </summary>
+	[Serializable()]
+	public partial struct STSortFieldStructure: ISerializable, ITypedRecord<STSortFieldStructure>, ISimpleRecord {
+		internal static readonly GlobalObjectKey IdColumn = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*WtGEfNT1REe+7ETNO9WvKw");
+		internal static readonly GlobalObjectKey IdDescending = GlobalObjectKey.Parse("tQrPfipdPE2fHQ34mD74Uw*NLcJl8mCT0OPFwq6nkxG3A");
+
+		public static void EnsureInitialized() {}
+		[System.Xml.Serialization.XmlElement("Column")]
+		public int ssColumn;
+
+		[System.Xml.Serialization.XmlElement("Descending")]
+		public bool ssDescending;
+
+
+		public BitArray OptimizedAttributes;
+
+		public STSortFieldStructure(params string[] dummy) {
+			OptimizedAttributes = null;
+			ssColumn = 0;
+			ssDescending = false;
+		}
+
+		public BitArray[] GetDefaultOptimizedValues() {
+			BitArray[] all = new BitArray[0];
+			return all;
+		}
+
+		public BitArray[] AllOptimizedAttributes {
+			set {
+				if (value == null) {
+				} else {
+				}
+			}
+			get {
+				BitArray[] all = new BitArray[0];
+				return all;
+			}
+		}
+
+		/// <summary>
+		/// Read a record from database
+		/// </summary>
+		/// <param name="r"> Data base reader</param>
+		/// <param name="index"> index</param>
+		public void Read(IDataReader r, ref int index) {
+			ssColumn = r.ReadInteger(index++, "SortField.Column", 0);
+			ssDescending = r.ReadBoolean(index++, "SortField.Descending", false);
+		}
+		/// <summary>
+		/// Read from database
+		/// </summary>
+		/// <param name="r"> Data reader</param>
+		public void ReadDB(IDataReader r) {
+			int index = 0;
+			Read(r, ref index);
+		}
+
+		/// <summary>
+		/// Read from record
+		/// </summary>
+		/// <param name="r"> Record</param>
+		public void ReadIM(STSortFieldStructure r) {
+			this = r;
+		}
+
+
+		public static bool operator == (STSortFieldStructure a, STSortFieldStructure b) {
+			if (a.ssColumn != b.ssColumn) return false;
+			if (a.ssDescending != b.ssDescending) return false;
+			return true;
+		}
+
+		public static bool operator != (STSortFieldStructure a, STSortFieldStructure b) {
+			return !(a==b);
+		}
+
+		public override bool Equals(object o) {
+			if (o.GetType() != typeof(STSortFieldStructure)) return false;
+			return (this == (STSortFieldStructure) o);
+		}
+
+		public override int GetHashCode() {
+			try {
+				return base.GetHashCode()
+				^ ssColumn.GetHashCode()
+				^ ssDescending.GetHashCode()
+				;
+			} catch {
+				return base.GetHashCode();
+			}
+		}
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			Type objInfo = this.GetType();
+			FieldInfo[] fields;
+			fields = objInfo.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			for (int i = 0; i < fields.Length; i++)
+			if (fields[i] .FieldType.IsSerializable)
+			info.AddValue(fields[i] .Name, fields[i] .GetValue(this));
+		}
+
+		public STSortFieldStructure(SerializationInfo info, StreamingContext context) {
+			OptimizedAttributes = null;
+			ssColumn = 0;
+			ssDescending = false;
+			Type objInfo = this.GetType();
+			FieldInfo fieldInfo = null;
+			fieldInfo = objInfo.GetField("ssColumn", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssColumn' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssColumn = (int) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+			fieldInfo = objInfo.GetField("ssDescending", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+			if (fieldInfo == null) {
+				throw new Exception("The field named 'ssDescending' was not found.");
+			}
+			if (fieldInfo.FieldType.IsSerializable) {
+				ssDescending = (bool) info.GetValue(fieldInfo.Name, fieldInfo.FieldType);
+			}
+		}
+
+		public void RecursiveReset() {
+		}
+
+		public void InternalRecursiveSave() {
+		}
+
+
+		public STSortFieldStructure Duplicate() {
+			STSortFieldStructure t;
+			t.ssColumn = this.ssColumn;
+			t.ssDescending = this.ssDescending;
+			t.OptimizedAttributes = null;
+			return t;
+		}
+
+		IRecord IRecord.Duplicate() {
+			return Duplicate();
+		}
+
+		public void ToXml(Object parent, System.Xml.XmlElement baseElem, String fieldName, int detailLevel) {
+			System.Xml.XmlElement recordElem = VarValue.AppendChild(baseElem, "Structure");
+			if (fieldName != null) {
+				VarValue.AppendAttribute(recordElem, "debug.field", fieldName);
+				fieldName = fieldName.ToLowerInvariant();
+			}
+			if (detailLevel > 0) {
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Column")) VarValue.AppendAttribute(recordElem, "Column", ssColumn, detailLevel, TypeKind.Integer); else VarValue.AppendOptimizedAttribute(recordElem, "Column");
+				if (!VarValue.FieldIsOptimized(parent, fieldName + ".Descending")) VarValue.AppendAttribute(recordElem, "Descending", ssDescending, detailLevel, TypeKind.Boolean); else VarValue.AppendOptimizedAttribute(recordElem, "Descending");
+			} else {
+				VarValue.AppendDeferredEvaluationElement(recordElem);
+			}
+		}
+
+		public void EvaluateFields(VarValue variable, Object parent, String baseName, String fields) {
+			String head = VarValue.GetHead(fields);
+			String tail = VarValue.GetTail(fields);
+			variable.Found = false;
+			if (head == "column") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Column")) variable.Value = ssColumn; else variable.Optimized = true;
+			} else if (head == "descending") {
+				if (!VarValue.FieldIsOptimized(parent, baseName + ".Descending")) variable.Value = ssDescending; else variable.Optimized = true;
+			}
+			if (variable.Found && tail != null) variable.EvaluateFields(this, head, tail);
+		}
+
+		public bool ChangedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public bool OptimizedAttributeGet(GlobalObjectKey key) {
+			throw new Exception("Method not Supported");
+		}
+
+		public object AttributeGet(GlobalObjectKey key) {
+			if (key == IdColumn) {
+				return ssColumn;
+			} else if (key == IdDescending) {
+				return ssDescending;
+			} else {
+				throw new Exception("Invalid key");
+			}
+		}
+		public void FillFromOther(IRecord other) {
+			if (other == null) return;
+			ssColumn = (int) other.AttributeGet(IdColumn);
+			ssDescending = (bool) other.AttributeGet(IdDescending);
+		}
+		public bool IsDefault() {
+			STSortFieldStructure defaultStruct = new STSortFieldStructure(null);
+			if (this.ssColumn != defaultStruct.ssColumn) return false;
+			if (this.ssDescending != defaultStruct.ssDescending) return false;
+			return true;
+		}
+	} // STSortFieldStructure
+
 } // OutSystems.NssAdvanced_Excel
