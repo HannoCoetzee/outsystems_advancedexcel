@@ -20,6 +20,52 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
 		/// <summary>
+		/// Sorts the rows of a range by one or more columns. Cell values and formatting move together with their row.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with.</param>
+		/// <param name="ssRange">A1 range, e.g. A1:D100.</param>
+		/// <param name="ssHasHeader">Keeps the first row in place instead of sorting it into the data.</param>
+		/// <param name="ssSortFields">Applied in order (first field is the primary sort).</param>
+		public void MssWorksheet_SortRange(object ssWorksheet, string ssRange, bool ssHasHeader, RLSortFieldRecordList ssSortFields) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+
+			if (string.IsNullOrEmpty(ssRange))
+			{
+				throw new ArgumentException("Range is required.", nameof(ssRange));
+			}
+			if (ssSortFields == null || ssSortFields.Count == 0)
+			{
+				throw new ArgumentException("At least one sort field is required.", nameof(ssSortFields));
+			}
+
+			ExcelAddress address = new ExcelAddress(ssRange);
+			int startRow = ssHasHeader ? address.Start.Row + 1 : address.Start.Row;
+			if (startRow > address.End.Row)
+			{
+				return;
+			}
+
+			int width = address.End.Column - address.Start.Column + 1;
+			var columns = new int[ssSortFields.Count];
+			var descending = new bool[ssSortFields.Count];
+
+			for (int i = 0; i < ssSortFields.Count; i++)
+			{
+				var field = ssSortFields[i].ssSTSortField;
+				if (field.ssColumn < 1 || field.ssColumn > width)
+				{
+					throw new ArgumentException("Sort column " + field.ssColumn + " is outside the range " + ssRange + ", which is " + width + " column(s) wide. Columns are counted from the left of the range starting at 1.", nameof(ssSortFields));
+				}
+				// the extension counts range columns from 1; EPPlus expects a 0-based offset
+				columns[i] = field.ssColumn - 1;
+				descending[i] = field.ssDescending;
+			}
+
+			ws.Cells[startRow, address.Start.Column, address.End.Row, address.End.Column]
+			  .Sort(columns, descending, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.CompareOptions.None);
+		} // MssWorksheet_SortRange
+
+		/// <summary>
 		/// Saves the workbook as an AES-encrypted, password-protected .xlsx. The password is required to open the file in Excel.
 		/// </summary>
 		/// <param name="ssWorkbook">The workbook to save.</param>
