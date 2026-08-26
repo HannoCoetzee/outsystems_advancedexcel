@@ -20,6 +20,26 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
 		/// <summary>
+		/// Sets how the worksheet is displayed on screen: gridlines, row and column headers, and zoom.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssShowGridLines">Show the cell gridlines. Turn off for report or dashboard sheets</param>
+		/// <param name="ssShowHeaders">Show the row numbers and column letters</param>
+		/// <param name="ssZoomScale">Zoom percentage, from 10 to 400</param>
+		public void MssWorksheet_SetView(object ssWorksheet, bool ssShowGridLines, bool ssShowHeaders, int ssZoomScale) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+
+			if (ssZoomScale < 10 || ssZoomScale > 400)
+			{
+				throw new ArgumentException("ZoomScale must be between 10 and 400.", nameof(ssZoomScale));
+			}
+
+			ws.View.ShowGridLines = ssShowGridLines;
+			ws.View.ShowHeaders = ssShowHeaders;
+			ws.View.ZoomScale = ssZoomScale;
+		} // MssWorksheet_SetView
+
+		/// <summary>
 		/// Sorts the rows of a range by one or more columns. Cell values and formatting move together with their row.
 		/// </summary>
 		/// <param name="ssWorksheet">The worksheet to work with.</param>
