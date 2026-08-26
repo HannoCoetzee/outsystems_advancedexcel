@@ -1215,6 +1215,15 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssSortFields">Applied in order (first field is the primary sort).</param>
 		void MssWorksheet_SortRange(object ssWorksheet, string ssRange, bool ssHasHeader, RLSortFieldRecordList ssSortFields);
 
+		/// <summary>
+		/// Sets how the worksheet is displayed on screen: gridlines, row and column headers, and zoom.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssShowGridLines">Show the cell gridlines. Turn off for report or dashboard sheets</param>
+		/// <param name="ssShowHeaders">Show the row numbers and column letters</param>
+		/// <param name="ssZoomScale">Zoom percentage, from 10 to 400</param>
+		void MssWorksheet_SetView(object ssWorksheet, bool ssShowGridLines, bool ssShowHeaders, int ssZoomScale);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
