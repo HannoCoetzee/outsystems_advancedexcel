@@ -130,6 +130,32 @@ namespace OutSystems.NssAdvanced_Excel
 				descending[i] = field.ssDescending;
 			}
 
+			// sorting relocates cells without adjusting merges or formula references, so both
+			// would be silently corrupted; refuse them like Excel does. A merge confined to the
+			// excluded header row is fine.
+			foreach (var mergedAddress in ws.MergedCells)
+			{
+				if (string.IsNullOrEmpty(mergedAddress))
+				{
+					continue;
+				}
+				ExcelAddress merged = new ExcelAddress(mergedAddress);
+				bool intersects = merged.End.Row >= startRow && merged.Start.Row <= address.End.Row
+				               && merged.End.Column >= address.Start.Column && merged.Start.Column <= address.End.Column;
+				if (intersects)
+				{
+					throw new ArgumentException("The range contains merged cells (" + mergedAddress + "). Sorting would separate the merged cells from their values; unmerge them before sorting.", nameof(ssRange));
+				}
+			}
+
+			foreach (var cell in ws.Cells[startRow, address.Start.Column, address.End.Row, address.End.Column])
+			{
+				if (!string.IsNullOrEmpty(cell.Formula))
+				{
+					throw new ArgumentException("The range contains a formula in " + cell.Address + ". Sorting moves formulas without adjusting their references, which produces incorrect results; sort values only.", nameof(ssRange));
+				}
+			}
+
 			ws.Cells[startRow, address.Start.Column, address.End.Row, address.End.Column]
 			  .Sort(columns, descending, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.CompareOptions.None);
 		} // MssWorksheet_SortRange
