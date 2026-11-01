@@ -1233,6 +1233,15 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssAlignment">Section of the header or footer to place the image in: Left, Center, or Right</param>
 		void MssWorksheet_AddHeaderFooterImage(object ssWorksheet, byte[] ssImage, bool ssInFooter, string ssAlignment);
 
+		/// <summary>
+		/// Get the visibility of a worksheet. Returns the same values that Worksheet_Hide_Show accepts, so the result can be passed back to it.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssHidden">Visible = 0 - The worksheet is visible
+		/// Hidden = 1 - The worksheet is hidden but can be shown by the user via the user interface
+		/// VeryHidden = 2 - The worksheet is hidden and cannot be shown by the user via the user interface</param>
+		void MssWorksheet_GetVisibility(object ssWorksheet, out int ssHidden);
+
 	} // IssAdvanced_Excel
 
 } // OutSystems.NssAdvanced_Excel
