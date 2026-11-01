@@ -20,6 +20,18 @@ namespace OutSystems.NssAdvanced_Excel
     {
 
 		/// <summary>
+		/// Get the visibility of a worksheet. Returns the same values that Worksheet_Hide_Show accepts, so the result can be passed back to it.
+		/// </summary>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
+		/// <param name="ssHidden">Visible = 0 - The worksheet is visible
+		/// Hidden = 1 - The worksheet is hidden but can be shown by the user via the user interface
+		/// VeryHidden = 2 - The worksheet is hidden and cannot be shown by the user via the user interface</param>
+		public void MssWorksheet_GetVisibility(object ssWorksheet, out int ssHidden) {
+			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			ssHidden = (int)ws.Hidden;
+		} // MssWorksheet_GetVisibility
+
+		/// <summary>
 		/// Places an image, such as a company logo, in the worksheet&apos;s page header or footer. The image appears when the sheet is printed or in print preview. The image occupies the chosen section, so setting text in that same section with Worksheet_SetHeader or Worksheet_SetFooter afterwards replaces it — use different sections for text and image.
 		/// </summary>
 		/// <param name="ssWorksheet">The worksheet to work with</param>
