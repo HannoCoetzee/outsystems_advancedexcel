@@ -2024,6 +2024,21 @@ namespace OutSystems.NssAdvanced_Excel
         } // MssCells_FindByValue
 
         /// <summary>
+        /// True when the rule is stored with aboveAverage="0" (below the mean). Excel keeps rule priorities
+        /// unique within a sheet, so the rule is found in the worksheet XML by its priority; EPPlus does not
+        /// expose that attribute.
+        /// </summary>
+        private static bool IsBelowMeanRule(ExcelWorksheet ws, IExcelConditionalFormattingRule rule)
+        {
+            var xml = ws.WorksheetXml;
+            var ns = new System.Xml.XmlNamespaceManager(xml.NameTable);
+            ns.AddNamespace("d", xml.DocumentElement.NamespaceURI);
+            var node = xml.SelectSingleNode("//d:cfRule[@stdDev][@priority='" + rule.Priority.ToString(System.Globalization.CultureInfo.InvariantCulture) + "']", ns) as System.Xml.XmlElement;
+            string above = node == null ? "" : node.GetAttribute("aboveAverage");
+            return above == "0" || string.Equals(above, "false", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// Get a list of all the conditional formatting rules in a worksheet.
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with</param>
@@ -2060,7 +2075,11 @@ namespace OutSystems.NssAdvanced_Excel
                         break;
                     case eExcelConditionalFormattingRuleType.AboveStdDev:
                         var aboveStdDev = item as IExcelConditionalFormattingStdDevGroup;
-                        newItem.ssSTConditionalFormatItem.ssRuleType = (int)aboveStdDev.Type;
+                        // EPPlus loads every stdDev rule as AboveStdDev and ignores aboveAverage="0", so a
+                        // BelowStdDev rule from an opened file is recognised from its XML.
+                        newItem.ssSTConditionalFormatItem.ssRuleType = IsBelowMeanRule(ws, item)
+                            ? (int)eExcelConditionalFormattingRuleType.BelowStdDev
+                            : (int)aboveStdDev.Type;
                         break;
                     case eExcelConditionalFormattingRuleType.BelowStdDev:
                         var belowStdDev = item as IExcelConditionalFormattingStdDevGroup;
@@ -2190,7 +2209,7 @@ namespace OutSystems.NssAdvanced_Excel
                         break;
                     case eExcelConditionalFormattingRuleType.NotBetween:
                         newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
-                        var rNotBetween = item as IExcelConditionalFormattingBetween;
+                        var rNotBetween = item as IExcelConditionalFormattingNotBetween;
                         if (rNotBetween != null)
                         {
                             newItem.ssSTConditionalFormatItem.ssFormula = rNotBetween.Formula;
