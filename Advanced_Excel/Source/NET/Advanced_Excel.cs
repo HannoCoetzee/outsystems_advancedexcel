@@ -481,6 +481,7 @@ namespace OutSystems.NssAdvanced_Excel
 		/// <param name="ssValidation">The validation rule configuration.</param>
 		public void MssWorksheet_AddDataValidation(object ssWorksheet, string ssCellRange, RCDataValidationRecord ssValidation) {
 			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			RequireAddress(ssCellRange, nameof(ssCellRange));
 			STDataValidationStructure v = ssValidation.ssSTDataValidation;
 			string type = (v.ssValidationType ?? "").Trim().ToLowerInvariant();
 			OfficeOpenXml.DataValidation.ExcelDataValidationOperator op =
@@ -518,6 +519,9 @@ namespace OutSystems.NssAdvanced_Excel
 					break;
 				case "custom":
 					var cv = ws.DataValidations.AddCustomValidation(ssCellRange);
+					// Excel ignores the operator of a custom rule, but EPPlus defaults it to "between" and then
+					// refuses to save a rule without Formula2.
+					cv.Operator = OfficeOpenXml.DataValidation.ExcelDataValidationOperator.equal;
 					if (!string.IsNullOrEmpty(v.ssFormula1)) cv.Formula.ExcelFormula = v.ssFormula1;
 					ApplyValidationCommon(cv, v);
 					break;
@@ -671,6 +675,7 @@ namespace OutSystems.NssAdvanced_Excel
 		/// <param name="ssDisplayText">Text shown in the cell; defaults to the URL.</param>
 		public void MssCell_AddHyperlink(object ssWorksheet, string ssCellName, string ssUrl, string ssDisplayText) {
 			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			RequireAddress(ssCellName, nameof(ssCellName));
 			string display = string.IsNullOrEmpty(ssDisplayText) ? ssUrl : ssDisplayText;
 			ExcelRange cell = ws.Cells[ssCellName];
 			cell.Hyperlink = new ExcelHyperLink(ssUrl) { Display = display };
@@ -697,6 +702,8 @@ namespace OutSystems.NssAdvanced_Excel
 		/// <param name="ssRangeEnd">Example: G1:H5</param>
 		public void MssWorksheet_CopyRange(object ssWorksheet, string ssRangeStart, string ssRangeEnd) {
 			var ws = AsWorksheet(ssWorksheet);
+			RequireAddress(ssRangeStart, nameof(ssRangeStart));
+			RequireAddress(ssRangeEnd, nameof(ssRangeEnd));
 			ws.Cells[ssRangeStart].Copy(ws.Cells[ssRangeEnd]);
 		} // MssWorksheet_CopyRange
 
@@ -1018,10 +1025,16 @@ namespace OutSystems.NssAdvanced_Excel
              */
 
             var ws = AsWorksheet(ssWorksheet);
-            var unitMeasure = ws.DataValidations.AddListValidation(ssCellRange);
+            RequireAddress(ssCellRange, nameof(ssCellRange));
 
-            if (String.IsNullOrEmpty(ssItemsAddress)) //Check if address string is empty, proceed to fill list with items.
+            // Check the items before the rule is added: EPPlus only validates a list rule when the
+            // workbook is saved, and a broken rule makes every later save fail.
+            if (String.IsNullOrEmpty(ssItemsAddress))
             {
+                if (ssItemsList == null || ssItemsList.Count == 0)
+                {
+                    throw new ArgumentException("The dropdown needs at least one item in ItemsList, or a range of cells in ItemsAddress.", nameof(ssItemsList));
+                }
                 // Excel limits an inline validation list to 255 characters in total (items plus
                 // separators). Beyond that Excel silently drops or repairs the dropdown, so fail
                 // clearly here instead.
@@ -1034,7 +1047,12 @@ namespace OutSystems.NssAdvanced_Excel
                 {
                     throw new ArgumentException("The dropdown items exceed Excel's 255-character limit for inline validation lists. Write the items to a range of cells and pass that range in ItemsAddress instead.", nameof(ssItemsList));
                 }
+            }
 
+            var unitMeasure = ws.DataValidations.AddListValidation(ssCellRange);
+
+            if (String.IsNullOrEmpty(ssItemsAddress)) //Check if address string is empty, proceed to fill list with items.
+            {
                 for (int i = 0; i < ssItemsList.Count; i++)
                 {
                     unitMeasure.Formula.Values.Add(ssItemsList[i].ssSTItems.ssItemText);
@@ -1245,6 +1263,14 @@ namespace OutSystems.NssAdvanced_Excel
             if (ssImage == null || ssImage.Length == 0)
             {
                 throw new ArgumentException("No image data supplied.", nameof(ssImage));
+            }
+            if (ssRow < 1 || ssRow > ExcelPackage.MaxRows)
+            {
+                throw new ArgumentException("Row must be between 1 and " + ExcelPackage.MaxRows + ".", nameof(ssRow));
+            }
+            if (ssColumn < 1 || ssColumn > ExcelPackage.MaxColumns)
+            {
+                throw new ArgumentException("Column must be between 1 and " + ExcelPackage.MaxColumns + ".", nameof(ssColumn));
             }
 
             using (MemoryStream ms = new MemoryStream(ssImage))
@@ -3544,6 +3570,25 @@ namespace OutSystems.NssAdvanced_Excel
                 return FollowWorksheetRedirects(ws);
             }
             throw new ArgumentException("Expected a Worksheet object (e.g. from Worksheet_Select, Worksheet_SelectByName/Index, or Workbook_AddName).", nameof(ssWorksheet));
+        }
+
+        /// <summary>
+        /// Throw a clear ArgumentException when an address is empty or not a cell or range address.
+        /// EPPlus accepts such addresses and only fails when the workbook is saved, after which the
+        /// workbook can no longer be saved at all. A sheet prefix (Sheet1!A1:B2) is allowed.
+        /// </summary>
+        private static void RequireAddress(string address, string paramName)
+        {
+            string a = (address ?? "").Trim();
+            int bang = a.LastIndexOf('!');
+            if (bang >= 0)
+            {
+                a = a.Substring(bang + 1);
+            }
+            if (a.Length == 0 || !(ExcelCellBase.IsValidAddress(a) || ExcelCellBase.IsValidCellAddress(a)))
+            {
+                throw new ArgumentException("'" + address + "' is not a valid cell or range address (for example A1 or B2:D10).", paramName);
+            }
         }
 
         /*
