@@ -1126,8 +1126,9 @@ namespace OutSystems.NssAdvanced_Excel
         /// formula</param>
         public void MssCell_WriteByIndex(object ssWorksheet, int ssRow, int ssColumn, string ssCellValue, string ssCellType)
         {
-            RCCellFormatRecord format = new RCCellFormatRecord();
-            MssCell_WriteByIndexWithFormat(ssWorksheet, ssRow, ssColumn, ssCellValue, ssCellType, format);
+            // No format input: keep the cell's own formatting (locked, font, fill). Applying an empty
+            // CellFormat here unlocked the cell and removed a template's bold.
+            MssCell_Write(ssWorksheet, null, ssRow, ssColumn, ssCellValue, ssCellType, true, new RCCellFormatRecord(null));
         } // MssCell_WriteByIndex
 
         /// <summary>
@@ -1170,8 +1171,8 @@ namespace OutSystems.NssAdvanced_Excel
         /// formula</param>
         public void MssCell_WriteByName(object ssWorksheet, string ssCellName, string ssCellValue, string ssCellType)
         {
-            RCCellFormatRecord format = new RCCellFormatRecord();
-            MssCell_WriteByNameWithFormat(ssWorksheet, ssCellName, ssCellValue, ssCellType, format);
+            // No format input: keep the cell's own formatting, as Cell_WriteByIndex does.
+            MssCell_Write(ssWorksheet, ssCellName, 0, 0, ssCellValue, ssCellType, true, new RCCellFormatRecord(null));
         } // MssCell_WriteByName
 
         /// <summary>
@@ -1213,8 +1214,8 @@ namespace OutSystems.NssAdvanced_Excel
         /// formula</param>
         public void MssCell_WriteColumnRange(object ssWorksheet, int ssRow, int ssColumnStart, RLValueRecordList ssValueList, string ssCellType)
         {
-            RCCellFormatRecord format = new RCCellFormatRecord();
-            MssCell_WriteColumnRangeWithFormat(ssWorksheet, ssRow, ssColumnStart, ssValueList, ssCellType, format);
+            // No format input: keep the cells' own formatting.
+            WriteColumnRange(ssWorksheet, ssRow, ssColumnStart, ssValueList, ssCellType, null);
         } // MssCell_WriteColumnRange
 
         /// <summary>
@@ -1236,16 +1237,29 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCellFormat">CellFormat for the target cells</param>
         public void MssCell_WriteColumnRangeWithFormat(object ssWorksheet, int ssRow, int ssColumnStart, RLValueRecordList ssValueList, string ssCellType, RCCellFormatRecord ssCellFormat)
         {
+            WriteColumnRange(ssWorksheet, ssRow, ssColumnStart, ssValueList, ssCellType, ssCellFormat);
+        } // MssCell_WriteColumnRangeWithFormat
+
+        /// <summary>
+        /// Cell_WriteColumnRange(WithFormat): a null format keeps the cells' own formatting.
+        /// </summary>
+        private static void WriteColumnRange(object ssWorksheet, int ssRow, int ssColumnStart, RLValueRecordList ssValueList, string ssCellType, RCCellFormatRecord? format)
+        {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             DataTable dt = Util.RecordListToDataTable((RecordList)ssValueList);
 
             if (dt != null)
             {
-                ExcelRange range = (ExcelRange)ws.Cells[ssRow, ssColumnStart].LoadFromDataTable(Util.Transpose(dt, ssCellType), false);
+                DataTable row = Util.Transpose(dt, ssCellType);
+                ClearFormulas(ws, ssRow, ssColumnStart, row, false);
+                ExcelRange range = (ExcelRange)ws.Cells[ssRow, ssColumnStart].LoadFromDataTable(row, false);
 
-                Util.ApplyFormatToRange(range, ssCellFormat);
+                if (format.HasValue)
+                {
+                    Util.ApplyFormatToRange(range, format.Value);
+                }
             }
-        } // MssCell_WriteColumnRangeWithFormat
+        } // WriteColumnRange
 
         /// <summary>
         /// Write a image on a cell, defined by its index.
@@ -1311,6 +1325,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (dt != null)
             {
+                ClearFormulas(ws, ssRowStart, ssColumnStart, dt, false);
                 ExcelRange range = (ExcelRange)ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, false);
 
                 Util.ApplyFormatToRange(range, ssCellFormat);
@@ -1655,7 +1670,8 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (!ws.Names.ContainsKey(ssName))
             {
-                MssCell_WriteRange(ssWorksheet, ssRowStart, ssColumnStart, ssDataSet, new RCCellFormatRecord(), false);
+                // No format input: keep the cells' own formatting.
+                WriteRange(ssWorksheet, ssRowStart, ssColumnStart, ssDataSet, null, false);
                 ws.Workbook.Names.Add(ssName, ws.Cells[ssRowStart, ssColumnStart, ssRowStart + ((RecordList)ssDataSet).Length - 1, ssColumnStart]);
             }
         } // MssWorksheet_AddName
@@ -2792,6 +2808,17 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 throw new ArgumentException("Invalid address");
             }
+            if (address.End.Row > ExcelPackage.MaxRows || address.End.Column > ExcelPackage.MaxColumns)
+            {
+                throw new ArgumentException("The cell is beyond the last cell of a worksheet (XFD1048576).");
+            }
+
+            // A value replaces a formula. SetValue keeps the formula, and Excel would recalculate it on
+            // open, silently losing the value.
+            if (!string.Equals(ssCellType, "formula", StringComparison.OrdinalIgnoreCase))
+            {
+                ClearFormulas(ws, address.Start.Row, address.Start.Column, address.End.Row, address.End.Column);
+            }
 
             switch (ssCellType.ToLower())
             {
@@ -3008,6 +3035,14 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssExportHeaders">True if headers should be included in export</param>
         public void MssCell_WriteRange(object ssWorksheet, int ssRowStart, int ssColumnStart, object ssDataSet, RCCellFormatRecord ssCellFormat, bool ssExportHeaders)
         {
+            WriteRange(ssWorksheet, ssRowStart, ssColumnStart, ssDataSet, ssCellFormat, ssExportHeaders);
+        } // MssCell_WriteRange
+
+        /// <summary>
+        /// Cell_WriteRange and Worksheet_AddName: a null format keeps the cells' own formatting.
+        /// </summary>
+        private static void WriteRange(object ssWorksheet, int ssRowStart, int ssColumnStart, object ssDataSet, RCCellFormatRecord? format, bool ssExportHeaders)
+        {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             DataTable dt = Util.RecordListToDataTable((RecordList)ssDataSet);
 
@@ -3022,11 +3057,15 @@ namespace OutSystems.NssAdvanced_Excel
                     }
                 }
 
+                ClearFormulas(ws, ssRowStart, ssColumnStart, dt, ssExportHeaders);
                 ExcelRange range = (ExcelRange)ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, ssExportHeaders);
 
-                Util.ApplyFormatToRange(range, ssCellFormat);
+                if (format.HasValue)
+                {
+                    Util.ApplyFormatToRange(range, format.Value);
+                }
             }
-        } // MssCell_WriteRangeWithFormat
+        } // WriteRange
 
         /// <summary>
         /// 
@@ -3570,6 +3609,34 @@ namespace OutSystems.NssAdvanced_Excel
                 return FollowWorksheetRedirects(ws);
             }
             throw new ArgumentException("Expected a Worksheet object (e.g. from Worksheet_Select, Worksheet_SelectByName/Index, or Workbook_AddName).", nameof(ssWorksheet));
+        }
+
+        /// <summary>
+        /// Remove the formulas from the cells LoadFromDataTable is about to fill with this data.
+        /// </summary>
+        private static void ClearFormulas(ExcelWorksheet ws, int fromRow, int fromColumn, DataTable data, bool withHeaders)
+        {
+            int rows = data.Rows.Count + (withHeaders ? 1 : 0);
+            if (rows > 0 && data.Columns.Count > 0)
+            {
+                ClearFormulas(ws, fromRow, fromColumn, fromRow + rows - 1, fromColumn + data.Columns.Count - 1);
+            }
+        }
+
+        /// <summary>
+        /// Remove the formulas from a range before values are written to it: EPPlus's SetValue and
+        /// LoadFromDataTable keep a cell's formula, and Excel recalculates it on open, so the written
+        /// value would be lost.
+        /// </summary>
+        private static void ClearFormulas(ExcelWorksheet ws, int fromRow, int fromColumn, int toRow, int toColumn)
+        {
+            foreach (ExcelRangeBase cell in ws.Cells[fromRow, fromColumn, toRow, toColumn])
+            {
+                if (!string.IsNullOrEmpty(cell.Formula))
+                {
+                    cell.Formula = "";
+                }
+            }
         }
 
         /// <summary>
