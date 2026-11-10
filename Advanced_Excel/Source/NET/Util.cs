@@ -259,12 +259,16 @@ namespace OutSystems.NssAdvanced_Excel
 
         /// <summary>
         /// Insert an empty dxfs element before the first element that must follow it per the
-        /// CT_Stylesheet sequence (tableStyles, colors, extLst), or before the closing tag.
+        /// CT_Stylesheet sequence (tableStyles, colors, extLst), or before the closing tag. Some generators
+        /// write the part with a namespace prefix (&lt;x:styleSheet&gt;); the anchors and the new element then
+        /// use the same prefix, so the element is in the right namespace.
         /// </summary>
         private static string InjectDxfsNode(string stylesXml)
         {
-            const string dxfs = "<dxfs count=\"0\"/>";
-            string[] anchors = { "<tableStyles", "<colors", "<extLst", "</styleSheet>" };
+            var root = System.Text.RegularExpressions.Regex.Match(stylesXml, @"<([A-Za-z_][\w.-]*:)?styleSheet[\s>/]");
+            string prefix = root.Success ? root.Groups[1].Value : "";
+            string dxfs = "<" + prefix + "dxfs count=\"0\"/>";
+            string[] anchors = { "<" + prefix + "tableStyles", "<" + prefix + "colors", "<" + prefix + "extLst", "</" + prefix + "styleSheet>" };
             foreach (var a in anchors)
             {
                 int i = stylesXml.IndexOf(a, StringComparison.Ordinal);
@@ -348,6 +352,8 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 return;
             }
+
+            ValidateFormatNumbers(format.ssSTCellFormat);
 
             if (!string.IsNullOrEmpty(format.ssSTCellFormat.ssFontName))
             {
@@ -465,6 +471,36 @@ namespace OutSystems.NssAdvanced_Excel
         }
 
         /// <summary>
+        /// Reject alignment and border-style numbers EPPlus has no value for, before any cell is changed.
+        /// EPPlus stored them as they were and the next save threw NullReferenceException, so the workbook
+        /// could no longer be saved. The numbers that mean "leave as is" stay accepted: a negative alignment
+        /// and a legacy BorderStyle of 0 or less. The write actions call it before writing any value.
+        /// </summary>
+        internal static void ValidateFormatNumbers(STCellFormatStructure f)
+        {
+            if (f.ssHorizontalAlignment >= 0) RequireEnumNumber(typeof(ExcelHorizontalAlignment), f.ssHorizontalAlignment, "HorizontalAlignment");
+            if (f.ssVerticalAlignment >= 0) RequireEnumNumber(typeof(ExcelVerticalAlignment), f.ssVerticalAlignment, "VerticalAlignment");
+            if (f.ssBorderStyle > 0) RequireEnumNumber(typeof(ExcelBorderStyle), f.ssBorderStyle, "BorderStyle");
+            RequireEnumNumber(typeof(ExcelBorderStyle), f.ssBorderBottom.ssSTBorderStyle.ssStyle, "BorderBottom.Style");
+            RequireEnumNumber(typeof(ExcelBorderStyle), f.ssBorderTop.ssSTBorderStyle.ssStyle, "BorderTop.Style");
+            RequireEnumNumber(typeof(ExcelBorderStyle), f.ssBorderLeft.ssSTBorderStyle.ssStyle, "BorderLeft.Style");
+            RequireEnumNumber(typeof(ExcelBorderStyle), f.ssBorderRight.ssSTBorderStyle.ssStyle, "BorderRight.Style");
+        }
+
+        /// <summary>
+        /// Throw a clear ArgumentException when the number is not one of the enum's values (they run from 0 up).
+        /// </summary>
+        private static void RequireEnumNumber(Type enumType, int value, string name)
+        {
+            if (!Enum.IsDefined(enumType, value))
+            {
+                int last = Enum.GetValues(enumType).Length - 1;
+                throw new ArgumentException(name + " " + value.ToString(CultureInfo.InvariantCulture)
+                    + " is not valid. Use a number from 0 to " + last.ToString(CultureInfo.InvariantCulture) + ".");
+            }
+        }
+
+        /// <summary>
         /// Apply conditional formatting style to rule style property
         /// </summary>
         /// <param name="style"></param>
@@ -554,13 +590,17 @@ namespace OutSystems.NssAdvanced_Excel
         /// format) back into a record. Mirror of <see cref="ApplyConditionalFormattingStyle"/> so
         /// GetAllRules returns the rule's actual style instead of defaults.
         /// </summary>
-        internal static RCConditionalFormatStyleRecord ReadConditionalFormattingStyle(ExcelDxfStyleConditionalFormatting style)
+        /// <param name="ws">The worksheet that holds the rule (its workbook holds the rule's dxf)</param>
+        /// <param name="rule">The rule to read</param>
+        internal static RCConditionalFormatStyleRecord ReadConditionalFormattingStyle(ExcelWorksheet ws, OfficeOpenXml.ConditionalFormatting.Contracts.IExcelConditionalFormattingRule rule)
         {
             var rec = new RCConditionalFormatStyleRecord(null);
+            ExcelDxfStyleConditionalFormatting style = rule.Style;
             if (style == null)
             {
                 return rec;
             }
+            System.Xml.XmlElement dxfFont = DxfFontNode(ws, rule);
 
             // Fill
             if (style.Fill != null)
@@ -583,9 +623,13 @@ namespace OutSystems.NssAdvanced_Excel
             if (style.Font != null)
             {
                 if (style.Font.Bold.HasValue) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssBold = style.Font.Bold.Value;
+                else if (HasFlagWithoutVal(dxfFont, "b")) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssBold = true;
                 if (style.Font.Italic.HasValue) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssItalic = style.Font.Italic.Value;
+                else if (HasFlagWithoutVal(dxfFont, "i")) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssItalic = true;
                 if (style.Font.Strike.HasValue) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssStrike = style.Font.Strike.Value;
+                else if (HasFlagWithoutVal(dxfFont, "strike")) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssStrike = true;
                 if (style.Font.Underline.HasValue) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssUnderline = (int)style.Font.Underline.Value;
+                else if (HasFlagWithoutVal(dxfFont, "u")) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssUnderline = (int)ExcelUnderLineType.Single;
                 if (style.Font.Color != null && style.Font.Color.Color.HasValue) rec.ssSTConditionalFormatStyle.ssFont.ssSTFontStyle.ssColor = ToHexRgb(style.Font.Color.Color.Value);
             }
 
@@ -614,6 +658,46 @@ namespace OutSystems.NssAdvanced_Excel
             return rec;
         }
 
+        /// <summary>
+        /// The font element of the dxf a rule loaded from a file points to, or null (a rule added in this
+        /// session has no dxfId until the workbook is saved). EPPlus reads the spec's short form of a font
+        /// flag (&lt;b/&gt;, &lt;i/&gt;, &lt;strike/&gt;, &lt;u/&gt;: no val means on, as Excel writes it) as not set,
+        /// so <see cref="ReadConditionalFormattingStyle"/> reads those flags here.
+        /// </summary>
+        private static System.Xml.XmlElement DxfFontNode(ExcelWorksheet ws, OfficeOpenXml.ConditionalFormatting.Contracts.IExcelConditionalFormattingRule rule)
+        {
+            var cfRule = ((OfficeOpenXml.ConditionalFormatting.ExcelConditionalFormattingRule)rule).Node as System.Xml.XmlElement;
+            int dxfId;
+            if (cfRule == null || !int.TryParse(cfRule.GetAttribute("dxfId"), NumberStyles.None, CultureInfo.InvariantCulture, out dxfId))
+            {
+                return null;
+            }
+            var styles = ws.Workbook.StylesXml;
+            var ns = new System.Xml.XmlNamespaceManager(styles.NameTable);
+            ns.AddNamespace("d", styles.DocumentElement.NamespaceURI);
+            return styles.SelectSingleNode("/d:styleSheet/d:dxfs/d:dxf[" + (dxfId + 1).ToString(CultureInfo.InvariantCulture) + "]/d:font", ns) as System.Xml.XmlElement;
+        }
+
+        /// <summary>
+        /// True when the font element has the named flag child without a val attribute (which means on).
+        /// </summary>
+        private static bool HasFlagWithoutVal(System.Xml.XmlElement font, string name)
+        {
+            if (font == null)
+            {
+                return false;
+            }
+            foreach (System.Xml.XmlNode child in font.ChildNodes)
+            {
+                var e = child as System.Xml.XmlElement;
+                if (e != null && e.LocalName == name && !e.HasAttribute("val"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private static string ToHexRgb(System.Drawing.Color c)
         {
             return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
@@ -633,6 +717,11 @@ namespace OutSystems.NssAdvanced_Excel
                 return;
             }
 
+            if (source.Workbook != copy.Workbook)
+            {
+                RemoveDxfIds(copy);
+            }
+
             try
             {
                 int count = Math.Min(source.ConditionalFormatting.Count, copy.ConditionalFormatting.Count);
@@ -644,13 +733,30 @@ namespace OutSystems.NssAdvanced_Excel
                         continue;
                     }
 
-                    var styleRecord = ReadConditionalFormattingStyle(src.Style);
+                    var styleRecord = ReadConditionalFormattingStyle(source, src);
                     ApplyConditionalFormattingStyle(copy.ConditionalFormatting[i].Style, styleRecord);
                 }
             }
             catch
             {
                 // never block a worksheet copy because of this
+            }
+        }
+
+        /// <summary>
+        /// A copied rule keeps its dxfId, an index into the source workbook's dxfs. In another workbook that index
+        /// points at a different style, or past the end of the list, and then every save of the workbook fails.
+        /// Drop it before EPPlus first reads the copied rules: <see cref="PreserveConditionalFormattingStyles"/>
+        /// re-applies each style, and EPPlus writes it as a new dxf of this workbook when it is saved.
+        /// </summary>
+        private static void RemoveDxfIds(ExcelWorksheet copy)
+        {
+            var xml = copy.WorksheetXml;
+            var ns = new System.Xml.XmlNamespaceManager(xml.NameTable);
+            ns.AddNamespace("d", xml.DocumentElement.NamespaceURI);
+            foreach (System.Xml.XmlElement rule in xml.SelectNodes("//d:conditionalFormatting/d:cfRule[@dxfId]", ns))
+            {
+                rule.RemoveAttribute("dxfId");
             }
         }
 
