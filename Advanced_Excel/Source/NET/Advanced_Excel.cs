@@ -1250,6 +1250,10 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (dt != null)
             {
+                if (format.HasValue)
+                {
+                    Util.ValidateFormatNumbers(format.Value.ssSTCellFormat);
+                }
                 DataTable row = Util.Transpose(dt, ssCellType);
                 ClearFormulas(ws, ssRow, ssColumnStart, row, false);
                 ExcelRange range = (ExcelRange)ws.Cells[ssRow, ssColumnStart].LoadFromDataTable(row, false);
@@ -1325,6 +1329,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             if (dt != null)
             {
+                Util.ValidateFormatNumbers(ssCellFormat.ssSTCellFormat);
                 ClearFormulas(ws, ssRowStart, ssColumnStart, dt, false);
                 ExcelRange range = (ExcelRange)ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, false);
 
@@ -2081,6 +2086,27 @@ namespace OutSystems.NssAdvanced_Excel
         }
 
         /// <summary>
+        /// The colour of each stop of a colour-scale rule (low, [middle,] high) as #RRGGBB, read from the rule's
+        /// XML. EPPlus leaves LowValue/MiddleValue/HighValue null on a rule loaded from a file, so its getters
+        /// can't be used. A stop whose colour is not an rgb value (theme or indexed colour) reads as "".
+        /// Always returns three entries; the unused ones are "". EPPlus has already checked, when it loaded
+        /// the rule, that it has as many colours as stops (2 or 3).
+        /// </summary>
+        private static string[] ColorScaleColors(IExcelConditionalFormattingRule rule)
+        {
+            string[] colors = { "", "", "" };
+            var node = ((ExcelConditionalFormattingRule)rule).Node;
+            int i = 0;
+            foreach (System.Xml.XmlElement c in node.SelectNodes("*[local-name()='colorScale']/*[local-name()='color']"))
+            {
+                string rgb = c.GetAttribute("rgb");
+                colors[i++] = rgb.Length == 8 ? "#" + rgb.Substring(2).ToUpperInvariant()
+                    : rgb.Length == 6 ? "#" + rgb.ToUpperInvariant() : "";
+            }
+            return colors;
+        }
+
+        /// <summary>
         /// Get a list of all the conditional formatting rules in a worksheet.
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with</param>
@@ -2093,7 +2119,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             foreach (var item in ws.ConditionalFormatting)
             {
-                RCConditionalFormatItemRecord newItem = new RCConditionalFormatItemRecord();
+                RCConditionalFormatItemRecord newItem = new RCConditionalFormatItemRecord(null);
                 newItem.ssSTConditionalFormatItem.ssAddress.ssSTAddress.ssAddress = item.Address.Address;
                 newItem.ssSTConditionalFormatItem.ssPriority = item.Priority;
                 newItem.ssSTConditionalFormatItem.ssStopIfTrue = item.StopIfTrue;
@@ -2284,22 +2310,16 @@ namespace OutSystems.NssAdvanced_Excel
                         break;
                     case eExcelConditionalFormattingRuleType.ThreeColorScale:
                         newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
-                        var rcs3 = item as IExcelConditionalFormattingThreeColorScale;
-                        if (rcs3 != null)
-                        {
-                            newItem.ssSTConditionalFormatItem.ssLowColor = ToHexColor(rcs3.LowValue.Color);
-                            newItem.ssSTConditionalFormatItem.ssMidColor = ToHexColor(rcs3.MiddleValue.Color);
-                            newItem.ssSTConditionalFormatItem.ssHighColor = ToHexColor(rcs3.HighValue.Color);
-                        }
+                        string[] stops3 = ColorScaleColors(item);
+                        newItem.ssSTConditionalFormatItem.ssLowColor = stops3[0];
+                        newItem.ssSTConditionalFormatItem.ssMidColor = stops3[1];
+                        newItem.ssSTConditionalFormatItem.ssHighColor = stops3[2];
                         break;
                     case eExcelConditionalFormattingRuleType.TwoColorScale:
                         newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
-                        var rcs2 = item as IExcelConditionalFormattingTwoColorScale;
-                        if (rcs2 != null)
-                        {
-                            newItem.ssSTConditionalFormatItem.ssLowColor = ToHexColor(rcs2.LowValue.Color);
-                            newItem.ssSTConditionalFormatItem.ssHighColor = ToHexColor(rcs2.HighValue.Color);
-                        }
+                        string[] stops2 = ColorScaleColors(item);
+                        newItem.ssSTConditionalFormatItem.ssLowColor = stops2[0];
+                        newItem.ssSTConditionalFormatItem.ssHighColor = stops2[1];
                         break;
                     case eExcelConditionalFormattingRuleType.ThreeIconSet:
                         newItem.ssSTConditionalFormatItem.ssRuleType = (int)item.Type;
@@ -2355,7 +2375,7 @@ namespace OutSystems.NssAdvanced_Excel
                     case eExcelConditionalFormattingRuleType.DataBar:
                         break;
                     default:
-                        newItem.ssSTConditionalFormatItem.ssStyle = Util.ReadConditionalFormattingStyle(item.Style);
+                        newItem.ssSTConditionalFormatItem.ssStyle = Util.ReadConditionalFormattingStyle(ws, item);
                         break;
                 }
 
@@ -2812,6 +2832,10 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 throw new ArgumentException("The cell is beyond the last cell of a worksheet (XFD1048576).");
             }
+            if (!ssPreserveFormat)
+            {
+                Util.ValidateFormatNumbers(ssCellFormat.ssSTCellFormat);
+            }
 
             // A value replaces a formula. SetValue keeps the formula, and Excel would recalculate it on
             // open, silently losing the value.
@@ -3057,6 +3081,10 @@ namespace OutSystems.NssAdvanced_Excel
                     }
                 }
 
+                if (format.HasValue)
+                {
+                    Util.ValidateFormatNumbers(format.Value.ssSTCellFormat);
+                }
                 ClearFormulas(ws, ssRowStart, ssColumnStart, dt, ssExportHeaders);
                 ExcelRange range = (ExcelRange)ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, ssExportHeaders);
 
@@ -3732,7 +3760,7 @@ namespace OutSystems.NssAdvanced_Excel
         }
 
         /// <summary>
-        /// Format a colour as a #RRGGBB hex string (used when reading colour-scale stops back).
+        /// Format a colour as a #RRGGBB hex string (used when reading a data-bar colour back).
         /// </summary>
         private static string ToHexColor(System.Drawing.Color c)
         {
