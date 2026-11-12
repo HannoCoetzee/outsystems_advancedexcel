@@ -1257,6 +1257,7 @@ namespace OutSystems.NssAdvanced_Excel
                 DataTable row = Util.Transpose(dt, ssCellType);
                 ClearFormulas(ws, ssRow, ssColumnStart, row, false);
                 ExcelRange range = (ExcelRange)ws.Cells[ssRow, ssColumnStart].LoadFromDataTable(row, false);
+                Util.FormatDateCells(ws, range, row, false);
 
                 if (format.HasValue)
                 {
@@ -1332,6 +1333,7 @@ namespace OutSystems.NssAdvanced_Excel
                 Util.ValidateFormatNumbers(ssCellFormat.ssSTCellFormat);
                 ClearFormulas(ws, ssRowStart, ssColumnStart, dt, false);
                 ExcelRange range = (ExcelRange)ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, false);
+                Util.FormatDateCells(ws, range, dt, false);
 
                 Util.ApplyFormatToRange(range, ssCellFormat);
             }
@@ -1419,7 +1421,7 @@ namespace OutSystems.NssAdvanced_Excel
             try
             {
                 if (ssReadText)
-                    ssCellValue = ws.Cells[ssRow, ssColumn].Text;
+                    ssCellValue = CellText(ws.Cells[ssRow, ssColumn]);
                 else
                     // invariant culture so raw values read back the same on any server locale
                     // (and round-trip with the write actions, which parse invariantly)
@@ -1431,6 +1433,20 @@ namespace OutSystems.NssAdvanced_Excel
                 ssCellValue = String.Empty;
             }
         } // MssCell_ReadByIndex
+
+        /// <summary>
+        /// The cell as Excel shows it. Excel shows a boolean as TRUE or FALSE whatever its number
+        /// format; EPPlus's Text gives "1" or "0".
+        /// </summary>
+        private static string CellText(ExcelRange cell)
+        {
+            object value = cell.Value;
+            if (value is bool)
+            {
+                return (bool)value ? "TRUE" : "FALSE";
+            }
+            return cell.Text;
+        } // CellText
 
         /// <summary>
         /// Reads the value of a cell, defined by its name.
@@ -1457,7 +1473,8 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssCell_SetFormulaByIndex(object ssWorksheet, int ssRow, int ssColumn, string ssFormula)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
-            ws.Cells[ssRow, ssColumn].Formula = ssFormula;
+            // OOXML stores a formula without its '=', as Cell_Write's "formula" type does.
+            ws.Cells[ssRow, ssColumn].Formula = ssFormula.TrimStart('=');
         } // MssCell_SetFormulaByIndex
 
         /// <summary>
@@ -2776,7 +2793,7 @@ namespace OutSystems.NssAdvanced_Excel
                     cell = ws.Cells[ssCellName];
                 }
 
-                ssCellValue = ssReadText ? cell.Text : Convert.ToString(cell.Value, System.Globalization.CultureInfo.InvariantCulture);
+                ssCellValue = ssReadText ? CellText(cell) : Convert.ToString(cell.Value, System.Globalization.CultureInfo.InvariantCulture);
             }
             catch (Exception ex)
             {
@@ -2847,7 +2864,10 @@ namespace OutSystems.NssAdvanced_Excel
             switch (ssCellType.ToLower())
             {
                 case "integer": ws.SetValue(address.Address, Convert.ToInt32(ssCellValue, System.Globalization.CultureInfo.InvariantCulture)); break;
-                case "datetime": ws.SetValue(address.Address, Convert.ToDateTime(ssCellValue, System.Globalization.CultureInfo.InvariantCulture)); break;
+                case "datetime":
+                    ws.SetValue(address.Address, Convert.ToDateTime(ssCellValue, System.Globalization.CultureInfo.InvariantCulture));
+                    Util.FormatDateCells(ws, address.Start.Row, address.Start.Column, address.Start.Row, address.Start.Column);
+                    break;
                 case "decimal": ws.SetValue(address.Address, Convert.ToDecimal(ssCellValue, System.Globalization.CultureInfo.InvariantCulture)); break;
                 case "boolean": ws.SetValue(address.Address, Convert.ToBoolean(ssCellValue, System.Globalization.CultureInfo.InvariantCulture)); break;
                 case "formula": ws.Cells[address.Address].Formula = ssCellValue.TrimStart('='); break;
@@ -3087,6 +3107,7 @@ namespace OutSystems.NssAdvanced_Excel
                 }
                 ClearFormulas(ws, ssRowStart, ssColumnStart, dt, ssExportHeaders);
                 ExcelRange range = (ExcelRange)ws.Cells[ssRowStart, ssColumnStart].LoadFromDataTable(dt, ssExportHeaders);
+                Util.FormatDateCells(ws, range, dt, ssExportHeaders);
 
                 if (format.HasValue)
                 {

@@ -55,6 +55,57 @@ namespace OutSystems.NssAdvanced_Excel
             return dtNew;
         }
 
+        /// <summary>
+        /// A date written with number format General shows in Excel as its serial number (45292).
+        /// Give the DateTime columns of a range just loaded from dt Excel's built-in date format.
+        /// </summary>
+        internal static void FormatDateCells(ExcelWorksheet ws, ExcelRangeBase range, DataTable dt, bool hasHeaders)
+        {
+            int fromRow = range.Start.Row + (hasHeaders ? 1 : 0);
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                if (dt.Columns[i].DataType == typeof(DateTime))
+                {
+                    int column = range.Start.Column + i;
+                    FormatDateCells(ws, fromRow, column, range.End.Row, column);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Give the cells of the area that hold a date and have number format General Excel's built-in
+        /// date format (14), or date and time (22) in a column where a date has a time. Excel shows both
+        /// in the user's regional format. A cell with its own number format keeps it.
+        /// </summary>
+        internal static void FormatDateCells(ExcelWorksheet ws, int fromRow, int fromColumn, int toRow, int toColumn)
+        {
+            for (int c = fromColumn; c <= toColumn; c++)
+            {
+                var rows = new List<int>();
+                bool hasTime = false;
+                for (int r = fromRow; r <= toRow; r++)
+                {
+                    object value = ws.Cells[r, c].Value;
+                    if (value is DateTime && ws.Cells[r, c].Style.Numberformat.NumFmtID == 0)
+                    {
+                        rows.Add(r);
+                        hasTime |= ((DateTime)value).TimeOfDay != TimeSpan.Zero;
+                    }
+                }
+                string format = hasTime ? "m/d/yy h:mm" : "mm-dd-yy";
+                // one style change per run of consecutive rows, not per cell
+                for (int i = 0; i < rows.Count; i++)
+                {
+                    int start = rows[i];
+                    while (i + 1 < rows.Count && rows[i + 1] == rows[i] + 1)
+                    {
+                        i++;
+                    }
+                    ws.Cells[start, c, rows[i], c].Style.Numberformat.Format = format;
+                }
+            }
+        }
+
         public static byte[] ImageToByteArray(Image imageIn)
         {
             if (imageIn == null)
