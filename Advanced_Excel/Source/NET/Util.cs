@@ -106,6 +106,61 @@ namespace OutSystems.NssAdvanced_Excel
             }
         }
 
+        /// <summary>
+        /// An image for EPPlus to keep. GDI+ needs the stream for as long as the image lives, so the
+        /// stream is left open and goes away with the image.
+        /// </summary>
+        public static Image ImageFromBytes(byte[] bytes)
+        {
+            return Image.FromStream(new MemoryStream(bytes));
+        }
+
+        /// <summary>
+        /// True when a worksheet other than ws is visible.
+        /// </summary>
+        public static bool HasOtherVisibleSheet(ExcelWorksheet ws)
+        {
+            foreach (ExcelWorksheet other in ws.Workbook.Worksheets)
+            {
+                if (other != ws && other.Hidden == eWorkSheetHidden.Visible)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static System.Xml.XmlElement WorkbookProtectionNode(ExcelWorkbook wb)
+        {
+            System.Xml.XmlElement root = wb.WorkbookXml.DocumentElement;
+            foreach (System.Xml.XmlNode node in root.ChildNodes)
+            {
+                if (node.LocalName == "workbookProtection" && node.NamespaceURI == root.NamespaceURI)
+                {
+                    return (System.Xml.XmlElement)node;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// The workbook's password hash (the workbookPassword attribute), or null when it has none.
+        /// </summary>
+        public static string WorkbookPasswordHash(ExcelWorkbook wb)
+        {
+            System.Xml.XmlElement node = WorkbookProtectionNode(wb);
+            return node != null && node.HasAttribute("workbookPassword") ? node.GetAttribute("workbookPassword") : null;
+        }
+
+        /// <summary>
+        /// Puts back a password hash read with WorkbookPasswordHash. The workbookProtection element
+        /// must exist, which it does once a lock is set.
+        /// </summary>
+        public static void SetWorkbookPasswordHash(ExcelWorkbook wb, string hash)
+        {
+            WorkbookProtectionNode(wb).SetAttribute("workbookPassword", hash);
+        }
+
         public static byte[] ImageToByteArray(Image imageIn)
         {
             if (imageIn == null)

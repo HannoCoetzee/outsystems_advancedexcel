@@ -621,6 +621,12 @@ namespace OutSystems.NssAdvanced_Excel
 		/// <param name="ssRepeatColumns">Columns repeated on every page, e.g. A:A. Empty = none.</param>
 		public void MssWorksheet_SetPrintTitles(object ssWorksheet, string ssRepeatRows, string ssRepeatColumns) {
 			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			// Each call sets both parts; an empty part means none. EPPlus merges into an existing
+			// Print_Titles name (and drops the rows part when columns are set again), so start from none.
+			if (ws.Names.ContainsKey("_xlnm.Print_Titles"))
+			{
+				ws.Names.Remove("_xlnm.Print_Titles");
+			}
 			if (!string.IsNullOrEmpty(ssRepeatRows))
 				ws.PrinterSettings.RepeatRows = new ExcelAddress(ssRepeatRows);
 			if (!string.IsNullOrEmpty(ssRepeatColumns))
@@ -911,16 +917,16 @@ namespace OutSystems.NssAdvanced_Excel
             var wb = ssWorkbook as ExcelWorkbook ?? (ssWorkbook as ExcelPackage)?.Workbook;
             var props = wb.Properties;
             var inProps = ssProperties.ssSTOfficeProperties;
-            if (!string.IsNullOrEmpty(inProps.ssAuthor)) { props.Author = inProps.ssAuthor; }
-            if (!string.IsNullOrEmpty(inProps.ssCategory)) { props.Category = inProps.ssCategory; }
-            if (!string.IsNullOrEmpty(inProps.ssComments)) { props.Comments = inProps.ssComments; }
-            if (!string.IsNullOrEmpty(inProps.ssCompany)) { props.Company = inProps.ssCompany; }
-            if (!string.IsNullOrEmpty(inProps.ssKeywords)) { props.Keywords = inProps.ssKeywords; }
-            if (!string.IsNullOrEmpty(inProps.ssLastModifiedBy)) { props.LastModifiedBy = inProps.ssLastModifiedBy; }
-            if (!string.IsNullOrEmpty(inProps.ssManager)) { props.Manager = inProps.ssManager; }
-            if (!string.IsNullOrEmpty(inProps.ssStatus)) { props.Status = inProps.ssStatus; }
-            if (!string.IsNullOrEmpty(inProps.ssSubject)) { props.Subject = inProps.ssSubject; }
-            if (!string.IsNullOrEmpty(inProps.ssTitle)) { props.Title = inProps.ssTitle; }
+            if (!ssIgnoreBlank || !string.IsNullOrEmpty(inProps.ssAuthor)) { props.Author = inProps.ssAuthor ?? string.Empty; }
+            if (!ssIgnoreBlank || !string.IsNullOrEmpty(inProps.ssCategory)) { props.Category = inProps.ssCategory ?? string.Empty; }
+            if (!ssIgnoreBlank || !string.IsNullOrEmpty(inProps.ssComments)) { props.Comments = inProps.ssComments ?? string.Empty; }
+            if (!ssIgnoreBlank || !string.IsNullOrEmpty(inProps.ssCompany)) { props.Company = inProps.ssCompany ?? string.Empty; }
+            if (!ssIgnoreBlank || !string.IsNullOrEmpty(inProps.ssKeywords)) { props.Keywords = inProps.ssKeywords ?? string.Empty; }
+            if (!ssIgnoreBlank || !string.IsNullOrEmpty(inProps.ssLastModifiedBy)) { props.LastModifiedBy = inProps.ssLastModifiedBy ?? string.Empty; }
+            if (!ssIgnoreBlank || !string.IsNullOrEmpty(inProps.ssManager)) { props.Manager = inProps.ssManager ?? string.Empty; }
+            if (!ssIgnoreBlank || !string.IsNullOrEmpty(inProps.ssStatus)) { props.Status = inProps.ssStatus ?? string.Empty; }
+            if (!ssIgnoreBlank || !string.IsNullOrEmpty(inProps.ssSubject)) { props.Subject = inProps.ssSubject ?? string.Empty; }
+            if (!ssIgnoreBlank || !string.IsNullOrEmpty(inProps.ssTitle)) { props.Title = inProps.ssTitle ?? string.Empty; }
         } // MssExcel_SetProperties
 
         /// <summary>
@@ -1292,12 +1298,9 @@ namespace OutSystems.NssAdvanced_Excel
                 throw new ArgumentException("Column must be between 1 and " + ExcelPackage.MaxColumns + ".", nameof(ssColumn));
             }
 
-            using (MemoryStream ms = new MemoryStream(ssImage))
-            using (Image i = Image.FromStream(ms))
-            {
-                ExcelPicture pic = ws.Drawings.AddPicture(ssImageName, i);
-                pic.SetPosition(ssRow - 1, 0, ssColumn - 1, 0);
-            }
+            // EPPlus keeps the image for Worksheet_GetImages, so it isn't disposed here.
+            ExcelPicture pic = ws.Drawings.AddPicture(ssImageName, Util.ImageFromBytes(ssImage));
+            pic.SetPosition(ssRow - 1, 0, ssColumn - 1, 0);
         } // MssCell_WriteImageByIndex
 
         /// <summary>
@@ -1690,7 +1693,8 @@ namespace OutSystems.NssAdvanced_Excel
             ExcelWorksheet ws;
             ws = AsWorksheet(ssWorksheet);
 
-            if (!ws.Names.ContainsKey(ssName))
+            // The name is added to the workbook's names, so a repeat call is found there.
+            if (!ws.Names.ContainsKey(ssName) && !ws.Workbook.Names.ContainsKey(ssName))
             {
                 // No format input: keep the cells' own formatting.
                 WriteRange(ssWorksheet, ssRowStart, ssColumnStart, ssDataSet, null, false);
@@ -1767,15 +1771,31 @@ namespace OutSystems.NssAdvanced_Excel
             ExcelPackage p = ssWorkbook as ExcelPackage;
             ExcelWorkbook wb = p.Workbook;
 
-            if (!string.IsNullOrEmpty(ssPassword))
+            // EPPlus removes the whole workbookProtection element (password hash and the other locks
+            // included) when a lock is set to false. Clear the locks first, set the ones asked for, and
+            // then put back the password: the new one, or the one the workbook already had.
+            string keptPasswordHash = Util.WorkbookPasswordHash(wb);
+            wb.Protection.LockRevision = false;
+            wb.Protection.LockStructure = false;
+            wb.Protection.LockWindows = false;
+
+            if (!ssLockStructure && !ssLockWindows && !ssLockRevision)
             {
-                wb.Protection.SetPassword(ssPassword);
+                return;
             }
 
             wb.Protection.LockRevision = ssLockRevision;
             wb.Protection.LockStructure = ssLockStructure;
             wb.Protection.LockWindows = ssLockWindows;
 
+            if (!string.IsNullOrEmpty(ssPassword))
+            {
+                wb.Protection.SetPassword(ssPassword);
+            }
+            else if (keptPasswordHash != null)
+            {
+                Util.SetWorkbookPasswordHash(wb, keptPasswordHash);
+            }
         } // MssWorkbook_Protect
 
         /// <summary>
@@ -1855,13 +1875,11 @@ namespace OutSystems.NssAdvanced_Excel
                 range = ws.Cells[ssRowNumber, ssColumnNumber];
             }
 
-            using (MemoryStream ms = new MemoryStream(ssImageFile))
-            using (Bitmap bitmap = new Bitmap(ms))
-            using (ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, bitmap))
-            {
-                picture.SetPosition(range.Start.Row - 1, ssMarginTop, range.Start.Column - 1, ssMarginLeft);
-                picture.SetSize(ssImageWidth, ssImageHeight);
-            }
+            // EPPlus keeps the image for Worksheet_GetImages, as it does for pictures it loads from a
+            // file, so neither the image nor the picture is disposed here.
+            ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, Util.ImageFromBytes(ssImageFile));
+            picture.SetPosition(range.Start.Row - 1, ssMarginTop, range.Start.Column - 1, ssMarginLeft);
+            picture.SetSize(ssImageWidth, ssImageHeight);
             range.Dispose();
         } // MssImage_Insert
 
@@ -2675,6 +2693,10 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorksheet_Hide_Show(object ssWorksheet, int ssHidden)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+            if (ssHidden != (int)eWorkSheetHidden.Visible && !Util.HasOtherVisibleSheet(ws))
+            {
+                throw new ArgumentException("At least one worksheet must stay visible: Excel can't open a workbook whose sheets are all hidden.", nameof(ssHidden));
+            }
             ws.Hidden = (eWorkSheetHidden)ssHidden;
         } // MssWorksheet_Hide_Show
 
@@ -2754,7 +2776,8 @@ namespace OutSystems.NssAdvanced_Excel
 
             ws.Column(ssColumn).Hidden = ssHidden;
 
-            if (!ssHidden)
+            // Showing keeps the column's width; only a column hidden by a zero width gets the default.
+            if (!ssHidden && ws.Column(ssColumn).Width <= 0)
             {
                 ws.Column(ssColumn).Width = ws.DefaultColWidth;
             }
