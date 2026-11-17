@@ -296,13 +296,61 @@ namespace OutSystems.NssAdvanced_Excel
         }
 
         /// <summary>
-        /// Workbooks saved without a &lt;dxfs&gt; element (e.g. by some record-list-to-Excel generators) make
-        /// EPPlus throw a NullReferenceException in ExcelStyles.UpdateXml() when conditional formatting is
-        /// later added and the workbook is saved. Inject an empty &lt;dxfs/&gt; node (in schema order) so EPPlus
-        /// has a node to update. Returns the original bytes unchanged when the node already exists, the input
-        /// isn't an xlsx package, or anything goes wrong (opening must never be blocked by this).
+        /// When the input starts with the zip signature PK (0x50 0x4B), verify that the archive
+        /// is a complete zip package by reading its central directory and streaming every entry to
+        /// the end. Non-zip inputs (such as encrypted OLE compound workbooks) are untouched.
         /// </summary>
-        internal static byte[] EnsureConditionalFormattingDxfs(byte[] bytes)
+        internal static void EnsureCompleteZipPackage(byte[] bytes, string paramName)
+        {
+            if (bytes == null || bytes.Length < 2 || bytes[0] != 0x50 || bytes[1] != 0x4B)
+            {
+                return;
+            }
+
+            try
+            {
+                using (var ms = new MemoryStream(bytes, false))
+                using (var zip = new System.IO.Compression.ZipArchive(ms, System.IO.Compression.ZipArchiveMode.Read))
+                {
+                    if (zip.Entries.Count == 0)
+                    {
+                        throw new InvalidDataException("Empty zip archive.");
+                    }
+                    byte[] buffer = new byte[8192];
+                    foreach (var entry in zip.Entries)
+                    {
+                        long expected = entry.Length;
+                        long total = 0;
+                        using (var s = entry.Open())
+                        {
+                            int n;
+                            while ((n = s.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                total += n;
+                            }
+                        }
+                        if (total != expected)
+                        {
+                            throw new InvalidDataException("Truncated zip entry.");
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("The file is not a complete .xlsx workbook: it is damaged or was cut off.", paramName);
+            }
+        }
+
+        /// <summary>
+        /// Workbooks saved without required style lists (fonts, fills, borders, cellStyleXfs, cellXfs) or
+        /// without a &lt;dxfs&gt; element (e.g. an empty &lt;styleSheet/&gt; part or files from minimal generators) make
+        /// EPPlus throw a NullReferenceException when cells or conditional formats are written and saved.
+        /// Inject any missing lists with Excel's defaults in CT_Stylesheet schema order, preserving the
+        /// root element's namespace prefix. Returns the original bytes unchanged when all lists exist,
+        /// the input isn't an xlsx package, or anything goes wrong (opening must never be blocked by this).
+        /// </summary>
+        internal static byte[] EnsureStylesPartDefaults(byte[] bytes)
         {
             if (bytes == null || bytes.Length < 4 || bytes[0] != 0x50 || bytes[1] != 0x4B)
             {
@@ -311,51 +359,53 @@ namespace OutSystems.NssAdvanced_Excel
 
             try
             {
-                using (var checkMs = new MemoryStream(bytes, false))
-                using (var zip = new System.IO.Compression.ZipArchive(checkMs, System.IO.Compression.ZipArchiveMode.Read))
+                using (var srcMs = new MemoryStream(bytes, false))
+                using (var srcZip = new System.IO.Compression.ZipArchive(srcMs, System.IO.Compression.ZipArchiveMode.Read))
                 {
-                    var entry = zip.GetEntry("xl/styles.xml");
-                    if (entry == null)
+                    var stylesEntry = srcZip.GetEntry("xl/styles.xml");
+                    if (stylesEntry == null)
                     {
                         return bytes;
                     }
                     string xml;
-                    using (var r = new StreamReader(entry.Open()))
+                    using (var r = new StreamReader(stylesEntry.Open()))
                     {
                         xml = r.ReadToEnd();
                     }
-                    if (xml.IndexOf("dxfs", StringComparison.Ordinal) >= 0)
-                    {
-                        return bytes;
-                    }
-                }
-
-                var ms = new MemoryStream();
-                ms.Write(bytes, 0, bytes.Length);
-                ms.Position = 0;
-                using (var zip = new System.IO.Compression.ZipArchive(ms, System.IO.Compression.ZipArchiveMode.Update, true))
-                {
-                    var entry = zip.GetEntry("xl/styles.xml");
-                    string xml;
-                    using (var r = new StreamReader(entry.Open()))
-                    {
-                        xml = r.ReadToEnd();
-                    }
-
-                    string patched = InjectDxfsNode(xml);
+                    string patched = EnsureStylesPartLists(xml);
                     if (patched == xml)
                     {
                         return bytes;
                     }
 
-                    entry.Delete();
-                    var newEntry = zip.CreateEntry("xl/styles.xml");
-                    using (var w = new StreamWriter(newEntry.Open(), new System.Text.UTF8Encoding(false)))
+                    using (var dstMs = new MemoryStream())
                     {
-                        w.Write(patched);
+                        using (var dstZip = new System.IO.Compression.ZipArchive(dstMs, System.IO.Compression.ZipArchiveMode.Create, true))
+                        {
+                            foreach (var entry in srcZip.Entries)
+                            {
+                                var newEntry = dstZip.CreateEntry(entry.FullName, System.IO.Compression.CompressionLevel.Optimal);
+                                newEntry.LastWriteTime = entry.LastWriteTime;
+                                if (entry.FullName == "xl/styles.xml")
+                                {
+                                    using (var w = new StreamWriter(newEntry.Open(), new System.Text.UTF8Encoding(false)))
+                                    {
+                                        w.Write(patched);
+                                    }
+                                }
+                                else
+                                {
+                                    using (var srcStream = entry.Open())
+                                    using (var dstStream = newEntry.Open())
+                                    {
+                                        srcStream.CopyTo(dstStream);
+                                    }
+                                }
+                            }
+                        }
+                        return dstMs.ToArray();
                     }
                 }
-                return ms.ToArray();
             }
             catch
             {
@@ -363,27 +413,299 @@ namespace OutSystems.NssAdvanced_Excel
             }
         }
 
+        private static readonly string[] StyleSheetSchemaOrder = {
+            "numFmts", "fonts", "fills", "borders", "cellStyleXfs", "cellXfs",
+            "cellStyles", "dxfs", "tableStyles", "colors", "extLst"
+        };
+
+        private static readonly string[] RequiredStyleLists = {
+            "fonts", "fills", "borders", "cellStyleXfs", "cellXfs", "dxfs"
+        };
+
         /// <summary>
-        /// Insert an empty dxfs element before the first element that must follow it per the
-        /// CT_Stylesheet sequence (tableStyles, colors, extLst), or before the closing tag. Some generators
-        /// write the part with a namespace prefix (&lt;x:styleSheet&gt;); the anchors and the new element then
-        /// use the same prefix, so the element is in the right namespace.
+        /// Ensure xl/styles.xml contains fonts, fills, borders, cellStyleXfs, cellXfs and dxfs in
+        /// CT_Stylesheet sequence, using the root styleSheet element's namespace and prefix.
         /// </summary>
-        private static string InjectDxfsNode(string stylesXml)
+        private static string EnsureStylesPartLists(string stylesXml)
         {
-            var root = System.Text.RegularExpressions.Regex.Match(stylesXml, @"<([A-Za-z_][\w.-]*:)?styleSheet[\s>/]");
-            string prefix = root.Success ? root.Groups[1].Value : "";
-            string dxfs = "<" + prefix + "dxfs count=\"0\"/>";
-            string[] anchors = { "<" + prefix + "tableStyles", "<" + prefix + "colors", "<" + prefix + "extLst", "</" + prefix + "styleSheet>" };
-            foreach (var a in anchors)
+            var doc = new System.Xml.XmlDocument { PreserveWhitespace = true };
+            using (var reader = System.Xml.XmlReader.Create(
+                new StringReader(stylesXml),
+                new System.Xml.XmlReaderSettings { DtdProcessing = System.Xml.DtdProcessing.Prohibit, XmlResolver = null }))
             {
-                int i = stylesXml.IndexOf(a, StringComparison.Ordinal);
-                if (i >= 0)
+                doc.Load(reader);
+            }
+            var root = doc.DocumentElement;
+            if (root == null || root.LocalName != "styleSheet")
+            {
+                return stylesXml;
+            }
+
+            bool changed = false;
+            foreach (string listName in RequiredStyleLists)
+            {
+                var existing = FindStyleChild(root, listName);
+                if (existing == null)
                 {
-                    return stylesXml.Substring(0, i) + dxfs + stylesXml.Substring(i);
+                    var el = CreateDefaultStyleList(doc, root.Prefix, root.NamespaceURI, listName);
+                    InsertInStyleSchemaOrder(root, el);
+                    changed = true;
+                }
+                else if (EnsureDefaultStyleListChildren(doc, existing, root.Prefix, root.NamespaceURI, listName))
+                {
+                    changed = true;
                 }
             }
-            return stylesXml;
+
+            return changed ? doc.OuterXml : stylesXml;
+        }
+
+        private static System.Xml.XmlElement FindStyleChild(System.Xml.XmlElement root, string localName)
+        {
+            foreach (System.Xml.XmlNode child in root.ChildNodes)
+            {
+                if (child.NodeType == System.Xml.XmlNodeType.Element && child.LocalName == localName)
+                {
+                    return (System.Xml.XmlElement)child;
+                }
+            }
+            return null;
+        }
+
+        private static int CountStyleElementChildren(System.Xml.XmlElement list)
+        {
+            int count = 0;
+            foreach (System.Xml.XmlNode child in list.ChildNodes)
+            {
+                if (child.NodeType == System.Xml.XmlNodeType.Element)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        private static int GetStyleSchemaRank(string localName)
+        {
+            for (int i = 0; i < StyleSheetSchemaOrder.Length; i++)
+            {
+                if (StyleSheetSchemaOrder[i] == localName)
+                {
+                    return i;
+                }
+            }
+            return StyleSheetSchemaOrder.Length;
+        }
+
+        private static void InsertInStyleSchemaOrder(System.Xml.XmlElement root, System.Xml.XmlElement newChild)
+        {
+            int targetRank = GetStyleSchemaRank(newChild.LocalName);
+            foreach (System.Xml.XmlNode child in root.ChildNodes)
+            {
+                if (child.NodeType == System.Xml.XmlNodeType.Element && GetStyleSchemaRank(child.LocalName) > targetRank)
+                {
+                    root.InsertBefore(newChild, child);
+                    return;
+                }
+            }
+            root.AppendChild(newChild);
+        }
+
+        private static System.Xml.XmlElement CreateStyleElement(System.Xml.XmlDocument doc, string prefix, string ns, string localName)
+        {
+            return string.IsNullOrEmpty(prefix)
+                ? doc.CreateElement(localName, ns)
+                : doc.CreateElement(prefix, localName, ns);
+        }
+
+        private static System.Xml.XmlElement CreateDefaultStyleList(System.Xml.XmlDocument doc, string prefix, string ns, string listName)
+        {
+            var list = CreateStyleElement(doc, prefix, ns, listName);
+            if (listName == "dxfs")
+            {
+                list.SetAttribute("count", "0");
+            }
+            else
+            {
+                EnsureDefaultStyleListChildren(doc, list, prefix, ns, listName);
+            }
+            return list;
+        }
+
+        private static bool EnsureDefaultStyleListChildren(System.Xml.XmlDocument doc, System.Xml.XmlElement list, string prefix, string ns, string listName)
+        {
+            int existingCount = CountStyleElementChildren(list);
+            switch (listName)
+            {
+                case "fonts":
+                {
+                    if (existingCount > 0) return false;
+                    list.SetAttribute("count", "1");
+                    var font = CreateStyleElement(doc, prefix, ns, "font");
+                    var sz = CreateStyleElement(doc, prefix, ns, "sz");
+                    sz.SetAttribute("val", "11");
+                    var name = CreateStyleElement(doc, prefix, ns, "name");
+                    name.SetAttribute("val", "Calibri");
+                    font.AppendChild(sz);
+                    font.AppendChild(name);
+                    list.AppendChild(font);
+                    return true;
+                }
+                case "fills":
+                {
+                    if (existingCount >= 2) return false;
+                    string[] defaults = { "none", "gray125" };
+                    for (int i = existingCount; i < defaults.Length; i++)
+                    {
+                        var fill = CreateStyleElement(doc, prefix, ns, "fill");
+                        var patternFill = CreateStyleElement(doc, prefix, ns, "patternFill");
+                        patternFill.SetAttribute("patternType", defaults[i]);
+                        fill.AppendChild(patternFill);
+                        list.AppendChild(fill);
+                    }
+                    list.SetAttribute("count", "2");
+                    return true;
+                }
+                case "borders":
+                {
+                    if (existingCount > 0) return false;
+                    list.SetAttribute("count", "1");
+                    var border = CreateStyleElement(doc, prefix, ns, "border");
+                    foreach (string side in new[] { "left", "right", "top", "bottom", "diagonal" })
+                    {
+                        border.AppendChild(CreateStyleElement(doc, prefix, ns, side));
+                    }
+                    list.AppendChild(border);
+                    return true;
+                }
+                case "cellStyleXfs":
+                {
+                    if (existingCount > 0) return false;
+                    list.SetAttribute("count", "1");
+                    var xf = CreateStyleElement(doc, prefix, ns, "xf");
+                    xf.SetAttribute("numFmtId", "0");
+                    xf.SetAttribute("fontId", "0");
+                    xf.SetAttribute("fillId", "0");
+                    xf.SetAttribute("borderId", "0");
+                    list.AppendChild(xf);
+                    return true;
+                }
+                case "cellXfs":
+                {
+                    if (existingCount > 0) return false;
+                    list.SetAttribute("count", "1");
+                    var xf = CreateStyleElement(doc, prefix, ns, "xf");
+                    xf.SetAttribute("numFmtId", "0");
+                    xf.SetAttribute("fontId", "0");
+                    xf.SetAttribute("fillId", "0");
+                    xf.SetAttribute("borderId", "0");
+                    xf.SetAttribute("xfId", "0");
+                    list.AppendChild(xf);
+                    return true;
+                }
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Collect the table parts (xl/tables/*.xml) whose &lt;table&gt; has a header row
+        /// (headerRowCount absent or not "0") and no &lt;autoFilter&gt; child element, so their
+        /// ShowFilter=false state can be restored after EPPlus loads the package.
+        /// </summary>
+        internal static HashSet<string> CollectTablesWithoutAutoFilter(byte[] bytes)
+        {
+            var result = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (bytes == null || bytes.Length < 4 || bytes[0] != 0x50 || bytes[1] != 0x4B)
+            {
+                return result;
+            }
+
+            try
+            {
+                using (var ms = new MemoryStream(bytes, false))
+                using (var zip = new System.IO.Compression.ZipArchive(ms, System.IO.Compression.ZipArchiveMode.Read))
+                {
+                    foreach (var entry in zip.Entries)
+                    {
+                        string path = entry.FullName.Replace('\\', '/').TrimStart('/');
+                        if (!path.StartsWith("xl/tables/", StringComparison.OrdinalIgnoreCase)
+                            || !path.EndsWith(".xml", StringComparison.OrdinalIgnoreCase)
+                            || path.IndexOf('/', "xl/tables/".Length) >= 0)
+                        {
+                            continue;
+                        }
+
+                        var doc = new System.Xml.XmlDocument();
+                        using (var s = entry.Open())
+                        using (var reader = System.Xml.XmlReader.Create(
+                            s,
+                            new System.Xml.XmlReaderSettings { DtdProcessing = System.Xml.DtdProcessing.Prohibit, XmlResolver = null }))
+                        {
+                            doc.Load(reader);
+                        }
+
+                        var root = doc.DocumentElement;
+                        if (root == null || root.LocalName != "table")
+                        {
+                            continue;
+                        }
+
+                        if (root.HasAttribute("headerRowCount") && root.GetAttribute("headerRowCount") == "0")
+                        {
+                            continue;
+                        }
+
+                        if (FindStyleChild(root, "autoFilter") == null)
+                        {
+                            result.Add(path);
+                            string tableName = root.GetAttribute("name");
+                            if (!string.IsNullOrEmpty(tableName))
+                            {
+                                result.Add(tableName);
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Any error in this step must not block opening.
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// After a load, turn the filter off again on the tables CollectTablesWithoutAutoFilter found:
+        /// EPPlus re-creates the autoFilter of every table with a header row when it loads one.
+        /// </summary>
+        internal static void RestoreTablesWithoutAutoFilter(ExcelPackage package, HashSet<string> tablesWithoutAutoFilter)
+        {
+            if (package == null || tablesWithoutAutoFilter == null || tablesWithoutAutoFilter.Count == 0)
+            {
+                return;
+            }
+
+            try
+            {
+                foreach (var ws in package.Workbook.Worksheets)
+                {
+                    foreach (var tbl in ws.Tables)
+                    {
+                        string partPath = tbl.TableUri != null ? tbl.TableUri.OriginalString.Replace('\\', '/').TrimStart('/') : null;
+                        if ((partPath != null && tablesWithoutAutoFilter.Contains(partPath))
+                            || (!string.IsNullOrEmpty(tbl.Name) && tablesWithoutAutoFilter.Contains(tbl.Name)))
+                        {
+                            tbl.ShowFilter = false;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Any error in this step must not block opening.
+            }
         }
 
         /// <summary>
@@ -909,6 +1231,25 @@ namespace OutSystems.NssAdvanced_Excel
             }
         }
 
+        private static readonly char[] ForbiddenSheetNameChars = { ':', '\\', '/', '?', '*', '[', ']' };
+
+        /// <summary>
+        /// Throw an ArgumentException when a worksheet name breaks Excel's rules: at most 31 characters,
+        /// none of : \ / ? * [ ], and no apostrophe at the start or end. EPPlus accepts some of these
+        /// (for example *), and Excel then can't open the file. Empty names are left to EPPlus.
+        /// </summary>
+        internal static void ValidateSheetName(string name, string paramName)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return;
+            }
+            if (name.Length > 31 || name.IndexOfAny(ForbiddenSheetNameChars) >= 0 || name[0] == '\'' || name[name.Length - 1] == '\'')
+            {
+                throw new ArgumentException($"'{name}' is not a valid worksheet name: it must be at most 31 characters, must not contain : \\ / ? * [ ] and must not start or end with an apostrophe.", paramName);
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -916,7 +1257,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <returns></returns>
         internal static RCDimensionRecord CastDimension(ExcelAddressBase dimension)
         {
-            RCDimensionRecord dim = new RCDimensionRecord();
+            RCDimensionRecord dim = new RCDimensionRecord(null);
 
             if (dimension == null)
             {
@@ -939,7 +1280,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <returns></returns>
         internal static RCAddressRecord CastAddress(ExcelCellAddress address)
         {
-            RCAddressRecord add = new RCAddressRecord();
+            RCAddressRecord add = new RCAddressRecord(null);
 
             if (address == null)
             {
