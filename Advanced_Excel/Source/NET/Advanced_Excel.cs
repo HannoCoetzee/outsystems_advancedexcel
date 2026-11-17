@@ -179,11 +179,7 @@ namespace OutSystems.NssAdvanced_Excel
 		/// <param name="ssPassword">Password required to open the resulting file.</param>
 		/// <param name="ssBinaryData">The encrypted .xlsx file</param>
 		public void MssWorkbook_SaveWithPassword(object ssWorkbook, string ssPassword, out byte[] ssBinaryData) {
-			ExcelPackage p = ssWorkbook as ExcelPackage;
-			if (p == null)
-			{
-				throw new ArgumentException("Expected a Workbook object (e.g. from Workbook_Create or Workbook_Open).", nameof(ssWorkbook));
-			}
+			ExcelPackage p = AsWorkbook(ssWorkbook);
 			if (string.IsNullOrEmpty(ssPassword))
 			{
 				throw new ArgumentException("Password is required to save an encrypted workbook.", nameof(ssPassword));
@@ -588,7 +584,29 @@ namespace OutSystems.NssAdvanced_Excel
 			if (string.IsNullOrEmpty(ssRange))
 				ws.PrinterSettings.PrintArea = null;
 			else
+			{
+				// Excel allows several print areas in one value ("A1:B5,D1:E5"). EPPlus accepts any text
+				// here and saves it as a broken name ("'Data'!#REF!"), so every part is checked first.
+				foreach (string part in ssRange.Split(','))
+				{
+					RequireAddress(part, nameof(ssRange));
+					string trimmed = part.Trim();
+					int bang = trimmed.LastIndexOf('!');
+					if (bang >= 0)
+					{
+						string sheet = trimmed.Substring(0, bang).Trim();
+						if (sheet.Length >= 2 && sheet[0] == '\'' && sheet[sheet.Length - 1] == '\'')
+						{
+							sheet = sheet.Substring(1, sheet.Length - 2).Replace("''", "'");
+						}
+						if (!string.Equals(sheet, ws.Name, StringComparison.OrdinalIgnoreCase))
+						{
+							throw new ArgumentException("The print area must be on this worksheet ('" + ws.Name + "').", nameof(ssRange));
+						}
+					}
+				}
 				ws.PrinterSettings.PrintArea = ws.Cells[ssRange];
+			}
 		} // MssWorksheet_SetPrintArea
 
 		/// <summary>
@@ -665,11 +683,31 @@ namespace OutSystems.NssAdvanced_Excel
 		/// <param name="ssShowTotal">Show the totals row.</param>
 		public void MssWorksheet_AddTable(object ssWorksheet, string ssRange, string ssTableName, string ssTableStyle, bool ssShowHeader, bool ssShowFilter, bool ssShowTotal) {
 			ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+			if (!string.IsNullOrEmpty(ssRange) && ssRange.IndexOf(',') >= 0)
+			{
+				throw new ArgumentException("A table needs one rectangular range, e.g. A1:D10.", nameof(ssRange));
+			}
+			RequireAddress(ssRange, nameof(ssRange));
+			var newAddr = new ExcelAddressBase(ssRange);
+			if (ssShowTotal && newAddr.End.Row >= ExcelPackage.MaxRows)
+			{
+				throw new ArgumentException("The totals row would be below the last row of the worksheet; end the range at least one row higher.", nameof(ssRange));
+			}
+			int startRow = newAddr.Start.Row, startCol = newAddr.Start.Column;
+			int endRow = newAddr.End.Row + (ssShowTotal ? 1 : 0), endCol = newAddr.End.Column;
+			foreach (var existing in ws.Tables)
+			{
+				var ex = existing.Address;
+				if (startRow <= ex.End.Row && endRow >= ex.Start.Row && startCol <= ex.End.Column && endCol >= ex.Start.Column)
+				{
+					throw new ArgumentException("The range " + ssRange + " overlaps the table '" + existing.Name + "' (" + ex.Address + "). Tables can't overlap.", nameof(ssRange));
+				}
+			}
 			var table = ws.Tables.Add(ws.Cells[ssRange], ssTableName);
 			table.TableStyle = ParseEnum(ssTableStyle, OfficeOpenXml.Table.TableStyles.Medium2);
 			table.ShowHeader = ssShowHeader;
-			table.ShowFilter = ssShowFilter;
 			table.ShowTotal = ssShowTotal;
+			table.ShowFilter = ssShowHeader && ssShowFilter;
 		} // MssWorksheet_AddTable
 
 		/// <summary>
@@ -726,7 +764,7 @@ namespace OutSystems.NssAdvanced_Excel
         {
             ssMergedRange = "";
             bool anyMergedCells = false;
-            ExcelPackage p = ssWorkbook as ExcelPackage;
+            ExcelPackage p = AsWorkbook(ssWorkbook);
 
             foreach (var worksheet in p.Workbook.Worksheets)
             {
@@ -790,13 +828,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssBinaryData"></param>
         public void MssWorkbook_SaveRightToLeft(object ssWorkbook, out byte[] ssBinaryData)
         {
-            ExcelPackage p = ssWorkbook as ExcelPackage;
-
-            if (p == null)
-            {
-                ssBinaryData = null;
-                return;
-            }
+            ExcelPackage p = AsWorkbook(ssWorkbook);
 
             foreach (var worksheet in p.Workbook.Worksheets)
             {
@@ -892,6 +924,10 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssExcel_GetProperties(object ssWorkbook, out RCOfficePropertiesRecord ssProperties)
         {
             var wb = ssWorkbook as ExcelWorkbook ?? (ssWorkbook as ExcelPackage)?.Workbook;
+            if (wb == null)
+            {
+                throw new ArgumentException("Expected a Workbook object (e.g. from Workbook_Create or Workbook_Open).", nameof(ssWorkbook));
+            }
             var props = wb.Properties;
             ssProperties = new RCOfficePropertiesRecord(null);
             ssProperties.ssSTOfficeProperties.ssAuthor = props.Author;
@@ -915,6 +951,10 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssExcel_SetProperties(object ssWorkbook, RCOfficePropertiesRecord ssProperties, bool ssIgnoreBlank)
         {
             var wb = ssWorkbook as ExcelWorkbook ?? (ssWorkbook as ExcelPackage)?.Workbook;
+            if (wb == null)
+            {
+                throw new ArgumentException("Expected a Workbook object (e.g. from Workbook_Create or Workbook_Open).", nameof(ssWorkbook));
+            }
             var props = wb.Properties;
             var inProps = ssProperties.ssSTOfficeProperties;
             if (!ssIgnoreBlank || !string.IsNullOrEmpty(inProps.ssAuthor)) { props.Author = inProps.ssAuthor ?? string.Empty; }
@@ -946,6 +986,10 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssExcel_ClearProperties(object ssWorkbook, bool ssClearTitle, bool ssClearSubject, bool ssClearAuthor, bool ssClearComments, bool ssClearKeywords, bool ssClearLastModifiedBy, bool ssClearCategory, bool ssClearStatus, bool ssClearCompany, bool ssClearManager)
         {
             var wb = ssWorkbook as ExcelWorkbook ?? (ssWorkbook as ExcelPackage)?.Workbook;
+            if (wb == null)
+            {
+                throw new ArgumentException("Expected a Workbook object (e.g. from Workbook_Create or Workbook_Open).", nameof(ssWorkbook));
+            }
             var props = wb.Properties;
             if (ssClearAuthor) { props.Author = string.Empty; }
             if (ssClearCategory) { props.Category = string.Empty; }
@@ -980,10 +1024,21 @@ namespace OutSystems.NssAdvanced_Excel
                 throw new ArgumentException("Address cannot be empty");
             }
             ExcelAddress address = new ExcelAddress(ssAddress);
-            ssRowStart = address.Start.Row;
-            ssColStart = address.Start.Column;
-            ssRowEnd = address.End.Row;
-            ssColEnd = address.End.Column;
+            int rowStart = address.Start.Row;
+            int colStart = address.Start.Column;
+            int rowEnd = address.End.Row;
+            int colEnd = address.End.Column;
+            // EPPlus parses "XFE1" or "A1048577" happily and only fails when the workbook is saved, so
+            // reject a cell outside Excel's grid here, before the out parameters are set.
+            if (rowStart > ExcelPackage.MaxRows || colStart > ExcelPackage.MaxColumns
+                || rowEnd > ExcelPackage.MaxRows || colEnd > ExcelPackage.MaxColumns)
+            {
+                throw new ArgumentException("The cell is beyond the last cell of a worksheet (XFD1048576).", nameof(ssAddress));
+            }
+            ssRowStart = rowStart;
+            ssColStart = colStart;
+            ssRowEnd = rowEnd;
+            ssColEnd = colEnd;
         } // MssAddress_From_Text
 
         /// <summary>
@@ -1005,6 +1060,23 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 ssRowEnd = ssRowStart;
                 ssColEnd = ssColStart;
+            }
+            // Excel's grid ends at XFD1048576; a cell past it does not exist, so no address is returned.
+            if (ssRowStart > ExcelPackage.MaxRows)
+            {
+                throw new ArgumentException("The cell is beyond the last cell of a worksheet (XFD1048576).", nameof(ssRowStart));
+            }
+            if (ssColStart > ExcelPackage.MaxColumns)
+            {
+                throw new ArgumentException("The cell is beyond the last cell of a worksheet (XFD1048576).", nameof(ssColStart));
+            }
+            if (ssRowEnd > ExcelPackage.MaxRows)
+            {
+                throw new ArgumentException("The cell is beyond the last cell of a worksheet (XFD1048576).", nameof(ssRowEnd));
+            }
+            if (ssColEnd > ExcelPackage.MaxColumns)
+            {
+                throw new ArgumentException("The cell is beyond the last cell of a worksheet (XFD1048576).", nameof(ssColEnd));
             }
             ssAddress = (new ExcelAddress(ssRowStart, ssColStart, ssRowEnd, ssColEnd)).Address;
         } // MssAddress_From_RowCol
@@ -1092,7 +1164,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheetIndex"></param>
         public void MssWorksheet_SetActive(object ssWorkbook, string ssWorksheetName, int ssWorksheetIndex)
         {
-            ExcelPackage ee = ssWorkbook as ExcelPackage;
+            ExcelPackage ee = AsWorkbook(ssWorkbook);
             ExcelWorksheet target = null;
 
             if (!string.IsNullOrEmpty(ssWorksheetName))
@@ -1328,6 +1400,10 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCellFormat">CellFormat for the target cells</param>
         public void MssCell_WriteRangeWithFormat(object ssWorksheet, int ssRowStart, int ssColumnStart, object ssDataSet, RCCellFormatRecord ssCellFormat)
         {
+            if (!(ssDataSet is RecordList))
+            {
+                throw new ArgumentException("DataSet must be a record list (a List of a Record or Structure).", nameof(ssDataSet));
+            }
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             DataTable dt = Util.RecordListToDataTable((RecordList)ssDataSet);
 
@@ -1350,7 +1426,8 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet">The newly added worksheet</param>
         public void MssWorkbook_AddName(object ssWorkbook, string ssWorksheetName, out object ssWorksheet)
         {
-            ExcelPackage p = (ExcelPackage)ssWorkbook;
+            ExcelPackage p = AsWorkbook(ssWorkbook);
+            Util.ValidateSheetName(ssWorksheetName, nameof(ssWorksheetName));
             ExcelWorksheet ws;
             ws = p.Workbook.Worksheets.Add(ssWorksheetName);
             ssWorksheet = ws;
@@ -1502,8 +1579,9 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet"></param>
         public void MssWorkbook_AddCopyWorksheet(object ssWorkbook, string ssWorksheetName, object ssWorksheetToCopy, out object ssWorksheet)
         {
-            ExcelPackage p = (ExcelPackage)ssWorkbook;
+            ExcelPackage p = AsWorkbook(ssWorkbook);
             ExcelWorksheet wsToCopy = AsWorksheet(ssWorksheetToCopy);
+            Util.ValidateSheetName(ssWorksheetName, nameof(ssWorksheetName));
             ExcelWorksheet ws;
             ws = p.Workbook.Worksheets.Add(ssWorksheetName, wsToCopy);
             Util.PreserveConditionalFormattingStyles(wsToCopy, ws);
@@ -1548,7 +1626,7 @@ namespace OutSystems.NssAdvanced_Excel
             ExcelWorkbook wb;
             ExcelWorksheet ws;
             ExcelPackage p;
-            p = (ExcelPackage)ssWorkbook;
+            p = AsWorkbook(ssWorkbook);
             wb = p.Workbook;
             ws = wb.Worksheets[ssWorksheetNumber];
 
@@ -1563,7 +1641,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorksheet"></param>
         public void MssWorksheet_SelectByName(object ssWorkbook, string ssWorksheetName, out object ssWorksheet)
         {
-            ExcelPackage p = (ExcelPackage)ssWorkbook;
+            ExcelPackage p = AsWorkbook(ssWorkbook);
             ExcelWorksheet ws;
             ws = p.Workbook.Worksheets[ssWorksheetName];
             ssWorksheet = ws;
@@ -1576,7 +1654,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssNameToDelete"></param>
         public void MssWorksheet_DeleteByName(object ssWorkbook, string ssNameToDelete)
         {
-            ExcelPackage ee = ssWorkbook as ExcelPackage;
+            ExcelPackage ee = AsWorkbook(ssWorkbook);
             ee.Workbook.Worksheets.Delete(ssNameToDelete);
         } // MssWorksheet_DeleteByName
 
@@ -1587,8 +1665,12 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssIndexToDelete"></param>
         public void MssWorksheet_DeleteByIndex(object ssWorkbook, int ssIndexToDelete)
         {
-            ExcelPackage ee = ssWorkbook as ExcelPackage;
-            ee.Workbook.Worksheets.Delete(ssIndexToDelete);
+            ExcelPackage p = AsWorkbook(ssWorkbook);
+            if (ssIndexToDelete < 1 || ssIndexToDelete > p.Workbook.Worksheets.Count)
+            {
+                throw new ArgumentException($"Worksheet index {ssIndexToDelete} does not exist: the workbook has {p.Workbook.Worksheets.Count} worksheet(s), numbered from 1.", nameof(ssIndexToDelete));
+            }
+            p.Workbook.Worksheets.Delete(ssIndexToDelete);
         } // MssWorksheet_DeleteByIndex
 
         /// <summary>
@@ -1709,7 +1791,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorkbook"></param>
         public void MssWorkbook_Open_BinaryData(byte[] ssBinaryData, string ssPassword, out object ssWorkbook)
         {
-            MssWorkbook_Open("", ssBinaryData, ssPassword, out ssWorkbook);
+            ssWorkbook = OpenWorkbook("", ssBinaryData, ssPassword, nameof(ssBinaryData));
         } // MssWorkbook_Open_BinaryData
 
         /// <summary>
@@ -1723,7 +1805,6 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorkbook_Create(int ssNumberOfSheets, string ssFirstSheetName, RLNewSheetRecordList ssSheetNames, out object ssWorkbook)
         {
             ssWorkbook = null;
-
             ExcelPackage p = new ExcelPackage();
             ExcelWorkbook wb = p.Workbook;
 
@@ -1733,14 +1814,19 @@ namespace OutSystems.NssAdvanced_Excel
                 {
                     ssFirstSheetName = "Sheet1";
                 }
+                Util.ValidateSheetName(ssFirstSheetName, nameof(ssFirstSheetName));
+                // Strip trailing "1" so "Sheet1" produces Sheet1/Sheet2/Sheet3, not Sheet1/Sheet12/Sheet13.
+                string baseName = (ssFirstSheetName.Length > 1 && ssFirstSheetName.EndsWith("1"))
+                    ? ssFirstSheetName.Substring(0, ssFirstSheetName.Length - 1)
+                    : ssFirstSheetName;
+                if (ssNumberOfSheets > 1)
+                {
+                    Util.ValidateSheetName(baseName + ssNumberOfSheets, nameof(ssFirstSheetName));
+                }
 
                 wb.Worksheets.Add(ssFirstSheetName);
                 if (ssNumberOfSheets > 1)
                 {
-                    // Strip trailing "1" so "Sheet1" produces Sheet1/Sheet2/Sheet3, not Sheet1/Sheet12/Sheet13.
-                    string baseName = (ssFirstSheetName.Length > 1 && ssFirstSheetName.EndsWith("1"))
-                        ? ssFirstSheetName.Substring(0, ssFirstSheetName.Length - 1)
-                        : ssFirstSheetName;
                     for (int i = 2; i <= ssNumberOfSheets; i++)
                     {
                         wb.Worksheets.Add(baseName + i);
@@ -1749,6 +1835,10 @@ namespace OutSystems.NssAdvanced_Excel
             }
             else
             {
+                foreach (RCNewSheetRecord item in ssSheetNames)
+                {
+                    Util.ValidateSheetName(item.ssSTNewSheet.ssName, nameof(ssSheetNames));
+                }
                 ssSheetNames.Sort(s => s.ssSTNewSheet.ssIndex, true);
                 foreach (RCNewSheetRecord item in ssSheetNames)
                 {
@@ -1768,7 +1858,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssLockRevision">Lock the workbook for revision</param>
         public void MssWorkbook_Protect(object ssWorkbook, string ssPassword, bool ssLockStructure, bool ssLockWindows, bool ssLockRevision)
         {
-            ExcelPackage p = ssWorkbook as ExcelPackage;
+            ExcelPackage p = AsWorkbook(ssWorkbook);
             ExcelWorkbook wb = p.Workbook;
 
             // EPPlus removes the whole workbookProtection element (password hash and the other locks
@@ -1852,27 +1942,41 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssMarginTop"></param>
         public void MssImage_Insert(object ssWorksheet, byte[] ssImageFile, string ssImageType, string ssImageName, int ssRowNumber, int ssColumnNumber, string ssCellName, int ssImageWidth, int ssImageHeight, int ssMarginTop, int ssMarginLeft)
         {
-            if (string.IsNullOrEmpty(ssCellName) && ssColumnNumber <= 0 && ssRowNumber <= 0)
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+
+            if (string.IsNullOrEmpty(ssCellName) && (ssColumnNumber <= 0 || ssRowNumber <= 0))
             {
-                throw new ArgumentException("You need to specify a valid cell name (i.e. A4) or cell index (row/column combination)");
+                throw new ArgumentException("You need to specify a valid cell name (i.e. A4) or cell index (row/column combination)", nameof(ssCellName));
             }
 
-            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+            ExcelRange range;
+            if (!string.IsNullOrEmpty(ssCellName))
+            {
+                RequireAddress(ssCellName, nameof(ssCellName));
+                ExcelAddress addr = new ExcelAddress(ssCellName);
+                if (addr.Start.Row > ExcelPackage.MaxRows || addr.Start.Column > ExcelPackage.MaxColumns
+                    || addr.End.Row > ExcelPackage.MaxRows || addr.End.Column > ExcelPackage.MaxColumns)
+                {
+                    throw new ArgumentException("The cell is beyond the last cell of a worksheet (XFD1048576).", nameof(ssCellName));
+                }
+                range = ws.Cells[ssCellName];
+            }
+            else
+            {
+                if (ssRowNumber > ExcelPackage.MaxRows)
+                {
+                    throw new ArgumentException("Row must be between 1 and " + ExcelPackage.MaxRows + ".", nameof(ssRowNumber));
+                }
+                if (ssColumnNumber > ExcelPackage.MaxColumns)
+                {
+                    throw new ArgumentException("Column must be between 1 and " + ExcelPackage.MaxColumns + ".", nameof(ssColumnNumber));
+                }
+                range = ws.Cells[ssRowNumber, ssColumnNumber];
+            }
 
             if (ssImageFile == null || ssImageFile.Length == 0)
             {
                 throw new ArgumentException("No image data supplied.", nameof(ssImageFile));
-            }
-
-            ExcelRange range = ws.Cells["A1"];
-
-            if (!string.IsNullOrEmpty(ssCellName))
-            {
-                range = ws.Cells[ssCellName];
-            }
-            else if (ssRowNumber > 0 && ssColumnNumber > 0)
-            {
-                range = ws.Cells[ssRowNumber, ssColumnNumber];
             }
 
             // EPPlus keeps the image for Worksheet_GetImages, as it does for pictures it loads from a
@@ -1997,6 +2101,13 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssComment_Delete(object ssWorksheet, RCRangeRecord ssRange)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+
+            // The OutSystems default Range (0,0,0,0) names no cell: deleting nothing is the whole job.
+            if (ssRange.ssSTRange.ssStartRow == 0 && ssRange.ssSTRange.ssEndRow == 0
+                && ssRange.ssSTRange.ssStartCol == 0 && ssRange.ssSTRange.ssEndCol == 0)
+            {
+                return;
+            }
 
             RemoveCommentsInRange(ws, ssRange.ssSTRange.ssStartRow, ssRange.ssSTRange.ssEndRow,
                                       ssRange.ssSTRange.ssStartCol, ssRange.ssSTRange.ssEndCol);
@@ -2693,6 +2804,10 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorksheet_Hide_Show(object ssWorksheet, int ssHidden)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+            if (ssHidden < (int)eWorkSheetHidden.Visible || ssHidden > (int)eWorkSheetHidden.VeryHidden)
+            {
+                throw new ArgumentException("Hidden must be 0 (visible), 1 (hidden) or 2 (very hidden).", nameof(ssHidden));
+            }
             if (ssHidden != (int)eWorkSheetHidden.Visible && !Util.HasOtherVisibleSheet(ws))
             {
                 throw new ArgumentException("At least one worksheet must stay visible: Excel can't open a workbook whose sheets are all hidden.", nameof(ssHidden));
@@ -2748,7 +2863,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorkbook">The workbook to work with</param>
         public void MssWorkbook_Calculate(object ssWorkbook)
         {
-            ExcelPackage p = ssWorkbook as ExcelPackage;
+            ExcelPackage p = AsWorkbook(ssWorkbook);
             ExcelWorkbook wb = p.Workbook;
 
             wb.Calculate();
@@ -2927,7 +3042,7 @@ namespace OutSystems.NssAdvanced_Excel
                 throw new ArgumentException("Current and New index values must be >= 1.");
             }
 
-            ExcelPackage ee = ssWorkbook as ExcelPackage;
+            ExcelPackage ee = AsWorkbook(ssWorkbook);
 
             if (ssNewIndex > ee.Workbook.Worksheets.Count)
             {
@@ -2953,7 +3068,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             ssWorksheet = null;
 
-            ExcelPackage p = ssWorkbook as ExcelPackage;
+            ExcelPackage p = AsWorkbook(ssWorkbook);
             ExcelWorkbook wb = p.Workbook;
             ExcelWorksheet ws;
 
@@ -2982,7 +3097,11 @@ namespace OutSystems.NssAdvanced_Excel
                 throw new ArgumentException("You need to specify at least one of WorksheetIndex or WorksheetName");
             }
 
-            ExcelPackage ee = ssWorkbook as ExcelPackage;
+            ExcelPackage ee = AsWorkbook(ssWorkbook);
+            if (ssIndexToDelete < 0 || ssIndexToDelete > ee.Workbook.Worksheets.Count)
+            {
+                throw new ArgumentException($"Worksheet index {ssIndexToDelete} does not exist: the workbook has {ee.Workbook.Worksheets.Count} worksheet(s), numbered from 1.", nameof(ssIndexToDelete));
+            }
             if (ssIndexToDelete == 0)
             {
                 ee.Workbook.Worksheets.Delete(ssNameToDelete);
@@ -3003,14 +3122,16 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssIndexWhereToAdd">The index where to add the new sheet. Default will be highest sheet index plus 1</param>
         public void MssWorkBook_AddSheet(object ssWorkbook, string ssWorksheetName, object ssWorksheet, int ssIndexWhereToAdd)
         {
-            ExcelPackage ee = ssWorkbook as ExcelPackage;
+            ExcelPackage ee = AsWorkbook(ssWorkbook);
             ExcelWorksheet ws;
             ExcelWorksheet newSheet;
 
             if (ssWorksheet != null)
             {
                 ws = AsWorksheet(ssWorksheet);
-                newSheet = ee.Workbook.Worksheets.Add(string.IsNullOrEmpty(ssWorksheetName) ? "Copy_" + ws.Name : ssWorksheetName, ws);
+                string copyName = string.IsNullOrEmpty(ssWorksheetName) ? "Copy_" + ws.Name : ssWorksheetName;
+                Util.ValidateSheetName(copyName, nameof(ssWorksheetName));
+                newSheet = ee.Workbook.Worksheets.Add(copyName, ws);
                 Util.PreserveConditionalFormattingStyles(ws, newSheet);
                 Util.PreserveHyperlinks(ws, newSheet);
                 if (ssIndexWhereToAdd > 0)
@@ -3020,7 +3141,9 @@ namespace OutSystems.NssAdvanced_Excel
                 return;
             }
 
-            newSheet = ee.Workbook.Worksheets.Add(string.IsNullOrEmpty(ssWorksheetName) ? "Sheet1" : ssWorksheetName);
+            string effectiveName = string.IsNullOrEmpty(ssWorksheetName) ? "Sheet1" : ssWorksheetName;
+            Util.ValidateSheetName(effectiveName, nameof(ssWorksheetName));
+            newSheet = ee.Workbook.Worksheets.Add(effectiveName);
             if (ssIndexWhereToAdd > 0)
             {
                 MssWorkbook_ChangeSheetIndex((object)ee, newSheet.Index, ssIndexWhereToAdd);
@@ -3037,7 +3160,7 @@ namespace OutSystems.NssAdvanced_Excel
             ssProperties = new RCWorkbookRecord();
             ssProperties.ssSTWorkbook.ssWorksheets = new RLWorksheetRecordList();
 
-            ExcelPackage p = ssWorkbook as ExcelPackage;
+            ExcelPackage p = AsWorkbook(ssWorkbook);
             ExcelWorkbook wb = p.Workbook;
 
             foreach (var sheet in wb.Worksheets)
@@ -3056,7 +3179,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssProperties"></param>
         public void MssWorksheet_GetProperties(object ssWorksheet, out RCWorksheetRecord ssProperties)
         {
-            ssProperties = new RCWorksheetRecord();
+            ssProperties = new RCWorksheetRecord(null);
 
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
@@ -3110,6 +3233,12 @@ namespace OutSystems.NssAdvanced_Excel
         /// </summary>
         private static void WriteRange(object ssWorksheet, int ssRowStart, int ssColumnStart, object ssDataSet, RCCellFormatRecord? format, bool ssExportHeaders)
         {
+            // A null or non-record-list DataSet cannot be written; say so instead of failing with a
+            // NullReferenceException/InvalidCastException deep inside the write.
+            if (!(ssDataSet is RecordList))
+            {
+                throw new ArgumentException("DataSet must be a record list (a List of a Record or Structure).", nameof(ssDataSet));
+            }
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
             DataTable dt = Util.RecordListToDataTable((RecordList)ssDataSet);
 
@@ -3145,8 +3274,11 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorkbook"></param>
         public void MssWorkbook_Close(object ssWorkbook)
         {
-            ExcelPackage p = ssWorkbook as ExcelPackage;
-            p.Dispose();
+            if (ssWorkbook == null)
+            {
+                return;
+            }
+            AsWorkbook(ssWorkbook).Dispose();
         } // MssWorkbook_Close
 
         /// <summary>
@@ -3157,6 +3289,7 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorksheet_Rename(object ssWorksheet, string ssName)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+            Util.ValidateSheetName(ssName, nameof(ssName));
             ws.Name = ssName;
         } // MssWorksheet_Rename
 
@@ -3167,7 +3300,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssBinaryData">The binary data of the file</param>
         public void MssWorkbook_GetBinaryData(object ssWorkbook, out byte[] ssBinaryData)
         {
-            ExcelPackage p = ssWorkbook as ExcelPackage;
+            ExcelPackage p = AsWorkbook(ssWorkbook);
             Util.PreserveVisibleRowsForZeroHeightSheets(p);
             ssBinaryData = SaveAndReload(p);
         } // MssWorkbook_GetBinaryData
@@ -3180,20 +3313,29 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssWorkbook">The workbook that you want to work with.</param>
         public void MssWorkbook_Open(string ssFileName, byte[] ssBinary_Data, string ssPassword, out object ssWorkbook)
         {
-            bool hasBinaryData = ssBinary_Data != null && ssBinary_Data.LongLength > 0;
+            ssWorkbook = OpenWorkbook(ssFileName, ssBinary_Data, ssPassword, nameof(ssBinary_Data));
+        } // MssWorkbook_Open
 
-            if (!hasBinaryData && string.IsNullOrEmpty(ssFileName))
+        /// <summary>
+        /// Workbook_Open and Workbook_Open_BinaryData: open from a URL, a file path or the bytes given.
+        /// binaryParamName is the calling action's name for the bytes, used in the error for a damaged file.
+        /// </summary>
+        private static ExcelPackage OpenWorkbook(string fileName, byte[] data, string password, string binaryParamName)
+        {
+            bool hasBinaryData = data != null && data.LongLength > 0;
+
+            if (!hasBinaryData && string.IsNullOrEmpty(fileName))
             {
                 throw new ArgumentException("You need to specify at least one of FileName or Binary_Data");
             }
 
             ExcelPackage p = new ExcelPackage();
-            if (ssFileName.ToLower().StartsWith("http:") || ssFileName.ToLower().StartsWith("https:"))
+            if (fileName.ToLower().StartsWith("http:") || fileName.ToLower().StartsWith("https:"))
             {
                 const int timeoutMs = 30000;                 // fail fast instead of hanging on a slow/dead host
                 const long maxDownloadBytes = 100L * 1024 * 1024; // cap the download to guard against runaway responses
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ssFileName);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(fileName);
                 request.Timeout = timeoutMs;
                 request.ReadWriteTimeout = timeoutMs;
 
@@ -3201,7 +3343,7 @@ namespace OutSystems.NssAdvanced_Excel
                 {
                     if (response.StatusCode != HttpStatusCode.OK)
                     {
-                        throw new IOException("Failed to download workbook from '" + ssFileName + "': HTTP " + (int)response.StatusCode + " " + response.StatusCode + ".");
+                        throw new IOException("Failed to download workbook from '" + fileName + "': HTTP " + (int)response.StatusCode + " " + response.StatusCode + ".");
                     }
 
                     using (Stream responseStream = response.GetResponseStream())
@@ -3220,28 +3362,33 @@ namespace OutSystems.NssAdvanced_Excel
                             buffer.Write(chunk, 0, read);
                         }
 
-                        byte[] data = Util.EnsureConditionalFormattingDxfs(buffer.ToArray());
-                        LoadPackage(p, data, ssPassword);
+                        byte[] raw = buffer.ToArray();
+                        Util.EnsureCompleteZipPackage(raw, "ssFileName");
+                        byte[] patched = Util.EnsureStylesPartDefaults(raw);
+                        LoadPackage(p, patched, password);
                     }
                 }
             }
-            else if (!string.IsNullOrEmpty(ssFileName))
+            else if (!string.IsNullOrEmpty(fileName))
             {
-                byte[] data = Util.EnsureConditionalFormattingDxfs(System.IO.File.ReadAllBytes(ssFileName));
-                LoadPackage(p, data, ssPassword);
+                byte[] raw = System.IO.File.ReadAllBytes(fileName);
+                Util.EnsureCompleteZipPackage(raw, "ssFileName");
+                byte[] patched = Util.EnsureStylesPartDefaults(raw);
+                LoadPackage(p, patched, password);
             }
             else if (hasBinaryData)
             {
-                byte[] data = Util.EnsureConditionalFormattingDxfs(ssBinary_Data);
-                LoadPackage(p, data, ssPassword);
+                Util.EnsureCompleteZipPackage(data, binaryParamName);
+                byte[] patched = Util.EnsureStylesPartDefaults(data);
+                LoadPackage(p, patched, password);
             }
             else
             {
                 throw new FileNotFoundException("Could not open a file with the given information. Please verify your filename/binary data and try again.");
             }
 
-            ssWorkbook = p;
-        } // MssWorkbook_Open
+            return p;
+        }
 
         /// <summary>
         /// Load workbook bytes into the package, decrypting with the password when one is supplied.
@@ -3249,6 +3396,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// </summary>
         private static void LoadPackage(ExcelPackage p, byte[] data, string password)
         {
+            var tablesWithoutFilter = Util.CollectTablesWithoutAutoFilter(data);
             try
             {
                 if (string.IsNullOrEmpty(password))
@@ -3273,6 +3421,7 @@ namespace OutSystems.NssAdvanced_Excel
                 }
                 throw;
             }
+            Util.RestoreTablesWithoutAutoFilter(p, tablesWithoutFilter);
         }
 
         /// <summary>
@@ -3671,6 +3820,16 @@ namespace OutSystems.NssAdvanced_Excel
         }
 
         /// <summary>
+        /// Cast the workbook handle to an ExcelPackage, throwing a clear error when another object
+        /// (for example a worksheet) is passed as the workbook.
+        /// </summary>
+        private static ExcelPackage AsWorkbook(object ssWorkbook)
+        {
+            if (ssWorkbook is ExcelPackage p) { return p; }
+            throw new ArgumentException("Expected a Workbook object (e.g. from Workbook_Create or Workbook_Open).", nameof(ssWorkbook));
+        }
+
+        /// <summary>
         /// Cast the worksheet handle to an ExcelWorksheet, throwing a clear error instead of
         /// the cryptic NullReferenceException that a failed "as" cast would surface later.
         /// </summary>
@@ -3720,11 +3879,18 @@ namespace OutSystems.NssAdvanced_Excel
         {
             string a = (address ?? "").Trim();
             int bang = a.LastIndexOf('!');
+            bool emptySheet = false;
             if (bang >= 0)
             {
+                string sheet = a.Substring(0, bang).Trim();
+                if (sheet.Length >= 2 && sheet[0] == '\'' && sheet[sheet.Length - 1] == '\'')
+                {
+                    sheet = sheet.Substring(1, sheet.Length - 2);
+                }
+                emptySheet = sheet.Length == 0;
                 a = a.Substring(bang + 1);
             }
-            if (a.Length == 0 || !(ExcelCellBase.IsValidAddress(a) || ExcelCellBase.IsValidCellAddress(a)))
+            if (emptySheet || a.Length == 0 || !(ExcelCellBase.IsValidAddress(a) || ExcelCellBase.IsValidCellAddress(a)))
             {
                 throw new ArgumentException("'" + address + "' is not a valid cell or range address (for example A1 or B2:D10).", paramName);
             }
@@ -3768,6 +3934,7 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             byte[] bytes = p.GetAsByteArray();
+            var tablesWithoutFilter = Util.CollectTablesWithoutAutoFilter(bytes);
             if (string.IsNullOrEmpty(password))
             {
                 p.Load(new System.IO.MemoryStream(bytes));
@@ -3776,6 +3943,7 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 p.Load(new System.IO.MemoryStream(bytes), password);
             }
+            Util.RestoreTablesWithoutAutoFilter(p, tablesWithoutFilter);
 
             foreach (var old in oldSheets)
             {
