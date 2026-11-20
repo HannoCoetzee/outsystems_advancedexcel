@@ -1173,17 +1173,28 @@ namespace OutSystems.NssAdvanced_Excel
             }
             if (ssWorksheetIndex > 0)
             {
+                if (ssWorksheetIndex > ee.Workbook.Worksheets.Count)
+                {
+                    throw new ArgumentException("There is no worksheet " + ssWorksheetIndex + ": the workbook has " + ee.Workbook.Worksheets.Count + ".", "ssWorksheetIndex");
+                }
                 target = ee.Workbook.Worksheets[ssWorksheetIndex];
             }
 
-            if (target == null) return;
+            if (target == null)
+            {
+                if (!string.IsNullOrEmpty(ssWorksheetName))
+                {
+                    throw new ArgumentException("There is no worksheet named '" + ssWorksheetName + "'.", "ssWorksheetName");
+                }
+                return;
+            }
 
             foreach (var sheet in ee.Workbook.Worksheets)
             {
                 sheet.View.TabSelected = false;
             }
             target.View.TabSelected = true;
-            ee.Workbook.View.ActiveTab = target.Index;
+            ee.Workbook.View.ActiveTab = target.Index - 1;
         } // MssWorksheet_SetActive
 
         /// <summary>
@@ -1434,11 +1445,11 @@ namespace OutSystems.NssAdvanced_Excel
         } // MssWorkbook_AddName
 
         /// <summary>
-        /// Set the pixel width of a column on a specific worksheet
+        /// Set the width of a column on a specific worksheet, in Excel character widths (the unit of Excel's Column Width).
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with</param>
         /// <param name="ssColumnNumber">The column number, starting at 1</param>
-        /// <param name="ssDesiredWidth">The pixel width you desire for the column.</param>
+        /// <param name="ssDesiredWidth">The width in Excel character widths, as in Excel's Column Width (the default width is about 9.14). Not pixels.</param>
         public void MssColumn_SetWidth(object ssWorksheet, int ssColumnNumber, decimal ssDesiredWidth)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
@@ -1446,12 +1457,12 @@ namespace OutSystems.NssAdvanced_Excel
         } // MssColumn_SetWidth
 
         /// <summary>
-        /// Set the pixel height for a specific row in a worksheet
+        /// Set the height of a row on a specific worksheet, in points (the unit of Excel's Row Height).
         /// </summary>
         /// <param name="ssWorksheet">The worksheet to work with
         /// </param>
         /// <param name="ssRowNumber">The number of the row to set the height for</param>
-        /// <param name="ssDesiredHeight">The desired pixel height for the row</param>
+        /// <param name="ssDesiredHeight">The height in points, as in Excel's Row Height (the default height is 15). Not pixels.</param>
         public void MssRow_SetHeight(object ssWorksheet, int ssRowNumber, decimal ssDesiredHeight)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
@@ -1497,22 +1508,28 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssCell_ReadByIndex(object ssWorksheet, int ssRow, int ssColumn, bool ssReadText, out string ssCellValue)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+            if (ssRow < 1 || ssRow > ExcelPackage.MaxRows)
+            {
+                throw new ArgumentException("Row must be between 1 and " + ExcelPackage.MaxRows + ".", "ssRow");
+            }
+            if (ssColumn < 1 || ssColumn > ExcelPackage.MaxColumns)
+            {
+                throw new ArgumentException("Column must be between 1 and " + ExcelPackage.MaxColumns + ".", "ssColumn");
+            }
 
-            try
-            {
-                if (ssReadText)
-                    ssCellValue = CellText(ws.Cells[ssRow, ssColumn]);
-                else
-                    // invariant culture so raw values read back the same on any server locale
-                    // (and round-trip with the write actions, which parse invariantly)
-                    ssCellValue = Convert.ToString(ws.GetValue(ssRow, ssColumn), System.Globalization.CultureInfo.InvariantCulture);
-            }
-            catch (Exception ex)
-            {
-                Util.LogMessage("MssCell_ReadByIndex failed at [" + ssRow + "," + ssColumn + "]: " + ex.Message);
-                ssCellValue = String.Empty;
-            }
+            if (ssReadText)
+                ssCellValue = CellText(ws.Cells[ssRow, ssColumn]);
+            else
+                ssCellValue = CellRawText(ws.GetValue(ssRow, ssColumn));
         } // MssCell_ReadByIndex
+
+        /// <summary>
+        /// Convert a cell value to the invariant text returned by Cell_Read when ReadText is false.
+        /// </summary>
+        private static string CellRawText(object value)
+        {
+            return Convert.ToString(value, System.Globalization.CultureInfo.InvariantCulture);
+        } // CellRawText
 
         /// <summary>
         /// The cell as Excel shows it. Excel shows a boolean as TRUE or FALSE whatever its number
@@ -1538,7 +1555,28 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssCellValue">text-value</param>
         public void MssCell_ReadByName(object ssWorksheet, string ssCellName, bool ssReadText, out string ssCellValue)
         {
-            ExcelCellAddress addr = new ExcelCellAddress(ssCellName);
+            ExcelWorksheet ws = AsWorksheet(ssWorksheet);
+            RequireAddress(ssCellName, "ssCellName");
+            string address = (ssCellName ?? "").Trim();
+            int bang = address.LastIndexOf('!');
+            if (bang >= 0)
+            {
+                string sheet = address.Substring(0, bang).Trim('\'');
+                if (!string.Equals(sheet, ws.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new ArgumentException("'" + ssCellName + "' names another worksheet; read it from that worksheet.", "ssCellName");
+                }
+                address = address.Substring(bang + 1);
+            }
+            if (!ExcelCellBase.IsValidCellAddress(address))
+            {
+                throw new ArgumentException("'" + ssCellName + "' must identify a single cell address.", "ssCellName");
+            }
+            ExcelCellAddress addr = new ExcelCellAddress(address);
+            if (addr.Row < 1 || addr.Row > ExcelPackage.MaxRows || addr.Column < 1 || addr.Column > ExcelPackage.MaxColumns)
+            {
+                throw new ArgumentException("Cell address must be inside the Excel grid.", "ssCellName");
+            }
             MssCell_ReadByIndex(ssWorksheet, addr.Row, addr.Column, ssReadText, out ssCellValue);
         } // MssCell_ReadByName
 
@@ -1684,7 +1722,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// BarClustered3D
         /// BarStacked3D
         /// BarStacked1003D
-        /// Column3D
+        /// Column3D (not supported)
         /// ColumnClustered3D
         /// ColumnStacked3D
         /// ColumnStacked1003D
@@ -1738,10 +1776,10 @@ namespace OutSystems.NssAdvanced_Excel
         /// Radar
         /// RadarFilled
         /// RadarMarkers
-        /// StockHLC
-        /// StockOHLC
-        /// StockVHLC
-        /// StockVOHLC
+        /// StockHLC (not supported)
+        /// StockOHLC (not supported)
+        /// StockVHLC (not supported)
+        /// StockVOHLC (not supported)
         /// Surface
         /// SurfaceTopView
         /// SurfaceTopViewWireframe
@@ -1755,8 +1793,8 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssDataSeries_List">List Of DataSeries</param>
         /// <param name="ssHeight">Expressed in pixels</param>
         /// <param name="ssWidth">Expressed in pixels</param>
-        /// <param name="ssRowPos">Row position to place the upper left corner graph</param>
-        /// <param name="ssColPos">Column position to place the upper left corner graph</param>
+        /// <param name="ssRowPos">Row of the chart's upper-left corner, starting at 1</param>
+        /// <param name="ssColPos">Column of the chart's upper-left corner, starting at 1</param>
         public void MssWorksheet_Chart_Create(object ssWorksheet, string ssChartType, string ssChartName, RLDataSeriesRecordList ssDataSeries_List, int ssHeight, int ssWidth, int ssRowPos, int ssColPos)
         {
             MssChart_Create(ssWorksheet, ssChartType, ssChartName, ssDataSeries_List, ssHeight, ssWidth, ssRowPos, ssColPos);
@@ -2204,7 +2242,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
-            List<ExcelRangeBase> result = ws.Cells.Where(c => c.Value?.ToString() == ssValueToFind).ToList();
+            List<ExcelRangeBase> result = ws.Cells.Where(c => c.Value != null && CellRawText(c.Value) == ssValueToFind).ToList();
 
             foreach (ExcelRangeBase item in result)
             {
@@ -2816,12 +2854,12 @@ namespace OutSystems.NssAdvanced_Excel
         } // MssWorksheet_Hide_Show
 
         /// <summary>
-        /// 
+        /// Finds the first cell in Range whose value equals Value, compared as the text Cell_Read returns with ReadText False.
         /// </summary>
         /// <param name="ssWorksheet"></param>
         /// <param name="ssRange"></param>
         /// <param name="ssValue"></param>
-        /// <param name="ssParameter1"></param>
+        /// <param name="ssParameter1">Not used.</param>
         /// <param name="ssFound"></param>
         /// <param name="ssRowIndex"></param>
         /// <param name="ssColumnIndex"></param>
@@ -2834,7 +2872,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             foreach (var item in ws.Cells[ssRange])
             {
-                if (item.Value?.ToString() == ssValue)
+                if (item.Value != null && CellRawText(item.Value) == ssValue)
                 {
                     ssRowIndex = item.Start.Row;
                     ssColumnIndex = item.Start.Column;
@@ -2918,25 +2956,22 @@ namespace OutSystems.NssAdvanced_Excel
 
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
-            try
+            if (string.IsNullOrEmpty(ssCellName))
             {
-                ExcelRange cell;
-
-                if (string.IsNullOrEmpty(ssCellName))
+                if (ssCellRow < 1 || ssCellRow > ExcelPackage.MaxRows)
                 {
-                    cell = ws.Cells[ssCellRow, ssCellColumn];
+                    throw new ArgumentException("Row must be between 1 and " + ExcelPackage.MaxRows + ".", "ssCellRow");
                 }
-                else
+                if (ssCellColumn < 1 || ssCellColumn > ExcelPackage.MaxColumns)
                 {
-                    cell = ws.Cells[ssCellName];
+                    throw new ArgumentException("Column must be between 1 and " + ExcelPackage.MaxColumns + ".", "ssCellColumn");
                 }
-
-                ssCellValue = ssReadText ? CellText(cell) : Convert.ToString(cell.Value, System.Globalization.CultureInfo.InvariantCulture);
+                ExcelRange cell = ws.Cells[ssCellRow, ssCellColumn];
+                ssCellValue = ssReadText ? CellText(cell) : CellRawText(cell.Value);
             }
-            catch (Exception ex)
+            else
             {
-                Util.LogMessage("MssCell_Read failed (name='" + ssCellName + "', row=" + ssCellRow + ", col=" + ssCellColumn + "): " + ex.Message);
-                ssCellValue = String.Empty;
+                MssCell_ReadByName(ssWorksheet, ssCellName, ssReadText, out ssCellValue);
             }
         } // MssCell_Read
 
@@ -3044,12 +3079,25 @@ namespace OutSystems.NssAdvanced_Excel
 
             ExcelPackage ee = AsWorkbook(ssWorkbook);
 
-            if (ssNewIndex > ee.Workbook.Worksheets.Count)
+            if (ssCurrentIndex > ee.Workbook.Worksheets.Count)
+            {
+                throw new ArgumentException("There is no worksheet " + ssCurrentIndex + ": the workbook has " + ee.Workbook.Worksheets.Count + ".", "ssCurrentIndex");
+            }
+            if (ssNewIndex == ssCurrentIndex)
+            {
+                return;
+            }
+            if (ssNewIndex >= ee.Workbook.Worksheets.Count)
             {
                 ee.Workbook.Worksheets.MoveToEnd(ssCurrentIndex);
                 return;
             }
-            ee.Workbook.Worksheets.MoveBefore(ssCurrentIndex, ssNewIndex);
+            if (ssNewIndex < ssCurrentIndex)
+            {
+                ee.Workbook.Worksheets.MoveBefore(ssCurrentIndex, ssNewIndex);
+                return;
+            }
+            ee.Workbook.Worksheets.MoveAfter(ssCurrentIndex, ssNewIndex);
         } // MssWorkbook_ChangeSheetIndex
 
         /// <summary>
@@ -3435,7 +3483,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// BarClustered3D
         /// BarStacked3D
         /// BarStacked1003D
-        /// Column3D
+        /// Column3D (not supported)
         /// ColumnClustered3D
         /// ColumnStacked3D
         /// ColumnStacked1003D
@@ -3489,10 +3537,10 @@ namespace OutSystems.NssAdvanced_Excel
         /// Radar
         /// RadarFilled
         /// RadarMarkers
-        /// StockHLC
-        /// StockOHLC
-        /// StockVHLC
-        /// StockVOHLC
+        /// StockHLC (not supported)
+        /// StockOHLC (not supported)
+        /// StockVHLC (not supported)
+        /// StockVOHLC (not supported)
         /// Surface
         /// SurfaceTopView
         /// SurfaceTopViewWireframe
@@ -3506,14 +3554,27 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssDataSeries_List">List Of DataSeries</param>
         /// <param name="ssHeight">Expressed in pixels</param>
         /// <param name="ssWidth">Expressed in pixels</param>
-        /// <param name="ssRowPos">Row position to place the upper left corner graph</param>
-        /// <param name="ssColPos">Column position to place the upper left corner graph</param>
+        /// <param name="ssRowPos">Row of the chart's upper-left corner, starting at 1</param>
+        /// <param name="ssColPos">Column of the chart's upper-left corner, starting at 1</param>
         public void MssChart_Create(object ssWorksheet, string ssChartType, string ssChartName, RLDataSeriesRecordList ssDataSeries_List, int ssHeight, int ssWidth, int ssRowPos, int ssColPos)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
 
-            var chart = ws.Drawings.AddChart(ssChartName, Util.StringToChartType(ssChartType));
-            chart.SetPosition(ssRowPos, 0, ssColPos, 0);
+            // Both positions count from 1 (A1), like the image actions; EPPlus counts from 0.
+            if (ssRowPos < 1 || ssRowPos > ExcelPackage.MaxRows)
+            {
+                throw new ArgumentException("Row position must be between 1 and " + ExcelPackage.MaxRows + ".", nameof(ssRowPos));
+            }
+            if (ssColPos < 1 || ssColPos > ExcelPackage.MaxColumns)
+            {
+                throw new ArgumentException("Column position must be between 1 and " + ExcelPackage.MaxColumns + ".", nameof(ssColPos));
+            }
+
+            // Every check happens before AddChart, so a rejected call leaves no drawing on the sheet.
+            var chartType = Util.StringToChartType(ssChartType);
+
+            var chart = ws.Drawings.AddChart(ssChartName, chartType);
+            chart.SetPosition(ssRowPos - 1, 0, ssColPos - 1, 0);
             chart.SetSize(ssWidth, ssHeight);
 
             for (int i = 0; i < ssDataSeries_List.Count; i++)
@@ -3646,7 +3707,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <param name="ssRow">Row Number</param>
         /// <param name="ssStartColumn">Column Number</param>
         /// <param name="ssEndColumn">Column Number. Mandatory if IsMerged is True</param>
-        /// <param name="ssIsMerged">If True cells are merged</param>
+        /// <param name="ssIsMerged">If True, the cells from StartColumn to EndColumn are a merged range: its value is cleared and the range stays merged.</param>
         public void MssCell_ClearValueByIndex(object ssWorksheet, int ssRow, int ssStartColumn, int ssEndColumn, bool ssIsMerged)
         {
             // Select the worksheet
@@ -3681,12 +3742,12 @@ namespace OutSystems.NssAdvanced_Excel
         } // MssCell_ClearValueByIndex
 
         /// <summary>
-        /// Clear value clear the value of a specific cell by its name.
+        /// Clear the value of a cell, defined by its name.
         /// Option to specify whether the cell is part of a merged group or not.
         /// </summary>
         /// <param name="ssWorksheet">Worksheet on which the cell resides</param>
         /// <param name="ssCellName">Cell-name (eg A1:B1, if cells are merged; eg A1, if single cell)</param>
-        /// <param name="ssIsMerged">If True cells are merged</param>
+        /// <param name="ssIsMerged">If True, CellName is a merged range (eg A1:B1): its value is cleared and the range stays merged.</param>
         public void MssCell_ClearValueByName(object ssWorksheet, string ssCellName, bool ssIsMerged)
         {
             // Select the worksheet
