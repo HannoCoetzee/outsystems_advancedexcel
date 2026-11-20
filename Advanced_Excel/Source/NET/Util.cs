@@ -1312,89 +1312,132 @@ namespace OutSystems.NssAdvanced_Excel
         }
 
         /// <summary>
-        /// 
+        /// Chart type names this extension supports, in the order they are offered to the caller.
         /// </summary>
-        /// <param name="chartType"></param>
-        /// <returns></returns>
+        private static readonly string[] SupportedChartTypes = new string[]
+        {
+            "Area3D",
+            "AreaStacked3D",
+            "AreaStacked1003D",
+            "BarClustered3D",
+            "BarStacked3D",
+            "BarStacked1003D",
+            "ColumnClustered3D",
+            "ColumnStacked3D",
+            "ColumnStacked1003D",
+            "Line3D",
+            "Pie3D",
+            "PieExploded3D",
+            "Area",
+            "AreaStacked",
+            "AreaStacked100",
+            "BarClustered",
+            "BarOfPie",
+            "BarStacked",
+            "BarStacked100",
+            "Bubble",
+            "Bubble3DEffect",
+            "ColumnClustered",
+            "ColumnStacked",
+            "ColumnStacked100",
+            "ConeBarClustered",
+            "ConeBarStacked",
+            "ConeBarStacked100",
+            "ConeCol",
+            "ConeColClustered",
+            "ConeColStacked",
+            "ConeColStacked100",
+            "CylinderBarClustered",
+            "CylinderBarStacked",
+            "CylinderBarStacked100",
+            "CylinderCol",
+            "CylinderColClustered",
+            "CylinderColStacked",
+            "CylinderColStacked100",
+            "Doughnut",
+            "DoughnutExploded",
+            "Line",
+            "LineMarkers",
+            "LineMarkersStacked",
+            "LineMarkersStacked100",
+            "LineStacked",
+            "LineStacked100",
+            "Pie",
+            "PieExploded",
+            "PieOfPie",
+            "PyramidBarClustered",
+            "PyramidBarStacked",
+            "PyramidBarStacked100",
+            "PyramidCol",
+            "PyramidColClustered",
+            "PyramidColStacked",
+            "PyramidColStacked100",
+            "Radar",
+            "RadarFilled",
+            "RadarMarkers",
+            "Surface",
+            "SurfaceTopView",
+            "SurfaceTopViewWireframe",
+            "SurfaceWireframe",
+            "XYScatter",
+            "XYScatterLines",
+            "XYScatterLinesNoMarkers",
+            "XYScatterSmooth",
+            "XYScatterSmoothNoMarkers"
+        };
+
+        /// <summary>
+        /// Chart type names the extension documents but EPPlus 4.5 does not implement: AddChart
+        /// throws NotImplementedException for them, so they are rejected instead.
+        /// </summary>
+        private static readonly string[] UnsupportedChartTypes = new string[]
+        {
+            "Column3D",
+            "StockHLC",
+            "StockOHLC",
+            "StockVHLC",
+            "StockVOHLC"
+        };
+
+        /// <summary>Chart type name to EPPlus chart type. Case-sensitive, as the names are documented.</summary>
+        private static readonly Dictionary<string, eChartType> ChartTypes = CreateChartTypeMap();
+
+        private static Dictionary<string, eChartType> CreateChartTypeMap()
+        {
+            // Each supported name is the name of its EPPlus chart type.
+            Dictionary<string, eChartType> chartTypes = new Dictionary<string, eChartType>(StringComparer.Ordinal);
+            foreach (string name in SupportedChartTypes)
+            {
+                chartTypes.Add(name, (eChartType)Enum.Parse(typeof(eChartType), name));
+            }
+            return chartTypes;
+        }
+
+        /// <summary>
+        /// Converts a chart type name into the EPPlus chart type of the same name.
+        /// </summary>
+        /// <param name="chartType">Chart type name, one of the names listed in MssChart_Create.</param>
+        /// <returns>The EPPlus chart type.</returns>
+        /// <exception cref="ArgumentException">
+        /// The chart type is not supported by this extension, or is not a known chart type.
+        /// </exception>
         internal static eChartType StringToChartType(string chartType)
         {
-            switch (chartType)
+            string name = chartType ?? "";
+
+            if (Array.IndexOf(UnsupportedChartTypes, name) >= 0)
             {
-                case "Area3D": return eChartType.Area3D;
-                case "AreaStacked3D": return eChartType.AreaStacked3D;
-                case "AreaStacked1003D": return eChartType.AreaStacked1003D;
-                case "BarClustered3D": return eChartType.BarClustered3D;
-                case "BarStacked3D": return eChartType.BarStacked3D;
-                case "BarStacked1003D": return eChartType.BarStacked1003D;
-                case "Column3D": return eChartType.Column3D;
-                case "ColumnClustered3D": return eChartType.ColumnClustered3D;
-                case "ColumnStacked3D": return eChartType.ColumnStacked3D;
-                case "ColumnStacked1003D": return eChartType.ColumnStacked1003D;
-                case "Line3D": return eChartType.Line3D;
-                case "Pie3D": return eChartType.Pie3D;
-                case "PieExploded3D": return eChartType.PieExploded3D;
-                case "Area": return eChartType.Area;
-                case "AreaStacked": return eChartType.AreaStacked;
-                case "AreaStacked100": return eChartType.AreaStacked100;
-                case "BarClustered": return eChartType.BarClustered;
-                case "BarOfPie": return eChartType.BarOfPie;
-                case "BarStacked": return eChartType.BarStacked;
-                case "BarStacked100": return eChartType.BarStacked100;
-                case "Bubble": return eChartType.Bubble;
-                case "Bubble3DEffect": return eChartType.Bubble3DEffect;
-                case "ColumnClustered": return eChartType.ColumnClustered;
-                case "ColumnStacked": return eChartType.ColumnStacked;
-                case "ColumnStacked100": return eChartType.ColumnStacked100;
-                case "ConeBarClustered": return eChartType.ConeBarClustered;
-                case "ConeBarStacked": return eChartType.ConeBarStacked;
-                case "ConeBarStacked100": return eChartType.ConeBarStacked100;
-                case "ConeCol": return eChartType.ConeCol;
-                case "ConeColClustered": return eChartType.ConeColClustered;
-                case "ConeColStacked": return eChartType.ConeColStacked;
-                case "ConeColStacked100": return eChartType.ConeColStacked100;
-                case "CylinderBarClustered": return eChartType.CylinderBarClustered;
-                case "CylinderBarStacked": return eChartType.CylinderBarStacked;
-                case "CylinderBarStacked100": return eChartType.CylinderBarStacked100;
-                case "CylinderCol": return eChartType.CylinderCol;
-                case "CylinderColClustered": return eChartType.CylinderColClustered;
-                case "CylinderColStacked": return eChartType.CylinderColStacked;
-                case "CylinderColStacked100": return eChartType.CylinderColStacked100;
-                case "Doughnut": return eChartType.Doughnut;
-                case "DoughnutExploded": return eChartType.DoughnutExploded;
-                case "Line": return eChartType.Line;
-                case "LineMarkers": return eChartType.LineMarkers;
-                case "LineMarkersStacked": return eChartType.LineMarkersStacked;
-                case "LineMarkersStacked100": return eChartType.LineMarkersStacked100;
-                case "LineStacked": return eChartType.LineStacked;
-                case "LineStacked100": return eChartType.LineStacked100;
-                case "Pie": return eChartType.Pie;
-                case "PieExploded": return eChartType.PieExploded;
-                case "PieOfPie": return eChartType.PieOfPie;
-                case "PyramidBarClustered": return eChartType.PyramidBarClustered;
-                case "PyramidBarStacked": return eChartType.PyramidBarStacked;
-                case "PyramidBarStacked100": return eChartType.PyramidBarStacked100;
-                case "PyramidCol": return eChartType.PyramidCol;
-                case "PyramidColClustered": return eChartType.PyramidColClustered;
-                case "PyramidColStacked": return eChartType.PyramidColStacked;
-                case "PyramidColStacked100": return eChartType.PyramidColStacked100;
-                case "Radar": return eChartType.Radar;
-                case "RadarFilled": return eChartType.RadarFilled;
-                case "RadarMarkers": return eChartType.RadarMarkers;
-                case "StockHLC": return eChartType.StockHLC;
-                case "StockOHLC": return eChartType.StockOHLC;
-                case "StockVHLC": return eChartType.StockVHLC;
-                case "StockVOHLC": return eChartType.StockVOHLC;
-                case "Surface": return eChartType.Surface;
-                case "SurfaceTopView": return eChartType.SurfaceTopView;
-                case "SurfaceTopViewWireframe": return eChartType.SurfaceTopViewWireframe;
-                case "SurfaceWireframe": return eChartType.SurfaceWireframe;
-                case "XYScatter": return eChartType.XYScatter;
-                case "XYScatterLines": return eChartType.XYScatterLines;
-                case "XYScatterLinesNoMarkers": return eChartType.XYScatterLinesNoMarkers;
-                case "XYScatterSmooth": return eChartType.XYScatterSmooth;
-                case "XYScatterSmoothNoMarkers": return eChartType.XYScatterSmoothNoMarkers;
+                throw new ArgumentException("ChartType '" + name + "' is not supported by this extension.", "ssChartType");
             }
-            return eChartType.Column3D;
+
+            eChartType result;
+            if (ChartTypes.TryGetValue(name, out result))
+            {
+                return result;
+            }
+
+            throw new ArgumentException("Unknown ChartType '" + name + "'. Use one of: "
+                + string.Join(", ", SupportedChartTypes) + ".", "ssChartType");
         }
 
     }

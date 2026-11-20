@@ -168,7 +168,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// BarClustered3D
 		/// BarStacked3D
 		/// BarStacked1003D
-		/// Column3D
+		/// Column3D (not supported)
 		/// ColumnClustered3D
 		/// ColumnStacked3D
 		/// ColumnStacked1003D
@@ -222,10 +222,10 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// Radar
 		/// RadarFilled
 		/// RadarMarkers
-		/// StockHLC
-		/// StockOHLC
-		/// StockVHLC
-		/// StockVOHLC
+		/// StockHLC (not supported)
+		/// StockOHLC (not supported)
+		/// StockVHLC (not supported)
+		/// StockVOHLC (not supported)
 		/// Surface
 		/// SurfaceTopView
 		/// SurfaceTopViewWireframe
@@ -239,8 +239,8 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssDataSeries_List">List Of DataSeries</param>
 		/// <param name="ssHeight">Expressed in pixels</param>
 		/// <param name="ssWidth">Expressed in pixels</param>
-		/// <param name="ssRowPos">Row position to place the upper left corner graph</param>
-		/// <param name="ssColPos">Column position to place the upper left corner graph</param>
+		/// <param name="ssRowPos">Row of the chart&apos;s upper-left corner, starting at 1</param>
+		/// <param name="ssColPos">Column of the chart&apos;s upper-left corner, starting at 1</param>
 		void MssChart_Create(object ssWorksheet, string ssChartType, string ssChartName, RLDataSeriesRecordList ssDataSeries_List, int ssHeight, int ssWidth, int ssRowPos, int ssColPos);
 
 		/// <summary>
@@ -278,15 +278,15 @@ namespace OutSystems.NssAdvanced_Excel {
 		void MssCells_FindByValue(object ssWorksheet, string ssValueToFind, out RLRangeRecordList ssListOfCells);
 
 		/// <summary>
-		/// 
+		/// Finds the first cell in Range whose value equals Value, compared as the text Cell_Read returns with ReadText False.
 		/// </summary>
-		/// <param name="ssWorksheet"></param>
-		/// <param name="ssRange"></param>
-		/// <param name="ssValue"></param>
-		/// <param name="ssParameter1"></param>
-		/// <param name="ssFound"></param>
-		/// <param name="ssRowIndex"></param>
-		/// <param name="ssColumnIndex"></param>
+		/// <param name="ssWorksheet">The worksheet to search</param>
+		/// <param name="ssRange">The range to search (eg A1:D20)</param>
+		/// <param name="ssValue">The value to find, as the text Cell_Read returns with ReadText False (numbers use a dot as the decimal separator)</param>
+		/// <param name="ssParameter1">Not used.</param>
+		/// <param name="ssFound">True if a cell with the value was found</param>
+		/// <param name="ssRowIndex">Row of the first matching cell, or 0</param>
+		/// <param name="ssColumnIndex">Column of the first matching cell, or 0</param>
 		void MssContainInRange(object ssWorksheet, string ssRange, string ssValue, string ssParameter1, out bool ssFound, out int ssRowIndex, out int ssColumnIndex);
 
 		/// <summary>
@@ -561,7 +561,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// BarClustered3D
 		/// BarStacked3D
 		/// BarStacked1003D
-		/// Column3D
+		/// Column3D (not supported)
 		/// ColumnClustered3D
 		/// ColumnStacked3D
 		/// ColumnStacked1003D
@@ -615,10 +615,10 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// Radar
 		/// RadarFilled
 		/// RadarMarkers
-		/// StockHLC
-		/// StockOHLC
-		/// StockVHLC
-		/// StockVOHLC
+		/// StockHLC (not supported)
+		/// StockOHLC (not supported)
+		/// StockVHLC (not supported)
+		/// StockVOHLC (not supported)
 		/// Surface
 		/// SurfaceTopView
 		/// SurfaceTopViewWireframe
@@ -632,8 +632,8 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssDataSeries_List">List Of DataSeries</param>
 		/// <param name="ssHeight">Expressed in pixels</param>
 		/// <param name="ssWidth">Expressed in pixels</param>
-		/// <param name="ssRowPos">Row position to place the upper left corner graph</param>
-		/// <param name="ssColPos">Column position to place the upper left corner graph</param>
+		/// <param name="ssRowPos">Row of the chart&apos;s upper-left corner, starting at 1</param>
+		/// <param name="ssColPos">Column of the chart&apos;s upper-left corner, starting at 1</param>
 		void MssWorksheet_Chart_Create(object ssWorksheet, string ssChartType, string ssChartName, RLDataSeriesRecordList ssDataSeries_List, int ssHeight, int ssWidth, int ssRowPos, int ssColPos);
 
 		/// <summary>
@@ -655,20 +655,19 @@ namespace OutSystems.NssAdvanced_Excel {
 		void MssWorkbook_Open_BinaryData(byte[] ssBinaryData, string ssPassword, out object ssWorkbook);
 
 		/// <summary>
-		/// Set the pixel width of a column on a specific worksheet
+		/// Set the width of a column on a specific worksheet, in Excel character widths (the unit of Excel&apos;s Column Width).
 		/// </summary>
 		/// <param name="ssWorksheet">The worksheet to work with</param>
 		/// <param name="ssColumnNumber">The column number, starting at 1</param>
-		/// <param name="ssDesiredWidth">The pixel width you desire for the column.</param>
+		/// <param name="ssDesiredWidth">The width in Excel character widths, as in Excel&apos;s Column Width (the default width is about 9.14). Not pixels.</param>
 		void MssColumn_SetWidth(object ssWorksheet, int ssColumnNumber, decimal ssDesiredWidth);
 
 		/// <summary>
-		/// Set the pixel height for a specific row in a worksheet
+		/// Set the height of a row on a specific worksheet, in points (the unit of Excel&apos;s Row Height).
 		/// </summary>
-		/// <param name="ssWorksheet">The worksheet to work with
-		/// </param>
+		/// <param name="ssWorksheet">The worksheet to work with</param>
 		/// <param name="ssRowNumber">The number of the row to set the height for</param>
-		/// <param name="ssDesiredHeight">The desired pixel height for the row</param>
+		/// <param name="ssDesiredHeight">The height in points, as in Excel&apos;s Row Height (the default height is 15). Not pixels.</param>
 		void MssRow_SetHeight(object ssWorksheet, int ssRowNumber, decimal ssDesiredHeight);
 
 		/// <summary>
@@ -882,16 +881,16 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <param name="ssRow">Row Number</param>
 		/// <param name="ssStartColumn">Column Number</param>
 		/// <param name="ssEndColumn">Column Number, Mandatory if IsMerged is True</param>
-		/// <param name="ssIsMerged">If True, cells are merged and will be unmerged.</param>
+		/// <param name="ssIsMerged">If True, the cells from StartColumn to EndColumn are a merged range: its value is cleared and the range stays merged.</param>
 		void MssCell_ClearValueByIndex(object ssWorksheet, int ssRow, int ssStartColumn, int ssEndColumn, bool ssIsMerged);
 
 		/// <summary>
-		/// Clear value clear the value of a specific cell by its name.
+		/// Clear the value of a cell, defined by its name.
 		/// Option to specify whether the cell is part of a merged group or not.
 		/// </summary>
 		/// <param name="ssWorksheet">Worksheet on which the cell resides</param>
 		/// <param name="ssCellName">Cell name (eg A1:B1, if cells are merged; eg A1, if single cell)</param>
-		/// <param name="ssIsMerged">If True cells are merged and will be unmerged.</param>
+		/// <param name="ssIsMerged">If True, CellName is a merged range (eg A1:B1): its value is cleared and the range stays merged.</param>
 		void MssCell_ClearValueByName(object ssWorksheet, string ssCellName, bool ssIsMerged);
 
 		/// <summary>
