@@ -64,7 +64,8 @@ namespace OutSystems.NssAdvanced_Excel
 					throw new ArgumentException("Invalid Alignment '" + ssAlignment + "'. Use Left, Center, or Right.", nameof(ssAlignment));
 			}
 
-			ExcelHeaderFooterText target = ssInFooter ? ws.HeaderFooter.OddFooter : ws.HeaderFooter.OddHeader;
+			ExcelHeaderFooter headerFooter = HeaderFooterOf(ws);
+			ExcelHeaderFooterText target = ssInFooter ? headerFooter.OddFooter : headerFooter.OddHeader;
 
 			try
 			{
@@ -1356,6 +1357,40 @@ namespace OutSystems.NssAdvanced_Excel
         } // WriteColumnRange
 
         /// <summary>
+        /// Throws when a drawing of the given size, placed at the given cell (1-based) and offsets, would end beyond
+        /// the last row or column, which makes the file invalid for Excel. EPPlus works out the lower-right anchor
+        /// from the cell sizes, so a temporary shape is placed and measured, then removed. The real drawing is only
+        /// added once it fits: EPPlus can't remove a picture cleanly (adding the same image again then fails).
+        /// </summary>
+        private static void RequireFitsInGrid(ExcelWorksheet ws, int row, int rowOffsetPixels, int column, int columnOffsetPixels,
+            int widthPixels, int heightPixels, string what, string rowParam, string columnParam)
+        {
+            int toRow, toColumn;
+            ExcelShape probe = ws.Drawings.AddShape("AdvancedExcelFitCheck_" + Guid.NewGuid().ToString("N"), eShapeStyle.Rect);
+            try
+            {
+                probe.SetPosition(row - 1, rowOffsetPixels, column - 1, columnOffsetPixels);
+                probe.SetSize(widthPixels, heightPixels);
+                toRow = probe.To.Row;
+                toColumn = probe.To.Column;
+            }
+            finally
+            {
+                ws.Drawings.Remove(probe);
+            }
+            if (toRow > ExcelPackage.MaxRows - 1)
+            {
+                throw new ArgumentException("The " + what + " does not fit on the sheet: starting at row " + row
+                    + " with a height of " + heightPixels + " pixels it would end below row " + ExcelPackage.MaxRows + ".", rowParam);
+            }
+            if (toColumn > ExcelPackage.MaxColumns - 1)
+            {
+                throw new ArgumentException("The " + what + " does not fit on the sheet: starting at column " + column
+                    + " with a width of " + widthPixels + " pixels it would end beyond column XFD (" + ExcelPackage.MaxColumns + ").", columnParam);
+            }
+        } // RequireFitsInGrid
+
+        /// <summary>
         /// Write a image on a cell, defined by its index.
         /// Input are a worksheet-object and a image-object.
         /// </summary>
@@ -1382,7 +1417,13 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             // EPPlus keeps the image for Worksheet_GetImages, so it isn't disposed here.
-            ExcelPicture pic = ws.Drawings.AddPicture(ssImageName, Util.ImageFromBytes(ssImage));
+            Image image = Util.ImageFromBytes(ssImage);
+            // EPPlus sizes a new picture from the image's pixels at its resolution, relative to 96 dpi.
+            int widthPixels = (int)(image.Width / (image.HorizontalResolution / 96f));
+            int heightPixels = (int)(image.Height / (image.VerticalResolution / 96f));
+            RequireFitsInGrid(ws, ssRow, 0, ssColumn, 0, widthPixels, heightPixels, "image", nameof(ssRow), nameof(ssColumn));
+
+            ExcelPicture pic = ws.Drawings.AddPicture(ssImageName, image);
             pic.SetPosition(ssRow - 1, 0, ssColumn - 1, 0);
         } // MssCell_WriteImageByIndex
 
@@ -2019,6 +2060,10 @@ namespace OutSystems.NssAdvanced_Excel
 
             // EPPlus keeps the image for Worksheet_GetImages, as it does for pictures it loads from a
             // file, so neither the image nor the picture is disposed here.
+            bool byName = !string.IsNullOrEmpty(ssCellName);
+            RequireFitsInGrid(ws, range.Start.Row, ssMarginTop, range.Start.Column, ssMarginLeft, ssImageWidth, ssImageHeight, "image",
+                byName ? nameof(ssCellName) : nameof(ssRowNumber), byName ? nameof(ssCellName) : nameof(ssColumnNumber));
+
             ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, Util.ImageFromBytes(ssImageFile));
             picture.SetPosition(range.Start.Row - 1, ssMarginTop, range.Start.Column - 1, ssMarginLeft);
             picture.SetSize(ssImageWidth, ssImageHeight);
@@ -3573,6 +3618,8 @@ namespace OutSystems.NssAdvanced_Excel
             // Every check happens before AddChart, so a rejected call leaves no drawing on the sheet.
             var chartType = Util.StringToChartType(ssChartType);
 
+            RequireFitsInGrid(ws, ssRowPos, 0, ssColPos, 0, ssWidth, ssHeight, "chart", nameof(ssRowPos), nameof(ssColPos));
+
             var chart = ws.Drawings.AddChart(ssChartName, chartType);
             chart.SetPosition(ssRowPos - 1, 0, ssColPos - 1, 0);
             chart.SetSize(ssWidth, ssHeight);
@@ -3611,6 +3658,56 @@ namespace OutSystems.NssAdvanced_Excel
             ws.Cells[ssRow, ssColumn].Calculate();
         } // MssCell_CalculateByIndex 
 
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<ExcelWorksheet, object> _repairedHeaderFooters =
+            new System.Runtime.CompilerServices.ConditionalWeakTable<ExcelWorksheet, object>();
+
+        /// <summary>
+        /// Return the worksheet's HeaderFooter, repairing EPPlus 4.5's section split from the raw
+        /// worksheet XML on the first access for this worksheet instance.
+        /// </summary>
+        private static ExcelHeaderFooter HeaderFooterOf(ExcelWorksheet ws)
+        {
+            _repairedHeaderFooters.GetValue(ws, RepairHeaderFooter);
+            return ws.HeaderFooter;
+        }
+
+        // EPPlus 4.5 mis-splits a header or footer with an empty section when it reads a saved file
+        // (&La&C&Rc reads back center "&Rc"), so the sections are split again from the raw XML.
+        private static object RepairHeaderFooter(ExcelWorksheet ws)
+        {
+            var xml = ws.WorksheetXml;
+            if (xml?.DocumentElement != null)
+            {
+                var ns = new System.Xml.XmlNamespaceManager(xml.NameTable);
+                ns.AddNamespace("d", "http://schemas.openxmlformats.org/spreadsheetml/2006/main");
+                var hfNode = xml.SelectSingleNode("//d:headerFooter", ns);
+                if (hfNode != null)
+                {
+                    RepairHeaderFooterElement(hfNode, ns, "d:oddHeader", () => ws.HeaderFooter.OddHeader);
+                    RepairHeaderFooterElement(hfNode, ns, "d:evenHeader", () => ws.HeaderFooter.EvenHeader);
+                    RepairHeaderFooterElement(hfNode, ns, "d:firstHeader", () => ws.HeaderFooter.FirstHeader);
+                    RepairHeaderFooterElement(hfNode, ns, "d:oddFooter", () => ws.HeaderFooter.OddFooter);
+                    RepairHeaderFooterElement(hfNode, ns, "d:evenFooter", () => ws.HeaderFooter.EvenFooter);
+                    RepairHeaderFooterElement(hfNode, ns, "d:firstFooter", () => ws.HeaderFooter.FirstFooter);
+                }
+            }
+
+            return new object();
+        }
+
+        private static void RepairHeaderFooterElement(System.Xml.XmlNode hfNode, System.Xml.XmlNamespaceManager ns, string name, Func<ExcelHeaderFooterText> targetSelector)
+        {
+            var node = hfNode.SelectSingleNode(name, ns);
+            if (node != null)
+            {
+                Util.SplitHeaderFooterSections(node.InnerText, out string left, out string center, out string right);
+                ExcelHeaderFooterText target = targetSelector();
+                target.LeftAlignedText = left;
+                target.CenteredText = center;
+                target.RightAlignedText = right;
+            }
+        }
+
         /// <summary>
         /// Set the footer on the specified worksheet.
         /// To insert fields use the following:
@@ -3631,12 +3728,13 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorksheet_SetFooter(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
-            ws.HeaderFooter.OddFooter.LeftAlignedText = ssLeftSection;
-            ws.HeaderFooter.OddFooter.CenteredText = ssCenterSection;
-            ws.HeaderFooter.OddFooter.RightAlignedText = ssRightSection;
-            ws.HeaderFooter.EvenFooter.LeftAlignedText = ssLeftSection;
-            ws.HeaderFooter.EvenFooter.CenteredText = ssCenterSection;
-            ws.HeaderFooter.EvenFooter.RightAlignedText = ssRightSection;
+            ExcelHeaderFooter headerFooter = HeaderFooterOf(ws);
+            headerFooter.OddFooter.LeftAlignedText = ssLeftSection;
+            headerFooter.OddFooter.CenteredText = ssCenterSection;
+            headerFooter.OddFooter.RightAlignedText = ssRightSection;
+            headerFooter.EvenFooter.LeftAlignedText = ssLeftSection;
+            headerFooter.EvenFooter.CenteredText = ssCenterSection;
+            headerFooter.EvenFooter.RightAlignedText = ssRightSection;
         } // MssWorksheet_SetFooter
 
         /// <summary>
@@ -3659,12 +3757,13 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorksheet_SetHeader(object ssWorksheet, string ssLeftSection, string ssCenterSection, string ssRightSection)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
-            ws.HeaderFooter.OddHeader.LeftAlignedText = ssLeftSection;
-            ws.HeaderFooter.OddHeader.CenteredText = ssCenterSection;
-            ws.HeaderFooter.OddHeader.RightAlignedText = ssRightSection;
-            ws.HeaderFooter.EvenHeader.LeftAlignedText = ssLeftSection;
-            ws.HeaderFooter.EvenHeader.CenteredText = ssCenterSection;
-            ws.HeaderFooter.EvenHeader.RightAlignedText = ssRightSection;
+            ExcelHeaderFooter headerFooter = HeaderFooterOf(ws);
+            headerFooter.OddHeader.LeftAlignedText = ssLeftSection;
+            headerFooter.OddHeader.CenteredText = ssCenterSection;
+            headerFooter.OddHeader.RightAlignedText = ssRightSection;
+            headerFooter.EvenHeader.LeftAlignedText = ssLeftSection;
+            headerFooter.EvenHeader.CenteredText = ssCenterSection;
+            headerFooter.EvenHeader.RightAlignedText = ssRightSection;
         } // MssWorksheet_SetHeader
 
         /// <summary>
@@ -3678,9 +3777,10 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorksheet_GetHeader(object ssWorksheet, bool ssIsEven, out string ssLeftSection, out string ssCenterSection, out string ssRightSection)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
-            ssLeftSection = (ssIsEven ? ws.HeaderFooter.EvenHeader.LeftAlignedText : ws.HeaderFooter.OddHeader.LeftAlignedText);
-            ssCenterSection = (ssIsEven ? ws.HeaderFooter.EvenHeader.CenteredText : ws.HeaderFooter.OddHeader.CenteredText);
-            ssRightSection = (ssIsEven ? ws.HeaderFooter.EvenHeader.RightAlignedText : ws.HeaderFooter.OddHeader.RightAlignedText);
+            ExcelHeaderFooter headerFooter = HeaderFooterOf(ws);
+            ssLeftSection = (ssIsEven ? headerFooter.EvenHeader.LeftAlignedText : headerFooter.OddHeader.LeftAlignedText);
+            ssCenterSection = (ssIsEven ? headerFooter.EvenHeader.CenteredText : headerFooter.OddHeader.CenteredText);
+            ssRightSection = (ssIsEven ? headerFooter.EvenHeader.RightAlignedText : headerFooter.OddHeader.RightAlignedText);
         } // MssWorksheet_GetHeader
 
         /// <summary>
@@ -3694,9 +3794,10 @@ namespace OutSystems.NssAdvanced_Excel
         public void MssWorksheet_GetFooter(object ssWorksheet, bool ssIsEven, out string ssLeftSection, out string ssCenterSection, out string ssRightSection)
         {
             ExcelWorksheet ws = AsWorksheet(ssWorksheet);
-            ssLeftSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.LeftAlignedText : ws.HeaderFooter.OddFooter.LeftAlignedText);
-            ssCenterSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.CenteredText : ws.HeaderFooter.OddFooter.CenteredText);
-            ssRightSection = (ssIsEven ? ws.HeaderFooter.EvenFooter.RightAlignedText : ws.HeaderFooter.OddFooter.RightAlignedText);
+            ExcelHeaderFooter headerFooter = HeaderFooterOf(ws);
+            ssLeftSection = (ssIsEven ? headerFooter.EvenFooter.LeftAlignedText : headerFooter.OddFooter.LeftAlignedText);
+            ssCenterSection = (ssIsEven ? headerFooter.EvenFooter.CenteredText : headerFooter.OddFooter.CenteredText);
+            ssRightSection = (ssIsEven ? headerFooter.EvenFooter.RightAlignedText : headerFooter.OddFooter.RightAlignedText);
         } // MssWorksheet_GetFooter
 
         /// <summary>
