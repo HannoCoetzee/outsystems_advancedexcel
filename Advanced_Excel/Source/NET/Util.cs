@@ -130,6 +130,81 @@ namespace OutSystems.NssAdvanced_Excel
             return false;
         }
 
+        /// <summary>
+        /// Split a raw OOXML header or footer string into its left (&amp;L), center (&amp;C) and
+        /// right (&amp;R) sections without losing empty sections, quoted font names or escaped &amp;&amp;.
+        /// </summary>
+        public static void SplitHeaderFooterSections(string text, out string left, out string center, out string right)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                left = "";
+                center = "";
+                right = "";
+                return;
+            }
+
+            var sbLeft = new System.Text.StringBuilder();
+            var sbCenter = new System.Text.StringBuilder();
+            var sbRight = new System.Text.StringBuilder();
+            System.Text.StringBuilder current = sbCenter;
+
+            int i = 0;
+            while (i < text.Length)
+            {
+                if (text[i] != '&')
+                {
+                    current.Append(text[i]);
+                    i++;
+                }
+                else if (i + 1 >= text.Length)
+                {
+                    current.Append('&');
+                    i++;
+                }
+                else
+                {
+                    char next = text[i + 1];
+                    switch (next)
+                    {
+                        case 'L':
+                            current = sbLeft;
+                            i += 2;
+                            break;
+                        case 'C':
+                            current = sbCenter;
+                            i += 2;
+                            break;
+                        case 'R':
+                            current = sbRight;
+                            i += 2;
+                            break;
+                        case '"':
+                            int closeQuote = text.IndexOf('"', i + 2);
+                            if (closeQuote < 0)
+                            {
+                                current.Append(text, i, text.Length - i);
+                                i = text.Length;
+                            }
+                            else
+                            {
+                                current.Append(text, i, closeQuote - i + 1);
+                                i = closeQuote + 1;
+                            }
+                            break;
+                        default:
+                            current.Append('&').Append(next);
+                            i += 2;
+                            break;
+                    }
+                }
+            }
+
+            left = sbLeft.ToString();
+            center = sbCenter.ToString();
+            right = sbRight.ToString();
+        }
+
         private static System.Xml.XmlElement WorkbookProtectionNode(ExcelWorkbook wb)
         {
             System.Xml.XmlElement root = wb.WorkbookXml.DocumentElement;
