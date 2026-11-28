@@ -67,17 +67,10 @@ namespace OutSystems.NssAdvanced_Excel
 			ExcelHeaderFooter headerFooter = HeaderFooterOf(ws);
 			ExcelHeaderFooterText target = ssInFooter ? headerFooter.OddFooter : headerFooter.OddHeader;
 
-			try
+			// InsertPicture copies the picture into the package, so the image can be disposed here.
+			using (Image img = Util.ImageFromBytes(ssImage, nameof(ssImage)))
 			{
-				using (var ms = new MemoryStream(ssImage))
-				using (var img = System.Drawing.Image.FromStream(ms))
-				{
-					target.InsertPicture(img, alignment);
-				}
-			}
-			catch (ArgumentException ex) when (ex.ParamName == null)
-			{
-				throw new ArgumentException("Image is not a valid picture. Supply PNG or JPEG content.", nameof(ssImage));
+				target.InsertPicture(img, alignment);
 			}
 		} // MssWorksheet_AddHeaderFooterImage
 
@@ -1417,14 +1410,53 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             // EPPlus keeps the image for Worksheet_GetImages, so it isn't disposed here.
-            Image image = Util.ImageFromBytes(ssImage);
+            Image image = Util.ImageFromBytes(ssImage, nameof(ssImage));
             // EPPlus sizes a new picture from the image's pixels at its resolution, relative to 96 dpi.
-            int widthPixels = (int)(image.Width / (image.HorizontalResolution / 96f));
-            int heightPixels = (int)(image.Height / (image.VerticalResolution / 96f));
-            RequireFitsInGrid(ws, ssRow, 0, ssColumn, 0, widthPixels, heightPixels, "image", nameof(ssRow), nameof(ssColumn));
+            // A resolution of 0 (or a bogus one) would make that size infinite or negative, so the
+            // resolution is used only when it is a usable dpi value.
+            double horizontalResolution = image.HorizontalResolution;
+            double verticalResolution = image.VerticalResolution;
+            if (double.IsNaN(horizontalResolution) || double.IsInfinity(horizontalResolution) || horizontalResolution < 1)
+            {
+                horizontalResolution = 96;
+            }
+            if (double.IsNaN(verticalResolution) || double.IsInfinity(verticalResolution) || verticalResolution < 1)
+            {
+                verticalResolution = 96;
+            }
+            double widthPixels = Math.Round(image.Width / (horizontalResolution / 96.0));
+            double heightPixels = Math.Round(image.Height / (verticalResolution / 96.0));
+            if (widthPixels < 1 || widthPixels > 1000000 || heightPixels < 1 || heightPixels > 1000000)
+            {
+                image.Dispose();
+                throw new ArgumentException("The image's size or resolution is out of range.", nameof(ssImage));
+            }
 
-            ExcelPicture pic = ws.Drawings.AddPicture(ssImageName, image);
+            try
+            {
+                RequireFitsInGrid(ws, ssRow, 0, ssColumn, 0, (int)widthPixels, (int)heightPixels, "image", nameof(ssRow), nameof(ssColumn));
+            }
+            catch
+            {
+                // A rejected picture leaves no drawing behind, so nothing else owns the image.
+                image.Dispose();
+                throw;
+            }
+
+            ExcelPicture pic;
+            try
+            {
+                pic = ws.Drawings.AddPicture(ssImageName, image);
+            }
+            catch
+            {
+                // AddPicture adds nothing to the sheet when it throws, so the image is still ours.
+                image.Dispose();
+                throw;
+            }
             pic.SetPosition(ssRow - 1, 0, ssColumn - 1, 0);
+            // Place the picture at exactly the size that was checked, whatever EPPlus derives from the dpi.
+            pic.SetSize((int)widthPixels, (int)heightPixels);
         } // MssCell_WriteImageByIndex
 
         /// <summary>
@@ -2057,6 +2089,22 @@ namespace OutSystems.NssAdvanced_Excel
             {
                 throw new ArgumentException("No image data supplied.", nameof(ssImageFile));
             }
+            if (ssImageWidth < 1)
+            {
+                throw new ArgumentException("The image width must be at least 1 pixel.", nameof(ssImageWidth));
+            }
+            if (ssImageHeight < 1)
+            {
+                throw new ArgumentException("The image height must be at least 1 pixel.", nameof(ssImageHeight));
+            }
+            if (ssMarginTop < 0)
+            {
+                throw new ArgumentException("The top margin cannot be negative.", nameof(ssMarginTop));
+            }
+            if (ssMarginLeft < 0)
+            {
+                throw new ArgumentException("The left margin cannot be negative.", nameof(ssMarginLeft));
+            }
 
             // EPPlus keeps the image for Worksheet_GetImages, as it does for pictures it loads from a
             // file, so neither the image nor the picture is disposed here.
@@ -2064,7 +2112,18 @@ namespace OutSystems.NssAdvanced_Excel
             RequireFitsInGrid(ws, range.Start.Row, ssMarginTop, range.Start.Column, ssMarginLeft, ssImageWidth, ssImageHeight, "image",
                 byName ? nameof(ssCellName) : nameof(ssRowNumber), byName ? nameof(ssCellName) : nameof(ssColumnNumber));
 
-            ExcelPicture picture = ws.Drawings.AddPicture(ssImageName, Util.ImageFromBytes(ssImageFile));
+            Image image = Util.ImageFromBytes(ssImageFile, nameof(ssImageFile));
+            ExcelPicture picture;
+            try
+            {
+                picture = ws.Drawings.AddPicture(ssImageName, image);
+            }
+            catch
+            {
+                // AddPicture adds nothing to the sheet when it throws, so the image is still ours.
+                image.Dispose();
+                throw;
+            }
             picture.SetPosition(range.Start.Row - 1, ssMarginTop, range.Start.Column - 1, ssMarginLeft);
             picture.SetSize(ssImageWidth, ssImageHeight);
             range.Dispose();
@@ -2202,15 +2261,24 @@ namespace OutSystems.NssAdvanced_Excel
         /// </summary>
         private static void RemoveCommentsInRange(ExcelWorksheet ws, int startRow, int endRow, int startCol, int endCol)
         {
-            for (int row = startRow; row <= endRow; row++)
+            if (startRow > endRow || startCol > endCol || ws == null || ws.Comments == null || ws.Comments.Count == 0)
             {
-                for (int col = startCol; col <= endCol; col++)
+                return;
+            }
+
+            for (int i = ws.Comments.Count - 1; i >= 0; i--)
+            {
+                ExcelComment comment = ws.Comments[i];
+                if (comment == null || string.IsNullOrEmpty(comment.Address))
                 {
-                    if (ws.Cells[row, col].Comment == null)
-                    {
-                        continue;
-                    }
-                    ws.Comments.Remove(ws.Cells[row, col].Comment);
+                    continue;
+                }
+
+                ExcelAddress addr = new ExcelAddress(comment.Address);
+                if (addr.Start.Row >= startRow && addr.Start.Row <= endRow &&
+                    addr.Start.Column >= startCol && addr.Start.Column <= endCol)
+                {
+                    ws.Comments.RemoveAt(i);
                 }
             }
         }
@@ -3401,7 +3469,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// <summary>
         /// Opens an existing workbook for editing by either specifying a name or the binary data.
         /// </summary>
-        /// <param name="ssFileName">Location of the file that you want to open. Set to empty string "" when using binary data</param>
+        /// <param name="ssFileName">Location of the file that you want to open. Set to empty string "" when using binary data. URLs on local or private networks and files on network shares are not allowed.</param>
         /// <param name="ssBinary_Data">Binary data of the file that you want to open. Set to nullbinary() if using FileName</param>
         /// <param name="ssWorkbook">The workbook that you want to work with.</param>
         public void MssWorkbook_Open(string ssFileName, byte[] ssBinary_Data, string ssPassword, out object ssWorkbook)
@@ -3415,6 +3483,7 @@ namespace OutSystems.NssAdvanced_Excel
         /// </summary>
         private static ExcelPackage OpenWorkbook(string fileName, byte[] data, string password, string binaryParamName)
         {
+            fileName = fileName ?? "";
             bool hasBinaryData = data != null && data.LongLength > 0;
 
             if (!hasBinaryData && string.IsNullOrEmpty(fileName))
@@ -3423,57 +3492,124 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             ExcelPackage p = new ExcelPackage();
-            if (fileName.ToLower().StartsWith("http:") || fileName.ToLower().StartsWith("https:"))
+            if (fileName.StartsWith("http:", StringComparison.OrdinalIgnoreCase) || fileName.StartsWith("https:", StringComparison.OrdinalIgnoreCase))
             {
                 const int timeoutMs = 30000;                 // fail fast instead of hanging on a slow/dead host
+                const int overallDeadlineMs = 60000;         // overall deadline across the whole download including redirects
+                const int maxRedirects = 5;
                 const long maxDownloadBytes = 100L * 1024 * 1024; // cap the download to guard against runaway responses
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(fileName);
-                request.Timeout = timeoutMs;
-                request.ReadWriteTimeout = timeoutMs;
+                System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
+                string currentUrl = fileName;
 
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                for (int redirects = 0; ; redirects++)
                 {
-                    if (response.StatusCode != HttpStatusCode.OK)
+                    // Known residual risk: DNS rebinding between our host check and the connection opened by HttpWebRequest.
+                    Uri currentUri = ValidateAndResolveHttpUrl(currentUrl);
+
+                    if (stopwatch.ElapsedMilliseconds > overallDeadlineMs)
                     {
-                        throw new IOException("Failed to download workbook from '" + fileName + "': HTTP " + (int)response.StatusCode + " " + response.StatusCode + ".");
+                        throw new IOException("Downloading workbook from '" + fileName + "' took longer than 60 seconds.");
                     }
 
-                    using (Stream responseStream = response.GetResponseStream())
-                    using (MemoryStream buffer = new MemoryStream())
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(currentUri);
+                    request.Method = "GET";
+                    request.AllowAutoRedirect = false;
+                    request.UseDefaultCredentials = false;
+                    request.Timeout = timeoutMs;
+                    request.ReadWriteTimeout = timeoutMs;
+
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                     {
-                        byte[] chunk = new byte[81920];
-                        long total = 0;
-                        int read;
-                        while ((read = responseStream.Read(chunk, 0, chunk.Length)) > 0)
+                        if (stopwatch.ElapsedMilliseconds > overallDeadlineMs)
                         {
-                            total += read;
-                            if (total > maxDownloadBytes)
-                            {
-                                throw new IOException("The downloaded workbook exceeds the maximum allowed size (100 MB).");
-                            }
-                            buffer.Write(chunk, 0, read);
+                            throw new IOException("Downloading workbook from '" + fileName + "' took longer than 60 seconds.");
                         }
 
-                        byte[] raw = buffer.ToArray();
-                        Util.EnsureCompleteZipPackage(raw, "ssFileName");
-                        byte[] patched = Util.EnsureStylesPartDefaults(raw);
-                        LoadPackage(p, patched, password);
+                        int statusCode = (int)response.StatusCode;
+                        if (statusCode == 301 || statusCode == 302 || statusCode == 303 || statusCode == 307 || statusCode == 308)
+                        {
+                            string location = response.Headers["Location"];
+                            if (!string.IsNullOrEmpty(location))
+                            {
+                                if (redirects >= maxRedirects)
+                                {
+                                    throw new IOException("Too many redirects (more than " + maxRedirects + ") while downloading workbook from '" + fileName + "'.");
+                                }
+                                if (!Uri.TryCreate(currentUri, location, out Uri nextUri))
+                                {
+                                    throw new ArgumentException("Invalid redirect URL '" + location + "'.", "ssFileName");
+                                }
+                                currentUrl = nextUri.AbsoluteUri;
+                                continue;
+                            }
+                        }
+
+                        if (response.StatusCode != HttpStatusCode.OK)
+                        {
+                            throw new IOException("Failed to download workbook from '" + fileName + "': HTTP " + (int)response.StatusCode + " " + response.StatusCode + ".");
+                        }
+
+                        if (response.ContentLength > maxDownloadBytes)
+                        {
+                            throw new IOException("The downloaded workbook exceeds the maximum allowed size (100 MB).");
+                        }
+
+                        using (Stream responseStream = response.GetResponseStream())
+                        using (MemoryStream buffer = new MemoryStream())
+                        {
+                            byte[] chunk = new byte[81920];
+                            long total = 0;
+                            int read;
+                            while ((read = responseStream.Read(chunk, 0, chunk.Length)) > 0)
+                            {
+                                if (stopwatch.ElapsedMilliseconds > overallDeadlineMs)
+                                {
+                                    throw new IOException("Downloading workbook from '" + fileName + "' took longer than 60 seconds.");
+                                }
+                                total += read;
+                                if (total > maxDownloadBytes)
+                                {
+                                    throw new IOException("The downloaded workbook exceeds the maximum allowed size (100 MB).");
+                                }
+                                buffer.Write(chunk, 0, read);
+                            }
+
+                            byte[] raw = buffer.ToArray();
+                            Util.EnsureCompleteZipPackage(raw, "ssFileName");
+                            byte[] patched = Util.EnsureStylesPartDefaults(raw, "ssFileName");
+                            LoadPackage(p, patched, password, "ssFileName");
+                            break;
+                        }
                     }
                 }
             }
             else if (!string.IsNullOrEmpty(fileName))
             {
+                const long maxFileBytes = 100L * 1024 * 1024;
+
+                if (fileName.StartsWith(@"\\", StringComparison.Ordinal)
+                    || fileName.StartsWith("//", StringComparison.Ordinal)
+                    || IsMappedNetworkDrive(fileName))
+                {
+                    throw new ArgumentException("Workbook_Open does not open files on network shares or devices: '" + fileName + "'.", "ssFileName");
+                }
+
+                if (new FileInfo(fileName).Length > maxFileBytes)
+                {
+                    throw new ArgumentException("The file is larger than 100 MB.", "ssFileName");
+                }
+
                 byte[] raw = System.IO.File.ReadAllBytes(fileName);
                 Util.EnsureCompleteZipPackage(raw, "ssFileName");
-                byte[] patched = Util.EnsureStylesPartDefaults(raw);
-                LoadPackage(p, patched, password);
+                byte[] patched = Util.EnsureStylesPartDefaults(raw, "ssFileName");
+                LoadPackage(p, patched, password, "ssFileName");
             }
             else if (hasBinaryData)
             {
                 Util.EnsureCompleteZipPackage(data, binaryParamName);
-                byte[] patched = Util.EnsureStylesPartDefaults(data);
-                LoadPackage(p, patched, password);
+                byte[] patched = Util.EnsureStylesPartDefaults(data, binaryParamName);
+                LoadPackage(p, patched, password, binaryParamName);
             }
             else
             {
@@ -3483,13 +3619,169 @@ namespace OutSystems.NssAdvanced_Excel
             return p;
         }
 
+        // Lets the test suite download from its own loopback server; only loopback, every other range stays
+        // blocked. Nothing in OutSystems can set it: the tests set it through reflection, which any code in
+        // the process could do anyway.
+        private static bool allowLoopbackForTests = false;
+
+        private static Uri ValidateAndResolveHttpUrl(string url)
+        {
+            if (!Uri.TryCreate(url, UriKind.Absolute, out Uri uri)
+                || (!string.Equals(uri.Scheme, "http", StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(uri.Scheme, "https", StringComparison.OrdinalIgnoreCase))
+                || string.IsNullOrEmpty(uri.Host))
+            {
+                throw new ArgumentException("Invalid HTTP/HTTPS URL '" + url + "'.", "ssFileName");
+            }
+
+            IPAddress[] addresses;
+            string host = uri.Host.Trim('[', ']');
+            if ((uri.HostNameType == UriHostNameType.IPv4 || uri.HostNameType == UriHostNameType.IPv6)
+                && IPAddress.TryParse(host, out IPAddress literalIp))
+            {
+                addresses = new IPAddress[] { literalIp };
+            }
+            else
+            {
+                try
+                {
+                    addresses = Dns.GetHostAddresses(uri.DnsSafeHost);
+                }
+                catch (Exception ex)
+                {
+                    throw new IOException("Could not resolve the host of '" + url + "'.", ex);
+                }
+                if (addresses == null || addresses.Length == 0)
+                {
+                    throw new IOException("Could not resolve the host of '" + url + "'.");
+                }
+            }
+
+            foreach (IPAddress address in addresses)
+            {
+                if (IsBlockedAddress(address) && !(allowLoopbackForTests && IPAddress.IsLoopback(address)))
+                {
+                    throw new ArgumentException("Workbook_Open does not open URLs on local or private networks: '" + url + "'.", "ssFileName");
+                }
+            }
+
+            return uri;
+        }
+
+        private static bool IsBlockedAddress(IPAddress a)
+        {
+            if (a == null)
+            {
+                return true;
+            }
+
+            if (a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+            {
+                byte[] b = a.GetAddressBytes();
+                if (b[0] == 0) return true;                                      // 0.0.0.0/8
+                if (b[0] == 10) return true;                                     // 10.0.0.0/8
+                if (b[0] == 100 && (b[1] & 0xC0) == 64) return true;             // 100.64.0.0/10
+                if (b[0] == 127) return true;                                    // 127.0.0.0/8
+                if (b[0] == 169 && b[1] == 254) return true;                     // 169.254.0.0/16
+                if (b[0] == 172 && (b[1] & 0xF0) == 16) return true;             // 172.16.0.0/12
+                if (b[0] == 192 && b[1] == 0 && b[2] == 0) return true;          // 192.0.0.0/24
+                if (b[0] == 192 && b[1] == 168) return true;                     // 192.168.0.0/16
+                if (b[0] == 198 && (b[1] & 0xFE) == 18) return true;             // 198.18.0.0/15
+                if ((b[0] & 0xF0) == 224 || (b[0] & 0xF0) == 240) return true;   // 224.0.0.0/4 and 240.0.0.0/4 (includes 255.255.255.255)
+                return false;
+            }
+
+            if (a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
+            {
+                byte[] b = a.GetAddressBytes();
+
+                bool first80Zero = true;
+                for (int i = 0; i < 10; i++)
+                {
+                    if (b[i] != 0)
+                    {
+                        first80Zero = false;
+                        break;
+                    }
+                }
+
+                if (first80Zero && b[10] == 0 && b[11] == 0)
+                {
+                    // ::/128 (unspecified) or ::1/128 (loopback)
+                    if (b[12] == 0 && b[13] == 0 && b[14] == 0 && (b[15] == 0 || b[15] == 1))
+                    {
+                        return true;
+                    }
+                    // IPv4-compatible IPv6 address (::a.b.c.d)
+                    return IsBlockedAddress(new IPAddress(new byte[] { b[12], b[13], b[14], b[15] }));
+                }
+
+                if (first80Zero && b[10] == 0xFF && b[11] == 0xFF)
+                {
+                    // IPv4-mapped IPv6 address (::ffff:a.b.c.d)
+                    return IsBlockedAddress(new IPAddress(new byte[] { b[12], b[13], b[14], b[15] }));
+                }
+
+                if (b[0] == 0x00 && b[1] == 0x64 && b[2] == 0xFF && b[3] == 0x9B && AllZero(b, 4, 12))
+                {
+                    // NAT64 64:ff9b::/96 reaches the embedded IPv4 address
+                    return IsBlockedAddress(new IPAddress(new byte[] { b[12], b[13], b[14], b[15] }));
+                }
+                if (b[0] == 0x20 && b[1] == 0x02)
+                {
+                    // 6to4 2002::/16 tunnels to the IPv4 address in bytes 2-5
+                    return IsBlockedAddress(new IPAddress(new byte[] { b[2], b[3], b[4], b[5] }));
+                }
+                if ((b[0] & 0xFE) == 0xFC) return true;                          // fc00::/7
+                if (b[0] == 0xFE && (b[1] & 0xC0) == 0x80) return true;          // fe80::/10
+                if (b[0] == 0xFE && (b[1] & 0xC0) == 0xC0) return true;          // fec0::/10
+                if (b[0] == 0xFF) return true;                                   // ff00::/8
+                return false;
+            }
+
+            return true;
+        }
+
+        // True when bytes [from, to) of b are all zero.
+        private static bool AllZero(byte[] b, int from, int to)
+        {
+            for (int i = from; i < to; i++)
+            {
+                if (b[i] != 0) return false;
+            }
+            return true;
+        }
+
+        private static bool IsMappedNetworkDrive(string fileName)
+        {
+            if (Path.DirectorySeparatorChar != '\\')
+            {
+                return false;
+            }
+            try
+            {
+                string root = Path.GetPathRoot(Path.GetFullPath(fileName));
+                return !string.IsNullOrEmpty(root) && new DriveInfo(root).DriveType == DriveType.Network;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Load workbook bytes into the package, decrypting with the password when one is supplied.
         /// A missing/incorrect password on an encrypted file is surfaced as a clear error.
+        /// EPPlus parses most parts lazily, so the workbook, its styles and every worksheet are
+        /// forced to be parsed here: a part that is not valid XML fails on open, with the caller's
+        /// parameter name, instead of on the next action.
+        /// Residual risk (accepted): an encrypted workbook is an OLE compound document, not a zip,
+        /// until EPPlus decrypts it inside Load, so the zip limits in Util do not apply to it.
         /// </summary>
-        private static void LoadPackage(ExcelPackage p, byte[] data, string password)
+        private static void LoadPackage(ExcelPackage p, byte[] data, string password, string paramName)
         {
             var tablesWithoutFilter = Util.CollectTablesWithoutAutoFilter(data);
+            var zeroHeightRowRecords = Util.CollectZeroHeightRowRecords(data);
             try
             {
                 if (string.IsNullOrEmpty(password))
@@ -3500,6 +3792,15 @@ namespace OutSystems.NssAdvanced_Excel
                 {
                     p.Load(new MemoryStream(data), password);
                 }
+                ForceParse(p);
+            }
+            catch (System.Xml.XmlException)
+            {
+                throw new ArgumentException("The workbook is damaged: one of its parts is not valid XML.", paramName);
+            }
+            catch (Exception ex) when (WrapsXmlException(ex))
+            {
+                throw new ArgumentException("The workbook is damaged: one of its parts is not valid XML.", paramName);
             }
             catch (System.Security.SecurityException)
             {
@@ -3515,6 +3816,36 @@ namespace OutSystems.NssAdvanced_Excel
                 throw;
             }
             Util.RestoreTablesWithoutAutoFilter(p, tablesWithoutFilter);
+            Util.MarkZeroHeightRowRecords(p, zeroHeightRowRecords);
+        }
+
+        /// <summary>
+        /// Makes EPPlus parse the parts it normally defers, so broken XML fails here.
+        /// Verified against EPPlus 4.5: Worksheets.Count parses xl/workbook.xml and every worksheet
+        /// part, Styles.NamedStyles parses xl/styles.xml, and a worksheet's Dimension loads its XML.
+        /// </summary>
+        private static void ForceParse(ExcelPackage p)
+        {
+            // the reads are the point of this method
+            _ = p.Workbook.Styles.NamedStyles.Count;
+            int sheetCount = p.Workbook.Worksheets.Count;
+            for (int i = 1; i <= sheetCount; i++)
+            {
+                _ = p.Workbook.Worksheets[i].Dimension;
+            }
+        }
+
+        /// <summary>True when the exception, or anything it wraps, is an XML error.</summary>
+        private static bool WrapsXmlException(Exception ex)
+        {
+            for (Exception inner = ex == null ? null : ex.InnerException; inner != null; inner = inner.InnerException)
+            {
+                if (inner is System.Xml.XmlException)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
@@ -3616,6 +3947,15 @@ namespace OutSystems.NssAdvanced_Excel
             }
 
             // Every check happens before AddChart, so a rejected call leaves no drawing on the sheet.
+            if (ssWidth < 1)
+            {
+                throw new ArgumentException("The chart width must be at least 1 pixel.", nameof(ssWidth));
+            }
+            if (ssHeight < 1)
+            {
+                throw new ArgumentException("The chart height must be at least 1 pixel.", nameof(ssHeight));
+            }
+
             var chartType = Util.StringToChartType(ssChartType);
 
             RequireFitsInGrid(ws, ssRowPos, 0, ssColPos, 0, ssWidth, ssHeight, "chart", nameof(ssRowPos), nameof(ssColPos));
@@ -4097,6 +4437,7 @@ namespace OutSystems.NssAdvanced_Excel
 
             byte[] bytes = p.GetAsByteArray();
             var tablesWithoutFilter = Util.CollectTablesWithoutAutoFilter(bytes);
+            var zeroHeightRowRecords = Util.CollectZeroHeightRowRecords(bytes);
             if (string.IsNullOrEmpty(password))
             {
                 p.Load(new System.IO.MemoryStream(bytes));
@@ -4106,6 +4447,7 @@ namespace OutSystems.NssAdvanced_Excel
                 p.Load(new System.IO.MemoryStream(bytes), password);
             }
             Util.RestoreTablesWithoutAutoFilter(p, tablesWithoutFilter);
+            Util.MarkZeroHeightRowRecords(p, zeroHeightRowRecords);
 
             foreach (var old in oldSheets)
             {
