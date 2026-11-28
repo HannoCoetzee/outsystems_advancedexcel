@@ -10,7 +10,7 @@ namespace OutSystems.NssAdvanced_Excel {
 		/// <summary>
 		/// Opens an existing workbook for editing by either specifying a name or the binary data.
 		/// </summary>
-		/// <param name="ssFileName">Location of the file that you want to open. Set to empty string &quot;&quot; when using binary data</param>
+		/// <param name="ssFileName">Location of the file that you want to open. Set to empty string &quot;&quot; when using binary data. URLs on local or private networks and files on network shares are not allowed.</param>
 		/// <param name="ssBinary_Data">Binary data of the file that you want to open. Set to nullbinary() if using FileName</param>
 		/// <param name="ssPassword">Password for an encrypted/protected file. Leave empty for normal files.</param>
 		/// <param name="ssWorkbook">The workbook that you want to work with.</param>

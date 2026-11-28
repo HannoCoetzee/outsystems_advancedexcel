@@ -5,6 +5,8 @@ using System.Reflection;
 using OutSystems.HubEdition.RuntimePlatform.Db;
 using System.Globalization;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using OfficeOpenXml.Style.Dxf;
@@ -16,6 +18,13 @@ namespace OutSystems.NssAdvanced_Excel
 {
     class Util
     {
+        // Limits applied to the bytes of an untrusted workbook before EPPlus parses them.
+        // A workbook is opened in the server's memory, so an archive that unpacks to far more
+        // than a real spreadsheet (a zip bomb) is rejected instead of being decompressed.
+        internal const int MaxZipEntries = 10000;
+        internal const long MaxUncompressedBytes = 500L * 1024 * 1024;
+        internal const long MaxStylesBytes = 32L * 1024 * 1024;
+
         public static DataTable Transpose(DataTable dt, string ssCellType)
         {
             DataTable dtNew = new DataTable();
@@ -107,12 +116,49 @@ namespace OutSystems.NssAdvanced_Excel
         }
 
         /// <summary>
-        /// An image for EPPlus to keep. GDI+ needs the stream for as long as the image lives, so the
-        /// stream is left open and goes away with the image.
+        /// An image for EPPlus to keep, from untrusted picture bytes. Only the picture header is read,
+        /// so a corrupt or oversized picture is rejected before its pixels are decoded. Accepts PNG,
+        /// JPEG, GIF and BMP up to 40 megapixels; anything else throws ArgumentException(paramName).
+        /// GDI+ needs the stream for as long as the image lives, so the stream is left open and goes
+        /// away with the image.
         /// </summary>
-        public static Image ImageFromBytes(byte[] bytes)
+        public static Image ImageFromBytes(byte[] bytes, string paramName)
         {
-            return Image.FromStream(new MemoryStream(bytes));
+            Image image;
+            try
+            {
+                // The third argument is false: read the header without decoding every pixel.
+                image = Image.FromStream(new MemoryStream(bytes), false, false);
+            }
+            catch (ArgumentException)
+            {
+                throw new ArgumentException("The image is not a valid picture.", paramName);
+            }
+            catch (OutOfMemoryException)
+            {
+                // GDI+ reports "not enough memory" for some malformed pictures.
+                throw new ArgumentException("The image is not a valid picture.", paramName);
+            }
+            catch (ExternalException)
+            {
+                throw new ArgumentException("The image is not a valid picture.", paramName);
+            }
+
+            Guid format = image.RawFormat.Guid;
+            if (format != ImageFormat.Png.Guid && format != ImageFormat.Jpeg.Guid
+                && format != ImageFormat.Gif.Guid && format != ImageFormat.Bmp.Guid)
+            {
+                image.Dispose();
+                throw new ArgumentException("The image must be PNG, JPEG, GIF or BMP.", paramName);
+            }
+
+            if ((long)image.Width * image.Height > 40000000)
+            {
+                image.Dispose();
+                throw new ArgumentException("The image is larger than 40 megapixels.", paramName);
+            }
+
+            return image;
         }
 
         /// <summary>
@@ -374,6 +420,10 @@ namespace OutSystems.NssAdvanced_Excel
         /// When the input starts with the zip signature PK (0x50 0x4B), verify that the archive
         /// is a complete zip package by reading its central directory and streaming every entry to
         /// the end. Non-zip inputs (such as encrypted OLE compound workbooks) are untouched.
+        /// Archives with more than <see cref="MaxZipEntries"/> entries, or that unpack to more than
+        /// <see cref="MaxUncompressedBytes"/>, are rejected before EPPlus parses them.
+        /// Residual risk (accepted): an encrypted workbook is an OLE compound document, not a zip,
+        /// so these caps cannot be applied to it; EPPlus decrypts and unpacks it inside Load.
         /// </summary>
         internal static void EnsureCompleteZipPackage(byte[] bytes, string paramName)
         {
@@ -391,10 +441,20 @@ namespace OutSystems.NssAdvanced_Excel
                     {
                         throw new InvalidDataException("Empty zip archive.");
                     }
+                    if (zip.Entries.Count > MaxZipEntries)
+                    {
+                        throw new WorkbookLimitException("The workbook has more than 10000 parts, which Advanced Excel does not open.");
+                    }
                     byte[] buffer = new byte[8192];
+                    long archiveTotal = 0;
                     foreach (var entry in zip.Entries)
                     {
                         long expected = entry.Length;
+                        if (expected > MaxUncompressedBytes)
+                        {
+                            // do not spend the CPU decompressing an entry we already know is too big
+                            throw new WorkbookLimitException("The workbook unpacks to more than 500 MB, which Advanced Excel does not open.");
+                        }
                         long total = 0;
                         using (var s = entry.Open())
                         {
@@ -402,6 +462,12 @@ namespace OutSystems.NssAdvanced_Excel
                             while ((n = s.Read(buffer, 0, buffer.Length)) > 0)
                             {
                                 total += n;
+                                archiveTotal += n;
+                                if (archiveTotal > MaxUncompressedBytes)
+                                {
+                                    // stop reading as soon as the cap is passed
+                                    throw new WorkbookLimitException("The workbook unpacks to more than 500 MB, which Advanced Excel does not open.");
+                                }
                             }
                         }
                         if (total != expected)
@@ -411,10 +477,25 @@ namespace OutSystems.NssAdvanced_Excel
                     }
                 }
             }
+            catch (WorkbookLimitException ex)
+            {
+                // a limit is a decision, not damage: keep its message and its parameter name
+                throw new ArgumentException(ex.Message, paramName);
+            }
             catch (Exception)
             {
                 throw new ArgumentException("The file is not a complete .xlsx workbook: it is damaged or was cut off.", paramName);
             }
+        }
+
+        /// <summary>
+        /// Carries a size or entry-count limit out of EnsureCompleteZipPackage and
+        /// EnsureStylesPartDefaults, so the catch-alls that turn damaged archives into the
+        /// generic "damaged or was cut off" message rethrow these errors unchanged.
+        /// </summary>
+        private sealed class WorkbookLimitException : Exception
+        {
+            internal WorkbookLimitException(string message) : base(message) { }
         }
 
         /// <summary>
@@ -423,9 +504,12 @@ namespace OutSystems.NssAdvanced_Excel
         /// EPPlus throw a NullReferenceException when cells or conditional formats are written and saved.
         /// Inject any missing lists with Excel's defaults in CT_Stylesheet schema order, preserving the
         /// root element's namespace prefix. Returns the original bytes unchanged when all lists exist,
-        /// the input isn't an xlsx package, or anything goes wrong (opening must never be blocked by this).
+        /// the input isn't an xlsx package, or anything goes wrong (opening must never be blocked by this),
+        /// except that a styles part larger than <see cref="MaxStylesBytes"/> is rejected.
         /// </summary>
-        internal static byte[] EnsureStylesPartDefaults(byte[] bytes)
+        /// <param name="bytes">The workbook bytes.</param>
+        /// <param name="paramName">The calling action's parameter name, used in the error for an oversized styles part.</param>
+        internal static byte[] EnsureStylesPartDefaults(byte[] bytes, string paramName)
         {
             if (bytes == null || bytes.Length < 4 || bytes[0] != 0x50 || bytes[1] != 0x4B)
             {
@@ -442,11 +526,7 @@ namespace OutSystems.NssAdvanced_Excel
                     {
                         return bytes;
                     }
-                    string xml;
-                    using (var r = new StreamReader(stylesEntry.Open()))
-                    {
-                        xml = r.ReadToEnd();
-                    }
+                    string xml = ReadStylesPart(stylesEntry);
                     string patched = EnsureStylesPartLists(xml);
                     if (patched == xml)
                     {
@@ -482,10 +562,40 @@ namespace OutSystems.NssAdvanced_Excel
                     }
                 }
             }
+            catch (WorkbookLimitException ex)
+            {
+                // a limit is a decision, not damage: keep its message and its parameter name
+                throw new ArgumentException(ex.Message, paramName);
+            }
             catch
             {
                 return bytes;
             }
+        }
+
+        /// <summary>
+        /// Reads xl/styles.xml, counting characters as they arrive instead of trusting the zip entry's
+        /// declared length, and stops as soon as the part is larger than <see cref="MaxStylesBytes"/>.
+        /// </summary>
+        private static string ReadStylesPart(System.IO.Compression.ZipArchiveEntry stylesEntry)
+        {
+            char[] chunk = new char[8192];
+            long totalChars = 0;
+            var text = new System.Text.StringBuilder();
+            using (var r = new StreamReader(stylesEntry.Open()))
+            {
+                int n;
+                while ((n = r.Read(chunk, 0, chunk.Length)) > 0)
+                {
+                    totalChars += n;
+                    if (totalChars > MaxStylesBytes)
+                    {
+                        throw new WorkbookLimitException("The workbook's styles part is larger than 32 MB, which Advanced Excel does not open.");
+                    }
+                    text.Append(chunk, 0, n);
+                }
+            }
+            return text.ToString();
         }
 
         private static readonly string[] StyleSheetSchemaOrder = {
@@ -684,6 +794,154 @@ namespace OutSystems.NssAdvanced_Excel
         }
 
         /// <summary>
+        /// In a sheet saved with sheetFormatPr/@zeroHeight="1" every row without a row record is hidden, so a
+        /// blank row is visible only through its record. EPPlus keeps no trace of a record that has no
+        /// attributes, so before the load this reads the row numbers of the visible records of every such
+        /// sheet, by sheet name. The cost is bounded by the rows actually in the file.
+        /// </summary>
+        internal static Dictionary<string, List<int>> CollectZeroHeightRowRecords(byte[] bytes)
+        {
+            var result = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
+            if (bytes == null || bytes.Length < 4 || bytes[0] != 0x50 || bytes[1] != 0x4B)
+            {
+                return result;
+            }
+
+            var settings = new System.Xml.XmlReaderSettings { DtdProcessing = System.Xml.DtdProcessing.Prohibit, XmlResolver = null };
+            try
+            {
+                using (var ms = new MemoryStream(bytes, false))
+                using (var zip = new System.IO.Compression.ZipArchive(ms, System.IO.Compression.ZipArchiveMode.Read))
+                {
+                    // sheet name -> relationship id (workbook.xml), relationship id -> part path (workbook.xml.rels)
+                    var sheetRelIds = new List<KeyValuePair<string, string>>();
+                    var relTargets = new Dictionary<string, string>(StringComparer.Ordinal);
+                    var workbookEntry = zip.GetEntry("xl/workbook.xml");
+                    var relsEntry = zip.GetEntry("xl/_rels/workbook.xml.rels");
+                    if (workbookEntry == null || relsEntry == null)
+                    {
+                        return result;
+                    }
+                    using (var r = System.Xml.XmlReader.Create(workbookEntry.Open(), settings))
+                    {
+                        while (r.Read())
+                        {
+                            if (r.NodeType == System.Xml.XmlNodeType.Element && r.LocalName == "sheet")
+                            {
+                                string id = r.GetAttribute("id", "http://schemas.openxmlformats.org/officeDocument/2006/relationships");
+                                string name = r.GetAttribute("name");
+                                if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(name))
+                                {
+                                    sheetRelIds.Add(new KeyValuePair<string, string>(name, id));
+                                }
+                            }
+                        }
+                    }
+                    using (var r = System.Xml.XmlReader.Create(relsEntry.Open(), settings))
+                    {
+                        while (r.Read())
+                        {
+                            if (r.NodeType == System.Xml.XmlNodeType.Element && r.LocalName == "Relationship")
+                            {
+                                string id = r.GetAttribute("Id");
+                                string target = r.GetAttribute("Target");
+                                if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(target))
+                                {
+                                    relTargets[id] = target.StartsWith("/", StringComparison.Ordinal) ? target.TrimStart('/') : "xl/" + target;
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var sheet in sheetRelIds)
+                    {
+                        string target;
+                        if (!relTargets.TryGetValue(sheet.Value, out target))
+                        {
+                            continue;
+                        }
+                        var entry = zip.GetEntry(target);
+                        if (entry == null)
+                        {
+                            continue;
+                        }
+                        List<int> rows = null;
+                        using (var r = System.Xml.XmlReader.Create(entry.Open(), settings))
+                        {
+                            while (r.Read())
+                            {
+                                if (r.NodeType != System.Xml.XmlNodeType.Element)
+                                {
+                                    continue;
+                                }
+                                if (r.LocalName == "sheetFormatPr")
+                                {
+                                    string z = r.GetAttribute("zeroHeight");
+                                    if (z != "1" && !string.Equals(z, "true", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        break;   // not a zeroHeight sheet: nothing to keep
+                                    }
+                                    rows = new List<int>();
+                                }
+                                else if (r.LocalName == "sheetData" && rows == null)
+                                {
+                                    break;       // sheetFormatPr comes before sheetData; none means no zeroHeight
+                                }
+                                else if (r.LocalName == "row" && rows != null)
+                                {
+                                    string hidden = r.GetAttribute("hidden");
+                                    int rowNumber;
+                                    if (hidden != "1" && !string.Equals(hidden, "true", StringComparison.OrdinalIgnoreCase)
+                                        && int.TryParse(r.GetAttribute("r"), NumberStyles.None, CultureInfo.InvariantCulture, out rowNumber)
+                                        && rowNumber >= 1 && rowNumber <= ExcelPackage.MaxRows)
+                                    {
+                                        rows.Add(rowNumber);
+                                    }
+                                }
+                            }
+                        }
+                        if (rows != null && rows.Count > 0)
+                        {
+                            result[sheet.Key] = rows;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Any error in this step must not block opening.
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// After a load, mark the visible row records CollectZeroHeightRowRecords found, so EPPlus writes them
+        /// back (and moves them with inserted or deleted rows) and the rows stay visible after a save.
+        /// </summary>
+        internal static void MarkZeroHeightRowRecords(ExcelPackage package, Dictionary<string, List<int>> rowRecords)
+        {
+            if (package == null || rowRecords == null || rowRecords.Count == 0)
+            {
+                return;
+            }
+            foreach (var ws in package.Workbook.Worksheets)
+            {
+                List<int> rows;
+                if (!rowRecords.TryGetValue(ws.Name, out rows))
+                {
+                    continue;
+                }
+                foreach (int r in rows)
+                {
+                    if (!ws.Row(r).Hidden)
+                    {
+                        ws.Row(r).CustomHeight = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Collect the table parts (xl/tables/*.xml) whose &lt;table&gt; has a header row
         /// (headerRowCount absent or not "0") and no &lt;autoFilter&gt; child element, so their
         /// ShowFilter=false state can be restored after EPPlus loads the package.
@@ -803,8 +1061,13 @@ namespace OutSystems.NssAdvanced_Excel
                     continue;
                 }
 
-                int end = ws.Dimension.End.Row;
-                for (int r = 1; r <= end; r++)
+                var rows = new HashSet<int>();
+                foreach (var cell in ws.Cells[ws.Dimension.Address])
+                {
+                    rows.Add(cell.Start.Row);
+                }
+
+                foreach (int r in rows)
                 {
                     if (!ws.Row(r).Hidden)
                     {
